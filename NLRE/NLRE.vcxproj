@@ -272,6 +272,8 @@
   <ItemGroup>
     <ClInclude Include="..\include\NLEMath.h" />
     <ClInclude Include="..\include\NLRE.h" />
+    <ClInclude Include="..\src\NLRECommon.h" />
+    <ClInclude Include="..\src\NLREConfigurator.h" />
     <ClInclude Include="..\src\stdafx.h" />
   </ItemGroup>
   <ItemGroup>
