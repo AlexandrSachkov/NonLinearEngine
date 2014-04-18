@@ -13,6 +13,24 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Source Files\math">
+      <UniqueIdentifier>{46ec3148-6285-49ae-b7bc-5b382b83be5f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\math\DXMath">
+      <UniqueIdentifier>{9506c07c-365e-4b31-bc5a-8a772471ecb8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\NLREMain">
+      <UniqueIdentifier>{6be77f85-a601-455b-935a-17a6db5228b2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\math">
+      <UniqueIdentifier>{2fdd5584-0bb5-421a-8917-4916430ebd21}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\math\DXMath">
+      <UniqueIdentifier>{5dbb3d82-ecdc-4450-810d-180b138f5ea1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\NLREMain">
+      <UniqueIdentifier>{4a67f3a9-581d-4b72-9609-61338c30e35f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -24,25 +42,34 @@
     <ClInclude Include="..\include\NLRE.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\stdafx.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\NLREConfigurator.h">
-      <Filter>Source Files</Filter>
+      <Filter>Header Files\NLREMain</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\NLRECommon.h">
-      <Filter>Source Files</Filter>
+    <ClInclude Include="..\src\math\DXMath\DXMathMatrixFunctions.h">
+      <Filter>Header Files\math\DXMath</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\math\DXMath\DXMathStructures.h">
+      <Filter>Header Files\math\DXMath</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\math\DXMath\DXMathWrap.h">
+      <Filter>Header Files\math\DXMath</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\NLREMain\NLRECommon.h">
+      <Filter>Header Files\NLREMain</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\NLREMain\stdafx.h">
+      <Filter>Header Files\NLREMain</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\src\math\NLEMath.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\NLRE.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\stdafx.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="..\src\math\DXMath\DXMathMatrixFunctions.cpp">
+      <Filter>Source Files\math\DXMath</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\NLREMain\stdafx.cpp">
+      <Filter>Source Files\NLREMain</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

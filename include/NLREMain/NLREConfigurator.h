@@ -1,3 +1,6 @@
+#ifndef NLRE_CONFIGURATOR_
+#define NLRE_CONFIGURATOR_
+
 /*
 	Rendering Device
 	1. DirectX 11:					_DX11
@@ -17,3 +20,11 @@
 	1. DirectX Math:				_DXMATH
 */
 #define _DXMATH
+
+/*
+	SIMD Collision Library:
+	1. DirectX Collision			_DXCOLLISION
+*/
+#define _DXCOLLISION
+
+#endif

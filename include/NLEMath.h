@@ -1,8 +1,8 @@
-#ifndef NLE_MATH
-#define NLE_MATH
+#ifndef NLE_MATH_
+#define NLE_MATH_
 
-namespace NLE
-{
+#ifdef _DXMATH
+	#include "math/DXMath/DXMathWrap.h"
+#endif
 
-}
 #endif
