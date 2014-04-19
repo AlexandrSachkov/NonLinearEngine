@@ -3,28 +3,28 @@
 
 /*
 	Rendering Device
-	1. DirectX 11:					_DX11
-	2. OpenGl 4.2:					_OPENGL4.2		<= Unsupported
+	1. DirectX 11:					_DX11_
+	2. OpenGl 4.2:					_OPENGL4.2_		<= Unsupported
 */
-#define _DX11	
+#define _DX11_	
 
 /*
 	Task Management
-	1. Parallel Patterns Library:	_PPL
-	2. Threading Building Blocks:	_TBB			<= Unsupported
+	1. Parallel Patterns Library:	_PPL_
+	2. Threading Building Blocks:	_TBB_			<= Unsupported
 */
-#define _PPL
+#define _PPL_
 
 /*
 	SIMD Math library:
-	1. DirectX Math:				_DXMATH
+	1. DirectX Math:				_DXMATH_
 */
-#define _DXMATH
+#define _DXMATH_
 
 /*
 	SIMD Collision Library:
-	1. DirectX Collision			_DXCOLLISION
+	1. DirectX Collision			_DXCOLLISION_
 */
-#define _DXCOLLISION
+#define _DXCOLLISION_
 
 #endif
