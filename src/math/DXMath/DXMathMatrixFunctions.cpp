@@ -4,148 +4,148 @@
 inline NLE_MATRIX&	NLEMatrixAffineTransformation(const NLE_VECTOR& scaling, const NLE_VECTOR& rotationOrigin,
 	const NLE_VECTOR& rotationQuaternion, const NLE_VECTOR& translation)
 {
-	return XMMatrixAffineTransformation(scaling, rotationOrigin, rotationQuaternion, translation);
+	return DirectX::XMMatrixAffineTransformation(scaling, rotationOrigin, rotationQuaternion, translation);
 }
 
 inline NLE_MATRIX&	NLEMatrixAffineTransformation2D(const NLE_VECTOR& scaling, const NLE_VECTOR& rotationOrigin,
 	float rotation, const NLE_VECTOR& translation)
 {
-	return XMMatrixAffineTransformation2D(scaling, rotationOrigin, rotation, translation);
+	return DirectX::XMMatrixAffineTransformation2D(scaling, rotationOrigin, rotation, translation);
 }
 
 inline bool NLEMatrixDecompose(NLE_VECTOR* outScale, NLE_VECTOR* outRotQuat, NLE_VECTOR* outTrans, const NLE_MATRIX& m)
 {
-	return XMMatrixDecompose(outScale, outRotQuat, outTrans, m);
+	return DirectX::XMMatrixDecompose(outScale, outRotQuat, outTrans, m);
 }
 
 inline NLE_VECTOR&	NLEMatrixDeterminant(const NLE_MATRIX& m)
 {
-	return XMMatrixDeterminant(m);
+	return DirectX::XMMatrixDeterminant(m);
 }
 
 inline NLE_MATRIX&	NLEMatrixIdentity			()
 {
-	return XMMatrixIdentity();
+	return DirectX::XMMatrixIdentity();
 }
 
 inline NLE_MATRIX&	NLEMatrixInverse(NLE_VECTOR* pDeterminant, const NLE_MATRIX& m)
 {
-	return XMMatrixInverse(pDeterminant, m);
+	return DirectX::XMMatrixInverse(pDeterminant, m);
 }
 
 inline bool			NLEMatrixIsIdentity(const NLE_MATRIX& m)
 {
-	return XMMatrixIsIdentity(m);
+	return DirectX::XMMatrixIsIdentity(m);
 }
 
 inline bool			NLEMatrixIsInfinite(const NLE_MATRIX& m)
 {
-	return XMMatrixIsInfinite(m);
+	return DirectX::XMMatrixIsInfinite(m);
 }
 
 inline bool			NLEMatrixIsNaN(const NLE_MATRIX& m)
 {
-	return XMMatrixIsNaN(m);
+	return DirectX::XMMatrixIsNaN(m);
 }
 
 inline NLE_MATRIX&	NLEMatrixLookAtLH(const NLE_VECTOR& eyePosition, const NLE_VECTOR& focusPosition, const NLE_VECTOR& upDirection)
 {
-	return XMMatrixLookAtLH(eyePosition, focusPosition, upDirection);
+	return DirectX::XMMatrixLookAtLH(eyePosition, focusPosition, upDirection);
 }
 
 inline NLE_MATRIX&	NLEMatrixLookAtRH(const NLE_VECTOR& eyePosition, const NLE_VECTOR& focusPosition, const NLE_VECTOR& upDirection)
 {
-	return XMMatrixLookAtRH(eyePosition, focusPosition, upDirection);
+	return DirectX::XMMatrixLookAtRH(eyePosition, focusPosition, upDirection);
 }
 
 inline NLE_MATRIX&	NLEMatrixMultiply(const NLE_MATRIX& m1, const NLE_MATRIX& m2)
 {
-	return XMMatrixMultiply(m1, m2);
+	return DirectX::XMMatrixMultiply(m1, m2);
 }
 
 inline NLE_MATRIX&	NLEMatrixMultiplyTranspose(const NLE_MATRIX& m1, const NLE_MATRIX& m2)
 {
-	return XMMatrixMultiplyTranspose(m1, m2);
+	return DirectX::XMMatrixMultiplyTranspose(m1, m2);
 }
 
 inline NLE_MATRIX&	NLEMatrixOrthographicLH				(float viewWidth, float viewHeight, float nearZ, float farZ)
 {
-	return XMMatrixOrthographicLH(viewWidth, viewHeight, nearZ, farZ);
+	return DirectX::XMMatrixOrthographicLH(viewWidth, viewHeight, nearZ, farZ);
 }
 
 inline NLE_MATRIX&	NLEMatrixOrthographicOffCenterLH	(float viewLeft, float viewRight, float viewBottom, float viewTop, float nearZ, float farZ)
 {
-	return XMMatrixOrthographicOffCenterLH(viewLeft, viewRight, viewBottom, viewTop, nearZ, farZ);
+	return DirectX::XMMatrixOrthographicOffCenterLH(viewLeft, viewRight, viewBottom, viewTop, nearZ, farZ);
 }
 
 inline NLE_MATRIX&	NLEMatrixOrthographicOffCenterRH	(float viewLeft, float viewRight, float viewBottom, float viewTop, float nearZ, float farZ)
 {
-	return XMMatrixOrthographicOffCenterRH(viewLeft, viewRight, viewBottom, viewTop, nearZ, farZ);
+	return DirectX::XMMatrixOrthographicOffCenterRH(viewLeft, viewRight, viewBottom, viewTop, nearZ, farZ);
 }
 
 inline NLE_MATRIX&	NLEMatrixOrthographicRH				(float viewWidth, float viewHeight, float nearZ, float farZ)
 {
-	return XMMatrixOrthographicRH(viewWidth, viewHeight, nearZ, farZ);
+	return DirectX::XMMatrixOrthographicRH(viewWidth, viewHeight, nearZ, farZ);
 }
 
 inline NLE_MATRIX&	NLEMatrixPerspectiveFovLH			(float fovAngleY, float aspectRatio, float nearZ, float farZ)
 {
-	return XMMatrixPerspectiveFovLH(fovAngleY, aspectRatio, nearZ, farZ);
+	return DirectX::XMMatrixPerspectiveFovLH(fovAngleY, aspectRatio, nearZ, farZ);
 }
 
 inline NLE_MATRIX&	NLEMatrixPerspectiveFovRH			(float fovAngleY, float aspectRatio, float nearZ, float farZ)
 {
-	return XMMatrixPerspectiveFovRH(fovAngleY, aspectRatio, nearZ, farZ);
+	return DirectX::XMMatrixPerspectiveFovRH(fovAngleY, aspectRatio, nearZ, farZ);
 }
 
 inline NLE_MATRIX&	NLEMatrixPerspectiveLH				(float viewWidth, float viewHeight, float nearZ, float farZ)
 {
-	return XMMatrixPerspectiveLH(viewWidth, viewHeight, nearZ, farZ);
+	return DirectX::XMMatrixPerspectiveLH(viewWidth, viewHeight, nearZ, farZ);
 }
 
 inline NLE_MATRIX&	NLEMatrixPerspectiveOffCenterLH		(float viewLeft, float viewRight, float viewBottom, float viewTop, float nearZ, float farZ)
 {
-	return XMMatrixPerspectiveOffCenterLH(viewLeft, viewRight, viewBottom, viewTop, nearZ, farZ);
+	return DirectX::XMMatrixPerspectiveOffCenterLH(viewLeft, viewRight, viewBottom, viewTop, nearZ, farZ);
 }
 
 inline NLE_MATRIX&	NLEMatrixPerspectiveOffCenterRH		(float viewLeft, float viewRight, float viewBottom, float viewTop, float nearZ, float farZ)
 {
-	return XMMatrixPerspectiveOffCenterRH(viewLeft, viewRight, viewBottom, viewTop, nearZ, farZ);
+	return DirectX::XMMatrixPerspectiveOffCenterRH(viewLeft, viewRight, viewBottom, viewTop, nearZ, farZ);
 }
 
 inline NLE_MATRIX&	NLEMatrixPerspectiveRH				(float viewWidth, float viewHeight, float nearZ, float farZ)
 {
-	return XMMatrixPerspectiveRH(viewWidth, viewHeight, nearZ, farZ);
+	return DirectX::XMMatrixPerspectiveRH(viewWidth, viewHeight, nearZ, farZ);
 }
 
 inline NLE_MATRIX&	NLEMatrixReflect(const NLE_VECTOR& reflectionPlane)
 {
-	return XMMatrixReflect(reflectionPlane);
+	return DirectX::XMMatrixReflect(reflectionPlane);
 }
 
 inline NLE_MATRIX&	NLEMatrixRotationAxis(const NLE_VECTOR& axis, float angle)
 {
-	return XMMatrixRotationAxis(axis, angle);
+	return DirectX::XMMatrixRotationAxis(axis, angle);
 }
 
 inline NLE_MATRIX&	NLEMatrixRotationNormal(const NLE_VECTOR& normalAxis, float angle)
 {
-	return XMMatrixRotationNormal(normalAxis, angle);
+	return DirectX::XMMatrixRotationNormal(normalAxis, angle);
 }
 
 inline NLE_MATRIX&	NLEMatrixRotationQuaternion(const NLE_VECTOR& quaternion)
 {
-	return XMMatrixRotationQuaternion(quaternion);
+	return DirectX::XMMatrixRotationQuaternion(quaternion);
 }
 
 inline NLE_MATRIX&	NLEMatrixRotationRollPitchYaw	(float pitch, float yaw, float roll)
 {
-	return XMMatrixRotationRollPitchYaw(pitch, yaw, roll);
+	return DirectX::XMMatrixRotationRollPitchYaw(pitch, yaw, roll);
 }
 
 inline NLE_MATRIX&	NLEMatrixRotationRollPitchYawFromVector(const NLE_VECTOR& angles)
 {
-	return XMMatrixRotationRollPitchYawFromVector(angles);
+	return DirectX::XMMatrixRotationRollPitchYawFromVector(angles);
 }
 
 inline NLE_MATRIX&	NLEMatrixRotationX		(float angle)
@@ -165,12 +165,12 @@ inline NLE_MATRIX&	NLEMatrixRotationZ		(float angle)
 
 inline NLE_MATRIX&	NLEMatrixScaling		(float scaleX, float scaleY, float scaleZ)
 {
-	return XMMatrixScaling(scaleX, scaleY, scaleZ);
+	return DirectX::XMMatrixScaling(scaleX, scaleY, scaleZ);
 }
 
 inline NLE_MATRIX&	NLEMatrixScalingFromVector(const NLE_VECTOR& scale)
 {
-	return XMMatrixScalingFromVector(scale);
+	return DirectX::XMMatrixScalingFromVector(scale);
 }
 
 inline NLE_MATRIX&	NLEMatrixSet(float m00, float m01, float m02, float m03,
@@ -178,7 +178,7 @@ inline NLE_MATRIX&	NLEMatrixSet(float m00, float m01, float m02, float m03,
 	float m20, float m21, float m22, float m23,
 	float m30, float m31, float m32, float m33)
 {
-	return XMMatrixSet(m00, m01, m02, m03,
+	return DirectX::XMMatrixSet(m00, m01, m02, m03,
 		m10, m11, m12, m13,
 		m20, m21, m22, m23,
 		m30, m31, m32, m33);
@@ -186,14 +186,14 @@ inline NLE_MATRIX&	NLEMatrixSet(float m00, float m01, float m02, float m03,
 
 inline NLE_MATRIX&	NLEMatrixShadow(const NLE_VECTOR& shadowPlane, const NLE_VECTOR& lightPosition)
 {
-	return XMMatrixShadow(shadowPlane, lightPosition);
+	return DirectX::XMMatrixShadow(shadowPlane, lightPosition);
 }
 
 inline NLE_MATRIX&	NLEMatrixTransformation(const NLE_VECTOR& scalingOrigin, const NLE_VECTOR& scalingOrientationQuaternion,
 	const NLE_VECTOR& scaling, const NLE_VECTOR& rotaionOrigin,
 	const NLE_VECTOR& rotationQuaternion, const NLE_VECTOR& translation)
 {
-	return XMMatrixTransformation(scalingOrigin, scalingOrientationQuaternion,
+	return DirectX::XMMatrixTransformation(scalingOrigin, scalingOrientationQuaternion,
 		scaling, rotaionOrigin,
 		rotationQuaternion, translation);
 }
@@ -202,22 +202,22 @@ inline NLE_MATRIX&	NLEMatrixTransformation2D(const NLE_VECTOR& scalingOrigin, fl
 	const NLE_VECTOR& scaling, const NLE_VECTOR& rotaionOrigin,
 	float rotation, const NLE_VECTOR& translation)
 {
-	return XMMatrixTransformation2D(scalingOrigin, scalingOrientation,
+	return DirectX::XMMatrixTransformation2D(scalingOrigin, scalingOrientation,
 		scaling, rotaionOrigin,
 		rotation, translation);
 }
 
 inline NLE_MATRIX&	NLEMatrixTranslation(float offsetX, float offsetY, float offsetZ)
 {
-	return XMMatrixTranslation(offsetX, offsetY, offsetZ);
+	return DirectX::XMMatrixTranslation(offsetX, offsetY, offsetZ);
 }
 
 inline NLE_MATRIX&	NLEMatrixTranslationFromVector(const NLE_VECTOR& offset)
 {
-	return XMMatrixTranslationFromVector(offset);
+	return DirectX::XMMatrixTranslationFromVector(offset);
 }
 
 inline NLE_MATRIX&	NLEMatrixTranspose(const NLE_MATRIX& m)
 {
-	return XMMatrixTranspose(m);
+	return DirectX::XMMatrixTranspose(m);
 }

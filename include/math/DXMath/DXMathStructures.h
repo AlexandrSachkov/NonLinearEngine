@@ -2,26 +2,25 @@
 #define DX_MATH_STRUCTURES_
 
 #include <DirectXMath.h>
-using namespace DirectX;
 
-typedef XMFLOAT2		NLE_FLOAT2;
-typedef XMFLOAT2A		NLE_FLOAT2A;
-typedef XMFLOAT3		NLE_FLOAT3;
-typedef XMFLOAT3A		NLE_FLOAT3A;
-typedef XMFLOAT3X3		NLE_FLOAT3X3;
-typedef XMFLOAT4		NLE_FLOAT4;
-typedef XMFLOAT4A		NLE_FLOAT4A;
-typedef XMFLOAT4X3		NLE_FLOAT4X3;
-typedef XMFLOAT4X3A		NLE_FLOAT4X3A;
-typedef XMFLOAT4X4		NLE_FLOAT4X4;
-typedef XMFLOAT4X4A		NLE_FLOAT4X4A;
-typedef XMINT2			NLE_INT2;
-typedef XMINT3			NLE_INT3;
-typedef XMINT4			NLE_INT4;
-typedef XMMATRIX		NLE_MATRIX;
-typedef XMUINT2			NLE_UINT2;
-typedef XMUINT3			NLE_UINT3;
-typedef XMUINT4			NLE_UINT4;
-typedef XMVECTOR		NLE_VECTOR;
+typedef DirectX::XMFLOAT2		NLE_FLOAT2;
+typedef DirectX::XMFLOAT2A		NLE_FLOAT2A;
+typedef DirectX::XMFLOAT3		NLE_FLOAT3;
+typedef DirectX::XMFLOAT3A		NLE_FLOAT3A;
+typedef DirectX::XMFLOAT3X3		NLE_FLOAT3X3;
+typedef DirectX::XMFLOAT4		NLE_FLOAT4;
+typedef DirectX::XMFLOAT4A		NLE_FLOAT4A;
+typedef DirectX::XMFLOAT4X3		NLE_FLOAT4X3;
+typedef DirectX::XMFLOAT4X3A		NLE_FLOAT4X3A;
+typedef DirectX::XMFLOAT4X4		NLE_FLOAT4X4;
+typedef DirectX::XMFLOAT4X4A		NLE_FLOAT4X4A;
+typedef DirectX::XMINT2			NLE_INT2;
+typedef DirectX::XMINT3			NLE_INT3;
+typedef DirectX::XMINT4			NLE_INT4;
+typedef DirectX::XMMATRIX		NLE_MATRIX;
+typedef DirectX::XMUINT2			NLE_UINT2;
+typedef DirectX::XMUINT3			NLE_UINT3;
+typedef DirectX::XMUINT4			NLE_UINT4;
+typedef DirectX::XMVECTOR		NLE_VECTOR;
 
 #endif
