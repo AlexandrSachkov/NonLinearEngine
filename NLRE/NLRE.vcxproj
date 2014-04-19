@@ -273,23 +273,25 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\src\math\DXMath\DXMathMatrixFunctions.cpp" />
+    <ClCompile Include="..\src\math\DXMath\DXMathVector4DFunctions.cpp" />
+    <ClCompile Include="..\src\math\DXMath\DXMathVectorLoadFunctions.cpp" />
+    <ClCompile Include="..\src\math\DXMath\DXMathVectorStoreFunctions.cpp" />
+    <ClCompile Include="..\src\NLRE.cpp" />
+    <ClCompile Include="..\src\NLREMain\stdafx.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\include\math\DXMath\DXMathMatrixFunctions.h" />
+    <ClInclude Include="..\include\math\DXMath\DXMathStructures.h" />
+    <ClInclude Include="..\include\math\DXMath\DXMathVector4DFunctions.h" />
+    <ClInclude Include="..\include\math\DXMath\DXMathVectorLoadFunctions.h" />
+    <ClInclude Include="..\include\math\DXMath\DXMathVectorStoreFunctions.h" />
+    <ClInclude Include="..\include\math\DXMath\DXMathWrap.h" />
     <ClInclude Include="..\include\NLEMath.h" />
     <ClInclude Include="..\include\NLRE.h" />
     <ClInclude Include="..\include\NLREMain\NLRECommon.h" />
+    <ClInclude Include="..\include\NLREMain\NLREConfigurator.h" />
     <ClInclude Include="..\include\NLREMain\stdafx.h" />
-    <ClInclude Include="..\src\math\DXMath\DXMathStructures.h" />
-    <ClInclude Include="..\src\math\DXMath\DXMathWrap.h" />
-    <ClInclude Include="..\src\math\DXMath\DXMathMatrixFunctions.h" />
-    <ClInclude Include="..\src\NLREConfigurator.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="..\src\math\DXMath\DXMathMatrixFunctions.cpp" />
-    <ClCompile Include="..\src\NLRE.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Profile|x64'">Create</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="..\src\NLREMain\stdafx.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

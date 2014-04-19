@@ -36,40 +36,58 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\src\math\DXMath\DXMathMatrixFunctions.cpp">
+      <Filter>Source Files\math\DXMath</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\math\DXMath\DXMathVector4DFunctions.cpp">
+      <Filter>Source Files\math\DXMath</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\NLREMain\stdafx.cpp">
+      <Filter>Source Files\NLREMain</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\NLRE.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\math\DXMath\DXMathVectorLoadFunctions.cpp">
+      <Filter>Source Files\math\DXMath</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\math\DXMath\DXMathVectorStoreFunctions.cpp">
+      <Filter>Source Files\math\DXMath</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\include\math\DXMath\DXMathMatrixFunctions.h">
+      <Filter>Header Files\math\DXMath</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\math\DXMath\DXMathStructures.h">
+      <Filter>Header Files\math\DXMath</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\math\DXMath\DXMathVector4DFunctions.h">
+      <Filter>Header Files\math\DXMath</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\math\DXMath\DXMathWrap.h">
+      <Filter>Header Files\math\DXMath</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\NLREMain\NLRECommon.h">
+      <Filter>Header Files\NLREMain</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\NLREMain\NLREConfigurator.h">
+      <Filter>Header Files\NLREMain</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\NLREMain\stdafx.h">
+      <Filter>Header Files\NLREMain</Filter>
+    </ClInclude>
     <ClInclude Include="..\include\NLEMath.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\include\NLRE.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\NLREConfigurator.h">
-      <Filter>Header Files\NLREMain</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\math\DXMath\DXMathMatrixFunctions.h">
+    <ClInclude Include="..\include\math\DXMath\DXMathVectorLoadFunctions.h">
       <Filter>Header Files\math\DXMath</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\math\DXMath\DXMathStructures.h">
+    <ClInclude Include="..\include\math\DXMath\DXMathVectorStoreFunctions.h">
       <Filter>Header Files\math\DXMath</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\math\DXMath\DXMathWrap.h">
-      <Filter>Header Files\math\DXMath</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\NLREMain\NLRECommon.h">
-      <Filter>Header Files\NLREMain</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\NLREMain\stdafx.h">
-      <Filter>Header Files\NLREMain</Filter>
-    </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="..\src\NLRE.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\math\DXMath\DXMathMatrixFunctions.cpp">
-      <Filter>Source Files\math\DXMath</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\NLREMain\stdafx.cpp">
-      <Filter>Source Files\NLREMain</Filter>
-    </ClCompile>
   </ItemGroup>
 </Project>
