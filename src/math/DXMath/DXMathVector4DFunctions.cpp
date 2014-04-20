@@ -1,92 +1,92 @@
 #include "stdafx.h"
 #include "math\DXMath\DXMathVector4DFunctions.h"
 
-inline NLE_VECTOR	_NLE_CALLCONV_	NLEVector4AngleBetweenNormals(const NLE_VECTOR& n1, const NLE_VECTOR& n2)
+inline NLE_VECTOR	_NLE_CALLCONV_	NLEVector4AngleBetweenNormals(NLE_FVECTOR n1, NLE_FVECTOR n2)
 {
 	return DirectX::XMVector4AngleBetweenNormals(n1, n2);
 }
 
-inline NLE_VECTOR	_NLE_CALLCONV_	NLEVector4AngleBetweenNormalsEst(const NLE_VECTOR& n1, const NLE_VECTOR& n2)
+inline NLE_VECTOR	_NLE_CALLCONV_	NLEVector4AngleBetweenNormalsEst(NLE_FVECTOR n1, NLE_FVECTOR n2)
 {
 	return DirectX::XMVector4AngleBetweenNormalsEst(n1, n2);
 }
 
-inline NLE_VECTOR	_NLE_CALLCONV_	NLEVector4AngleBetweenVectorsconst(const NLE_VECTOR& n1, const NLE_VECTOR& n2)
+inline NLE_VECTOR	_NLE_CALLCONV_	NLEVector4AngleBetweenVectorsconst(NLE_FVECTOR n1, NLE_FVECTOR n2)
 {
 	return DirectX::XMVector4AngleBetweenVectors(n1, n2);
 }
 
-inline NLE_VECTOR	_NLE_CALLCONV_	NLEVector4ClampLength(const NLE_VECTOR& v, float lengthMin, float lengthMax)
+inline NLE_VECTOR	_NLE_CALLCONV_	NLEVector4ClampLength(NLE_FVECTOR v, float lengthMin, float lengthMax)
 {
 	return DirectX::XMVector4ClampLength(v, lengthMin, lengthMax);
 }
 
-inline NLE_VECTOR	_NLE_CALLCONV_	NLEVector4ClampLengthV(const NLE_VECTOR& v, const NLE_VECTOR& lengthMin, const NLE_VECTOR& lengthMax)
+inline NLE_VECTOR	_NLE_CALLCONV_	NLEVector4ClampLengthV(NLE_FVECTOR v,  NLE_FVECTOR lengthMin,  NLE_FVECTOR lengthMax)
 {
 	return DirectX::XMVector4ClampLengthV(v, lengthMin, lengthMax);
 }
 
-inline NLE_VECTOR	_NLE_CALLCONV_	NLEVector4Cross(const NLE_VECTOR& v1, const NLE_VECTOR& v2, const NLE_VECTOR& v3)
+inline NLE_VECTOR	_NLE_CALLCONV_	NLEVector4Cross( NLE_FVECTOR v1,  NLE_FVECTOR v2,  NLE_FVECTOR v3)
 {
 	return DirectX::XMVector4Cross(v1, v2, v3);
 }
 
-inline NLE_VECTOR	_NLE_CALLCONV_	NLEVector4Dot(const NLE_VECTOR& v1, const NLE_VECTOR& v2)
+inline NLE_VECTOR	_NLE_CALLCONV_	NLEVector4Dot( NLE_FVECTOR v1,  NLE_FVECTOR v2)
 {
 	return DirectX::XMVector4Dot(v1, v2);
 }
 
-inline bool			_NLE_CALLCONV_	NLEVector4InBounds(const NLE_VECTOR& v, const NLE_VECTOR& bounds)
+inline bool			_NLE_CALLCONV_	NLEVector4InBounds( NLE_FVECTOR v,  NLE_FVECTOR bounds)
 {
 	return DirectX::XMVector4InBounds(v, bounds);
 }
 
-inline NLE_VECTOR	_NLE_CALLCONV_	NLEVector4Length(const NLE_VECTOR& v)
+inline NLE_VECTOR	_NLE_CALLCONV_	NLEVector4Length( NLE_FVECTOR v)
 {
 	return DirectX::XMVector4Length(v);
 }
 
-inline NLE_VECTOR	_NLE_CALLCONV_	NLEVector4LengthEst(const NLE_VECTOR& v)
+inline NLE_VECTOR	_NLE_CALLCONV_	NLEVector4LengthEst( NLE_FVECTOR v)
 {
 	return DirectX::XMVector4LengthEst(v);
 }
 
-inline NLE_VECTOR	_NLE_CALLCONV_	NLEVector4LengthSq(const NLE_VECTOR& v)
+inline NLE_VECTOR	_NLE_CALLCONV_	NLEVector4LengthSq( NLE_FVECTOR v)
 {
 	return DirectX::XMVector4LengthSq(v);
 }
 
-inline NLE_VECTOR	_NLE_CALLCONV_	NLEVector4Normalize(const NLE_VECTOR& v)
+inline NLE_VECTOR	_NLE_CALLCONV_	NLEVector4Normalize( NLE_FVECTOR v)
 {
 	return DirectX::XMVector4Normalize(v);
 }
 
-inline NLE_VECTOR	_NLE_CALLCONV_	NLEVector4Orthogonal(const NLE_VECTOR& v)
+inline NLE_VECTOR	_NLE_CALLCONV_	NLEVector4Orthogonal( NLE_FVECTOR v)
 {
 	return DirectX::XMVector4Orthogonal(v);
 }
 
-inline NLE_VECTOR	_NLE_CALLCONV_	NLEVector4ReciprocalLength(const NLE_VECTOR& v)
+inline NLE_VECTOR	_NLE_CALLCONV_	NLEVector4ReciprocalLength( NLE_FVECTOR v)
 {
 	return DirectX::XMVector4ReciprocalLength(v);
 }
 
-inline NLE_VECTOR	_NLE_CALLCONV_	NLEVector4ReciprocalLengthEst(const NLE_VECTOR& v)
+inline NLE_VECTOR	_NLE_CALLCONV_	NLEVector4ReciprocalLengthEst( NLE_FVECTOR v)
 {
 	return DirectX::XMVector4ReciprocalLengthEst(v);
 }
 
-inline NLE_VECTOR	_NLE_CALLCONV_	NLEVector4Reflect(const NLE_VECTOR& incident, const NLE_VECTOR& normal)
+inline NLE_VECTOR	_NLE_CALLCONV_	NLEVector4Reflect( NLE_FVECTOR incident,  NLE_FVECTOR normal)
 {
 	return DirectX::XMVector4Reflect(incident, normal);
 }
 
-inline NLE_VECTOR	_NLE_CALLCONV_	NLEVector4Refract(const NLE_VECTOR& incident, const NLE_VECTOR& normal, float refractionIndex)
+inline NLE_VECTOR	_NLE_CALLCONV_	NLEVector4Refract( NLE_FVECTOR incident,  NLE_FVECTOR normal, float refractionIndex)
 {
 	return DirectX::XMVector4Refract(incident, normal, refractionIndex);
 }
 
-inline NLE_VECTOR	_NLE_CALLCONV_	NLEVector4RefractV(const NLE_VECTOR& incident, const NLE_VECTOR& normal, const NLE_VECTOR& refractionIndex)
+inline NLE_VECTOR	_NLE_CALLCONV_	NLEVector4RefractV( NLE_FVECTOR incident,  NLE_FVECTOR normal,  NLE_FVECTOR refractionIndex)
 {
 	return DirectX::XMVector4RefractV(incident, normal, refractionIndex);
 }
@@ -99,14 +99,14 @@ inline NLE_VECTOR	_NLE_CALLCONV_ NLEVectorSet(float x, float y, float z, float w
 	return NLEVectorSet(x, y, z, w);
 }
 
-inline NLE_VECTOR	_NLE_CALLCONV_	NLEVector4Transform(const NLE_VECTOR& v, const NLE_MATRIX& m)
+inline NLE_VECTOR	_NLE_CALLCONV_	NLEVector4Transform( NLE_FVECTOR v,  NLE_FMATRIX m)
 {
 	return DirectX::XMVector4Transform(v, m);
 }
 
 inline NLE_FLOAT4*	_NLE_CALLCONV_	NLEVector4TransformStream(NLE_FLOAT4* outputStream, size_t outputStride,
 	const NLE_FLOAT4* inputStream, size_t inputStride,
-	size_t vectorCount, const NLE_MATRIX& m)
+	size_t vectorCount,  NLE_FMATRIX m)
 {
 	return DirectX::XMVector4TransformStream(outputStream, outputStride, inputStream, inputStride, vectorCount, m);
 }
