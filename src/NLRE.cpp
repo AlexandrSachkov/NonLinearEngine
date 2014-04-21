@@ -19,7 +19,7 @@ void NLRE::registerConsoleCallback(void(*callback)(char msg[]))
 	NLRE_Log::consoleCallbackList.push_back(callback);
 }
 
-void NLRE::registerErrorCallback(void(*callback)(char msg[]))
+void NLRE::registerErrorCallback(void(*callback)(NLRE_Log::ErrorFlag, char msg[]))
 {
 	NLRE_Log::errCallbackList.push_back(callback);
 }
@@ -48,9 +48,9 @@ void NLRE::unregisterConsoleCallback(void(*callback)(char msg[]))
 	}
 }
 
-void NLRE::unregisterErrorCallback(void(*callback)(char msg[]))
+void NLRE::unregisterErrorCallback(void(*callback)(NLRE_Log::ErrorFlag, char msg[]))
 {
-	for (std::vector<void(*)(char[])>::iterator it = NLRE_Log::errCallbackList.begin();
+	for (std::vector<void(*)(NLRE_Log::ErrorFlag, char[])>::iterator it = NLRE_Log::errCallbackList.begin();
 		it != NLRE_Log::errCallbackList.end(); ++it)
 	{
 		if (*it == callback)

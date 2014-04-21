@@ -1,6 +1,7 @@
 #ifndef NLRE_DX11_RENDERING_DEVICE_
 #define NLRE_DX11_RENDERING_DEVICE_
 
+#include "stdafx.h"
 #include <d3d11.h>
 #include <d3dx11.h>
 #include <d3dx10.h>
@@ -10,7 +11,7 @@
 
 struct cbPerObject
 {
-	XMFLOAT4X4  WVP;
+	NLE_FLOAT4X4 MVP;
 };
 
 class NLREDX11RenderingDevice
@@ -33,7 +34,7 @@ private:
 	bool createRenderTargetView();
 	bool createDepthStencilView();
 	bool setRenderTargets();
-	bool createDeferredContexts();
+	bool createDeviceContexts();
 
 	bool createAllResources();
 	bool createAllShaders();
@@ -71,7 +72,7 @@ private:
 	ID3D11RenderTargetView* renderTargetView;
 	ID3D11Texture2D* depthStencilBuffer;
 	ID3D11DepthStencilView* depthStencilView;
-	ID3D11DeviceContext** deferredContextArr;
+	ID3D11DeviceContext* _deviceContext;
 
 	ID3D10Blob* VS_Buffer;
 	ID3D10Blob* PS_Buffer;

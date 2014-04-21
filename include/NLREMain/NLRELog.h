@@ -11,9 +11,14 @@
 
 namespace NLRE_Log
 {
+	enum ErrorFlag {
+		CRITICAL,
+		REG
+	};
+
 	std::vector <void(*)(char[])> debugCallbackList;
 	std::vector <void(*)(char[])> consoleCallbackList;
-	std::vector <void(*)(char[])> errCallbackList;
+	std::vector <void(*)(ErrorFlag, char[])> errCallbackList;
 
 	void debug(const char* format, ...)
 	{
@@ -43,7 +48,7 @@ namespace NLRE_Log
 		}
 	}
 
-	void err(const char* format, ...)
+	void err(ErrorFlag flag, const char* format, ...)
 	{
 		char buffer[_LOG_MSG_MAX_SIZE];
 		va_list argptr;
@@ -53,7 +58,7 @@ namespace NLRE_Log
 
 		for each (auto callback in errCallbackList)
 		{
-			callback(buffer);
+			callback(flag,buffer);
 		}
 	}
 }
