@@ -31,6 +31,18 @@
     <Filter Include="Source Files\NLREMain">
       <UniqueIdentifier>{4a67f3a9-581d-4b72-9609-61338c30e35f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\RenderingDevice">
+      <UniqueIdentifier>{ff0108a1-e343-40d3-9d85-7f18e1892937}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\RenderingDevice">
+      <UniqueIdentifier>{fde21368-66df-4121-aa63-7aef650e1d38}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\RenderingDevice\DX11RenderingDevice">
+      <UniqueIdentifier>{39ce30c8-a21c-4ed3-9f79-af393301f5dd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\RenderingDevice\DX11RenderingDevice">
+      <UniqueIdentifier>{d1d5c9ed-c501-42db-8b4b-900eef235a12}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -53,6 +65,9 @@
     </ClCompile>
     <ClCompile Include="..\src\math\DXMath\DXMathVectorStoreFunctions.cpp">
       <Filter>Source Files\math\DXMath</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\RenderingDevice\DX11RenderingDevice\NLREDX11RenderingDevice.cpp">
+      <Filter>Source Files\RenderingDevice\DX11RenderingDevice</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -91,6 +106,9 @@
     </ClInclude>
     <ClInclude Include="..\include\NLREMain\NLRELog.h">
       <Filter>Header Files\NLREMain</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\RenderingDevice\DX11Device\NLREDX11RenderingDevice.h">
+      <Filter>Header Files\RenderingDevice\DX11RenderingDevice</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

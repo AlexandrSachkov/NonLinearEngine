@@ -279,6 +279,7 @@
     <ClCompile Include="..\src\math\DXMath\DXMathVectorStoreFunctions.cpp" />
     <ClCompile Include="..\src\NLRE.cpp" />
     <ClCompile Include="..\src\NLREMain\stdafx.cpp" />
+    <ClCompile Include="..\src\RenderingDevice\DX11RenderingDevice\NLREDX11RenderingDevice.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\include\math\DXMath\DXMathMatrixFunctions.h" />
@@ -293,6 +294,7 @@
     <ClInclude Include="..\include\NLREMain\NLREConfigurator.h" />
     <ClInclude Include="..\include\NLREMain\NLRELog.h" />
     <ClInclude Include="..\include\NLREMain\stdafx.h" />
+    <ClInclude Include="..\include\RenderingDevice\DX11Device\NLREDX11RenderingDevice.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
