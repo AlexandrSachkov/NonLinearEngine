@@ -1,49 +1,53 @@
 #ifndef NLRE_DX11_RENDERING_DEVICE_
 #define NLRE_DX11_RENDERING_DEVICE_
 
-#include "StreamSet.h"
+#include <d3d11.h>
+#include <d3dx11.h>
+#include <d3dx10.h>
+#include <DxErr.h>
+
+//#include "StreamSet.h"
 
 struct cbPerObject
 {
 	XMFLOAT4X4  WVP;
 };
 
-class RenderingDevice : NLECoreDevice
+class NLREDX11RenderingDevice
 {
 public:
-	RenderingDevice();
-	RenderingDevice(const RenderingDevice&);
-	~RenderingDevice();
+	NLREDX11RenderingDevice(HWND hwndVal, int widthVal, int heightVal);
+	NLREDX11RenderingDevice(const NLREDX11RenderingDevice&);
+	~NLREDX11RenderingDevice();
 
-	ResultInfo initialize(HWND hwndVal,int widthVal, int heightVal);
+	bool initialize();
 	void release();
-	bool isInitialized();
 	//====================================== Getter Functions ==========================================
 	ID3D11Device* getD3DDevice();
 
 private:
 	
 	//====================================== Initialization Functions ==========================================
-	ResultInfo initializeDirect3d11();
-	ResultInfo createDeviceAndSwapChain();
-	ResultInfo createRenderTargetView();
-	ResultInfo createDepthStencilView();
-	ResultInfo setRenderTargets();
-	ResultInfo createDeferredContexts();
+	bool initializeDirect3d11();
+	bool createDeviceAndSwapChain();
+	bool createRenderTargetView();
+	bool createDepthStencilView();
+	bool setRenderTargets();
+	bool createDeferredContexts();
 
-	ResultInfo createAllResources();
-	ResultInfo createAllShaders();
-	ResultInfo createVShader(std::wstring path, ID3D11VertexShader* VS);
-	ResultInfo createPShader(std::wstring path, ID3D11PixelShader* PS);
-	ResultInfo createIndexBuffer();
-	ResultInfo createStreamBuffers();
-	ResultInfo createInputLayouts();
+	bool createAllResources();
+	bool createAllShaders();
+	bool createVShader(std::wstring path, ID3D11VertexShader* VS);
+	bool createPShader(std::wstring path, ID3D11PixelShader* PS);
+	bool createIndexBuffer();
+	bool createStreamBuffers();
+	bool createInputLayouts();
 	void setViewPort();
-	ResultInfo createPerFrameCBuffer();
-	ResultInfo createPerObjectCBuffer();
-	ResultInfo createTextureSamplerStates();
-	ResultInfo createBlendStates();
-	ResultInfo createRasterizerStates();
+	bool createPerFrameCBuffer();
+	bool createPerObjectCBuffer();
+	bool createTextureSamplerStates();
+	bool createBlendStates();
+	bool createRasterizerStates();
 
 	//====================================== Pipeline Modification Functions ==========================================
 	//void setShader(ID3D11DeviceContext* context);
@@ -52,12 +56,9 @@ private:
 
 	
 	
-
-
-	bool initialized;
-	HWND hwnd;
-	int Width;
-	int Height;
+	HWND _hwnd;
+	int _screenWidth;
+	int _screenHeight;
 
 	int numRenderingThreads;
 	int numDeferredContexts;
