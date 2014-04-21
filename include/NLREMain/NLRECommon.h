@@ -4,5 +4,7 @@
 #include "NLREConfigurator.h"
 #include "NLEMath.h"
 
+#include "NLRELog.h"
+
 #endif
 

@@ -27,4 +27,9 @@
 */
 #define _DXCOLLISION_
 
+/*
+	Log message character max size
+*/
+#define _LOG_MSG_MAX_SIZE	256
+
 #endif

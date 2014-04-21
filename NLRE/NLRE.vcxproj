@@ -291,6 +291,7 @@
     <ClInclude Include="..\include\NLRE.h" />
     <ClInclude Include="..\include\NLREMain\NLRECommon.h" />
     <ClInclude Include="..\include\NLREMain\NLREConfigurator.h" />
+    <ClInclude Include="..\include\NLREMain\NLRELog.h" />
     <ClInclude Include="..\include\NLREMain\stdafx.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

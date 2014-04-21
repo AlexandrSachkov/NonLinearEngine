@@ -89,5 +89,8 @@
     <ClInclude Include="..\include\math\DXMath\DXMathVectorStoreFunctions.h">
       <Filter>Header Files\math\DXMath</Filter>
     </ClInclude>
+    <ClInclude Include="..\include\NLREMain\NLRELog.h">
+      <Filter>Header Files\NLREMain</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
