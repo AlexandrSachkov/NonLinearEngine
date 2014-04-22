@@ -7,6 +7,7 @@
 #include <d3dx10.h>
 #include <DxErr.h>
 
+#include "NLREDX11ShaderID.h"
 //#include "StreamSet.h"
 
 struct cbPerObject
@@ -37,9 +38,10 @@ private:
 	bool createDeviceContexts();
 
 	bool createAllResources();
-	bool createAllShaders();
-	bool createVShader(std::wstring path, ID3D11VertexShader* VS);
-	bool createPShader(std::wstring path, ID3D11PixelShader* PS);
+	bool loadVShader(NLRE_ShaderID::VS, std::wstring path);
+	bool loadPShader(NLRE_ShaderID::PS, std::wstring path);
+	bool setVShader(NLRE_ShaderID::VS);
+	bool setPShader(NLRE_ShaderID::PS);
 	bool createIndexBuffer();
 	bool createStreamBuffers();
 	bool createInputLayouts();
@@ -50,6 +52,7 @@ private:
 	bool createBlendStates();
 	bool createRasterizerStates();
 
+	bool loadBlobFromFile(std::wstring path, int& dataSize, void* data);
 	//====================================== Pipeline Modification Functions ==========================================
 	//void setShader(ID3D11DeviceContext* context);
 	//void setInputLayout(ID3D11DeviceContext* context);
@@ -74,8 +77,8 @@ private:
 	ID3D11DepthStencilView* depthStencilView;
 	ID3D11DeviceContext* _deviceContext;
 
-	ID3D10Blob* VS_Buffer;
-	ID3D10Blob* PS_Buffer;
+	ID3DBlob* VS_Buffer;
+	ID3DBlob* PS_Buffer;
 	ID3D11VertexShader* VS;
 	ID3D11PixelShader* PS;
 
@@ -91,6 +94,12 @@ private:
 
 	static D3D11_INPUT_ELEMENT_DESC defaultLayout[];
 	int defaultInputLayoutNumElements;
+
+	std::unordered_map<NLRE_ShaderID::VS, ID3D11VertexShader*> _vertexShaderMap;
+	std::unordered_map<NLRE_ShaderID::VS, ID3DBlob*> _vertexShaderBufferMap;
+
+	std::unordered_map<NLRE_ShaderID::PS, ID3D11PixelShader*> _pixelShaderMap;
+	std::unordered_map<NLRE_ShaderID::PS, ID3DBlob*> _pixelShaderBufferMap;
 };
 
 

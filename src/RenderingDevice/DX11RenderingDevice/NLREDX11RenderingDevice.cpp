@@ -1,11 +1,13 @@
 #include "stdafx.h"
 #include "RenderingDevice\DX11Device\NLREDX11RenderingDevice.h"
 
+/*
 D3D11_INPUT_ELEMENT_DESC NLREDX11RenderingDevice::defaultLayout[] = {
 	{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
 	{ "NORMAL", 0, DXGI_FORMAT_R32G32_FLOAT, 0, 12, D3D11_INPUT_PER_VERTEX_DATA, 0 },
 	{ "TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 1, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
 };
+*/
 
 NLREDX11RenderingDevice::NLREDX11RenderingDevice(HWND hwndVal, int screenWidthVal, int screenHeightVal)
 {
@@ -69,7 +71,7 @@ bool NLREDX11RenderingDevice::initialize()
 bool NLREDX11RenderingDevice::createAllResources()
 {
 
-	if (!createAllShaders())		return false;
+	//if (!createAllShaders())		return false;
 	if (!createIndexBuffer())		return false;
 	if (!createStreamBuffers())		return false;
 	if (!createInputLayouts())		return false;
@@ -255,27 +257,33 @@ bool NLREDX11RenderingDevice::createDeviceContexts()
 	}
 	return true;
 }
-bool NLREDX11RenderingDevice::createAllShaders()
+/*bool NLREDX11RenderingDevice::createAllShaders()
 {
 	if (!createVShader(L"Resources/FX/Effects.fx", VS)) return false;
 	if (!createPShader(L"Resources/FX/Effects.fx", PS)) return false;
 
 	return true;
+}*/
+bool NLREDX11RenderingDevice::loadBlobFromFile(std::wstring path, int& dataSize, void* data)
+{
+	std::ifstream fin(path, std::ios::binary);
+	fin.seekg(0, std::ios_base::end);
+	int size = (int)fin.tellg();
+	fin.seekg(0, std::ios_base::beg);
+	std::vector<char> compiledShader(size);
+	fin.read(&compiledShader[0], size);
+	fin.close();
+
+	dataSize = size;
+	data = &compiledShader[0];
+	return true;
 }
 
-bool NLREDX11RenderingDevice::createVShader(std::wstring path, ID3D11VertexShader* VS)
+bool NLREDX11RenderingDevice::loadVShader(NLRE_ShaderID::VS vsId, std::wstring path)
 {
 	HRESULT hr;
 
-	//compile Vertex shader
-	hr = D3DX11CompileFromFile(path.c_str(), 0, 0, "VS", "vs_5_0", 0, 0, 0, &VS_Buffer, 0, 0);
-
-	if (FAILED(hr))
-	{
-		NLRE_Log::err(NLRE_Log::ErrorFlag::CRITICAL, "Failed to compile Vertex Shader");
-		return false;
-	}
-
+	ID3DBlob blob;
 	//Create Vertex Shader
 	hr = d3d11Device->CreateVertexShader(VS_Buffer->GetBufferPointer(), VS_Buffer->GetBufferSize(), NULL, &VS);
 
