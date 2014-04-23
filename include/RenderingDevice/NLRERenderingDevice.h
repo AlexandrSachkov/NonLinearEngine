@@ -4,11 +4,8 @@
 #include "stdafx.h"
 
 #ifdef _DX11_
-#include "DX11Device\NLREDX11RenderingDevice.h"
-typedef NLREDX11RenderingDevice NLRERenderingDevice;
-
-#else
-
+	#include "DX11Device\NLREDX11RenderingDevice.h"
+	typedef NLREDX11RenderingDevice NLRERenderingDevice;
 #endif
 
 
