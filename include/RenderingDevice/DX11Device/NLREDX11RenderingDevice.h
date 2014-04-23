@@ -7,7 +7,6 @@
 #include <d3dx10.h>
 #include <DxErr.h>
 
-#include "NLREDX11ShaderID.h"
 //#include "StreamSet.h"
 
 struct ShaderBlob
@@ -28,13 +27,14 @@ public:
 	NLREDX11RenderingDevice(const NLREDX11RenderingDevice&);
 	~NLREDX11RenderingDevice();
 
-	bool initialize();
-	void release();
+	
+	
 	//====================================== Getter Functions ==========================================
 	ID3D11Device* getD3DDevice();
 
 private:
-	
+	bool initialize();
+	void release();
 	//====================================== Initialization Functions ==========================================
 	bool initializeDirect3d11();
 	bool createDeviceAndSwapChain();
@@ -44,11 +44,11 @@ private:
 	bool createDeviceContexts();
 
 	bool createAllResources();
-	bool loadVShader(NLRE_ShaderID::VS vsId, std::wstring path);
-	bool loadPShader(NLRE_ShaderID::PS psId, std::wstring path);
-	void setVShader(NLRE_ShaderID::VS vsId);
-	void setPShader(NLRE_ShaderID::PS vsId);
-	bool createIndexBuffer();
+	bool loadVShader(NLRE_RenderStateId::VS vsId, std::wstring path);
+	bool loadPShader(NLRE_RenderStateId::PS psId, std::wstring path);
+	void setVShader(NLRE_RenderStateId::VS vsId);
+	void setPShader(NLRE_RenderStateId::PS vsId);
+	bool createIndexBuffer(NLRE_RenderStateId::Usage usage, DWORD indiceArr[], DWORD arrayLength, NLRE_Buffer* indexBuffer);
 	bool createStreamBuffers();
 	bool createInputLayouts();
 	void setViewPort();
@@ -96,11 +96,11 @@ private:
 	static D3D11_INPUT_ELEMENT_DESC defaultLayout[];
 	int defaultInputLayoutNumElements;
 
-	std::unordered_map<NLRE_ShaderID::VS, ID3D11VertexShader*> _vertexShaderMap;
-	std::unordered_map<NLRE_ShaderID::VS, ShaderBlob> _vertexShaderBlobMap;
+	std::unordered_map<NLRE_RenderStateId::VS, ID3D11VertexShader*> _vertexShaderMap;
+	std::unordered_map<NLRE_RenderStateId::VS, ShaderBlob> _vertexShaderBlobMap;
 
-	std::unordered_map<NLRE_ShaderID::PS, ID3D11PixelShader*> _pixelShaderMap;
-	std::unordered_map<NLRE_ShaderID::PS, ShaderBlob> _pixelShaderBlobMap;
+	std::unordered_map<NLRE_RenderStateId::PS, ID3D11PixelShader*> _pixelShaderMap;
+	std::unordered_map<NLRE_RenderStateId::PS, ShaderBlob> _pixelShaderBlobMap;
 };
 
 

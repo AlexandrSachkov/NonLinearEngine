@@ -295,10 +295,12 @@
     <ClInclude Include="..\include\NLREMain\NLREConfigurator.h" />
     <ClInclude Include="..\include\NLREMain\NLRELog.h" />
     <ClInclude Include="..\include\NLREMain\stdafx.h" />
+    <ClInclude Include="..\include\NLREResources.h" />
     <ClInclude Include="..\include\RenderingDevice\DX11Device\NLREDX11RenderingDevice.h" />
-    <ClInclude Include="..\include\RenderingDevice\DX11Device\NLREDX11ShaderID.h" />
+    <ClInclude Include="..\include\RenderingDevice\DX11Device\NLREDX11ResourceWrap.h" />
     <ClInclude Include="..\include\RenderingDevice\NLREDeviceController.h" />
     <ClInclude Include="..\include\RenderingDevice\NLRERenderingDevice.h" />
+    <ClInclude Include="..\include\RenderingDevice\NLRERenderStateID.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="..\src\RenderingDevice\DX11RenderingDevice\Shaders\DeferredGBuff_TextNormal_BlinnPhong_PS.hlsl">

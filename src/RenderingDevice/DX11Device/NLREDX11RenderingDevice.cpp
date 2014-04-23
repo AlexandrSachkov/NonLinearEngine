@@ -63,10 +63,10 @@ bool NLREDX11RenderingDevice::initialize()
 		return false;
 	}
 	if (!initializeDirect3d11()) return false;
-	if (!createAllResources()) return false;
+	//if (!createAllResources()) return false;
 	return true;
 }
-bool NLREDX11RenderingDevice::createAllResources()
+/*bool NLREDX11RenderingDevice::createAllResources()
 {
 
 	//if (!createAllShaders())		return false;
@@ -84,6 +84,7 @@ bool NLREDX11RenderingDevice::createAllResources()
 
 	return true;
 }
+*/
 
 void NLREDX11RenderingDevice::release()
 {
@@ -276,7 +277,7 @@ bool NLREDX11RenderingDevice::loadBlobFromFile(std::wstring path, ShaderBlob& bl
 	return true;
 }
 
-bool NLREDX11RenderingDevice::loadVShader(NLRE_ShaderID::VS vsId, std::wstring path)
+bool NLREDX11RenderingDevice::loadVShader(NLRE_RenderStateId::VS vsId, std::wstring path)
 {
 	if (_vertexShaderMap.at(vsId)) return true;
 
@@ -291,7 +292,7 @@ bool NLREDX11RenderingDevice::loadVShader(NLRE_ShaderID::VS vsId, std::wstring p
 	}
 
 	//add blob to collection
-	_vertexShaderBlobMap.insert(std::pair<NLRE_ShaderID::VS, ShaderBlob>(vsId,blob));
+	_vertexShaderBlobMap.insert(std::pair<NLRE_RenderStateId::VS, ShaderBlob>(vsId, blob));
 
 	//Create Vertex Shader
 	ID3D11VertexShader* vs = NULL;
@@ -303,12 +304,12 @@ bool NLREDX11RenderingDevice::loadVShader(NLRE_ShaderID::VS vsId, std::wstring p
 	}
 
 	//add shader to collection
-	_vertexShaderMap.insert(std::pair<NLRE_ShaderID::VS, ID3D11VertexShader*>(vsId, vs));
+	_vertexShaderMap.insert(std::pair<NLRE_RenderStateId::VS, ID3D11VertexShader*>(vsId, vs));
 
 	return true;
 }
 
-bool NLREDX11RenderingDevice::loadPShader(NLRE_ShaderID::PS psId, std::wstring path)
+bool NLREDX11RenderingDevice::loadPShader(NLRE_RenderStateId::PS psId, std::wstring path)
 {
 	if (_pixelShaderMap.at(psId)) return true;
 
@@ -323,7 +324,7 @@ bool NLREDX11RenderingDevice::loadPShader(NLRE_ShaderID::PS psId, std::wstring p
 	}
 
 	//add blob to collection
-	_pixelShaderBlobMap.insert(std::pair<NLRE_ShaderID::PS, ShaderBlob>(psId, blob));
+	_pixelShaderBlobMap.insert(std::pair<NLRE_RenderStateId::PS, ShaderBlob>(psId, blob));
 
 	//Create Pixel Shader
 	ID3D11PixelShader* ps = NULL;
@@ -335,23 +336,23 @@ bool NLREDX11RenderingDevice::loadPShader(NLRE_ShaderID::PS psId, std::wstring p
 	}
 
 	//add shader to collection
-	_pixelShaderMap.insert(std::pair<NLRE_ShaderID::PS, ID3D11PixelShader*>(psId, ps));
+	_pixelShaderMap.insert(std::pair<NLRE_RenderStateId::PS, ID3D11PixelShader*>(psId, ps));
 
 	return true;
 }
 
-void NLREDX11RenderingDevice::setVShader(NLRE_ShaderID::VS vsId)
+void NLREDX11RenderingDevice::setVShader(NLRE_RenderStateId::VS vsId)
 {
 	d3d11DevCon->VSSetShader(_vertexShaderMap.at(vsId),NULL,0);
 }
 
-void NLREDX11RenderingDevice::setPShader(NLRE_ShaderID::PS psId)
+void NLREDX11RenderingDevice::setPShader(NLRE_RenderStateId::PS psId)
 {
 	d3d11DevCon->PSSetShader(_pixelShaderMap.at(psId), NULL, 0);
 }
 
 
-bool NLREDX11RenderingDevice::createIndexBuffer()
+bool NLREDX11RenderingDevice::createIndexBuffer(NLRE_RenderStateId::Usage usage, DWORD indiceArr[], DWORD arrayLength, NLRE_Buffer* indexBuffer)
 {
 	HRESULT hr;
 

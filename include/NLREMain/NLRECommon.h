@@ -3,8 +3,9 @@
 
 #include "NLREConfigurator.h"
 #include "NLEMath.h"
-
+#include "NLREResources.h"
 #include "NLRELog.h"
+#include "RenderingDevice\NLRERenderStateID.h"
 
 #endif
 

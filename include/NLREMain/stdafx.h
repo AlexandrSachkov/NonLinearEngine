@@ -6,7 +6,7 @@
 #include <unordered_map>
 #include <fstream>
 
-//Must be the last statement in this file
-#include "NLREMain\NLRECommon.h"
+
+#include "NLREMain\NLRECommon.h" //Must be the last statement in this file
 
 #endif

@@ -37,14 +37,14 @@
     <Filter Include="Source Files\RenderingDevice">
       <UniqueIdentifier>{fde21368-66df-4121-aa63-7aef650e1d38}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\RenderingDevice\DX11DeviceDevice">
-      <UniqueIdentifier>{d1d5c9ed-c501-42db-8b4b-900eef235a12}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\RenderingDevice\DX11Device">
       <UniqueIdentifier>{39ce30c8-a21c-4ed3-9f79-af393301f5dd}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files\RenderingDevice\DX11Device\Shaders">
       <UniqueIdentifier>{713249b8-4cf3-4ba0-8369-2b734fa123d9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\RenderingDevice\DX11Device">
+      <UniqueIdentifier>{d1d5c9ed-c501-42db-8b4b-900eef235a12}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -69,11 +69,11 @@
     <ClCompile Include="..\src\math\DXMath\DXMathVectorStoreFunctions.cpp">
       <Filter>Source Files\math\DXMath</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\RenderingDevice\DX11Device\NLREDX11RenderingDevice.cpp">
-      <Filter>Source Files\RenderingDevice</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\RenderingDevice\NLREDeviceController.cpp">
       <Filter>Source Files\RenderingDevice</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\RenderingDevice\DX11Device\NLREDX11RenderingDevice.cpp">
+      <Filter>Source Files\RenderingDevice\DX11Device</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -114,16 +114,22 @@
       <Filter>Header Files\NLREMain</Filter>
     </ClInclude>
     <ClInclude Include="..\include\RenderingDevice\DX11Device\NLREDX11RenderingDevice.h">
-      <Filter>Header Files\RenderingDevice\DX11DeviceDevice</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\RenderingDevice\DX11Device\NLREDX11ShaderID.h">
-      <Filter>Header Files\RenderingDevice\DX11DeviceDevice</Filter>
+      <Filter>Header Files\RenderingDevice\DX11Device</Filter>
     </ClInclude>
     <ClInclude Include="..\include\RenderingDevice\NLREDeviceController.h">
       <Filter>Header Files\RenderingDevice</Filter>
     </ClInclude>
     <ClInclude Include="..\include\RenderingDevice\NLRERenderingDevice.h">
       <Filter>Header Files\RenderingDevice</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\RenderingDevice\NLRERenderStateID.h">
+      <Filter>Header Files\RenderingDevice</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\NLREResources.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\RenderingDevice\DX11Device\NLREDX11ResourceWrap.h">
+      <Filter>Header Files\RenderingDevice\DX11Device</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
