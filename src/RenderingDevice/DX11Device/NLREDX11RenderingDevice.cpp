@@ -1,13 +1,13 @@
 #include "stdafx.h"
 #include "RenderingDevice\DX11Device\NLREDX11RenderingDevice.h"
 
-/*
+
 D3D11_INPUT_ELEMENT_DESC NLREDX11RenderingDevice::defaultLayout[] = {
 	{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
 	{ "NORMAL", 0, DXGI_FORMAT_R32G32_FLOAT, 0, 12, D3D11_INPUT_PER_VERTEX_DATA, 0 },
 	{ "TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 1, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
 };
-*/
+
 
 NLREDX11RenderingDevice::NLREDX11RenderingDevice(HWND hwndVal, int screenWidthVal, int screenHeightVal)
 {
@@ -27,11 +27,6 @@ NLREDX11RenderingDevice::NLREDX11RenderingDevice(HWND hwndVal, int screenWidthVa
 	depthStencilView = NULL;
 	_deviceContext = NULL;
 
-	VS_Buffer = NULL;
-	PS_Buffer = NULL;
-	VS = NULL;
-	PS = NULL;
-
 	indexStreamBuff = NULL;
 	geomStreamBuff = NULL;
 	textCoordStreamBuff = NULL;
@@ -44,7 +39,10 @@ NLREDX11RenderingDevice::NLREDX11RenderingDevice(HWND hwndVal, int screenWidthVa
 
 	defaultInputLayoutNumElements = 3;
 
-	initialize();
+	if (!initialize())
+	{
+		throw new std::exception("NLREDX11RenderingDevice failed to initialize");
+	}
 }
 
 NLREDX11RenderingDevice::NLREDX11RenderingDevice(const NLREDX11RenderingDevice& val)
@@ -91,9 +89,10 @@ void NLREDX11RenderingDevice::release()
 {
 	_deviceContext->Release();
 
-	if (VS) VS->Release();
-	if (PS) PS->Release();
-
+	_vertexShaderMap.clear();
+	_vertexShaderBlobMap.clear();
+	_pixelShaderMap.clear();
+	_pixelShaderBlobMap.clear();
 
 	depthStencilView->Release();
 	depthStencilBuffer->Release();
@@ -101,11 +100,6 @@ void NLREDX11RenderingDevice::release()
 	d3d11DevCon->Release();
 	d3d11Device->Release();
 	SwapChain->Release();
-
-
-	VS_Buffer->Release();
-	PS_Buffer->Release();
-
 
 	indexStreamBuff->Release();
 	geomStreamBuff->Release();
@@ -264,58 +258,98 @@ bool NLREDX11RenderingDevice::createDeviceContexts()
 
 	return true;
 }*/
-bool NLREDX11RenderingDevice::loadBlobFromFile(std::wstring path, int& dataSize, void* data)
+bool NLREDX11RenderingDevice::loadBlobFromFile(std::wstring path, ShaderBlob& blob)
 {
 	std::ifstream fin(path, std::ios::binary);
+
+	if (!fin) return false;
+
 	fin.seekg(0, std::ios_base::end);
-	int size = (int)fin.tellg();
+	size_t size = (size_t)fin.tellg();
 	fin.seekg(0, std::ios_base::beg);
 	std::vector<char> compiledShader(size);
 	fin.read(&compiledShader[0], size);
 	fin.close();
 
-	dataSize = size;
-	data = &compiledShader[0];
+	blob.data = &compiledShader[0];
+	blob.size = size;
 	return true;
 }
 
 bool NLREDX11RenderingDevice::loadVShader(NLRE_ShaderID::VS vsId, std::wstring path)
 {
+	if (_vertexShaderMap.at(vsId)) return true;
+
 	HRESULT hr;
 
-	ID3DBlob blob;
-	//Create Vertex Shader
-	hr = d3d11Device->CreateVertexShader(VS_Buffer->GetBufferPointer(), VS_Buffer->GetBufferSize(), NULL, &VS);
+	//Load vertex shader from file
+	ShaderBlob blob;
+	if (!loadBlobFromFile(path, blob))
+	{
+		NLRE_Log::err(NLRE_Log::ErrorFlag::CRITICAL, "Failed to load Vertex Shader: ", path);
+		return false;
+	}
 
+	//add blob to collection
+	_vertexShaderBlobMap.insert(std::pair<NLRE_ShaderID::VS, ShaderBlob>(vsId,blob));
+
+	//Create Vertex Shader
+	ID3D11VertexShader* vs = NULL;
+	hr = d3d11Device->CreateVertexShader(blob.data, blob.size, NULL, &vs);
 	if (FAILED(hr))
 	{
 		NLRE_Log::err(NLRE_Log::ErrorFlag::CRITICAL, "Failed to create Vertex Shader");
 		return false;
 	}
 
+	//add shader to collection
+	_vertexShaderMap.insert(std::pair<NLRE_ShaderID::VS, ID3D11VertexShader*>(vsId, vs));
+
 	return true;
 }
 
-bool NLREDX11RenderingDevice::createPShader(std::wstring path, ID3D11PixelShader* PS)
+bool NLREDX11RenderingDevice::loadPShader(NLRE_ShaderID::PS psId, std::wstring path)
 {
+	if (_pixelShaderMap.at(psId)) return true;
+
 	HRESULT hr;
 
-	//compile Pixel Shader
-	hr = D3DX11CompileFromFile(path.c_str(), 0, 0, "PS", "ps_5_0", 0, 0, 0, &PS_Buffer, 0, 0);
-	if (FAILED(hr))
+	//Load pixel shader from file
+	ShaderBlob blob;
+	if (!loadBlobFromFile(path, blob))
 	{
-		NLRE_Log::err(NLRE_Log::ErrorFlag::CRITICAL, "Failed to compile Pixel Shader");
+		NLRE_Log::err(NLRE_Log::ErrorFlag::CRITICAL, "Failed to load Pixel Shader: ", path);
 		return false;
 	}
-	hr = d3d11Device->CreatePixelShader(PS_Buffer->GetBufferPointer(), PS_Buffer->GetBufferSize(), NULL, &PS);
+
+	//add blob to collection
+	_pixelShaderBlobMap.insert(std::pair<NLRE_ShaderID::PS, ShaderBlob>(psId, blob));
+
+	//Create Pixel Shader
+	ID3D11PixelShader* ps = NULL;
+	hr = d3d11Device->CreatePixelShader(blob.data, blob.size, NULL, &ps);
 	if (FAILED(hr))
 	{
 		NLRE_Log::err(NLRE_Log::ErrorFlag::CRITICAL, "Failed to create Pixel Shader");
 		return false;
 	}
 
+	//add shader to collection
+	_pixelShaderMap.insert(std::pair<NLRE_ShaderID::PS, ID3D11PixelShader*>(psId, ps));
+
 	return true;
 }
+
+void NLREDX11RenderingDevice::setVShader(NLRE_ShaderID::VS vsId)
+{
+	d3d11DevCon->VSSetShader(_vertexShaderMap.at(vsId),NULL,0);
+}
+
+void NLREDX11RenderingDevice::setPShader(NLRE_ShaderID::PS psId)
+{
+	d3d11DevCon->PSSetShader(_pixelShaderMap.at(psId), NULL, 0);
+}
+
 
 bool NLREDX11RenderingDevice::createIndexBuffer()
 {

@@ -279,7 +279,8 @@
     <ClCompile Include="..\src\math\DXMath\DXMathVectorStoreFunctions.cpp" />
     <ClCompile Include="..\src\NLRE.cpp" />
     <ClCompile Include="..\src\NLREMain\stdafx.cpp" />
-    <ClCompile Include="..\src\RenderingDevice\DX11RenderingDevice\NLREDX11RenderingDevice.cpp" />
+    <ClCompile Include="..\src\RenderingDevice\DX11Device\NLREDX11RenderingDevice.cpp" />
+    <ClCompile Include="..\src\RenderingDevice\NLREDeviceController.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\include\math\DXMath\DXMathMatrixFunctions.h" />
@@ -296,6 +297,8 @@
     <ClInclude Include="..\include\NLREMain\stdafx.h" />
     <ClInclude Include="..\include\RenderingDevice\DX11Device\NLREDX11RenderingDevice.h" />
     <ClInclude Include="..\include\RenderingDevice\DX11Device\NLREDX11ShaderID.h" />
+    <ClInclude Include="..\include\RenderingDevice\NLREDeviceController.h" />
+    <ClInclude Include="..\include\RenderingDevice\NLRERenderingDevice.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="..\src\RenderingDevice\DX11RenderingDevice\Shaders\DeferredGBuff_TextNormal_BlinnPhong_PS.hlsl">
@@ -312,7 +315,7 @@
       <EntryPointName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">PSMain</EntryPointName>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Profile|x64'">false</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Profile|Win32'">false</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
@@ -344,7 +347,7 @@
       <EntryPointName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">VSMain</EntryPointName>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">5.0</ShaderModel>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Profile|x64'">false</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Profile|Win32'">false</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
