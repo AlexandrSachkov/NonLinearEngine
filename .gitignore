@@ -8,9 +8,10 @@
 
 # Build results
 
-[Dd]ebug/
-[Rr]elease/
-x64/
+#[Dd]ebug/
+#[Rr]elease/
+#x64/
+[Ii]ntermediate/
 build/
 [Bb]in/
 [Oo]bj/
@@ -162,3 +163,9 @@ lib/Profile/Win32/intermediate/NLRE.tlog/NLRE.lastbuildstate
 lib/Profile/Win32/intermediate/NLRE.tlog/cl.command.1.tlog
 lib/Profile/Win32/intermediate/NLRE.tlog/lib.command.1.tlog
 lib/Profile/Win32/NLRE_p.lib
+lib/Debug/Win32/NLRE_d.lib
+lib/Debug/x64/NLRE_d.bsc
+lib/Debug/x64/NLRE_d.lib
+lib/Profile/x64/NLRE_p.lib
+lib/Release/Win32/NLRE.lib
+lib/Release/x64/NLRE.lib
