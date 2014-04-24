@@ -3,6 +3,30 @@
 
 namespace NLRE_RenderStateId
 {
+	
+	enum Usage
+	{
+		DEFAULT,
+		IMMUTABLE,
+		DYNAMIC,
+		STAGING
+	};
+
+	enum BufferType
+	{
+		UNKNOWN,
+		CONSTANT,
+		INDEX,
+		VERTEX
+	};
+
+	enum PipelineStage
+	{
+		VShader,
+		PShader,
+		GShader
+	};
+
 	enum VS
 	{
 		DeferredGBuff_TextNormal_BlinnPhong
@@ -13,11 +37,7 @@ namespace NLRE_RenderStateId
 		DeferredGBuff_TextNormal_BlinnPhong
 	};
 
-	enum Usage
-	{
-		STATIC,
-		DYNAMIC
-	};
+	
 }
 
 

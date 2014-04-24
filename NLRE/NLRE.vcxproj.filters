@@ -133,10 +133,10 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <FxCompile Include="..\src\RenderingDevice\DX11RenderingDevice\Shaders\DeferredGBuff_TextNormal_BlinnPhong_PS.hlsl">
+    <FxCompile Include="..\src\RenderingDevice\DX11Device\Shaders\DeferredGBuff_TextNormal_BlinnPhong_PS.hlsl">
       <Filter>Source Files\RenderingDevice\DX11Device\Shaders</Filter>
     </FxCompile>
-    <FxCompile Include="..\src\RenderingDevice\DX11RenderingDevice\Shaders\DeferredGBuff_TextNormal_BlinnPhong_VS.hlsl">
+    <FxCompile Include="..\src\RenderingDevice\DX11Device\Shaders\DeferredGBuff_TextNormal_BlinnPhong_VS.hlsl">
       <Filter>Source Files\RenderingDevice\DX11Device\Shaders</Filter>
     </FxCompile>
   </ItemGroup>

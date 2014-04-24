@@ -9,12 +9,6 @@
 
 //#include "StreamSet.h"
 
-struct ShaderBlob
-{
-	void* data;
-	size_t size;
-};
-
 struct cbPerObject
 {
 	NLE_FLOAT4X4 MVP;
@@ -44,21 +38,26 @@ private:
 	bool createDeviceContexts();
 
 	bool createAllResources();
-	bool loadVShader(NLRE_RenderStateId::VS vsId, std::wstring path);
-	bool loadPShader(NLRE_RenderStateId::PS psId, std::wstring path);
-	void setVShader(NLRE_RenderStateId::VS vsId);
-	void setPShader(NLRE_RenderStateId::PS vsId);
-	bool createIndexBuffer(NLRE_RenderStateId::Usage usage, DWORD indiceArr[], DWORD arrayLength, NLRE_Buffer* indexBuffer);
-	bool createStreamBuffers();
-	bool createInputLayouts();
+	bool loadVertexShader(std::wstring path, NLRE_VertexShader& vertexShader);
+	bool loadPixelShader(std::wstring path, NLRE_PixelShader& pixelShader);
+	void setVertexShader(const NLRE_VertexShader& vertexShader);
+	void setPixelShader(const NLRE_PixelShader& pixelShader);
+
+	template<class DataType> bool createBuffer(
+		NLRE_RenderStateId::BufferType buffType, 
+		NLRE_RenderStateId::Usage usage, 
+		DataType dataArr[], 
+		size_t arrayLength,
+		NLRE_Buffer& buffer);
+	void NLREDX11RenderingDevice::setBuffer(NLRE_RenderStateId::PipelineStage stage, const NLRE_Buffer& buffer, unsigned int slotNum);
+
+	bool createInputLayout();
 	void setViewPort();
-	bool createPerFrameCBuffer();
-	bool createPerObjectCBuffer();
 	bool createTextureSamplerStates();
 	bool createBlendStates();
 	bool createRasterizerStates();
 
-	bool loadBlobFromFile(std::wstring path, ShaderBlob& blob);
+	bool loadBlobFromFile(std::wstring path, NLRE_ShaderBlob& blob);
 	//====================================== Pipeline Modification Functions ==========================================
 	//void setShader(ID3D11DeviceContext* context);
 	//void setInputLayout(ID3D11DeviceContext* context);
@@ -77,15 +76,10 @@ private:
 	
 	IDXGISwapChain* SwapChain;
 	ID3D11Device* d3d11Device;
-	ID3D11DeviceContext* d3d11DevCon;
+	ID3D11DeviceContext* _d3d11DevCon;
 	ID3D11RenderTargetView* renderTargetView;
 	ID3D11Texture2D* depthStencilBuffer;
 	ID3D11DepthStencilView* depthStencilView;
-	ID3D11DeviceContext* _deviceContext;
-
-	ID3D11Buffer* indexStreamBuff;
-	ID3D11Buffer* geomStreamBuff;
-	ID3D11Buffer* textCoordStreamBuff;
 
 	ID3D11InputLayout* defaultInputLayout;
 	ID3D11Buffer* perFrameCBuffer;
@@ -95,12 +89,6 @@ private:
 
 	static D3D11_INPUT_ELEMENT_DESC defaultLayout[];
 	int defaultInputLayoutNumElements;
-
-	std::unordered_map<NLRE_RenderStateId::VS, ID3D11VertexShader*> _vertexShaderMap;
-	std::unordered_map<NLRE_RenderStateId::VS, ShaderBlob> _vertexShaderBlobMap;
-
-	std::unordered_map<NLRE_RenderStateId::PS, ID3D11PixelShader*> _pixelShaderMap;
-	std::unordered_map<NLRE_RenderStateId::PS, ShaderBlob> _pixelShaderBlobMap;
 };
 
 

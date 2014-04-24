@@ -21,15 +21,10 @@ NLREDX11RenderingDevice::NLREDX11RenderingDevice(HWND hwndVal, int screenWidthVa
 
 	SwapChain = NULL;
 	d3d11Device = NULL;
-	d3d11DevCon = NULL;
+	_d3d11DevCon = NULL;
 	renderTargetView = NULL;
 	depthStencilBuffer = NULL;
 	depthStencilView = NULL;
-	_deviceContext = NULL;
-
-	indexStreamBuff = NULL;
-	geomStreamBuff = NULL;
-	textCoordStreamBuff = NULL;
 
 	defaultInputLayout = NULL;
 	perFrameCBuffer = NULL;
@@ -88,23 +83,12 @@ bool NLREDX11RenderingDevice::initialize()
 
 void NLREDX11RenderingDevice::release()
 {
-	_deviceContext->Release();
-
-	_vertexShaderMap.clear();
-	_vertexShaderBlobMap.clear();
-	_pixelShaderMap.clear();
-	_pixelShaderBlobMap.clear();
-
 	depthStencilView->Release();
 	depthStencilBuffer->Release();
 	renderTargetView->Release();
-	d3d11DevCon->Release();
+	_d3d11DevCon->Release();
 	d3d11Device->Release();
 	SwapChain->Release();
-
-	indexStreamBuff->Release();
-	geomStreamBuff->Release();
-	textCoordStreamBuff->Release();
 
 	defaultInputLayout->Release();
 
@@ -160,7 +144,7 @@ bool NLREDX11RenderingDevice::createDeviceAndSwapChain()
 
 	//Create our SwapChain
 	hr = D3D11CreateDeviceAndSwapChain(NULL, D3D_DRIVER_TYPE_HARDWARE, NULL, NULL, NULL, NULL,
-		D3D11_SDK_VERSION, &swapChainDesc, &SwapChain, &d3d11Device, NULL, &d3d11DevCon);
+		D3D11_SDK_VERSION, &swapChainDesc, &SwapChain, &d3d11Device, NULL, &_d3d11DevCon);
 
 	if (FAILED(hr))
 	{
@@ -236,7 +220,7 @@ bool NLREDX11RenderingDevice::createDepthStencilView()
 bool NLREDX11RenderingDevice::setRenderTargets()
 {
 	//Set our Render Target
-	d3d11DevCon->OMSetRenderTargets(1, &renderTargetView, depthStencilView);
+	_d3d11DevCon->OMSetRenderTargets(1, &renderTargetView, depthStencilView);
 
 	return true;
 }
@@ -244,7 +228,7 @@ bool NLREDX11RenderingDevice::createDeviceContexts()
 {
 	HRESULT hr;
 
-	hr = d3d11Device->CreateDeferredContext(0, &_deviceContext);
+	hr = d3d11Device->CreateDeferredContext(0, &_d3d11DevCon);
 	if (FAILED(hr))
 	{
 		NLRE_Log::err(NLRE_Log::ErrorFlag::CRITICAL, "Failed to create Device Context");
@@ -259,7 +243,7 @@ bool NLREDX11RenderingDevice::createDeviceContexts()
 
 	return true;
 }*/
-bool NLREDX11RenderingDevice::loadBlobFromFile(std::wstring path, ShaderBlob& blob)
+bool NLREDX11RenderingDevice::loadBlobFromFile(std::wstring path, NLRE_ShaderBlob& blob)
 {
 	std::ifstream fin(path, std::ios::binary);
 
@@ -277,22 +261,17 @@ bool NLREDX11RenderingDevice::loadBlobFromFile(std::wstring path, ShaderBlob& bl
 	return true;
 }
 
-bool NLREDX11RenderingDevice::loadVShader(NLRE_RenderStateId::VS vsId, std::wstring path)
+bool NLREDX11RenderingDevice::loadVertexShader(std::wstring path, NLRE_VertexShader& vertexShader)
 {
-	if (_vertexShaderMap.at(vsId)) return true;
-
 	HRESULT hr;
 
 	//Load vertex shader from file
-	ShaderBlob blob;
+	NLRE_ShaderBlob blob;
 	if (!loadBlobFromFile(path, blob))
 	{
 		NLRE_Log::err(NLRE_Log::ErrorFlag::CRITICAL, "Failed to load Vertex Shader: ", path);
 		return false;
 	}
-
-	//add blob to collection
-	_vertexShaderBlobMap.insert(std::pair<NLRE_RenderStateId::VS, ShaderBlob>(vsId, blob));
 
 	//Create Vertex Shader
 	ID3D11VertexShader* vs = NULL;
@@ -302,29 +281,23 @@ bool NLREDX11RenderingDevice::loadVShader(NLRE_RenderStateId::VS vsId, std::wstr
 		NLRE_Log::err(NLRE_Log::ErrorFlag::CRITICAL, "Failed to create Vertex Shader");
 		return false;
 	}
-
-	//add shader to collection
-	_vertexShaderMap.insert(std::pair<NLRE_RenderStateId::VS, ID3D11VertexShader*>(vsId, vs));
+	vertexShader.apiVertexShader = vs;
+	vertexShader.blob = blob;
 
 	return true;
 }
 
-bool NLREDX11RenderingDevice::loadPShader(NLRE_RenderStateId::PS psId, std::wstring path)
+bool NLREDX11RenderingDevice::loadPixelShader(std::wstring path, NLRE_PixelShader& pixelShader)
 {
-	if (_pixelShaderMap.at(psId)) return true;
-
 	HRESULT hr;
 
 	//Load pixel shader from file
-	ShaderBlob blob;
+	NLRE_ShaderBlob blob;
 	if (!loadBlobFromFile(path, blob))
 	{
 		NLRE_Log::err(NLRE_Log::ErrorFlag::CRITICAL, "Failed to load Pixel Shader: ", path);
 		return false;
 	}
-
-	//add blob to collection
-	_pixelShaderBlobMap.insert(std::pair<NLRE_RenderStateId::PS, ShaderBlob>(psId, blob));
 
 	//Create Pixel Shader
 	ID3D11PixelShader* ps = NULL;
@@ -334,80 +307,126 @@ bool NLREDX11RenderingDevice::loadPShader(NLRE_RenderStateId::PS psId, std::wstr
 		NLRE_Log::err(NLRE_Log::ErrorFlag::CRITICAL, "Failed to create Pixel Shader");
 		return false;
 	}
-
-	//add shader to collection
-	_pixelShaderMap.insert(std::pair<NLRE_RenderStateId::PS, ID3D11PixelShader*>(psId, ps));
+	pixelShader.apiPixelShader = ps;
+	pixelShader.blob = blob;
 
 	return true;
 }
 
-void NLREDX11RenderingDevice::setVShader(NLRE_RenderStateId::VS vsId)
+void NLREDX11RenderingDevice::setVertexShader(const NLRE_VertexShader& vertexShader)
 {
-	d3d11DevCon->VSSetShader(_vertexShaderMap.at(vsId),NULL,0);
+	_d3d11DevCon->VSSetShader(vertexShader.apiVertexShader, NULL, 0);
 }
 
-void NLREDX11RenderingDevice::setPShader(NLRE_RenderStateId::PS psId)
+void NLREDX11RenderingDevice::setPixelShader(const NLRE_PixelShader& pixelShader)
 {
-	d3d11DevCon->PSSetShader(_pixelShaderMap.at(psId), NULL, 0);
+	_d3d11DevCon->PSSetShader(pixelShader.apiPixelShader, NULL, 0);
 }
 
-
-bool NLREDX11RenderingDevice::createIndexBuffer(NLRE_RenderStateId::Usage usage, DWORD indiceArr[], DWORD arrayLength, NLRE_Buffer* indexBuffer)
+template<class DataType>
+bool NLREDX11RenderingDevice::createBuffer(
+	NLRE_RenderStateId::BufferType buffType, 
+	NLRE_RenderStateId::Usage usage, 
+	DataType dataArr[],
+	size_t arrayLength, 
+	NLRE_Buffer& buffer)
 {
 	HRESULT hr;
 
-	D3D11_BUFFER_DESC indexBufferDesc;
-	ZeroMemory(&indexBufferDesc, sizeof(indexBufferDesc));
+	D3D11_BUFFER_DESC bufferDesc;
+	ZeroMemory(&bufferDesc, sizeof(bufferDesc));
 
-	indexBufferDesc.Usage = D3D11_USAGE_DYNAMIC;
-	indexBufferDesc.ByteWidth = sizeof(DWORD)* maxIndices;
-	indexBufferDesc.BindFlags = D3D11_BIND_INDEX_BUFFER;
-	indexBufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
-	indexBufferDesc.MiscFlags = 0;
+	//==============================	Select Buffer Type	=======================================
+	if (buffType == NLRE_RenderStateId::BufferType::CONSTANT)
+	{
+		bufferDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
+	}
+	else if (buffType == NLRE_RenderStateId::BufferType::INDEX)
+	{
+		bufferDesc.BindFlags = D3D11_BIND_INDEX_BUFFER;
+	}
+	else if (buffType == NLRE_RenderStateId::BufferType::VERTEX)
+	{
+		bufferDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
+	}
 
-	hr = d3d11Device->CreateBuffer(&indexBufferDesc, NULL, &indexStreamBuff);
+	//==============================	Select Buffer Usage	=======================================
+	if (usage == NLRE_RenderStateId::Usage::DEFAULT)
+	{
+		bufferDesc.Usage = D3D11_USAGE_DEFAULT;
+		bufferDesc.CPUAccessFlags = 0;
+	}else if (usage == NLRE_RenderStateId::Usage::IMMUTABLE)
+	{
+		bufferDesc.Usage = D3D11_USAGE_IMMUTABLE;
+		bufferDesc.CPUAccessFlags = 0;
+	}
+	else if (usage == NLRE_RenderStateId::Usage::DYNAMIC)
+	{
+		bufferDesc.Usage = D3D11_USAGE_DYNAMIC;
+		bufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+	}
+	
+	
+
+	bufferDesc.ByteWidth = sizeof(DataType)* arrayLength;
+	bufferDesc.MiscFlags = 0;
+
+	D3D11_SUBRESOURCE_DATA subresData;
+	ZeroMemory(&subresData, sizeof(subresData));
+	subresData.pSysMem = dataArr;
+
+	ID3D11Buffer* apiBuffer = NULL;
+	hr = d3d11Device->CreateBuffer(&bufferDesc, &subresData, &apiBuffer);
 
 	if (FAILED(hr))
 	{
-		NLRE_Log::err(NLRE_Log::ErrorFlag::CRITICAL, "Failed to create Index Buffer");
+		NLRE_Log::err(NLRE_Log::ErrorFlag::CRITICAL, "Failed to create Buffer Type: ", buffType, ", Usage: ", usage);
 		return false;
 	}
+	NLRE_Buffer buffer;
+	buffer.apiBuffer = apiBuffer;
+	buffer.type = buffType;
+	buffer.usage = usage;
+	buffer.elementSize = sizeof(DataType);
+
 	return true;
 }
 
-bool NLREDX11RenderingDevice::createStreamBuffers()
+void NLREDX11RenderingDevice::setBuffer(
+	NLRE_RenderStateId::PipelineStage stage,
+	const NLRE_Buffer& buffer,
+	unsigned int slotNum)
 {
-	HRESULT hr;
-
-	D3D11_BUFFER_DESC vertexBufferDesc;
-	ZeroMemory(&vertexBufferDesc, sizeof(vertexBufferDesc));
-
-	vertexBufferDesc.Usage = D3D11_USAGE_DYNAMIC;
-	vertexBufferDesc.ByteWidth = sizeof(GeomStr)* maxVertices;
-	vertexBufferDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
-	vertexBufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
-	vertexBufferDesc.MiscFlags = 0;
-
-	hr = d3d11Device->CreateBuffer(&vertexBufferDesc, NULL, &geomStreamBuff);
-	if (FAILED(hr))
+	if (buffer.type == NLRE_RenderStateId::BufferType::INDEX)
 	{
-		NLRE_Log::err(NLRE_Log::ErrorFlag::CRITICAL, "Failed to create Geometry Stream Buffer");
-		return false;
+		_d3d11DevCon->IASetIndexBuffer(buffer.apiBuffer, DXGI_FORMAT_R32_UINT, 0);
 	}
-
-
-	vertexBufferDesc.ByteWidth = sizeof(TextStr)* maxVertices;
-	hr = d3d11Device->CreateBuffer(&vertexBufferDesc, NULL, &textCoordStreamBuff);
-
-	if (FAILED(hr))
+	else if (buffer.type == NLRE_RenderStateId::BufferType::VERTEX)
 	{
-		NLRE_Log::err(NLRE_Log::ErrorFlag::CRITICAL, "Failed to create Text Coordinate Stream Buffer");
-		return false;
+		_d3d11DevCon->IASetVertexBuffers(slotNum, 1, &(buffer.apiBuffer), &(buffer.elementSize), 0);
 	}
-	return true;
+	else if (buffer.type == NLRE_RenderStateId::BufferType::CONSTANT)
+	{
+		if (stage == NLRE_RenderStateId::PipelineStage::VShader)
+		{
+			_d3d11DevCon->VSSetConstantBuffers(slotNum, 1, &(buffer.apiBuffer));
+		}
+		else if (stage == NLRE_RenderStateId::PipelineStage::PShader)
+		{
+			_d3d11DevCon->PSSetConstantBuffers(slotNum, 1, &(buffer.apiBuffer));
+		}
+		else if (stage == NLRE_RenderStateId::PipelineStage::GShader)
+		{
+			_d3d11DevCon->GSSetConstantBuffers(slotNum, 1, &(buffer.apiBuffer));
+		}
+	}
+	else
+	{
+		throw new std::exception("Attempted usage an of unknown type buffer.");
+	}
 }
 
-bool NLREDX11RenderingDevice::createInputLayouts()
+bool NLREDX11RenderingDevice::createInputLayout()
 {
 	HRESULT hr;
 
@@ -434,37 +453,7 @@ void NLREDX11RenderingDevice::setViewPort()
 	viewport.MaxDepth = 1.0f;
 
 	//Set the Viewport
-	d3d11DevCon->RSSetViewports(1, &viewport);
-}
-
-bool NLREDX11RenderingDevice::createPerFrameCBuffer()
-{
-
-	return true;
-}
-
-bool NLREDX11RenderingDevice::createPerObjectCBuffer()
-{
-	HRESULT hr;
-
-	//Create the buffer to send to the cbuffer in effect file
-	D3D11_BUFFER_DESC cbbd;
-	ZeroMemory(&cbbd, sizeof(D3D11_BUFFER_DESC));
-
-	cbbd.Usage = D3D11_USAGE_DEFAULT;
-	cbbd.ByteWidth = sizeof(cbPerObject);
-	cbbd.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
-	cbbd.CPUAccessFlags = 0;
-	cbbd.MiscFlags = 0;
-
-	hr = d3d11Device->CreateBuffer(&cbbd, NULL, &perObjectCBuffer);
-	if (FAILED(hr))
-	{
-		NLRE_Log::err(NLRE_Log::ErrorFlag::CRITICAL, "Failed to create perObjectCBuffer");
-		return false;
-	}
-
-	return true;
+	_d3d11DevCon->RSSetViewports(1, &viewport);
 }
 
 bool NLREDX11RenderingDevice::createTextureSamplerStates()

@@ -6,6 +6,8 @@
 #include <d3dx10.h>
 #include <DxErr.h>
 
-typedef ID3D11Buffer NLRE_Buffer;
+typedef ID3D11Buffer		NLRE_APIBuffer;
+typedef ID3D11VertexShader	NLRE_APIVertexShader;
+typedef ID3D11PixelShader	NLRE_APIPixelShader;
 
 #endif
