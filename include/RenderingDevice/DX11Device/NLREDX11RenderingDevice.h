@@ -7,7 +7,7 @@
 #include <d3dx10.h>
 #include <DxErr.h>
 
-//#include "StreamSet.h"
+#include "RenderingDevice\NLREInputLayoutDescriptions.h"
 
 struct cbPerObject
 {
@@ -49,9 +49,11 @@ private:
 		DataType dataArr[], 
 		size_t arrayLength,
 		NLRE_Buffer& buffer);
-	void NLREDX11RenderingDevice::setBuffer(NLRE_RenderStateId::PipelineStage stage, const NLRE_Buffer& buffer, unsigned int slotNum);
+	void setConstantBuffer(NLRE_RenderStateId::PipelineStage stage, const NLRE_Buffer& buffer, unsigned int slotNum);
+	void setVertexBuffer(const NLRE_Buffer& buffer, unsigned int slotNum);
+	void setIndexBuffer(const NLRE_Buffer& buffer);
 
-	bool createInputLayout();
+	bool createInputLayout(NLRE_InputLayoutDesc ilDesc, NLRE_VertexShader vShader, NLRE_APIInputLayout* inputLayout);
 	void setViewPort();
 	bool createTextureSamplerStates();
 	bool createBlendStates();

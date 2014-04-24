@@ -29,15 +29,18 @@ namespace NLRE_RenderStateId
 
 	enum VS
 	{
-		DeferredGBuff_TextNormal_BlinnPhong
+		VS_DeferredGBuff_TextNormal_BlinnPhong
 	};
 
 	enum PS
 	{
-		DeferredGBuff_TextNormal_BlinnPhong
+		PS_DeferredGBuff_TextNormal_BlinnPhong
 	};
 
-	
+	enum IL
+	{
+
+	};
 }
 
 

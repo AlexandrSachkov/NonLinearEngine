@@ -2,6 +2,12 @@ Texture2D DiffuseMap		: register(t0);
 Texture2D NormalMap			: register(t1);
 SamplerState AnisoSampler	: register(s0);
 
+cbuffer MatProperties
+{
+	float3 SpecularAlbedo;
+	float SpecularPower;
+};
+
 struct PSInput
 {
 	float4 PositionSS	: SV_Position;
@@ -30,9 +36,9 @@ PSOutput PSMain(in PSInput input)
 
 	// Normalize the tangent frame after interpolation
 	float3x3 tangentFrameWS = float3x3(normalize(input.TangentWS),
-		normalize(input.BitangentWS), normalize(input.NormalWS))j
-		// Sample the tangent-space normal map and decompress
-		float3 normalTS = MormalMap.Sample(AnisoSampler, input.TexCoord).rgb;
+		normalize(input.BitangentWS), normalize(input.NormalWS));
+	// Sample the tangent-space normal map and decompress
+	float3 normalTS = NormalMap.Sample(AnisoSampler, input.TexCoord).rgb;
 		normalTS = normalize(normalTS * 2.0f - 1.0f);
 	// Convert to world space
 	float3 normalWS = mul(normalTS, tangentFrameWS);

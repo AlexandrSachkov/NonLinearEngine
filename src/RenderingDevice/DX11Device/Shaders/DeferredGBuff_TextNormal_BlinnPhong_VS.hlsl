@@ -5,12 +5,6 @@ cbuffer Transform	: register(b0)
 	matrix WorldViewProjMatrix;
 };
 
-cbuffer MatProperties	: register(b1)
-{
-	float3 SpecularAlbedo;
-	float SpecularPower;
-};
-
 struct VSInput
 {
 	float4 Position : POSITION;
@@ -34,7 +28,7 @@ VSOutput VSMain(in VSInput input)
 {
 	VSOutput output;
 	// Convert position and normals to world space
-	output.PositionWS = mul(input.Position, WorldHatrix).xyz;
+	output.PositionWS = mul(input.Position, WorldMatrix).xyz;
 	float3 normalWS = normalize(mul(input.Normal, (float3x3)WorldMatrix));
 		output.NormalWS = normalWS;
 	// Reconstruct the rest of the tangent frame

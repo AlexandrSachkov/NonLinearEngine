@@ -1,6 +1,8 @@
 #ifndef NLRE_RESOURCES_
 #define NLRE_RESOURCES_
 
+#include "RenderingDevice\NLRERenderStateID.h"
+
 #ifdef _DX11_
 	#include "RenderingDevice\DX11Device\NLREDX11ResourceWrap.h"
 #endif
@@ -41,6 +43,14 @@ struct NLRE_PixelShader
 	~NLRE_PixelShader(){ delete apiPixelShader; }
 	NLRE_APIPixelShader* apiPixelShader;
 	NLRE_ShaderBlob blob;
+};
+
+struct NLRE_InputLayoutDesc
+{
+	NLRE_InputLayoutDesc(const NLRE_APIInputLayoutDecs* apiInputLayoutDesc, const size_t numberElements) 
+		: apiInputLayoutDesc(apiInputLayoutDesc), numberElements(numberElements){}
+	const NLRE_APIInputLayoutDecs* apiInputLayoutDesc;
+	const size_t numberElements;
 };
 
 #endif

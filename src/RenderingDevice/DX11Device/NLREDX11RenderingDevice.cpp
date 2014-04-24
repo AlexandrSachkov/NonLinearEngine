@@ -64,20 +64,20 @@ bool NLREDX11RenderingDevice::initialize()
 /*bool NLREDX11RenderingDevice::createAllResources()
 {
 
-	//if (!createAllShaders())		return false;
-	if (!createIndexBuffer())		return false;
-	if (!createStreamBuffers())		return false;
-	if (!createInputLayouts())		return false;
+//if (!createAllShaders())		return false;
+if (!createIndexBuffer())		return false;
+if (!createStreamBuffers())		return false;
+if (!createInputLayouts())		return false;
 
-	setViewPort();
+setViewPort();
 
-	if (!createPerFrameCBuffer())		return false;
-	if (!createPerObjectCBuffer())		return false;
-	if (!createTextureSamplerStates())	return false;
-	if (!createBlendStates())			return false;
-	if (!createRasterizerStates())		return false;
+if (!createPerFrameCBuffer())		return false;
+if (!createPerObjectCBuffer())		return false;
+if (!createTextureSamplerStates())	return false;
+if (!createBlendStates())			return false;
+if (!createRasterizerStates())		return false;
 
-	return true;
+return true;
 }
 */
 
@@ -238,10 +238,10 @@ bool NLREDX11RenderingDevice::createDeviceContexts()
 }
 /*bool NLREDX11RenderingDevice::createAllShaders()
 {
-	if (!createVShader(L"Resources/FX/Effects.fx", VS)) return false;
-	if (!createPShader(L"Resources/FX/Effects.fx", PS)) return false;
+if (!createVShader(L"Resources/FX/Effects.fx", VS)) return false;
+if (!createPShader(L"Resources/FX/Effects.fx", PS)) return false;
 
-	return true;
+return true;
 }*/
 bool NLREDX11RenderingDevice::loadBlobFromFile(std::wstring path, NLRE_ShaderBlob& blob)
 {
@@ -325,10 +325,10 @@ void NLREDX11RenderingDevice::setPixelShader(const NLRE_PixelShader& pixelShader
 
 template<class DataType>
 bool NLREDX11RenderingDevice::createBuffer(
-	NLRE_RenderStateId::BufferType buffType, 
-	NLRE_RenderStateId::Usage usage, 
+	NLRE_RenderStateId::BufferType buffType,
+	NLRE_RenderStateId::Usage usage,
 	DataType dataArr[],
-	size_t arrayLength, 
+	size_t arrayLength,
 	NLRE_Buffer& buffer)
 {
 	HRESULT hr;
@@ -355,7 +355,8 @@ bool NLREDX11RenderingDevice::createBuffer(
 	{
 		bufferDesc.Usage = D3D11_USAGE_DEFAULT;
 		bufferDesc.CPUAccessFlags = 0;
-	}else if (usage == NLRE_RenderStateId::Usage::IMMUTABLE)
+	}
+	else if (usage == NLRE_RenderStateId::Usage::IMMUTABLE)
 	{
 		bufferDesc.Usage = D3D11_USAGE_IMMUTABLE;
 		bufferDesc.CPUAccessFlags = 0;
@@ -365,8 +366,8 @@ bool NLREDX11RenderingDevice::createBuffer(
 		bufferDesc.Usage = D3D11_USAGE_DYNAMIC;
 		bufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
 	}
-	
-	
+
+
 
 	bufferDesc.ByteWidth = sizeof(DataType)* arrayLength;
 	bufferDesc.MiscFlags = 0;
@@ -392,46 +393,43 @@ bool NLREDX11RenderingDevice::createBuffer(
 	return true;
 }
 
-void NLREDX11RenderingDevice::setBuffer(
+void NLREDX11RenderingDevice::setConstantBuffer(
 	NLRE_RenderStateId::PipelineStage stage,
 	const NLRE_Buffer& buffer,
 	unsigned int slotNum)
 {
-	if (buffer.type == NLRE_RenderStateId::BufferType::INDEX)
+
+	if (stage == NLRE_RenderStateId::PipelineStage::VShader)
 	{
-		_d3d11DevCon->IASetIndexBuffer(buffer.apiBuffer, DXGI_FORMAT_R32_UINT, 0);
+		_d3d11DevCon->VSSetConstantBuffers(slotNum, 1, &(buffer.apiBuffer));
 	}
-	else if (buffer.type == NLRE_RenderStateId::BufferType::VERTEX)
+	else if (stage == NLRE_RenderStateId::PipelineStage::PShader)
 	{
-		_d3d11DevCon->IASetVertexBuffers(slotNum, 1, &(buffer.apiBuffer), &(buffer.elementSize), 0);
+		_d3d11DevCon->PSSetConstantBuffers(slotNum, 1, &(buffer.apiBuffer));
 	}
-	else if (buffer.type == NLRE_RenderStateId::BufferType::CONSTANT)
+	else if (stage == NLRE_RenderStateId::PipelineStage::GShader)
 	{
-		if (stage == NLRE_RenderStateId::PipelineStage::VShader)
-		{
-			_d3d11DevCon->VSSetConstantBuffers(slotNum, 1, &(buffer.apiBuffer));
-		}
-		else if (stage == NLRE_RenderStateId::PipelineStage::PShader)
-		{
-			_d3d11DevCon->PSSetConstantBuffers(slotNum, 1, &(buffer.apiBuffer));
-		}
-		else if (stage == NLRE_RenderStateId::PipelineStage::GShader)
-		{
-			_d3d11DevCon->GSSetConstantBuffers(slotNum, 1, &(buffer.apiBuffer));
-		}
-	}
-	else
-	{
-		throw new std::exception("Attempted usage an of unknown type buffer.");
+		_d3d11DevCon->GSSetConstantBuffers(slotNum, 1, &(buffer.apiBuffer));
 	}
 }
 
-bool NLREDX11RenderingDevice::createInputLayout()
+void NLREDX11RenderingDevice::setVertexBuffer(const NLRE_Buffer& buffer, unsigned int slotNum)
+{
+	_d3d11DevCon->IASetVertexBuffers(slotNum, 1, &(buffer.apiBuffer), &(buffer.elementSize), 0);
+}
+
+void NLREDX11RenderingDevice::setIndexBuffer(const NLRE_Buffer& buffer)
+{
+	_d3d11DevCon->IASetIndexBuffer(buffer.apiBuffer, DXGI_FORMAT_R32_UINT, 0);
+}
+
+
+bool NLREDX11RenderingDevice::createInputLayout(NLRE_InputLayoutDesc ilDesc, NLRE_VertexShader vShader, NLRE_APIInputLayout* inputLayout)
 {
 	HRESULT hr;
 
-	hr = d3d11Device->CreateInputLayout(defaultLayout, defaultInputLayoutNumElements, VS_Buffer->GetBufferPointer(),
-		VS_Buffer->GetBufferSize(), &defaultInputLayout);
+	hr = d3d11Device->CreateInputLayout(ilDesc.apiInputLayoutDesc, ilDesc.numberElements, vShader.blob.data,
+		vShader.blob.size, &inputLayout);
 	if (FAILED(hr))
 	{
 		NLRE_Log::err(NLRE_Log::ErrorFlag::CRITICAL, "Failed to create Input Layout");
