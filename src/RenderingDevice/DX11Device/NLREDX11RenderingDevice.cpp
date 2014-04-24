@@ -2,13 +2,6 @@
 #include "RenderingDevice\DX11Device\NLREDX11RenderingDevice.h"
 
 
-D3D11_INPUT_ELEMENT_DESC NLREDX11RenderingDevice::defaultLayout[] = {
-	{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-	{ "NORMAL", 0, DXGI_FORMAT_R32G32_FLOAT, 0, 12, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-	{ "TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 1, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-};
-
-
 NLREDX11RenderingDevice::NLREDX11RenderingDevice(HWND hwndVal, int screenWidthVal, int screenHeightVal)
 {
 
@@ -26,13 +19,8 @@ NLREDX11RenderingDevice::NLREDX11RenderingDevice(HWND hwndVal, int screenWidthVa
 	depthStencilBuffer = NULL;
 	depthStencilView = NULL;
 
-	defaultInputLayout = NULL;
-	perFrameCBuffer = NULL;
-	perObjectCBuffer = NULL;
 	defaultTextSamplerState = NULL;
 	backFaceCullState = NULL;
-
-	defaultInputLayoutNumElements = 3;
 
 	if (!initialize())
 	{
@@ -58,28 +46,9 @@ bool NLREDX11RenderingDevice::initialize()
 		return false;
 	}
 	if (!initializeDirect3d11()) return false;
-	//if (!createAllResources()) return false;
 	return true;
 }
-/*bool NLREDX11RenderingDevice::createAllResources()
-{
 
-//if (!createAllShaders())		return false;
-if (!createIndexBuffer())		return false;
-if (!createStreamBuffers())		return false;
-if (!createInputLayouts())		return false;
-
-setViewPort();
-
-if (!createPerFrameCBuffer())		return false;
-if (!createPerObjectCBuffer())		return false;
-if (!createTextureSamplerStates())	return false;
-if (!createBlendStates())			return false;
-if (!createRasterizerStates())		return false;
-
-return true;
-}
-*/
 
 void NLREDX11RenderingDevice::release()
 {
@@ -89,12 +58,6 @@ void NLREDX11RenderingDevice::release()
 	_d3d11DevCon->Release();
 	d3d11Device->Release();
 	SwapChain->Release();
-
-	defaultInputLayout->Release();
-
-	if (perFrameCBuffer) perFrameCBuffer->Release();
-
-	perObjectCBuffer->Release();
 	defaultTextSamplerState->Release();
 	backFaceCullState->Release();
 
@@ -106,7 +69,6 @@ bool NLREDX11RenderingDevice::initializeDirect3d11()
 	if (!createRenderTargetView()) return false;
 	if (!createDepthStencilView()) return false;
 	if (!setRenderTargets()) return false;
-	if (!createDeviceContexts()) return false;
 
 	return true;
 }
@@ -224,25 +186,7 @@ bool NLREDX11RenderingDevice::setRenderTargets()
 
 	return true;
 }
-bool NLREDX11RenderingDevice::createDeviceContexts()
-{
-	HRESULT hr;
 
-	hr = d3d11Device->CreateDeferredContext(0, &_d3d11DevCon);
-	if (FAILED(hr))
-	{
-		NLRE_Log::err(NLRE_Log::ErrorFlag::CRITICAL, "Failed to create Device Context");
-		return false;
-	}
-	return true;
-}
-/*bool NLREDX11RenderingDevice::createAllShaders()
-{
-if (!createVShader(L"Resources/FX/Effects.fx", VS)) return false;
-if (!createPShader(L"Resources/FX/Effects.fx", PS)) return false;
-
-return true;
-}*/
 bool NLREDX11RenderingDevice::loadBlobFromFile(std::wstring path, NLRE_ShaderBlob& blob)
 {
 	std::ifstream fin(path, std::ios::binary);
@@ -436,6 +380,11 @@ bool NLREDX11RenderingDevice::createInputLayout(NLRE_InputLayoutDesc ilDesc, NLR
 		return false;
 	}
 	return true;
+}
+
+void NLREDX11RenderingDevice::setInputLayout(NLRE_APIInputLayout* inputLayout)
+{
+	_d3d11DevCon->IASetInputLayout(inputLayout);
 }
 
 void NLREDX11RenderingDevice::setViewPort()

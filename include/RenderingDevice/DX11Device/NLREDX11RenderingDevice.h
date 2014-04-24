@@ -3,11 +3,9 @@
 
 #include "stdafx.h"
 #include <d3d11.h>
-#include <d3dx11.h>
-#include <d3dx10.h>
-#include <DxErr.h>
 
 #include "RenderingDevice\NLREInputLayoutDescriptions.h"
+#include "DirectXTex.h"
 
 struct cbPerObject
 {
@@ -35,7 +33,6 @@ private:
 	bool createRenderTargetView();
 	bool createDepthStencilView();
 	bool setRenderTargets();
-	bool createDeviceContexts();
 
 	bool createAllResources();
 	bool loadVertexShader(std::wstring path, NLRE_VertexShader& vertexShader);
@@ -61,8 +58,7 @@ private:
 
 	bool loadBlobFromFile(std::wstring path, NLRE_ShaderBlob& blob);
 	//====================================== Pipeline Modification Functions ==========================================
-	//void setShader(ID3D11DeviceContext* context);
-	//void setInputLayout(ID3D11DeviceContext* context);
+	void setInputLayout(NLRE_APIInputLayout* inputLayout);
 
 
 	
@@ -83,14 +79,8 @@ private:
 	ID3D11Texture2D* depthStencilBuffer;
 	ID3D11DepthStencilView* depthStencilView;
 
-	ID3D11InputLayout* defaultInputLayout;
-	ID3D11Buffer* perFrameCBuffer;
-	ID3D11Buffer* perObjectCBuffer;
 	ID3D11SamplerState* defaultTextSamplerState;
 	ID3D11RasterizerState* backFaceCullState;
-
-	static D3D11_INPUT_ELEMENT_DESC defaultLayout[];
-	int defaultInputLayoutNumElements;
 };
 
 

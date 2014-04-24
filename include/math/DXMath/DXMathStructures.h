@@ -1,8 +1,6 @@
 #ifndef DX_MATH_STRUCTURES_
 #define DX_MATH_STRUCTURES_
 
-#include <DirectXMath.h>
-
 typedef DirectX::XMFLOAT2		NLE_FLOAT2;
 typedef DirectX::XMFLOAT2A		NLE_FLOAT2A;
 typedef DirectX::XMFLOAT3		NLE_FLOAT3;
