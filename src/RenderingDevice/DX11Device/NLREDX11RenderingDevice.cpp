@@ -119,6 +119,47 @@ bool NLREDX11RenderingDevice::createBackBufferRenderTargetView(NLRE_APIRenderTar
 	return true;
 }
 
+bool NLREDX11RenderingDevice::createBlendStates(bool enableBlend, bool enableIndependentBlending, unsigned int numRenderTargets, bool enableAlphaToCoverage, NLRE_APIBlendState* blendState)
+{
+	HRESULT hr;
+
+	if (numRenderTargets > 8)
+	{
+		NLRE_Log::err(NLRE_Log::CRITICAL, "Failed to create blend state, invalid number of targets: ", numRenderTargets);
+		return false;
+	}
+
+	D3D11_BLEND_DESC blendDesc;
+	ZeroMemory( &blendDesc, sizeof(blendDesc) );
+
+	D3D11_RENDER_TARGET_BLEND_DESC rtbd;
+	ZeroMemory( &rtbd, sizeof(rtbd) );
+
+	rtbd.BlendEnable			= enableBlend;
+	rtbd.SrcBlend				= D3D11_BLEND_SRC_COLOR;
+	rtbd.DestBlend				= D3D11_BLEND_BLEND_FACTOR;
+	rtbd.BlendOp				= D3D11_BLEND_OP_ADD;
+	rtbd.SrcBlendAlpha			= D3D11_BLEND_ONE;
+	rtbd.DestBlendAlpha			= D3D11_BLEND_ZERO;
+	rtbd.BlendOpAlpha			= D3D11_BLEND_OP_ADD;
+	rtbd.RenderTargetWriteMask	= D3D10_COLOR_WRITE_ENABLE_ALL;
+
+	blendDesc.IndependentBlendEnable = enableIndependentBlending;
+	blendDesc.AlphaToCoverageEnable = enableAlphaToCoverage;
+	for (int i = 0; i < numRenderTargets; i++)
+	{
+		blendDesc.RenderTarget[i] = rtbd;
+	}
+
+	hr = d3d11Device->CreateBlendState(&blendDesc, &blendState);
+	if (FAILED(hr))
+	{
+		NLRE_Log::err(NLRE_Log::CRITICAL, "Failed to create blend state");
+		return false;
+	}
+	return true;
+}
+
 bool NLREDX11RenderingDevice::createRenderTargetViews(unsigned int numViews, NLRE_APIRenderTargetView* renderTargetViewArr)
 {
 	HRESULT hr;
