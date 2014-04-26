@@ -255,15 +255,12 @@ bool NLREDX11RenderingDevice::createDepthStencilView(NLRE_APIDepthStencilView* d
 	return true;
 }
 
-inline bool NLREDX11RenderingDevice::setRenderTargets(
+inline void NLREDX11RenderingDevice::setRenderTargets(
 	unsigned int numRenderTargets,
 	NLRE_APIRenderTargetView* renderTargerViewArr,
 	NLRE_APIDepthStencilView* depthStencilView)
 {
-	//Set our Render Target
 	_d3d11DevCon->OMSetRenderTargets(numRenderTargets, &renderTargerViewArr, depthStencilView);
-
-	return true;
 }
 
 bool NLREDX11RenderingDevice::loadBlobFromFile(std::wstring path, NLRE_ShaderBlob& blob)

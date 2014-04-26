@@ -53,7 +53,7 @@ public:
 	void setInputLayout(NLRE_APIInputLayout* inputLayout);
 	void setPrimitiveTopology(NLRE_PRIMITIVE_TOPOLOGY primitiveTopology);
 	void setRasterizerState(NLRE_APIRasterizerState* rasterizerState);
-	bool setRenderTargets(unsigned int numRenderTargets, NLRE_APIRenderTargetView* renderTargerViewArr, NLRE_APIDepthStencilView* depthStencilView);
+	void setRenderTargets(unsigned int numRenderTargets, NLRE_APIRenderTargetView* renderTargerViewArr, NLRE_APIDepthStencilView* depthStencilView);
 	void setViewPort(int numViewports, int x, int y, int width, int height, float minDepth, float maxDepth);
 	
 	void VSSetTextureSamplerState(unsigned int startSlot, unsigned int numStates, NLRE_APISamplerState* samplerState);
