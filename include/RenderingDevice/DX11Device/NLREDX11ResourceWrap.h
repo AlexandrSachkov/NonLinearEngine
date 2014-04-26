@@ -11,7 +11,10 @@ typedef ID3D11InputLayout			NLRE_APIInputLayout;
 typedef ID3D11ShaderResourceView	NLRE_APIShaderResourceView;
 typedef ID3D11RenderTargetView		NLRE_APIRenderTargetView;
 typedef ID3D11DepthStencilView		NLRE_APIDepthStencilView;
+typedef ID3D11Resource				NLRE_APIResource;
 typedef ID3D11Texture2D				NLRE_APITexture2D;
+typedef ID3D11RasterizerState		NLRE_APIRasterizerState;
+typedef ID3D11SamplerState			NLRE_APISamplerState;
 
 typedef enum NLRE_USAGE
 {
@@ -33,6 +36,19 @@ typedef enum NLRE_BIND_FLAG
 	NLRE_BIND_UNORDERED_ACCESS	= D3D11_BIND_UNORDERED_ACCESS,
 	NLRE_BIND_DECODER			= D3D11_BIND_DECODER,
 	NLRE_BIND_VIDEO_ENCODER		= D3D11_BIND_VIDEO_ENCODER
+};
+
+typedef enum NLRE_CULL_MODE
+{
+	NLRE_CULL_NONE = D3D11_CULL_NONE,
+	NLRE_CULL_FRONT = D3D11_CULL_FRONT,
+	NLRE_CULL_BACK = D3D11_CULL_BACK
+};
+
+typedef enum NLRE_FILL_MODE
+{
+	NLRE_FILL_WIREFRAME,
+	NLRE_FILL_SOLID
 };
 
 #endif

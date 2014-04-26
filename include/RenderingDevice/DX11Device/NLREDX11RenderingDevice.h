@@ -15,46 +15,50 @@ public:
 	NLREDX11RenderingDevice(const NLREDX11RenderingDevice&);
 	~NLREDX11RenderingDevice();
 
-private:
-	bool initialize();
-	void release();
-
-	bool createDeviceAndSwapChain();
 	bool createBackBufferRenderTargetView(NLRE_APIRenderTargetView* renderTargetView);
-	bool createRenderTargetViews(unsigned int numViews, NLRE_APIRenderTargetView* renderTargetViewArr);
-	bool createDepthStencilView(NLRE_APIDepthStencilView* depthStencilView);
-	bool setRenderTargets(unsigned int numRenderTargets, NLRE_APIRenderTargetView* renderTargerViewArr, NLRE_APIDepthStencilView* depthStencilView);
-
-	bool createAllResources();
-	bool loadVertexShader(std::wstring path, NLRE_VertexShader& vertexShader);
-	bool loadPixelShader(std::wstring path, NLRE_PixelShader& pixelShader);
-	void setVertexShader(const NLRE_VertexShader& vertexShader);
-	void setPixelShader(const NLRE_PixelShader& pixelShader);
-
-	template<class DataType> bool createBuffer(
+	template<class DataType> 
+	bool createBuffer(
 		NLRE_BIND_FLAG bindFlag, 
 		NLRE_USAGE usage, 
 		DataType dataArr[], 
 		size_t arrayLength,
 		NLRE_Buffer& buffer);
 
-	void VSSetConstantBuffer(const NLRE_Buffer& buffer, unsigned int slotNum);
-	void PSSetConstantBuffer(const NLRE_Buffer& buffer, unsigned int slotNum);
-	void GSSetConstantBuffer(const NLRE_Buffer& buffer, unsigned int slotNum);
+	bool createDepthStencilView(NLRE_APIDepthStencilView* depthStencilView);
+	bool createInputLayout(NLRE_InputLayoutDesc ilDesc, NLRE_VertexShader vShader, NLRE_APIInputLayout* inputLayout);
+	bool createRasterizerState(NLRE_CULL_MODE cullMode, NLRE_FILL_MODE fillMode, NLRE_APIRasterizerState* rasterizerState);
+	bool createRenderTargetViews(unsigned int numViews, NLRE_APIRenderTargetView* renderTargetViewArr);
+	bool createTextureSamplerState(NLRE_APISamplerState* samplerState);
+
+	bool loadVertexShader(std::wstring path, NLRE_VertexShader& vertexShader);
+	bool loadPixelShader(std::wstring path, NLRE_PixelShader& pixelShader);
+	bool loadTexture(std::wstring path, NLRE_USAGE usage, NLRE_BIND_FLAG bindFlag, NLRE_APIResource* texture, NLRE_APIShaderResourceView* resourceView);
+	void VSSetShaderResources(unsigned int startSlot, unsigned int numViews, NLRE_APIShaderResourceView* resourceViewArr);
+	void PSSetShaderResources(unsigned int startSlot, unsigned int numViews, NLRE_APIShaderResourceView* resourceViewArr);
+	void GSSetShaderResources(unsigned int startSlot, unsigned int numViews, NLRE_APIShaderResourceView* resourceViewArr);
+	void setVertexShader(const NLRE_VertexShader& vertexShader);
+	void setPixelShader(const NLRE_PixelShader& pixelShader);
+	void VSSetConstantBuffer(unsigned int startSlot, unsigned int numBuffers, const NLRE_Buffer& buffer);
+	void PSSetConstantBuffer(unsigned int startSlot, unsigned int numBuffers, const NLRE_Buffer& buffer);
+	void GSSetConstantBuffer(unsigned int startSlot, unsigned int numBuffers, const NLRE_Buffer& buffer);
 	void setVertexBuffer(const NLRE_Buffer& buffer, unsigned int slotNum);
 	void setIndexBuffer(const NLRE_Buffer& buffer);
-
-	bool createInputLayout(NLRE_InputLayoutDesc ilDesc, NLRE_VertexShader vShader, NLRE_APIInputLayout* inputLayout);
-	void setViewPort();
-	bool createTextureSamplerStates();
-	bool createBlendStates();
-	bool createRasterizerStates();
-
-	bool loadBlobFromFile(std::wstring path, NLRE_ShaderBlob& blob);
-	//====================================== Pipeline Modification Functions ==========================================
+	bool setRenderTargets(unsigned int numRenderTargets, NLRE_APIRenderTargetView* renderTargerViewArr, NLRE_APIDepthStencilView* depthStencilView);
+	void setViewPort(int numViewports, int x, int y, int width, int height, float minDepth, float maxDepth);
+	bool VSSetTextureSamplerState(unsigned int startSlot, unsigned int numStates, NLRE_APISamplerState* samplerState);
+	bool PSSetTextureSamplerState(unsigned int startSlot, unsigned int numStates, NLRE_APISamplerState* samplerState);
+	bool GSSetTextureSamplerState(unsigned int startSlot, unsigned int numStates, NLRE_APISamplerState* samplerState);
+	//bool createBlendStates();
+	void setRasterizerState(NLRE_APIRasterizerState* rasterizerState);
 	void setInputLayout(NLRE_APIInputLayout* inputLayout);
 
-	
+
+private:
+	bool initialize();
+	void release();
+
+	bool createDeviceAndSwapChain();
+	bool loadBlobFromFile(std::wstring path, NLRE_ShaderBlob& blob);
 	
 	HWND _hwnd;
 	int _screenWidth;
@@ -63,8 +67,6 @@ private:
 	IDXGISwapChain* SwapChain;
 	ID3D11Device* d3d11Device;
 	ID3D11DeviceContext* _d3d11DevCon;
-	ID3D11SamplerState* defaultTextSamplerState;
-	ID3D11RasterizerState* backFaceCullState;
 };
 
 
