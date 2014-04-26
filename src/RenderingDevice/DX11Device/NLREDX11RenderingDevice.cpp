@@ -15,6 +15,7 @@ NLREDX11RenderingDevice::NLREDX11RenderingDevice(HWND hwndVal, int screenWidthVa
 
 	if (!initialize())
 	{
+		NLRE_Log::err(NLRE_Log::CRITICAL, "NLREDX11RenderingDevice failed to initialize");
 		throw new std::exception("NLREDX11RenderingDevice failed to initialize");
 	}
 }
@@ -509,6 +510,11 @@ bool NLREDX11RenderingDevice::createInputLayout(NLRE_InputLayoutDesc ilDesc, NLR
 inline void NLREDX11RenderingDevice::setInputLayout(NLRE_APIInputLayout* inputLayout)
 {
 	_d3d11DevCon->IASetInputLayout(inputLayout);
+}
+
+inline void NLREDX11RenderingDevice::setPrimitiveTopology(NLRE_PRIMITIVE_TOPOLOGY primitiveTopology)
+{
+	_d3d11DevCon->IASetPrimitiveTopology((D3D11_PRIMITIVE_TOPOLOGY)primitiveTopology);
 }
 
 inline void NLREDX11RenderingDevice::setViewPort(int numViewports, int x, int y, int width, int height, float minDepth, float maxDepth)
