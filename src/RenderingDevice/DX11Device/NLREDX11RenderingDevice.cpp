@@ -9,9 +9,9 @@ NLREDX11RenderingDevice::NLREDX11RenderingDevice(HWND hwndVal, int screenWidthVa
 	_screenWidth = screenWidthVal;
 	_screenHeight = screenHeightVal;
 
-	SwapChain = NULL;
-	d3d11Device = NULL;
+	_d3d11Device = NULL;
 	_d3d11DevCon = NULL;
+	_swapChain = NULL;
 
 	if (!initialize())
 	{
@@ -43,8 +43,8 @@ bool NLREDX11RenderingDevice::initialize()
 void NLREDX11RenderingDevice::release()
 {
 	_d3d11DevCon->Release();
-	d3d11Device->Release();
-	SwapChain->Release();
+	_d3d11Device->Release();
+	_swapChain->Release();
 }
 
 bool NLREDX11RenderingDevice::createDeviceAndSwapChain()
@@ -81,7 +81,7 @@ bool NLREDX11RenderingDevice::createDeviceAndSwapChain()
 
 	//Create our SwapChain
 	hr = D3D11CreateDeviceAndSwapChain(NULL, D3D_DRIVER_TYPE_HARDWARE, NULL, NULL, NULL, NULL,
-		D3D11_SDK_VERSION, &swapChainDesc, &SwapChain, &d3d11Device, NULL, &_d3d11DevCon);
+		D3D11_SDK_VERSION, &swapChainDesc, &_swapChain, &_d3d11Device, NULL, &_d3d11DevCon);
 
 	if (FAILED(hr))
 	{
@@ -98,7 +98,7 @@ bool NLREDX11RenderingDevice::createBackBufferRenderTargetView(NLRE_APIRenderTar
 
 	//Create our BackBuffer
 	ID3D11Texture2D* BackBuffer;
-	hr = SwapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), (void**)&BackBuffer);
+	hr = _swapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), (void**)&BackBuffer);
 
 	if (FAILED(hr))
 	{
@@ -107,7 +107,7 @@ bool NLREDX11RenderingDevice::createBackBufferRenderTargetView(NLRE_APIRenderTar
 	}
 
 	//Create our Render Target
-	hr = d3d11Device->CreateRenderTargetView(BackBuffer, NULL, &renderTargetView);
+	hr = _d3d11Device->CreateRenderTargetView(BackBuffer, NULL, &renderTargetView);
 	BackBuffer->Release();
 
 	if (FAILED(hr))
@@ -119,7 +119,12 @@ bool NLREDX11RenderingDevice::createBackBufferRenderTargetView(NLRE_APIRenderTar
 	return true;
 }
 
-bool NLREDX11RenderingDevice::createBlendStates(bool enableBlend, bool enableIndependentBlending, unsigned int numRenderTargets, bool enableAlphaToCoverage, NLRE_APIBlendState* blendState)
+bool NLREDX11RenderingDevice::createBlendStates(
+	bool enableBlend,
+	bool enableIndependentBlending,
+	unsigned int numRenderTargets,
+	bool enableAlphaToCoverage,
+	NLRE_APIBlendState* blendState)
 {
 	HRESULT hr;
 
@@ -130,28 +135,37 @@ bool NLREDX11RenderingDevice::createBlendStates(bool enableBlend, bool enableInd
 	}
 
 	D3D11_BLEND_DESC blendDesc;
-	ZeroMemory( &blendDesc, sizeof(blendDesc) );
+	ZeroMemory(&blendDesc, sizeof(blendDesc));
 
 	D3D11_RENDER_TARGET_BLEND_DESC rtbd;
-	ZeroMemory( &rtbd, sizeof(rtbd) );
+	ZeroMemory(&rtbd, sizeof(rtbd));
 
-	rtbd.BlendEnable			= enableBlend;
-	rtbd.SrcBlend				= D3D11_BLEND_SRC_COLOR;
-	rtbd.DestBlend				= D3D11_BLEND_BLEND_FACTOR;
-	rtbd.BlendOp				= D3D11_BLEND_OP_ADD;
-	rtbd.SrcBlendAlpha			= D3D11_BLEND_ONE;
-	rtbd.DestBlendAlpha			= D3D11_BLEND_ZERO;
-	rtbd.BlendOpAlpha			= D3D11_BLEND_OP_ADD;
-	rtbd.RenderTargetWriteMask	= D3D10_COLOR_WRITE_ENABLE_ALL;
+	rtbd.BlendEnable = enableBlend;
+	rtbd.SrcBlend = D3D11_BLEND_SRC_COLOR;
+	rtbd.DestBlend = D3D11_BLEND_BLEND_FACTOR;
+	rtbd.BlendOp = D3D11_BLEND_OP_ADD;
+	rtbd.SrcBlendAlpha = D3D11_BLEND_ONE;
+	rtbd.DestBlendAlpha = D3D11_BLEND_ZERO;
+	rtbd.BlendOpAlpha = D3D11_BLEND_OP_ADD;
+	rtbd.RenderTargetWriteMask = D3D10_COLOR_WRITE_ENABLE_ALL;
 
 	blendDesc.IndependentBlendEnable = enableIndependentBlending;
 	blendDesc.AlphaToCoverageEnable = enableAlphaToCoverage;
-	for (int i = 0; i < numRenderTargets; i++)
+
+	if (enableIndependentBlending)
 	{
-		blendDesc.RenderTarget[i] = rtbd;
+		for (int i = 0; i < numRenderTargets; i++)
+		{
+			blendDesc.RenderTarget[i] = rtbd;
+		}
+	}
+	else
+	{
+		blendDesc.RenderTarget[0] = rtbd;
 	}
 
-	hr = d3d11Device->CreateBlendState(&blendDesc, &blendState);
+
+	hr = _d3d11Device->CreateBlendState(&blendDesc, &blendState);
 	if (FAILED(hr))
 	{
 		NLRE_Log::err(NLRE_Log::CRITICAL, "Failed to create blend state");
@@ -181,7 +195,7 @@ bool NLREDX11RenderingDevice::createRenderTargetViews(unsigned int numViews, NLR
 
 	ID3D11Texture2D* buffer = NULL;
 	//Create the Depth/Stencil View
-	hr = d3d11Device->CreateTexture2D(&textDesc, NULL, &buffer);
+	hr = _d3d11Device->CreateTexture2D(&textDesc, NULL, &buffer);
 	if (FAILED(hr))
 	{
 		NLRE_Log::err(NLRE_Log::ErrorFlag::CRITICAL, "Failed to create Render Target Buffer");
@@ -189,7 +203,7 @@ bool NLREDX11RenderingDevice::createRenderTargetViews(unsigned int numViews, NLR
 	}
 
 	//Create our Render Target
-	hr = d3d11Device->CreateRenderTargetView(buffer, NULL, &renderTargetViewArr);
+	hr = _d3d11Device->CreateRenderTargetView(buffer, NULL, &renderTargetViewArr);
 	buffer->Release();
 
 	if (FAILED(hr))
@@ -222,13 +236,13 @@ bool NLREDX11RenderingDevice::createDepthStencilView(NLRE_APIDepthStencilView* d
 
 	//Create the Depth/Stencil View
 	ID3D11Texture2D* buffer = NULL;
-	hr = d3d11Device->CreateTexture2D(&depthStencilDesc, NULL, &buffer);
+	hr = _d3d11Device->CreateTexture2D(&depthStencilDesc, NULL, &buffer);
 	if (FAILED(hr))
 	{
 		NLRE_Log::err(NLRE_Log::ErrorFlag::CRITICAL, "Failed to create depthStencilBuffer");
 		return false;
 	}
-	hr = d3d11Device->CreateDepthStencilView(buffer, NULL, &depthStencilView);
+	hr = _d3d11Device->CreateDepthStencilView(buffer, NULL, &depthStencilView);
 	buffer->Release();
 
 	if (FAILED(hr))
@@ -240,9 +254,9 @@ bool NLREDX11RenderingDevice::createDepthStencilView(NLRE_APIDepthStencilView* d
 	return true;
 }
 
-bool NLREDX11RenderingDevice::setRenderTargets(
-	unsigned int numRenderTargets, 
-	NLRE_APIRenderTargetView* renderTargerViewArr, 
+inline bool NLREDX11RenderingDevice::setRenderTargets(
+	unsigned int numRenderTargets,
+	NLRE_APIRenderTargetView* renderTargerViewArr,
 	NLRE_APIDepthStencilView* depthStencilView)
 {
 	//Set our Render Target
@@ -283,7 +297,7 @@ bool NLREDX11RenderingDevice::loadVertexShader(std::wstring path, NLRE_VertexSha
 
 	//Create Vertex Shader
 	ID3D11VertexShader* vs = NULL;
-	hr = d3d11Device->CreateVertexShader(blob.data, blob.size, NULL, &vs);
+	hr = _d3d11Device->CreateVertexShader(blob.data, blob.size, NULL, &vs);
 	if (FAILED(hr))
 	{
 		NLRE_Log::err(NLRE_Log::ErrorFlag::CRITICAL, "Failed to create Vertex Shader");
@@ -309,7 +323,7 @@ bool NLREDX11RenderingDevice::loadPixelShader(std::wstring path, NLRE_PixelShade
 
 	//Create Pixel Shader
 	ID3D11PixelShader* ps = NULL;
-	hr = d3d11Device->CreatePixelShader(blob.data, blob.size, NULL, &ps);
+	hr = _d3d11Device->CreatePixelShader(blob.data, blob.size, NULL, &ps);
 	if (FAILED(hr))
 	{
 		NLRE_Log::err(NLRE_Log::ErrorFlag::CRITICAL, "Failed to create Pixel Shader");
@@ -322,9 +336,9 @@ bool NLREDX11RenderingDevice::loadPixelShader(std::wstring path, NLRE_PixelShade
 }
 
 bool NLREDX11RenderingDevice::loadTexture(
-	std::wstring path, 
-	NLRE_USAGE usage, 
-	NLRE_BIND_FLAG bindFlag, 
+	std::wstring path,
+	NLRE_USAGE usage,
+	NLRE_BIND_FLAG bindFlag,
 	NLRE_APIResource* texture,
 	NLRE_APIShaderResourceView* resourceView)
 {
@@ -335,23 +349,24 @@ bool NLREDX11RenderingDevice::loadTexture(
 	if (fileExt == L".DDS" || fileExt == L".dds") {
 
 		hr = DirectX::CreateDDSTextureFromFileEx(
-		d3d11Device,
-		_d3d11DevCon,
-		path.c_str(),
-		0,
-		(D3D11_USAGE)usage,
-		bindFlag,
-		usage == NLRE_USAGE_DYNAMIC ? D3D11_CPU_ACCESS_WRITE : 0,
-		0,
-		false,
-		&texture,
-		&resourceView
-		);
+			_d3d11Device,
+			_d3d11DevCon,
+			path.c_str(),
+			0,
+			(D3D11_USAGE)usage,
+			bindFlag,
+			usage == NLRE_USAGE_DYNAMIC ? D3D11_CPU_ACCESS_WRITE : 0,
+			0,
+			false,
+			&texture,
+			&resourceView
+			);
 	}
 	else
 	{
-		hr = DirectX::CreateWICTextureFromFileEx(d3d11Device, 
-			_d3d11DevCon, 
+		hr = DirectX::CreateWICTextureFromFileEx(
+			_d3d11Device,
+			_d3d11DevCon,
 			path.c_str(),
 			0,
 			(D3D11_USAGE)usage,
@@ -372,29 +387,34 @@ bool NLREDX11RenderingDevice::loadTexture(
 	return true;
 }
 
-void NLREDX11RenderingDevice::VSSetShaderResources(unsigned int startSlot, unsigned int numViews, NLRE_APIShaderResourceView* resourceViewArr)
+inline void NLREDX11RenderingDevice::VSSetShaderResources(unsigned int startSlot, unsigned int numViews, NLRE_APIShaderResourceView* resourceViewArr)
 {
 	_d3d11DevCon->VSSetShaderResources(startSlot, numViews, &resourceViewArr);
 }
 
-void NLREDX11RenderingDevice::PSSetShaderResources(unsigned int startSlot, unsigned int numViews, NLRE_APIShaderResourceView* resourceViewArr)
+inline void NLREDX11RenderingDevice::PSSetShaderResources(unsigned int startSlot, unsigned int numViews, NLRE_APIShaderResourceView* resourceViewArr)
 {
 	_d3d11DevCon->PSSetShaderResources(startSlot, numViews, &resourceViewArr);
 }
 
-void NLREDX11RenderingDevice::GSSetShaderResources(unsigned int startSlot, unsigned int numViews, NLRE_APIShaderResourceView* resourceViewArr)
+inline void NLREDX11RenderingDevice::GSSetShaderResources(unsigned int startSlot, unsigned int numViews, NLRE_APIShaderResourceView* resourceViewArr)
 {
 	_d3d11DevCon->GSSetShaderResources(startSlot, numViews, &resourceViewArr);
 }
 
-void NLREDX11RenderingDevice::setVertexShader(const NLRE_VertexShader& vertexShader)
+inline void NLREDX11RenderingDevice::setVertexShader(const NLRE_VertexShader& vertexShader)
 {
 	_d3d11DevCon->VSSetShader(vertexShader.apiVertexShader, NULL, 0);
 }
 
-void NLREDX11RenderingDevice::setPixelShader(const NLRE_PixelShader& pixelShader)
+inline void NLREDX11RenderingDevice::setPixelShader(const NLRE_PixelShader& pixelShader)
 {
 	_d3d11DevCon->PSSetShader(pixelShader.apiPixelShader, NULL, 0);
+}
+
+inline void NLREDX11RenderingDevice::setBlendState(NLRE_APIBlendState* blendState, float blendFactor[])
+{
+	_d3d11DevCon->OMSetBlendState(blendState, blendFactor, 0xffffffff);
 }
 
 template<class DataType>
@@ -422,7 +442,7 @@ bool NLREDX11RenderingDevice::createBuffer(
 	{
 		bufferDesc.CPUAccessFlags = 0;
 	}
-	
+
 	bufferDesc.ByteWidth = sizeof(DataType)* arrayLength;
 	bufferDesc.MiscFlags = 0;
 
@@ -431,7 +451,7 @@ bool NLREDX11RenderingDevice::createBuffer(
 	subresData.pSysMem = dataArr;
 
 	ID3D11Buffer* apiBuffer = NULL;
-	hr = d3d11Device->CreateBuffer(&bufferDesc, &subresData, &apiBuffer);
+	hr = _d3d11Device->CreateBuffer(&bufferDesc, &subresData, &apiBuffer);
 
 	if (FAILED(hr))
 	{
@@ -447,27 +467,27 @@ bool NLREDX11RenderingDevice::createBuffer(
 	return true;
 }
 
-void NLREDX11RenderingDevice::VSSetConstantBuffer(unsigned int startSlot, unsigned int numBuffers,const NLRE_Buffer& buffer)
+inline void NLREDX11RenderingDevice::VSSetConstantBuffer(unsigned int startSlot, unsigned int numBuffers, const NLRE_Buffer& buffer)
 {
 	_d3d11DevCon->VSSetConstantBuffers(startSlot, numBuffers, &(buffer.apiBuffer));
 }
 
-void NLREDX11RenderingDevice::PSSetConstantBuffer(unsigned int startSlot, unsigned int numBuffers,const NLRE_Buffer& buffer)
+inline void NLREDX11RenderingDevice::PSSetConstantBuffer(unsigned int startSlot, unsigned int numBuffers, const NLRE_Buffer& buffer)
 {
 	_d3d11DevCon->PSSetConstantBuffers(startSlot, numBuffers, &(buffer.apiBuffer));
 }
 
-void NLREDX11RenderingDevice::GSSetConstantBuffer(unsigned int startSlot, unsigned int numBuffers,const NLRE_Buffer& buffer)
+inline void NLREDX11RenderingDevice::GSSetConstantBuffer(unsigned int startSlot, unsigned int numBuffers, const NLRE_Buffer& buffer)
 {
 	_d3d11DevCon->GSSetConstantBuffers(startSlot, numBuffers, &(buffer.apiBuffer));
 }
 
-void NLREDX11RenderingDevice::setVertexBuffer(const NLRE_Buffer& buffer, unsigned int slotNum)
+inline void NLREDX11RenderingDevice::setVertexBuffer(const NLRE_Buffer& buffer, unsigned int slotNum)
 {
 	_d3d11DevCon->IASetVertexBuffers(slotNum, 1, &(buffer.apiBuffer), &(buffer.elementSize), 0);
 }
 
-void NLREDX11RenderingDevice::setIndexBuffer(const NLRE_Buffer& buffer)
+inline void NLREDX11RenderingDevice::setIndexBuffer(const NLRE_Buffer& buffer)
 {
 	_d3d11DevCon->IASetIndexBuffer(buffer.apiBuffer, DXGI_FORMAT_R32_UINT, 0);
 }
@@ -476,7 +496,7 @@ bool NLREDX11RenderingDevice::createInputLayout(NLRE_InputLayoutDesc ilDesc, NLR
 {
 	HRESULT hr;
 
-	hr = d3d11Device->CreateInputLayout(ilDesc.apiInputLayoutDesc, ilDesc.numberElements, vShader.blob.data,
+	hr = _d3d11Device->CreateInputLayout(ilDesc.apiInputLayoutDesc, ilDesc.numberElements, vShader.blob.data,
 		vShader.blob.size, &inputLayout);
 	if (FAILED(hr))
 	{
@@ -486,12 +506,12 @@ bool NLREDX11RenderingDevice::createInputLayout(NLRE_InputLayoutDesc ilDesc, NLR
 	return true;
 }
 
-void NLREDX11RenderingDevice::setInputLayout(NLRE_APIInputLayout* inputLayout)
+inline void NLREDX11RenderingDevice::setInputLayout(NLRE_APIInputLayout* inputLayout)
 {
 	_d3d11DevCon->IASetInputLayout(inputLayout);
 }
 
-void NLREDX11RenderingDevice::setViewPort(int numViewports, int x, int y, int width, int height, float minDepth, float maxDepth)
+inline void NLREDX11RenderingDevice::setViewPort(int numViewports, int x, int y, int width, int height, float minDepth, float maxDepth)
 {
 	D3D11_VIEWPORT viewport;
 	ZeroMemory(&viewport, sizeof(D3D11_VIEWPORT));
@@ -522,7 +542,7 @@ bool NLREDX11RenderingDevice::createTextureSamplerState(NLRE_APISamplerState* sa
 	sampDesc.MaxLOD = D3D11_FLOAT32_MAX;
 
 	//Create the Sample State
-	hr = d3d11Device->CreateSamplerState(&sampDesc, &samplerState);
+	hr = _d3d11Device->CreateSamplerState(&sampDesc, &samplerState);
 	if (FAILED(hr))
 	{
 		NLRE_Log::err(NLRE_Log::ErrorFlag::CRITICAL, "Failed to create texture sampler state");
@@ -532,28 +552,20 @@ bool NLREDX11RenderingDevice::createTextureSamplerState(NLRE_APISamplerState* sa
 	return true;
 }
 
-bool NLREDX11RenderingDevice::VSSetTextureSamplerState(unsigned int startSlot, unsigned int numStates, NLRE_APISamplerState* samplerState)
+inline void NLREDX11RenderingDevice::VSSetTextureSamplerState(unsigned int startSlot, unsigned int numStates, NLRE_APISamplerState* samplerState)
 {
 	_d3d11DevCon->VSSetSamplers(startSlot, numStates, &samplerState);
 }
 
-bool NLREDX11RenderingDevice::PSSetTextureSamplerState(unsigned int startSlot, unsigned int numStates, NLRE_APISamplerState* samplerState)
+inline void NLREDX11RenderingDevice::PSSetTextureSamplerState(unsigned int startSlot, unsigned int numStates, NLRE_APISamplerState* samplerState)
 {
 	_d3d11DevCon->PSSetSamplers(startSlot, numStates, &samplerState);
 }
 
-bool NLREDX11RenderingDevice::GSSetTextureSamplerState(unsigned int startSlot, unsigned int numStates, NLRE_APISamplerState* samplerState)
+inline void NLREDX11RenderingDevice::GSSetTextureSamplerState(unsigned int startSlot, unsigned int numStates, NLRE_APISamplerState* samplerState)
 {
 	_d3d11DevCon->GSSetSamplers(startSlot, numStates, &samplerState);
 }
-
-/*
-bool NLREDX11RenderingDevice::createBlendStates()
-{
-
-	return true;
-}
-*/
 
 bool NLREDX11RenderingDevice::createRasterizerState(NLRE_CULL_MODE cullMode, NLRE_FILL_MODE fillMode, NLRE_APIRasterizerState* rasterizerState)
 {
@@ -562,10 +574,10 @@ bool NLREDX11RenderingDevice::createRasterizerState(NLRE_CULL_MODE cullMode, NLR
 	D3D11_RASTERIZER_DESC cmdesc;
 	ZeroMemory(&cmdesc, sizeof(D3D11_RASTERIZER_DESC));
 
-	cmdesc.CullMode = (D3D11_CULL_MODE) cullMode;
-	cmdesc.FillMode = (D3D11_FILL_MODE) fillMode;
+	cmdesc.CullMode = (D3D11_CULL_MODE)cullMode;
+	cmdesc.FillMode = (D3D11_FILL_MODE)fillMode;
 
-	hr = d3d11Device->CreateRasterizerState(&cmdesc, &rasterizerState);
+	hr = _d3d11Device->CreateRasterizerState(&cmdesc, &rasterizerState);
 	if (FAILED(hr))
 	{
 		NLRE_Log::err(NLRE_Log::ErrorFlag::CRITICAL, "Failed to create rasterizer state");
@@ -575,7 +587,22 @@ bool NLREDX11RenderingDevice::createRasterizerState(NLRE_CULL_MODE cullMode, NLR
 	return true;
 }
 
-void NLREDX11RenderingDevice::setRasterizerState(NLRE_APIRasterizerState* rasterizerState)
+inline void NLREDX11RenderingDevice::setRasterizerState(NLRE_APIRasterizerState* rasterizerState)
 {
 	_d3d11DevCon->RSSetState(rasterizerState);
+}
+
+inline void NLREDX11RenderingDevice::clearRenderTargetView(NLRE_APIRenderTargetView* renderTargetView, float colorRGBA[])
+{
+	_d3d11DevCon->ClearRenderTargetView(renderTargetView, colorRGBA);
+}
+
+inline void NLREDX11RenderingDevice::clearDepthStencilView(NLRE_APIDepthStencilView* depthStencilView)
+{
+	_d3d11DevCon->ClearDepthStencilView(depthStencilView, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
+}
+
+inline void NLREDX11RenderingDevice::display()
+{
+	_swapChain->Present(0, 0);
 }

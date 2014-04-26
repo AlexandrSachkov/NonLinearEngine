@@ -1,8 +1,6 @@
 #ifndef NLRE_RESOURCES_
 #define NLRE_RESOURCES_
 
-#include "RenderingDevice\NLRERenderStateID.h"
-
 #ifdef _DX11_
 	#include "RenderingDevice\DX11Device\NLREDX11ResourceWrap.h"
 #endif

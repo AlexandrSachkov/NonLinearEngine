@@ -49,14 +49,20 @@ public:
 	void setVertexBuffer(const NLRE_Buffer& buffer, unsigned int slotNum);
 	void setIndexBuffer(const NLRE_Buffer& buffer);
 
+	void setBlendState(NLRE_APIBlendState* blendState, float blendFactor[]);
 	void setInputLayout(NLRE_APIInputLayout* inputLayout);
 	void setRasterizerState(NLRE_APIRasterizerState* rasterizerState);
 	bool setRenderTargets(unsigned int numRenderTargets, NLRE_APIRenderTargetView* renderTargerViewArr, NLRE_APIDepthStencilView* depthStencilView);
 	void setViewPort(int numViewports, int x, int y, int width, int height, float minDepth, float maxDepth);
 	
-	bool VSSetTextureSamplerState(unsigned int startSlot, unsigned int numStates, NLRE_APISamplerState* samplerState);
-	bool PSSetTextureSamplerState(unsigned int startSlot, unsigned int numStates, NLRE_APISamplerState* samplerState);
-	bool GSSetTextureSamplerState(unsigned int startSlot, unsigned int numStates, NLRE_APISamplerState* samplerState);
+	void VSSetTextureSamplerState(unsigned int startSlot, unsigned int numStates, NLRE_APISamplerState* samplerState);
+	void PSSetTextureSamplerState(unsigned int startSlot, unsigned int numStates, NLRE_APISamplerState* samplerState);
+	void GSSetTextureSamplerState(unsigned int startSlot, unsigned int numStates, NLRE_APISamplerState* samplerState);
+
+	void clearRenderTargetView(NLRE_APIRenderTargetView* renderTargetView, float colorRGBA[]);
+	void clearDepthStencilView(NLRE_APIDepthStencilView* depthStencilView);
+	void display();
+
 
 private:
 	bool initialize();
@@ -69,9 +75,9 @@ private:
 	int _screenWidth;
 	int _screenHeight;
 	
-	IDXGISwapChain* SwapChain;
-	ID3D11Device* d3d11Device;
+	ID3D11Device* _d3d11Device;
 	ID3D11DeviceContext* _d3d11DevCon;
+	IDXGISwapChain* _swapChain;
 };
 
 
