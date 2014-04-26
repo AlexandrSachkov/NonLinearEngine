@@ -5,12 +5,8 @@
 #include <d3d11.h>
 
 #include "RenderingDevice\NLREInputLayoutDescriptions.h"
-#include "DirectXTex.h"
-
-struct cbPerObject
-{
-	NLE_FLOAT4X4 MVP;
-};
+#include "DDSTextureLoader.h"
+#include "WICTextureLoader.h"
 
 class NLREDX11RenderingDevice
 {
@@ -19,20 +15,15 @@ public:
 	NLREDX11RenderingDevice(const NLREDX11RenderingDevice&);
 	~NLREDX11RenderingDevice();
 
-	
-	
-	//====================================== Getter Functions ==========================================
-	ID3D11Device* getD3DDevice();
-
 private:
 	bool initialize();
 	void release();
-	//====================================== Initialization Functions ==========================================
-	bool initializeDirect3d11();
+
 	bool createDeviceAndSwapChain();
-	bool createRenderTargetView();
-	bool createDepthStencilView();
-	bool setRenderTargets();
+	bool createBackBufferRenderTargetView(NLRE_APIRenderTargetView* renderTargetView);
+	bool createRenderTargetViews(unsigned int numViews, NLRE_APIRenderTargetView* renderTargetViewArr);
+	bool createDepthStencilView(NLRE_APIDepthStencilView* depthStencilView);
+	bool setRenderTargets(unsigned int numRenderTargets, NLRE_APIRenderTargetView* renderTargerViewArr, NLRE_APIDepthStencilView* depthStencilView);
 
 	bool createAllResources();
 	bool loadVertexShader(std::wstring path, NLRE_VertexShader& vertexShader);
@@ -41,12 +32,15 @@ private:
 	void setPixelShader(const NLRE_PixelShader& pixelShader);
 
 	template<class DataType> bool createBuffer(
-		NLRE_RenderStateId::BufferType buffType, 
-		NLRE_RenderStateId::Usage usage, 
+		NLRE_BIND_FLAG bindFlag, 
+		NLRE_USAGE usage, 
 		DataType dataArr[], 
 		size_t arrayLength,
 		NLRE_Buffer& buffer);
-	void setConstantBuffer(NLRE_RenderStateId::PipelineStage stage, const NLRE_Buffer& buffer, unsigned int slotNum);
+
+	void VSSetConstantBuffer(const NLRE_Buffer& buffer, unsigned int slotNum);
+	void PSSetConstantBuffer(const NLRE_Buffer& buffer, unsigned int slotNum);
+	void GSSetConstantBuffer(const NLRE_Buffer& buffer, unsigned int slotNum);
 	void setVertexBuffer(const NLRE_Buffer& buffer, unsigned int slotNum);
 	void setIndexBuffer(const NLRE_Buffer& buffer);
 
@@ -60,25 +54,15 @@ private:
 	//====================================== Pipeline Modification Functions ==========================================
 	void setInputLayout(NLRE_APIInputLayout* inputLayout);
 
-
 	
 	
 	HWND _hwnd;
 	int _screenWidth;
 	int _screenHeight;
-
-	int numRenderingThreads;
-	int numDeferredContexts;
-	int maxIndices;
-	int maxVertices;
 	
 	IDXGISwapChain* SwapChain;
 	ID3D11Device* d3d11Device;
 	ID3D11DeviceContext* _d3d11DevCon;
-	ID3D11RenderTargetView* renderTargetView;
-	ID3D11Texture2D* depthStencilBuffer;
-	ID3D11DepthStencilView* depthStencilView;
-
 	ID3D11SamplerState* defaultTextSamplerState;
 	ID3D11RasterizerState* backFaceCullState;
 };

@@ -103,24 +103,29 @@
     <TargetName>$(ProjectName)_d</TargetName>
     <OutDir>$(SolutionDir)..\lib\$(Configuration)\$(PlatformName)\</OutDir>
     <IntDir>$(SolutionDir)..\lib\$(Configuration)\$(PlatformName)\intermediate\</IntDir>
+    <IncludePath>$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <OutDir>$(SolutionDir)..\lib\$(Configuration)\$(PlatformName)\</OutDir>
     <IntDir>$(SolutionDir)..\lib\$(Configuration)\$(PlatformName)\intermediate\</IntDir>
+    <IncludePath>$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Profile|Win32'">
     <OutDir>$(SolutionDir)..\lib\$(Configuration)\$(PlatformName)\</OutDir>
     <IntDir>$(SolutionDir)..\lib\$(Configuration)\$(PlatformName)\intermediate\</IntDir>
     <TargetName>$(ProjectName)_p</TargetName>
+    <IncludePath>$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <OutDir>$(SolutionDir)..\lib\$(Configuration)\$(PlatformName)\</OutDir>
     <IntDir>$(SolutionDir)..\lib\$(Configuration)\$(PlatformName)\intermediate\</IntDir>
+    <IncludePath>$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Profile|x64'">
     <OutDir>$(SolutionDir)..\lib\$(Configuration)\$(PlatformName)\</OutDir>
     <IntDir>$(SolutionDir)..\lib\$(Configuration)\$(PlatformName)\intermediate\</IntDir>
     <TargetName>$(ProjectName)_p</TargetName>
+    <IncludePath>$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -128,7 +133,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\include;..\src;..\include\NLREMain;..\Dependencies\DirectXTex\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\include;..\src;..\include\NLREMain;..\Dependencies\DDSTextureLoader;..\Dependencies\WICTextureLoader;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
     </ClCompile>
     <Link>
@@ -137,7 +142,7 @@
     </Link>
     <Lib>
       <OutputFile>..\lib\$(Configuration)\$(PlatformName)\$(TargetName)$(TargetExt)</OutputFile>
-      <AdditionalLibraryDirectories>..\Dependencies\DirectXTek\lib\$(Configuration)\$(PlatformName);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -146,7 +151,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\include;..\src;..\include\NLREMain;..\Dependencies\DirectXTex\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\include;..\src;..\include\NLREMain;..\Dependencies\DDSTextureLoader;..\Dependencies\WICTextureLoader;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <BrowseInformation>true</BrowseInformation>
       <PrecompiledHeaderFile>stdafx.h</PrecompiledHeaderFile>
@@ -157,7 +162,7 @@
     </Link>
     <Lib>
       <OutputFile>..\lib\$(Configuration)\$(PlatformName)\$(TargetName)$(TargetExt)</OutputFile>
-      <AdditionalLibraryDirectories>..\Dependencies\DirectXTek\lib\$(Configuration)\$(PlatformName);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Lib>
     <Bscmake>
       <PreserveSbr>true</PreserveSbr>
@@ -171,7 +176,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\include;..\src;..\include\NLREMain;..\Dependencies\DirectXTex\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\include;..\src;..\include\NLREMain;..\Dependencies\DDSTextureLoader;..\Dependencies\WICTextureLoader;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
       <StringPooling>true</StringPooling>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
@@ -188,7 +193,7 @@
     </Link>
     <Lib>
       <OutputFile>..\lib\$(Configuration)\$(PlatformName)\$(TargetName)$(TargetExt)</OutputFile>
-      <AdditionalLibraryDirectories>..\Dependencies\DirectXTek\lib\$(Configuration)\$(PlatformName);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Profile|Win32'">
@@ -199,7 +204,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\include;..\src;..\include\NLREMain;..\Dependencies\DirectXTex\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\include;..\src;..\include\NLREMain;..\Dependencies\DDSTextureLoader;..\Dependencies\WICTextureLoader;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
       <OmitFramePointers>true</OmitFramePointers>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
@@ -215,7 +220,7 @@
     </Link>
     <Lib>
       <OutputFile>..\lib\$(Configuration)\$(PlatformName)\$(TargetName)$(TargetExt)</OutputFile>
-      <AdditionalLibraryDirectories>..\Dependencies\DirectXTek\lib\$(Configuration)\$(PlatformName);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -226,7 +231,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\include;..\src;..\include\NLREMain;..\Dependencies\DirectXTex\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\include;..\src;..\include\NLREMain;..\Dependencies\DDSTextureLoader;..\Dependencies\WICTextureLoader;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
       <OmitFramePointers>true</OmitFramePointers>
       <EnableParallelCodeGeneration>true</EnableParallelCodeGeneration>
@@ -244,7 +249,7 @@
     </Link>
     <Lib>
       <OutputFile>..\lib\$(Configuration)\$(PlatformName)\$(TargetName)$(TargetExt)</OutputFile>
-      <AdditionalLibraryDirectories>..\Dependencies\DirectXTek\lib\$(Configuration)\$(PlatformName);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Profile|x64'">
@@ -255,7 +260,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\include;..\src;..\include\NLREMain;..\Dependencies\DirectXTex\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\include;..\src;..\include\NLREMain;..\Dependencies\DDSTextureLoader;..\Dependencies\WICTextureLoader;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
       <OmitFramePointers>true</OmitFramePointers>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
@@ -272,7 +277,7 @@
     </Link>
     <Lib>
       <OutputFile>..\lib\$(Configuration)\$(PlatformName)\$(TargetName)$(TargetExt)</OutputFile>
-      <AdditionalLibraryDirectories>..\Dependencies\DirectXTek\lib\$(Configuration)\$(PlatformName);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -308,7 +313,6 @@
     <ClInclude Include="..\include\RenderingDevice\NLREDeviceController.h" />
     <ClInclude Include="..\include\RenderingDevice\NLREInputLayoutDescriptions.h" />
     <ClInclude Include="..\include\RenderingDevice\NLRERenderingDevice.h" />
-    <ClInclude Include="..\include\RenderingDevice\NLRERenderStateID.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="..\src\RenderingDevice\DX11Device\Shaders\DeferredGBuff_TextNormal_BlinnPhong_PS.hlsl">

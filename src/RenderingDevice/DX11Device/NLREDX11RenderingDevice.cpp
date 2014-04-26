@@ -9,15 +9,9 @@ NLREDX11RenderingDevice::NLREDX11RenderingDevice(HWND hwndVal, int screenWidthVa
 	_screenWidth = screenWidthVal;
 	_screenHeight = screenHeightVal;
 
-	maxIndices = 20000;
-	maxVertices = 20000;
-
 	SwapChain = NULL;
 	d3d11Device = NULL;
 	_d3d11DevCon = NULL;
-	renderTargetView = NULL;
-	depthStencilBuffer = NULL;
-	depthStencilView = NULL;
 
 	defaultTextSamplerState = NULL;
 	backFaceCullState = NULL;
@@ -45,16 +39,12 @@ bool NLREDX11RenderingDevice::initialize()
 		NLRE_Log::err(NLRE_Log::ErrorFlag::CRITICAL, "Window was not initialized.");
 		return false;
 	}
-	if (!initializeDirect3d11()) return false;
+	if (!createDeviceAndSwapChain()) return false;
 	return true;
 }
 
-
 void NLREDX11RenderingDevice::release()
 {
-	depthStencilView->Release();
-	depthStencilBuffer->Release();
-	renderTargetView->Release();
 	_d3d11DevCon->Release();
 	d3d11Device->Release();
 	SwapChain->Release();
@@ -63,15 +53,6 @@ void NLREDX11RenderingDevice::release()
 
 }
 
-bool NLREDX11RenderingDevice::initializeDirect3d11()
-{
-	if (!createDeviceAndSwapChain()) return false;
-	if (!createRenderTargetView()) return false;
-	if (!createDepthStencilView()) return false;
-	if (!setRenderTargets()) return false;
-
-	return true;
-}
 bool NLREDX11RenderingDevice::createDeviceAndSwapChain()
 {
 	HRESULT hr;
@@ -116,7 +97,8 @@ bool NLREDX11RenderingDevice::createDeviceAndSwapChain()
 
 	return true;
 }
-bool NLREDX11RenderingDevice::createRenderTargetView()
+
+bool NLREDX11RenderingDevice::createBackBufferRenderTargetView(NLRE_APIRenderTargetView* renderTargetView)
 {
 	HRESULT hr;
 
@@ -126,23 +108,69 @@ bool NLREDX11RenderingDevice::createRenderTargetView()
 
 	if (FAILED(hr))
 	{
-		NLRE_Log::err(NLRE_Log::ErrorFlag::CRITICAL, "Failed to create Back Buffer");
+		NLRE_Log::err(NLRE_Log::ErrorFlag::CRITICAL, "Failed to get Back Buffer");
 		return false;
 	}
 
 	//Create our Render Target
-	hr = d3d11Device->CreateRenderTargetView(BackBuffer, NULL, &renderTargetView);
+	ID3D11RenderTargetView* rtView = NULL;
+	hr = d3d11Device->CreateRenderTargetView(BackBuffer, NULL, &rtView);
 	BackBuffer->Release();
 
 	if (FAILED(hr))
 	{
-		NLRE_Log::err(NLRE_Log::ErrorFlag::CRITICAL, "Failed to create Render Target View");
+		NLRE_Log::err(NLRE_Log::ErrorFlag::CRITICAL, "Failed to create Back Buffer Render Target View");
 		return false;
 	}
+	renderTargetView = rtView;
 
 	return true;
 }
-bool NLREDX11RenderingDevice::createDepthStencilView()
+
+bool NLREDX11RenderingDevice::createRenderTargetViews(unsigned int numViews, NLRE_APIRenderTargetView* renderTargetViewArr)
+{
+	HRESULT hr;
+
+	D3D11_TEXTURE2D_DESC textDesc;
+	ZeroMemory(&textDesc, sizeof(textDesc));
+
+	textDesc.Width = _screenWidth;
+	textDesc.Height = _screenHeight;
+	textDesc.MipLevels = 1;
+	textDesc.ArraySize = numViews;
+	textDesc.Format = DXGI_FORMAT_R32G32B32A32_FLOAT;
+	textDesc.SampleDesc.Count = 1;
+	textDesc.SampleDesc.Quality = 0;
+	textDesc.Usage = D3D11_USAGE_DEFAULT;
+	textDesc.BindFlags = D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE;
+	textDesc.CPUAccessFlags = 0;
+	textDesc.MiscFlags = 0;
+
+	ID3D11Texture2D* buffer = NULL;
+	//Create the Depth/Stencil View
+	hr = d3d11Device->CreateTexture2D(&textDesc, NULL, &buffer);
+	if (FAILED(hr))
+	{
+		NLRE_Log::err(NLRE_Log::ErrorFlag::CRITICAL, "Failed to create Render Target Buffer");
+		return false;
+	}
+
+	//Create our Render Target
+	ID3D11RenderTargetView* rtViews = NULL;
+	hr = d3d11Device->CreateRenderTargetView(buffer, NULL, &rtViews);
+	buffer->Release();
+
+	if (FAILED(hr))
+	{
+		NLRE_Log::err(NLRE_Log::ErrorFlag::CRITICAL, "Failed to create Back Buffer Render Target View");
+		return false;
+	}
+	renderTargetViewArr = rtViews;
+
+	return true;
+}
+
+bool NLREDX11RenderingDevice::createDepthStencilView(NLRE_APIDepthStencilView* depthStencilView)
 {
 	HRESULT hr;
 
@@ -162,27 +190,34 @@ bool NLREDX11RenderingDevice::createDepthStencilView()
 	depthStencilDesc.MiscFlags = 0;
 
 	//Create the Depth/Stencil View
-	hr = d3d11Device->CreateTexture2D(&depthStencilDesc, NULL, &depthStencilBuffer);
+	ID3D11Texture2D* buffer = NULL;
+	hr = d3d11Device->CreateTexture2D(&depthStencilDesc, NULL, &buffer);
 	if (FAILED(hr))
 	{
 		NLRE_Log::err(NLRE_Log::ErrorFlag::CRITICAL, "Failed to create depthStencilBuffer");
 		return false;
 	}
-
-	hr = d3d11Device->CreateDepthStencilView(depthStencilBuffer, NULL, &depthStencilView);
+	ID3D11DepthStencilView* dsView = NULL;
+	hr = d3d11Device->CreateDepthStencilView(buffer, NULL, &dsView);
+	buffer->Release();
 
 	if (FAILED(hr))
 	{
 		NLRE_Log::err(NLRE_Log::ErrorFlag::CRITICAL, "Failed to create DepthStencilView");
 		return false;
 	}
+	depthStencilView = dsView;
 
 	return true;
 }
-bool NLREDX11RenderingDevice::setRenderTargets()
+
+bool NLREDX11RenderingDevice::setRenderTargets(
+	unsigned int numRenderTargets, 
+	NLRE_APIRenderTargetView* renderTargerViewArr, 
+	NLRE_APIDepthStencilView* depthStencilView)
 {
 	//Set our Render Target
-	_d3d11DevCon->OMSetRenderTargets(1, &renderTargetView, depthStencilView);
+	_d3d11DevCon->OMSetRenderTargets(numRenderTargets, &renderTargerViewArr, depthStencilView);
 
 	return true;
 }
@@ -269,8 +304,8 @@ void NLREDX11RenderingDevice::setPixelShader(const NLRE_PixelShader& pixelShader
 
 template<class DataType>
 bool NLREDX11RenderingDevice::createBuffer(
-	NLRE_RenderStateId::BufferType buffType,
-	NLRE_RenderStateId::Usage usage,
+	NLRE_BIND_FLAG bindFlag,
+	NLRE_USAGE usage,
 	DataType dataArr[],
 	size_t arrayLength,
 	NLRE_Buffer& buffer)
@@ -280,39 +315,19 @@ bool NLREDX11RenderingDevice::createBuffer(
 	D3D11_BUFFER_DESC bufferDesc;
 	ZeroMemory(&bufferDesc, sizeof(bufferDesc));
 
-	//==============================	Select Buffer Type	=======================================
-	if (buffType == NLRE_RenderStateId::BufferType::CONSTANT)
-	{
-		bufferDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
-	}
-	else if (buffType == NLRE_RenderStateId::BufferType::INDEX)
-	{
-		bufferDesc.BindFlags = D3D11_BIND_INDEX_BUFFER;
-	}
-	else if (buffType == NLRE_RenderStateId::BufferType::VERTEX)
-	{
-		bufferDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
-	}
 
-	//==============================	Select Buffer Usage	=======================================
-	if (usage == NLRE_RenderStateId::Usage::DEFAULT)
+	bufferDesc.BindFlags = bindFlag;
+	bufferDesc.Usage = usage;
+
+	if (usage == NLRE_USAGE_DYNAMIC)
 	{
-		bufferDesc.Usage = D3D11_USAGE_DEFAULT;
-		bufferDesc.CPUAccessFlags = 0;
-	}
-	else if (usage == NLRE_RenderStateId::Usage::IMMUTABLE)
-	{
-		bufferDesc.Usage = D3D11_USAGE_IMMUTABLE;
-		bufferDesc.CPUAccessFlags = 0;
-	}
-	else if (usage == NLRE_RenderStateId::Usage::DYNAMIC)
-	{
-		bufferDesc.Usage = D3D11_USAGE_DYNAMIC;
 		bufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
 	}
-
-
-
+	else
+	{
+		bufferDesc.CPUAccessFlags = 0;
+	}
+	
 	bufferDesc.ByteWidth = sizeof(DataType)* arrayLength;
 	bufferDesc.MiscFlags = 0;
 
@@ -337,24 +352,19 @@ bool NLREDX11RenderingDevice::createBuffer(
 	return true;
 }
 
-void NLREDX11RenderingDevice::setConstantBuffer(
-	NLRE_RenderStateId::PipelineStage stage,
-	const NLRE_Buffer& buffer,
-	unsigned int slotNum)
+void NLREDX11RenderingDevice::VSSetConstantBuffer(const NLRE_Buffer& buffer,unsigned int slotNum)
 {
+	_d3d11DevCon->VSSetConstantBuffers(slotNum, 1, &(buffer.apiBuffer));
+}
 
-	if (stage == NLRE_RenderStateId::PipelineStage::VShader)
-	{
-		_d3d11DevCon->VSSetConstantBuffers(slotNum, 1, &(buffer.apiBuffer));
-	}
-	else if (stage == NLRE_RenderStateId::PipelineStage::PShader)
-	{
-		_d3d11DevCon->PSSetConstantBuffers(slotNum, 1, &(buffer.apiBuffer));
-	}
-	else if (stage == NLRE_RenderStateId::PipelineStage::GShader)
-	{
-		_d3d11DevCon->GSSetConstantBuffers(slotNum, 1, &(buffer.apiBuffer));
-	}
+void NLREDX11RenderingDevice::PSSetConstantBuffer(const NLRE_Buffer& buffer, unsigned int slotNum)
+{
+	_d3d11DevCon->PSSetConstantBuffers(slotNum, 1, &(buffer.apiBuffer));
+}
+
+void NLREDX11RenderingDevice::GSSetConstantBuffer(const NLRE_Buffer& buffer, unsigned int slotNum)
+{
+	_d3d11DevCon->GSSetConstantBuffers(slotNum, 1, &(buffer.apiBuffer));
 }
 
 void NLREDX11RenderingDevice::setVertexBuffer(const NLRE_Buffer& buffer, unsigned int slotNum)
@@ -366,7 +376,6 @@ void NLREDX11RenderingDevice::setIndexBuffer(const NLRE_Buffer& buffer)
 {
 	_d3d11DevCon->IASetIndexBuffer(buffer.apiBuffer, DXGI_FORMAT_R32_UINT, 0);
 }
-
 
 bool NLREDX11RenderingDevice::createInputLayout(NLRE_InputLayoutDesc ilDesc, NLRE_VertexShader vShader, NLRE_APIInputLayout* inputLayout)
 {
@@ -451,9 +460,4 @@ bool NLREDX11RenderingDevice::createRasterizerStates()
 	}
 
 	return true;
-}
-
-ID3D11Device* NLREDX11RenderingDevice::getD3DDevice()
-{
-	return d3d11Device;
 }

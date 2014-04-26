@@ -9,15 +9,14 @@
 
 struct NLRE_Buffer
 {
-	NLRE_Buffer() : apiBuffer(NULL), 
-		type(NLRE_RenderStateId::BufferType::UNKNOWN), 
-		usage(NLRE_RenderStateId::Usage::DEFAULT),
+	NLRE_Buffer() : apiBuffer(NULL),
+		usage(NLRE_USAGE::NLRE_USAGE_DEFAULT),
 		elementSize(0){}
 	~NLRE_Buffer(){ apiBuffer->Release(); }
 
 	NLRE_APIBuffer* apiBuffer;
-	NLRE_RenderStateId::BufferType type;
-	NLRE_RenderStateId::Usage usage;
+	NLRE_BIND_FLAG bindFlag;
+	NLRE_USAGE usage;
 	unsigned int elementSize;
 };
 

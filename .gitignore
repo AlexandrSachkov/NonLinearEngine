@@ -170,3 +170,7 @@ lib/Debug/x64/NLRE_d.lib
 lib/Profile/x64/NLRE_p.lib
 lib/Release/Win32/NLRE.lib
 lib/Release/x64/NLRE.lib
+lib/Profile/Win32/Shaders/DeferredGBuff_TextNormal_BlinnPhong_PS.cso
+lib/Profile/Win32/Shaders/DeferredGBuff_TextNormal_BlinnPhong_VS.cso
+lib/Profile/x64/Shaders/DeferredGBuff_TextNormal_BlinnPhong_PS.cso
+lib/Profile/x64/Shaders/DeferredGBuff_TextNormal_BlinnPhong_VS.cso

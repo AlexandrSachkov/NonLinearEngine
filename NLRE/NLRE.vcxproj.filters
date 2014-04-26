@@ -122,9 +122,6 @@
     <ClInclude Include="..\include\RenderingDevice\NLRERenderingDevice.h">
       <Filter>Header Files\RenderingDevice</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\RenderingDevice\NLRERenderStateID.h">
-      <Filter>Header Files\RenderingDevice</Filter>
-    </ClInclude>
     <ClInclude Include="..\include\NLREResources.h">
       <Filter>Header Files</Filter>
     </ClInclude>
