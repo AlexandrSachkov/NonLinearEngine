@@ -55,6 +55,7 @@ public:
 	void setRasterizerState(NLRE_APIRasterizerState* rasterizerState);
 	void setRenderTargets(unsigned int numRenderTargets, NLRE_APIRenderTargetView* renderTargerViewArr, NLRE_APIDepthStencilView* depthStencilView);
 	void setViewPort(int numViewports, int x, int y, int width, int height, float minDepth, float maxDepth);
+	void setViewPort();
 	
 	void VSSetTextureSamplerState(unsigned int startSlot, unsigned int numStates, NLRE_APISamplerState* samplerState);
 	void PSSetTextureSamplerState(unsigned int startSlot, unsigned int numStates, NLRE_APISamplerState* samplerState);

@@ -530,6 +530,22 @@ inline void NLREDX11RenderingDevice::setViewPort(int numViewports, int x, int y,
 	_d3d11DevCon->RSSetViewports(numViewports, &viewport);
 }
 
+inline void NLREDX11RenderingDevice::setViewPort()
+{
+	D3D11_VIEWPORT viewport;
+	ZeroMemory(&viewport, sizeof(D3D11_VIEWPORT));
+
+	viewport.TopLeftX = 0;
+	viewport.TopLeftY = 0;
+	viewport.Width = _screenWidth;
+	viewport.Height = _screenHeight;
+	viewport.MinDepth = 0.0f;
+	viewport.MaxDepth = 1.0f;
+
+	//Set the Viewport
+	_d3d11DevCon->RSSetViewports(1, &viewport);
+}
+
 bool NLREDX11RenderingDevice::createTextureSamplerState(NLRE_APISamplerState* samplerState)
 {
 	HRESULT hr;

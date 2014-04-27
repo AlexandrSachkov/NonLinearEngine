@@ -8,9 +8,9 @@ cbuffer Transform	: register(b0)
 struct VSInput
 {
 	float4 Position : POSITION;
-	float2 TexCoord : TEXCOORDS0;
 	float3 Normal	: NORMAL;
 	float4 Tangent	: TANGENT;
+	float2 TexCoord : TEXCOORDS0;
 };
 
 struct VSOutput

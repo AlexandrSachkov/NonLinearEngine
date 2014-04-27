@@ -50,4 +50,9 @@ struct NLRE_InputLayoutDesc
 	const size_t numberElements;
 };
 
+enum NLRE_RENDERING_TECHNIQUE_ID
+{
+	NLRE_FORWARD_RT
+};
+
 #endif
