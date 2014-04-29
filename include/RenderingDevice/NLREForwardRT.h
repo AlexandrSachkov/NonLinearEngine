@@ -1,8 +1,8 @@
 #ifndef NLRE_FORWARD_RT_
 #define NLRE_FORWARD_RT_
 
-#include "NLRERenderingDevice.h"
-#include "NLRERenderingTechnique.h"
+#include "RenderingDevice\NLRERenderingDevice.h"
+#include "RenderingDevice\NLRERenderingTechnique.h"
 
 class NLREForwardRT : public virtual NLRERenderingTechnique
 {
@@ -11,7 +11,7 @@ public:
 	NLREForwardRT(const NLREForwardRT& other);
 	~NLREForwardRT();
 
-	void render();
+	void render(NLRE_Buffer vertexBuff, NLRE_Buffer indexBuff, NLRE_Buffer constBuff, NLRE_APIShaderResourceView* texture);
 private:
 	bool initialize();
 	NLRERenderingDevice* _renderingDevice;
@@ -27,7 +27,6 @@ private:
 	NLRE_APIRasterizerState* _backFaceCull;
 	NLRE_APIRasterizerState* _frontFaceCull;
 	NLRE_APISamplerState*	_textureSamplerState;
-
 	NLRE_PixelShader _pixelShader;
 	
 	

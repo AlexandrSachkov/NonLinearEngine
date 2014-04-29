@@ -1,8 +1,6 @@
 #ifndef NLRE_DEVICE_CONTROLLER_
 #define NLRE_DEVICE_CONTROLLER_
 
-#include "NLRERenderingDevice.h"
-#include "NLRERenderingTechnique.h"
 #include "NLREForwardRT.h"
 
 class NLREDeviceController
@@ -14,7 +12,7 @@ public:
 	NLRERenderingDevice* getRenderingDevice();
 	bool setRenderingTechnique(NLRE_RENDERING_TECHNIQUE_ID technique);
 	NLRE_RENDERING_TECHNIQUE_ID getCurrentRenderingTechniqueId();
-	void render();
+	void render(NLRE_Buffer vertexBuff, NLRE_Buffer indexBuff, NLRE_Buffer constBuff, NLRE_APIShaderResourceView* texture);
 
 private:
 	bool initialize();

@@ -51,35 +51,6 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\src\math\DXMath\DXMathMatrixFunctions.cpp">
-      <Filter>Source Files\math\DXMath</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\math\DXMath\DXMathVector4DFunctions.cpp">
-      <Filter>Source Files\math\DXMath</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\NLREMain\stdafx.cpp">
-      <Filter>Source Files\NLREMain</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\NLRE.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\math\DXMath\DXMathVectorLoadFunctions.cpp">
-      <Filter>Source Files\math\DXMath</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\math\DXMath\DXMathVectorStoreFunctions.cpp">
-      <Filter>Source Files\math\DXMath</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\RenderingDevice\NLREDeviceController.cpp">
-      <Filter>Source Files\RenderingDevice</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\RenderingDevice\DX11Device\NLREDX11RenderingDevice.cpp">
-      <Filter>Source Files\RenderingDevice\DX11Device</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\RenderingDevice\NLREForwardRT.cpp">
-      <Filter>Source Files\RenderingDevice</Filter>
-    </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
     <ClInclude Include="..\include\math\DXMath\DXMathMatrixFunctions.h">
       <Filter>Header Files\math\DXMath</Filter>
     </ClInclude>
@@ -143,18 +114,67 @@
     <ClInclude Include="..\include\RenderingDevice\NLRERenderingTechnique.h">
       <Filter>Header Files\RenderingDevice</Filter>
     </ClInclude>
+    <ClInclude Include="..\include\Container.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <FxCompile Include="..\src\RenderingDevice\DX11Device\Shaders\DeferredGBuff_TextNormal_BlinnPhong_VS.hlsl">
+    <None Include="..\src\MathSrc\DXMath\DXMathMatrixFunctions.inl">
+      <Filter>Source Files\math\DXMath</Filter>
+    </None>
+    <None Include="..\src\RenderingDeviceSrc\DX11Device\NLREDX11RenderingDevice.inl">
+      <Filter>Source Files\RenderingDevice\DX11Device</Filter>
+    </None>
+    <None Include="..\src\MathSrc\DXMath\DXMathVector4DFunctions.inl">
+      <Filter>Source Files\math\DXMath</Filter>
+    </None>
+    <None Include="..\src\MathSrc\DXMath\DXMathVectorLoadFunctions.inl">
+      <Filter>Source Files\math\DXMath</Filter>
+    </None>
+    <None Include="..\src\MathSrc\DXMath\DXMathVectorStoreFunctions.inl">
+      <Filter>Source Files\math\DXMath</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\src\NLREMainSrc\NLRELog.cpp">
+      <Filter>Source Files\NLREMain</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\NLREMainSrc\stdafx.cpp">
+      <Filter>Source Files\NLREMain</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\RenderingDeviceSrc\NLREDeviceController.cpp">
+      <Filter>Source Files\RenderingDevice</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\RenderingDeviceSrc\NLREForwardRT.cpp">
+      <Filter>Source Files\RenderingDevice</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\RenderingDeviceSrc\DX11Device\NLREDX11InputLayoutDescriptions.cpp">
+      <Filter>Source Files\RenderingDevice\DX11Device</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\RenderingDeviceSrc\DX11Device\NLREDX11RenderingDevice.cpp">
+      <Filter>Source Files\RenderingDevice\DX11Device</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Container.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\NLRE.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\C++ Projects\NonLinearEngine_All_Versions\NonLinearEngine\NLE\main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="..\src\RenderingDeviceSrc\DX11Device\Shaders\DeferredGBuff_TextNormal_BlinnPhong_PS.hlsl">
       <Filter>Source Files\RenderingDevice\DX11Device\Shaders</Filter>
     </FxCompile>
-    <FxCompile Include="..\src\RenderingDevice\DX11Device\Shaders\DeferredGBuff_TextNormal_BlinnPhong_PS.hlsl">
+    <FxCompile Include="..\src\RenderingDeviceSrc\DX11Device\Shaders\DeferredGBuff_TextNormal_BlinnPhong_VS.hlsl">
       <Filter>Source Files\RenderingDevice\DX11Device\Shaders</Filter>
     </FxCompile>
-    <FxCompile Include="..\src\RenderingDevice\DX11Device\Shaders\Forward_PosText_PS.hlsl">
+    <FxCompile Include="..\src\RenderingDeviceSrc\DX11Device\Shaders\Forward_PosText_PS.hlsl">
       <Filter>Source Files\RenderingDevice\DX11Device\Shaders</Filter>
     </FxCompile>
-    <FxCompile Include="..\src\RenderingDevice\DX11Device\Shaders\Forward_PosText_VS.hlsl">
+    <FxCompile Include="..\src\RenderingDeviceSrc\DX11Device\Shaders\Forward_PosText_VS.hlsl">
       <Filter>Source Files\RenderingDevice\DX11Device\Shaders</Filter>
     </FxCompile>
   </ItemGroup>

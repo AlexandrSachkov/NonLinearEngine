@@ -5,6 +5,7 @@
 #include "NLEMath.h"
 #include "NLREResources.h"
 #include "NLRELog.h"
+#include "RenderingDevice\NLREInputLayoutDescriptions.h"
 
 #endif
 

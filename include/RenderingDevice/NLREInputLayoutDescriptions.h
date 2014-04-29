@@ -3,6 +3,7 @@
 
 #ifdef _DX11_
 	#include "DX11Device\NLREDX11InputLayoutDescriptions.h"
+typedef NLREDX11InputLayoutDescriptions NLREInputLayoutDescriptions;
 #endif
 
 #endif

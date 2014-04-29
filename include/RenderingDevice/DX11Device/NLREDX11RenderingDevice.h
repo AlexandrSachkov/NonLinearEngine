@@ -1,12 +1,11 @@
 #ifndef NLRE_DX11_RENDERING_DEVICE_
 #define NLRE_DX11_RENDERING_DEVICE_
 
-#include "stdafx.h"
+#include "NLREMain\stdafx.h"
 #include <d3d11.h>
 
-#include "RenderingDevice\NLREInputLayoutDescriptions.h"
-#include "DDSTextureLoader.h"
-#include "WICTextureLoader.h"
+#include "..\Dependencies\DDSTextureLoader\DDSTextureLoader.h"
+#include "..\Dependencies\WICTextureLoader\WICTextureLoader.h"
 
 class NLREDX11RenderingDevice
 {
@@ -82,5 +81,5 @@ private:
 	IDXGISwapChain* _swapChain;
 };
 
-
+#include "RenderingDeviceSrc\DX11Device\NLREDX11RenderingDevice.inl"
 #endif

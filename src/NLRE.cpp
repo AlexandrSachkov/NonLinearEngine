@@ -1,76 +1,17 @@
 #include "stdafx.h"
 #include "NLRE.h"
 
-NLRE::NLRE(){
-	
+NLRE::NLRE(HWND hwndVal, int widthVal, int heightVal){
+	_deviceController = new NLREDeviceController(hwndVal, widthVal, heightVal, NLRE_RENDERING_TECHNIQUE_ID::NLRE_FORWARD_RT);
+	_renderingDevice = _deviceController->getRenderingDevice();
+	_container = new Container(_deviceController, _renderingDevice, widthVal, heightVal);
 }
 
 NLRE::~NLRE(){
 
 }
 
-void NLRE::registerDebugCallback(void(*callback)(char msg[]))
+void NLRE::render()
 {
-	NLRE_Log::debugCallbackList.push_back(callback);
-}
-
-void NLRE::registerConsoleCallback(void(*callback)(char msg[]))
-{
-	NLRE_Log::consoleCallbackList.push_back(callback);
-}
-
-void NLRE::registerErrorCallback(void(*callback)(NLRE_Log::ErrorFlag, char msg[]))
-{
-	NLRE_Log::errCallbackList.push_back(callback);
-}
-
-void NLRE::unregisterDebugCallback(void(*callback)(char msg[]))
-{
-	for (std::vector<void(*)(char[])>::iterator it = NLRE_Log::debugCallbackList.begin();
-		it != NLRE_Log::debugCallbackList.end(); ++it)
-	{
-		if (*it == callback)
-		{
-			NLRE_Log::debugCallbackList.erase(it);
-		}
-	}
-}
-
-void NLRE::unregisterConsoleCallback(void(*callback)(char msg[]))
-{
-	for (std::vector<void(*)(char[])>::iterator it = NLRE_Log::consoleCallbackList.begin();
-		it != NLRE_Log::consoleCallbackList.end(); ++it)
-	{
-		if (*it == callback)
-		{
-			NLRE_Log::consoleCallbackList.erase(it);
-		}
-	}
-}
-
-void NLRE::unregisterErrorCallback(void(*callback)(NLRE_Log::ErrorFlag, char msg[]))
-{
-	for (std::vector<void(*)(NLRE_Log::ErrorFlag, char[])>::iterator it = NLRE_Log::errCallbackList.begin();
-		it != NLRE_Log::errCallbackList.end(); ++it)
-	{
-		if (*it == callback)
-		{
-			NLRE_Log::errCallbackList.erase(it);
-		}
-	}
-}
-
-void NLRE::unregisterDebugCallbackAll()
-{
-	NLRE_Log::debugCallbackList.empty();
-}
-
-void NLRE::unregisterConsoleCallbackAll()
-{
-	NLRE_Log::consoleCallbackList.empty();
-}
-
-void NLRE::unregisterErrorCallbackAll()
-{
-	NLRE_Log::errCallbackList.empty();
+	_container->render();
 }

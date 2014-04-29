@@ -4,64 +4,40 @@
 #include "stdafx.h"
 
 #ifdef _DEBUG || DEBUG
-	#define _NLRE_debug(...) NLRE_Log::debug(__VA_ARGS__)
+#define _NLRE_debug(...) NLRE_Log::debug(__VA_ARGS__)
 #else
-	#define _NLRE_debug(...) 
+#define _NLRE_debug(...) 
 #endif
 
-namespace NLRE_Log
+
+
+class NLRE_Log
 {
+
+public:
+
 	enum ErrorFlag {
 		CRITICAL,
 		REG
 	};
+	static void debug(const char* format, ...);
+	static void console(const char* format, ...);
+	static void err(ErrorFlag flag, const char* format, ...);
+	static void registerDebugCallback(void(*callback)(char msg[]));
+	static void registerConsoleCallback(void(*callback)(char msg[]));
+	static void registerErrorCallback(void(*callback)(NLRE_Log::ErrorFlag, char msg[]));
+	static void unregisterDebugCallback(void(*callback)(char msg[]));
+	static void unregisterConsoleCallback(void(*callback)(char msg[]));
+	static void unregisterErrorCallback(void(*callback)(NLRE_Log::ErrorFlag, char msg[]));
+	static void unregisterDebugCallbackAll();
+	static void unregisterConsoleCallbackAll();
+	static void unregisterErrorCallbackAll();
 
-	std::vector <void(*)(char[])> debugCallbackList;
-	std::vector <void(*)(char[])> consoleCallbackList;
-	std::vector <void(*)(ErrorFlag, char[])> errCallbackList;
 
-	void debug(const char* format, ...)
-	{
-		char buffer[_LOG_MSG_MAX_SIZE];
-		va_list argptr;
-		va_start(argptr, format);
-		vsprintf(buffer, format, argptr);
-		va_end(argptr);
-
-		for each (auto callback in debugCallbackList)
-		{
-			callback(buffer);
-		}
-	}
-
-	void console(const char* format, ...)
-	{
-		char buffer[_LOG_MSG_MAX_SIZE];
-		va_list argptr;
-		va_start(argptr, format);
-		vsprintf(buffer, format, argptr);
-		va_end(argptr);
-
-		for each (auto callback in consoleCallbackList)
-		{
-			callback(buffer);
-		}
-	}
-
-	void err(ErrorFlag flag, const char* format, ...)
-	{
-		char buffer[_LOG_MSG_MAX_SIZE];
-		va_list argptr;
-		va_start(argptr, format);
-		vsprintf(buffer, format, argptr);
-		va_end(argptr);
-
-		for each (auto callback in errCallbackList)
-		{
-			callback(flag,buffer);
-		}
-	}
-}
+	static std::vector <void(*)(char[])> debugCallbackList;
+	static std::vector <void(*)(char[])> consoleCallbackList;
+	static std::vector <void(*)(NLRE_Log::ErrorFlag, char[])> errCallbackList;
+};
 
 
 #endif
