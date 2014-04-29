@@ -18,11 +18,53 @@ public:
 	bool createBlendStates(bool enableBlend, bool enableIndependentBlending, unsigned int numRenderTargets, bool enableAlphaToCoverage, NLRE_APIBlendState* blendState);
 	template<class DataType> 
 	bool createBuffer(
-		NLRE_BIND_FLAG bindFlag, 
-		NLRE_USAGE usage, 
-		DataType dataArr[], 
+		NLRE_BIND_FLAG bindFlag,
+		NLRE_USAGE usage,
+		DataType dataArr[],
 		size_t arrayLength,
-		NLRE_Buffer& buffer);
+		NLRE_Buffer& buffer)
+	{
+		HRESULT hr;
+
+		D3D11_BUFFER_DESC bufferDesc;
+		ZeroMemory(&bufferDesc, sizeof(bufferDesc));
+
+
+		bufferDesc.BindFlags = bindFlag;
+		bufferDesc.Usage = (D3D11_USAGE)usage;
+
+		if (usage == NLRE_USAGE_DYNAMIC)
+		{
+			bufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+		}
+		else
+		{
+			bufferDesc.CPUAccessFlags = 0;
+		}
+
+		bufferDesc.ByteWidth = sizeof(DataType)* arrayLength;
+		bufferDesc.MiscFlags = 0;
+
+		D3D11_SUBRESOURCE_DATA subresData;
+		ZeroMemory(&subresData, sizeof(subresData));
+		subresData.pSysMem = dataArr;
+
+		ID3D11Buffer* apiBuffer = NULL;
+		hr = _d3d11Device->CreateBuffer(&bufferDesc, &subresData, &apiBuffer);
+
+		if (FAILED(hr))
+		{
+			NLRE_Log::err(NLRE_Log::ErrorFlag::CRITICAL, "Failed to create Buffer Type: ", bindFlag, ", Usage: ", usage);
+			return false;
+		}
+
+		buffer.apiBuffer = apiBuffer;
+		buffer.bindFlag = bindFlag;
+		buffer.usage = usage;
+		buffer.elementSize = sizeof(DataType);
+
+		return true;
+	}
 
 	bool createDepthStencilView(NLRE_APIDepthStencilView* depthStencilView);
 	bool createInputLayout(NLRE_InputLayoutDesc ilDesc, NLRE_VertexShader vShader, NLRE_APIInputLayout* inputLayout);
