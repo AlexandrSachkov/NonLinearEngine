@@ -7,6 +7,7 @@
 class NLREForwardRT : public virtual NLRERenderingTechnique
 {
 public:
+
 	NLREForwardRT(NLRERenderingDevice* renderingDevice);
 	NLREForwardRT(const NLREForwardRT& other);
 	~NLREForwardRT();

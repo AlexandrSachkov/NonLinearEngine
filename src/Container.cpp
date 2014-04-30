@@ -68,6 +68,10 @@ DWORD indices[] = {
 
 Container::Container(NLREDeviceController* deviceController, NLRERenderingDevice* renderingDevice, int width, int height)
 {
+	if (!deviceController || !renderingDevice)
+	{
+		throw std::exception("Container failed to initialize: null ptr");
+	}
 	_deviceController = deviceController;
 	_renderingDevice = renderingDevice;
 
@@ -99,7 +103,7 @@ Container::Container(NLREDeviceController* deviceController, NLRERenderingDevice
 	if (!initialize())
 	{
 		NLRE_Log::err(NLRE_Log::CRITICAL, "Container failed to initialize");
-		throw new std::exception("Container failed to initialize");
+		throw std::exception("Container failed to initialize");
 	}
 }
 
@@ -114,7 +118,7 @@ bool Container::initialize()
 	if (!_renderingDevice->createBuffer<Vertex>(NLRE_BIND_SHADER_RESOURCE, NLRE_USAGE_IMMUTABLE, vertexArray, 24, _vertexBuffer)) return false;
 	if (!_renderingDevice->createBuffer<DWORD>(NLRE_BIND_SHADER_RESOURCE, NLRE_USAGE_IMMUTABLE, indices, 24, _indexBuffer)) return false;
 	if (!_renderingDevice->createBuffer<cbPerObject>(NLRE_BIND_SHADER_RESOURCE, NLRE_USAGE_DYNAMIC, &cbPerObj, 1, _constantBuffer)) return false;
-	if (!_renderingDevice->loadTexture(L"C:\\Users\\Alex\\Desktop\\braynzar.jpg", NLRE_USAGE_IMMUTABLE, NLRE_BIND_SHADER_RESOURCE, NULL, _texture)) return false;
+	//if (!_renderingDevice->loadTexture(L"C:\\Users\\Alex\\Desktop\\braynzar.jpg", NLRE_USAGE_IMMUTABLE, NLRE_BIND_SHADER_RESOURCE, NULL, _texture)) return false;
 	return true;
 }
 

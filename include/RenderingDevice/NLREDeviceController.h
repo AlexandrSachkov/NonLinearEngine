@@ -10,7 +10,7 @@ public:
 	NLREDeviceController(const NLREDeviceController&);
 	~NLREDeviceController();
 	NLRERenderingDevice* getRenderingDevice();
-	bool setRenderingTechnique(NLRE_RENDERING_TECHNIQUE_ID technique);
+	bool setRenderingTechnique(NLRE_RENDERING_TECHNIQUE_ID techniqueId);
 	NLRE_RENDERING_TECHNIQUE_ID getCurrentRenderingTechniqueId();
 	void render(NLRE_Buffer vertexBuff, NLRE_Buffer indexBuff, NLRE_Buffer constBuff, NLRE_APIShaderResourceView* texture);
 

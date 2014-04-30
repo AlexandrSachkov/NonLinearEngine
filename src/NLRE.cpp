@@ -9,6 +9,8 @@ NLRE::NLRE(HWND hwndVal, int widthVal, int heightVal){
 
 NLRE::~NLRE(){
 
+	if (_deviceController) delete _deviceController;
+	if (_container) delete _container;
 }
 
 void NLRE::render()

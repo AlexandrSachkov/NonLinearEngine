@@ -10,7 +10,14 @@ struct NLRE_Buffer
 	NLRE_Buffer() : apiBuffer(NULL),
 		usage(NLRE_USAGE::NLRE_USAGE_DEFAULT),
 		elementSize(0){}
-	~NLRE_Buffer(){ apiBuffer->Release(); }
+	~NLRE_Buffer()
+	{ 
+		if (apiBuffer)
+		{
+			apiBuffer->Release();
+			apiBuffer = NULL;
+		}
+	}
 
 	NLRE_APIBuffer* apiBuffer;
 	NLRE_BIND_FLAG bindFlag;
@@ -18,28 +25,44 @@ struct NLRE_Buffer
 	unsigned int elementSize;
 };
 
-struct NLRE_ShaderBlob
-{
-	NLRE_ShaderBlob() : data(NULL), size(0){}
-	~NLRE_ShaderBlob(){ delete data; }
-	void* data;
-	size_t size;
-};
-
 struct NLRE_VertexShader
 {
-	NLRE_VertexShader() : apiVertexShader(NULL){}
-	~NLRE_VertexShader(){ delete apiVertexShader; }
+	NLRE_VertexShader() : apiVertexShader(NULL), blob(NULL){}
+	~NLRE_VertexShader()
+	{ 
+		if (apiVertexShader)
+		{
+			apiVertexShader->Release();
+			apiVertexShader = NULL;
+		}
+		if (blob)
+		{
+			blob->Release();
+			blob = NULL;
+		}
+	}
 	NLRE_APIVertexShader* apiVertexShader;
-	NLRE_ShaderBlob blob;
+	NLRE_ShaderBlob* blob;
 };
 
 struct NLRE_PixelShader
 {
-	NLRE_PixelShader() : apiPixelShader(NULL){}
-	~NLRE_PixelShader(){ delete apiPixelShader; }
+	NLRE_PixelShader() : apiPixelShader(NULL), blob(NULL) {}
+	~NLRE_PixelShader()
+	{ 
+		if (apiPixelShader)
+		{
+			apiPixelShader->Release();
+			apiPixelShader = NULL;
+		}
+		if (blob)
+		{
+			blob->Release();
+			blob = NULL;
+		}
+	}
 	NLRE_APIPixelShader* apiPixelShader;
-	NLRE_ShaderBlob blob;
+	NLRE_ShaderBlob* blob;
 };
 
 struct NLRE_InputLayoutDesc

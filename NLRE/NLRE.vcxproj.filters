@@ -13,12 +13,6 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="Source Files\math">
-      <UniqueIdentifier>{46ec3148-6285-49ae-b7bc-5b382b83be5f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\math\DXMath">
-      <UniqueIdentifier>{9506c07c-365e-4b31-bc5a-8a772471ecb8}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\NLREMain">
       <UniqueIdentifier>{6be77f85-a601-455b-935a-17a6db5228b2}</UniqueIdentifier>
     </Filter>
@@ -28,23 +22,29 @@
     <Filter Include="Header Files\math\DXMath">
       <UniqueIdentifier>{5dbb3d82-ecdc-4450-810d-180b138f5ea1}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\NLREMain">
-      <UniqueIdentifier>{4a67f3a9-581d-4b72-9609-61338c30e35f}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\RenderingDevice">
       <UniqueIdentifier>{ff0108a1-e343-40d3-9d85-7f18e1892937}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\RenderingDevice">
-      <UniqueIdentifier>{fde21368-66df-4121-aa63-7aef650e1d38}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\RenderingDevice\DX11Device">
-      <UniqueIdentifier>{39ce30c8-a21c-4ed3-9f79-af393301f5dd}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\RenderingDevice\DX11Device\Shaders">
-      <UniqueIdentifier>{713249b8-4cf3-4ba0-8369-2b734fa123d9}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\RenderingDevice\DX11Device">
       <UniqueIdentifier>{d1d5c9ed-c501-42db-8b4b-900eef235a12}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\MathSrc">
+      <UniqueIdentifier>{46ec3148-6285-49ae-b7bc-5b382b83be5f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\MathSrc\DXMath">
+      <UniqueIdentifier>{9506c07c-365e-4b31-bc5a-8a772471ecb8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\NLREMainSrc">
+      <UniqueIdentifier>{4a67f3a9-581d-4b72-9609-61338c30e35f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\RenderingDeviceSrc">
+      <UniqueIdentifier>{fde21368-66df-4121-aa63-7aef650e1d38}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\RenderingDeviceSrc\DX11Device">
+      <UniqueIdentifier>{39ce30c8-a21c-4ed3-9f79-af393301f5dd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\RenderingDeviceSrc\DX11Device\Shaders">
+      <UniqueIdentifier>{713249b8-4cf3-4ba0-8369-2b734fa123d9}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -120,39 +120,36 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="..\src\MathSrc\DXMath\DXMathMatrixFunctions.inl">
-      <Filter>Source Files\math\DXMath</Filter>
+      <Filter>Source Files\MathSrc\DXMath</Filter>
     </None>
     <None Include="..\src\RenderingDeviceSrc\DX11Device\NLREDX11RenderingDevice.inl">
-      <Filter>Source Files\RenderingDevice\DX11Device</Filter>
+      <Filter>Source Files\RenderingDeviceSrc\DX11Device</Filter>
     </None>
     <None Include="..\src\MathSrc\DXMath\DXMathVector4DFunctions.inl">
-      <Filter>Source Files\math\DXMath</Filter>
+      <Filter>Source Files\MathSrc\DXMath</Filter>
     </None>
     <None Include="..\src\MathSrc\DXMath\DXMathVectorLoadFunctions.inl">
-      <Filter>Source Files\math\DXMath</Filter>
+      <Filter>Source Files\MathSrc\DXMath</Filter>
     </None>
     <None Include="..\src\MathSrc\DXMath\DXMathVectorStoreFunctions.inl">
-      <Filter>Source Files\math\DXMath</Filter>
+      <Filter>Source Files\MathSrc\DXMath</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\NLREMainSrc\NLRELog.cpp">
-      <Filter>Source Files\NLREMain</Filter>
+      <Filter>Source Files\NLREMainSrc</Filter>
     </ClCompile>
     <ClCompile Include="..\src\NLREMainSrc\stdafx.cpp">
-      <Filter>Source Files\NLREMain</Filter>
+      <Filter>Source Files\NLREMainSrc</Filter>
     </ClCompile>
     <ClCompile Include="..\src\RenderingDeviceSrc\NLREDeviceController.cpp">
-      <Filter>Source Files\RenderingDevice</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\RenderingDeviceSrc\NLREForwardRT.cpp">
-      <Filter>Source Files\RenderingDevice</Filter>
+      <Filter>Source Files\RenderingDeviceSrc</Filter>
     </ClCompile>
     <ClCompile Include="..\src\RenderingDeviceSrc\DX11Device\NLREDX11InputLayoutDescriptions.cpp">
-      <Filter>Source Files\RenderingDevice\DX11Device</Filter>
+      <Filter>Source Files\RenderingDeviceSrc\DX11Device</Filter>
     </ClCompile>
     <ClCompile Include="..\src\RenderingDeviceSrc\DX11Device\NLREDX11RenderingDevice.cpp">
-      <Filter>Source Files\RenderingDevice\DX11Device</Filter>
+      <Filter>Source Files\RenderingDeviceSrc\DX11Device</Filter>
     </ClCompile>
     <ClCompile Include="..\src\Container.cpp">
       <Filter>Source Files</Filter>
@@ -163,19 +160,22 @@
     <ClCompile Include="..\..\..\C++ Projects\NonLinearEngine_All_Versions\NonLinearEngine\NLE\main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\RenderingDeviceSrc\NLREForwardRT.cpp">
+      <Filter>Source Files\RenderingDeviceSrc</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="..\src\RenderingDeviceSrc\DX11Device\Shaders\DeferredGBuff_TextNormal_BlinnPhong_PS.hlsl">
-      <Filter>Source Files\RenderingDevice\DX11Device\Shaders</Filter>
+      <Filter>Source Files\RenderingDeviceSrc\DX11Device\Shaders</Filter>
     </FxCompile>
     <FxCompile Include="..\src\RenderingDeviceSrc\DX11Device\Shaders\DeferredGBuff_TextNormal_BlinnPhong_VS.hlsl">
-      <Filter>Source Files\RenderingDevice\DX11Device\Shaders</Filter>
+      <Filter>Source Files\RenderingDeviceSrc\DX11Device\Shaders</Filter>
     </FxCompile>
     <FxCompile Include="..\src\RenderingDeviceSrc\DX11Device\Shaders\Forward_PosText_PS.hlsl">
-      <Filter>Source Files\RenderingDevice\DX11Device\Shaders</Filter>
+      <Filter>Source Files\RenderingDeviceSrc\DX11Device\Shaders</Filter>
     </FxCompile>
     <FxCompile Include="..\src\RenderingDeviceSrc\DX11Device\Shaders\Forward_PosText_VS.hlsl">
-      <Filter>Source Files\RenderingDevice\DX11Device\Shaders</Filter>
+      <Filter>Source Files\RenderingDeviceSrc\DX11Device\Shaders</Filter>
     </FxCompile>
   </ItemGroup>
 </Project>

@@ -16,6 +16,7 @@ typedef ID3D11Texture2D				NLRE_APITexture2D;
 typedef ID3D11RasterizerState		NLRE_APIRasterizerState;
 typedef ID3D11SamplerState			NLRE_APISamplerState;
 typedef ID3D11BlendState			NLRE_APIBlendState;
+typedef ID3DBlob					NLRE_ShaderBlob;
 
 typedef enum NLRE_USAGE
 {

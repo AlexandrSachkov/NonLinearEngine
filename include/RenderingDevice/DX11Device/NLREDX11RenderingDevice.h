@@ -3,9 +3,8 @@
 
 #include "NLREMain\stdafx.h"
 #include <d3d11.h>
+#include <d3dcompiler.h>
 
-#include "..\Dependencies\DDSTextureLoader\DDSTextureLoader.h"
-#include "..\Dependencies\WICTextureLoader\WICTextureLoader.h"
 
 class NLREDX11RenderingDevice
 {
@@ -14,8 +13,8 @@ public:
 	NLREDX11RenderingDevice(const NLREDX11RenderingDevice&);
 	~NLREDX11RenderingDevice();
 
-	bool createBackBufferRenderTargetView(NLRE_APIRenderTargetView* renderTargetView);
-	bool createBlendStates(bool enableBlend, bool enableIndependentBlending, unsigned int numRenderTargets, bool enableAlphaToCoverage, NLRE_APIBlendState* blendState);
+	bool createBackBufferRenderTargetView(NLRE_APIRenderTargetView*& renderTargetView);
+	bool createBlendStates(bool enableBlend, bool enableIndependentBlending, unsigned int numRenderTargets, bool enableAlphaToCoverage, NLRE_APIBlendState*& blendState);
 	template<class DataType> 
 	bool createBuffer(
 		NLRE_BIND_FLAG bindFlag,
@@ -49,7 +48,7 @@ public:
 		ZeroMemory(&subresData, sizeof(subresData));
 		subresData.pSysMem = dataArr;
 
-		ID3D11Buffer* apiBuffer = NULL;
+		ID3D11Buffer* apiBuffer;
 		hr = _d3d11Device->CreateBuffer(&bufferDesc, &subresData, &apiBuffer);
 
 		if (FAILED(hr))
@@ -66,15 +65,15 @@ public:
 		return true;
 	}
 
-	bool createDepthStencilView(NLRE_APIDepthStencilView* depthStencilView);
-	bool createInputLayout(NLRE_InputLayoutDesc ilDesc, NLRE_VertexShader vShader, NLRE_APIInputLayout* inputLayout);
-	bool createRasterizerState(NLRE_CULL_MODE cullMode, NLRE_FILL_MODE fillMode, NLRE_APIRasterizerState* rasterizerState);
-	bool createRenderTargetViews(unsigned int numViews, NLRE_APIRenderTargetView* renderTargetViewArr);
-	bool createTextureSamplerState(NLRE_APISamplerState* samplerState);
+	bool createDepthStencilView(NLRE_APIDepthStencilView*& depthStencilView);
+	bool createInputLayout(NLRE_InputLayoutDesc& ilDesc, NLRE_VertexShader& vShader, NLRE_APIInputLayout*& inputLayout);
+	bool createRasterizerState(NLRE_CULL_MODE cullMode, NLRE_FILL_MODE fillMode, NLRE_APIRasterizerState*& rasterizerState);
+	bool createRenderTargetViews(unsigned int numViews, NLRE_APIRenderTargetView*& renderTargetViewArr);
+	bool createTextureSamplerState(NLRE_APISamplerState*& samplerState);
 
 	bool loadVertexShader(std::wstring path, NLRE_VertexShader& vertexShader);
 	bool loadPixelShader(std::wstring path, NLRE_PixelShader& pixelShader);
-	bool loadTexture(std::wstring path, NLRE_USAGE usage, NLRE_BIND_FLAG bindFlag, NLRE_APIResource* texture, NLRE_APIShaderResourceView* resourceView);
+	//bool loadTexture(std::wstring path, NLRE_USAGE usage, NLRE_BIND_FLAG bindFlag, NLRE_APIResource* texture, NLRE_APIShaderResourceView* resourceView);
 
 	void VSSetShaderResources(unsigned int startSlot, unsigned int numViews, NLRE_APIShaderResourceView* resourceViewArr);
 	void PSSetShaderResources(unsigned int startSlot, unsigned int numViews, NLRE_APIShaderResourceView* resourceViewArr);
@@ -112,7 +111,7 @@ private:
 	void release();
 
 	bool createDeviceAndSwapChain();
-	bool loadBlobFromFile(std::wstring path, NLRE_ShaderBlob& blob);
+	bool loadBlobFromFile(std::wstring path, NLRE_ShaderBlob*& blob);
 	
 	HWND _hwnd;
 	int _screenWidth;

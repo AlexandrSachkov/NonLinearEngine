@@ -14,12 +14,13 @@ NLREForwardRT::NLREForwardRT(NLRERenderingDevice* renderingDevice)
 	_frontFaceCull = NULL;
 	_textureSamplerState = NULL;
 	
-
+	
 	if (!initialize())
 	{
 		NLRE_Log::err(NLRE_Log::CRITICAL, "ForwardRT failed to initialize");
-		throw new std::exception("ForwardRT failed to initialize");
+		throw std::exception("ForwardRT failed to initialize");
 	}
+	
 }
 
 bool NLREForwardRT::initialize()
@@ -28,12 +29,12 @@ bool NLREForwardRT::initialize()
 	if (!_renderingDevice->createBlendStates(false, false, 1, false, _noBlendState)) return false;
 	if (!_renderingDevice->createBlendStates(true, false, 1, false, _blendState)) return false;
 	if (!_renderingDevice->createDepthStencilView(_depthStencilView)) return false;
-	if (!_renderingDevice->loadVertexShader(L"Shaders\Forward_PosText_VS.cso", _vertexShader)) return false;
+	if (!_renderingDevice->loadVertexShader(L"Shaders\\Forward_PosText_VS.cso", _vertexShader)) return false;
 	if (!_renderingDevice->createInputLayout(NLREInputLayoutDescriptions::forwardPosText, _vertexShader, _inputLayout)) return false;
 	if (!_renderingDevice->createRasterizerState(NLRE_CULL_BACK, NLRE_FILL_SOLID, _backFaceCull)) return false;
 	if (!_renderingDevice->createRasterizerState(NLRE_CULL_FRONT, NLRE_FILL_SOLID, _backFaceCull)) return false;
 	if (!_renderingDevice->createTextureSamplerState(_textureSamplerState)) return false;
-	if (!_renderingDevice->loadPixelShader(L"Shaders\Forward_PosText_PS.cso", _pixelShader)) return false;
+	if (!_renderingDevice->loadPixelShader(L"Shaders\\Forward_PosText_PS.cso", _pixelShader)) return false;
 	
 	_renderingDevice->setRenderTargets(1, _backBufferRenderTargetView, _depthStencilView);
 	_renderingDevice->setVertexShader(_vertexShader);
@@ -44,7 +45,7 @@ bool NLREForwardRT::initialize()
 
 	_renderingDevice->PSSetTextureSamplerState(0, 1, _textureSamplerState);
 	_renderingDevice->setRasterizerState(_backFaceCull);
-
+	
 	return true;
 }
 
@@ -54,7 +55,14 @@ NLREForwardRT::NLREForwardRT(const NLREForwardRT& other)
 
 NLREForwardRT::~NLREForwardRT()
 {
-
+	if (_backBufferRenderTargetView) _backBufferRenderTargetView->Release();
+	if (_noBlendState) _noBlendState->Release();
+	if (_blendState) _blendState->Release();
+	if (_depthStencilView) _depthStencilView->Release();
+	if (_inputLayout) _inputLayout->Release();
+	if (_backFaceCull) _backFaceCull->Release();
+	if (_frontFaceCull) _frontFaceCull->Release();
+	if (_textureSamplerState) _textureSamplerState->Release();
 }
 
 void NLREForwardRT::render(NLRE_Buffer vertexBuff, NLRE_Buffer indexBuff, NLRE_Buffer constBuff, NLRE_APIShaderResourceView* texture)

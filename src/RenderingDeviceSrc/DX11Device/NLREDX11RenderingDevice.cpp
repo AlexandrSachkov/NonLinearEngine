@@ -79,10 +79,25 @@ bool NLREDX11RenderingDevice::createDeviceAndSwapChain()
 	swapChainDesc.Windowed = TRUE;
 	swapChainDesc.SwapEffect = DXGI_SWAP_EFFECT_DISCARD;
 
+	UINT creationFlags = 0;
+#ifdef _DEBUG || DEBUG
+	creationFlags |= D3D11_CREATE_DEVICE_DEBUG;
+#endif
 
 	//Create our SwapChain
-	hr = D3D11CreateDeviceAndSwapChain(NULL, D3D_DRIVER_TYPE_HARDWARE, NULL, NULL, NULL, NULL,
-		D3D11_SDK_VERSION, &swapChainDesc, &_swapChain, &_d3d11Device, NULL, &_d3d11DevCon);
+	hr = D3D11CreateDeviceAndSwapChain(
+		NULL, 
+		D3D_DRIVER_TYPE_HARDWARE,
+		NULL,
+		creationFlags,
+		NULL, 
+		NULL,
+		D3D11_SDK_VERSION, 
+		&swapChainDesc, 
+		&_swapChain, 
+		&_d3d11Device, 
+		NULL, 
+		&_d3d11DevCon);
 
 	if (FAILED(hr))
 	{
@@ -93,7 +108,7 @@ bool NLREDX11RenderingDevice::createDeviceAndSwapChain()
 	return true;
 }
 
-bool NLREDX11RenderingDevice::createBackBufferRenderTargetView(NLRE_APIRenderTargetView* renderTargetView)
+bool NLREDX11RenderingDevice::createBackBufferRenderTargetView(NLRE_APIRenderTargetView*& renderTargetView)
 {
 	HRESULT hr;
 
@@ -125,7 +140,7 @@ bool NLREDX11RenderingDevice::createBlendStates(
 	bool enableIndependentBlending,
 	unsigned int numRenderTargets,
 	bool enableAlphaToCoverage,
-	NLRE_APIBlendState* blendState)
+	NLRE_APIBlendState*& blendState)
 {
 	HRESULT hr;
 
@@ -175,7 +190,7 @@ bool NLREDX11RenderingDevice::createBlendStates(
 	return true;
 }
 
-bool NLREDX11RenderingDevice::createRenderTargetViews(unsigned int numViews, NLRE_APIRenderTargetView* renderTargetViewArr)
+bool NLREDX11RenderingDevice::createRenderTargetViews(unsigned int numViews, NLRE_APIRenderTargetView*& renderTargetViewArr)
 {
 	HRESULT hr;
 
@@ -216,7 +231,7 @@ bool NLREDX11RenderingDevice::createRenderTargetViews(unsigned int numViews, NLR
 	return true;
 }
 
-bool NLREDX11RenderingDevice::createDepthStencilView(NLRE_APIDepthStencilView* depthStencilView)
+bool NLREDX11RenderingDevice::createDepthStencilView(NLRE_APIDepthStencilView*& depthStencilView)
 {
 	HRESULT hr;
 
@@ -255,46 +270,34 @@ bool NLREDX11RenderingDevice::createDepthStencilView(NLRE_APIDepthStencilView* d
 	return true;
 }
 
-bool NLREDX11RenderingDevice::loadBlobFromFile(std::wstring path, NLRE_ShaderBlob& blob)
+
+bool NLREDX11RenderingDevice::loadBlobFromFile(std::wstring path, NLRE_ShaderBlob*& blob)
 {
-	std::ifstream fin(path, std::ios::binary);
+	HRESULT hr;
 
-	if (!fin) return false;
-
-	fin.seekg(0, std::ios_base::end);
-	size_t size = (size_t)fin.tellg();
-	fin.seekg(0, std::ios_base::beg);
-	std::vector<char> compiledShader(size);
-	fin.read(&compiledShader[0], size);
-	fin.close();
-
-	blob.data = &compiledShader[0];
-	blob.size = size;
+	hr = D3DReadFileToBlob(path.c_str(), &blob);
+	if (FAILED(hr)) return false;
 	return true;
 }
+
 
 bool NLREDX11RenderingDevice::loadVertexShader(std::wstring path, NLRE_VertexShader& vertexShader)
 {
 	HRESULT hr;
-
 	//Load vertex shader from file
-	NLRE_ShaderBlob blob;
-	if (!loadBlobFromFile(path, blob))
+	if (!loadBlobFromFile(path, vertexShader.blob))
 	{
 		NLRE_Log::err(NLRE_Log::ErrorFlag::CRITICAL, "Failed to load Vertex Shader: ", path);
 		return false;
 	}
 
 	//Create Vertex Shader
-	ID3D11VertexShader* vs = NULL;
-	hr = _d3d11Device->CreateVertexShader(blob.data, blob.size, NULL, &vs);
+	hr = _d3d11Device->CreateVertexShader(vertexShader.blob->GetBufferPointer(), vertexShader.blob->GetBufferSize(), NULL, &vertexShader.apiVertexShader);
 	if (FAILED(hr))
 	{
 		NLRE_Log::err(NLRE_Log::ErrorFlag::CRITICAL, "Failed to create Vertex Shader");
 		return false;
 	}
-	vertexShader.apiVertexShader = vs;
-	vertexShader.blob = blob;
 
 	return true;
 }
@@ -304,8 +307,7 @@ bool NLREDX11RenderingDevice::loadPixelShader(std::wstring path, NLRE_PixelShade
 	HRESULT hr;
 
 	//Load pixel shader from file
-	NLRE_ShaderBlob blob;
-	if (!loadBlobFromFile(path, blob))
+	if (!loadBlobFromFile(path, pixelShader.blob))
 	{
 		NLRE_Log::err(NLRE_Log::ErrorFlag::CRITICAL, "Failed to load Pixel Shader: ", path);
 		return false;
@@ -313,77 +315,75 @@ bool NLREDX11RenderingDevice::loadPixelShader(std::wstring path, NLRE_PixelShade
 
 	//Create Pixel Shader
 	ID3D11PixelShader* ps = NULL;
-	hr = _d3d11Device->CreatePixelShader(blob.data, blob.size, NULL, &ps);
+	hr = _d3d11Device->CreatePixelShader(pixelShader.blob->GetBufferPointer(), pixelShader.blob->GetBufferSize(), NULL, &pixelShader.apiPixelShader);
 	if (FAILED(hr))
 	{
 		NLRE_Log::err(NLRE_Log::ErrorFlag::CRITICAL, "Failed to create Pixel Shader");
 		return false;
 	}
-	pixelShader.apiPixelShader = ps;
-	pixelShader.blob = blob;
 
 	return true;
 }
 
+/*
 bool NLREDX11RenderingDevice::loadTexture(
-	std::wstring path,
-	NLRE_USAGE usage,
-	NLRE_BIND_FLAG bindFlag,
-	NLRE_APIResource* texture,
-	NLRE_APIShaderResourceView* resourceView)
+std::wstring path,
+NLRE_USAGE usage,
+NLRE_BIND_FLAG bindFlag,
+NLRE_APIResource* texture,
+NLRE_APIShaderResourceView* resourceView)
 {
-	HRESULT hr;
+HRESULT hr;
 
-	std::wstring fileExt = path.substr(path.find_last_of(L"."));
+std::wstring fileExt = path.substr(path.find_last_of(L"."));
 
-	if (fileExt == L".DDS" || fileExt == L".dds") {
+if (fileExt == L".DDS" || fileExt == L".dds") {
 
-		hr = DirectX::CreateDDSTextureFromFileEx(
-			_d3d11Device,
-			_d3d11DevCon,
-			path.c_str(),
-			0,
-			(D3D11_USAGE)usage,
-			bindFlag,
-			usage == NLRE_USAGE_DYNAMIC ? D3D11_CPU_ACCESS_WRITE : 0,
-			0,
-			false,
-			&texture,
-			&resourceView
-			);
-	}
-	else
-	{
-		hr = DirectX::CreateWICTextureFromFileEx(
-			_d3d11Device,
-			_d3d11DevCon,
-			path.c_str(),
-			0,
-			(D3D11_USAGE)usage,
-			bindFlag,
-			usage == NLRE_USAGE_DYNAMIC ? D3D11_CPU_ACCESS_WRITE : 0,
-			0,
-			false,
-			&texture,
-			&resourceView
-			);
-	}
-
-	if (FAILED(hr))
-	{
-		NLRE_Log::err(NLRE_Log::ErrorFlag::CRITICAL, "Texture failed to load: ", path);
-		return false;
-	}
-	return true;
+hr = DirectX::CreateDDSTextureFromFileEx(
+_d3d11Device,
+_d3d11DevCon,
+path.c_str(),
+0,
+(D3D11_USAGE)usage,
+bindFlag,
+usage == NLRE_USAGE_DYNAMIC ? D3D11_CPU_ACCESS_WRITE : 0,
+0,
+false,
+&texture,
+&resourceView
+);
+}
+else
+{
+hr = DirectX::CreateWICTextureFromFileEx(
+_d3d11Device,
+_d3d11DevCon,
+path.c_str(),
+0,
+(D3D11_USAGE)usage,
+bindFlag,
+usage == NLRE_USAGE_DYNAMIC ? D3D11_CPU_ACCESS_WRITE : 0,
+0,
+false,
+&texture,
+&resourceView
+);
 }
 
+if (FAILED(hr))
+{
+NLRE_Log::err(NLRE_Log::ErrorFlag::CRITICAL, "Texture failed to load: ", path);
+return false;
+}
+return true;
+}
+*/
 
-bool NLREDX11RenderingDevice::createInputLayout(NLRE_InputLayoutDesc ilDesc, NLRE_VertexShader vShader, NLRE_APIInputLayout* inputLayout)
+bool NLREDX11RenderingDevice::createInputLayout(NLRE_InputLayoutDesc& ilDesc, NLRE_VertexShader& vShader, NLRE_APIInputLayout*& inputLayout)
 {
 	HRESULT hr;
-
-	hr = _d3d11Device->CreateInputLayout(ilDesc.apiInputLayoutDesc, ilDesc.numberElements, vShader.blob.data,
-		vShader.blob.size, &inputLayout);
+	hr = _d3d11Device->CreateInputLayout(ilDesc.apiInputLayoutDesc, ilDesc.numberElements, vShader.blob->GetBufferPointer(),
+		vShader.blob->GetBufferSize(), &inputLayout);
 	if (FAILED(hr))
 	{
 		NLRE_Log::err(NLRE_Log::ErrorFlag::CRITICAL, "Failed to create Input Layout");
@@ -392,9 +392,7 @@ bool NLREDX11RenderingDevice::createInputLayout(NLRE_InputLayoutDesc ilDesc, NLR
 	return true;
 }
 
-
-
-bool NLREDX11RenderingDevice::createTextureSamplerState(NLRE_APISamplerState* samplerState)
+bool NLREDX11RenderingDevice::createTextureSamplerState(NLRE_APISamplerState*& samplerState)
 {
 	HRESULT hr;
 
@@ -421,7 +419,7 @@ bool NLREDX11RenderingDevice::createTextureSamplerState(NLRE_APISamplerState* sa
 
 
 
-bool NLREDX11RenderingDevice::createRasterizerState(NLRE_CULL_MODE cullMode, NLRE_FILL_MODE fillMode, NLRE_APIRasterizerState* rasterizerState)
+bool NLREDX11RenderingDevice::createRasterizerState(NLRE_CULL_MODE cullMode, NLRE_FILL_MODE fillMode, NLRE_APIRasterizerState*& rasterizerState)
 {
 	HRESULT hr;
 

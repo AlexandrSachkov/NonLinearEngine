@@ -5,16 +5,22 @@ NLREDeviceController::NLREDeviceController(HWND hwndVal, int widthVal, int heigh
 : _renderingDevice(hwndVal, widthVal, heightVal)
 {
 	_renderingTechniqueId = techniqueId;
-	setRenderingTechnique(techniqueId);
+	
 	if (!initialize())
 	{
 		NLRE_Log::err(NLRE_Log::CRITICAL, "Device controller failed to initialize");
-		throw new std::exception("Device controller failed to initialize");
+		throw std::exception("Device controller failed to initialize");
 	}
+}
+
+NLREDeviceController::~NLREDeviceController()
+{
+	if (_renderingTechnique) delete _renderingTechnique;
 }
 
 bool NLREDeviceController::initialize()
 {
+	if (!setRenderingTechnique(_renderingTechniqueId)) return false;
 	return true;
 }
 
@@ -32,6 +38,8 @@ bool NLREDeviceController::setRenderingTechnique(NLRE_RENDERING_TECHNIQUE_ID tec
 		case NLRE_FORWARD_RT:
 			_renderingTechnique = new NLREForwardRT(&_renderingDevice);
 			break;
+		default:
+			throw std::exception("Unsupported Rendering Technique.");
 		}
 	}
 	catch (std::exception& e)

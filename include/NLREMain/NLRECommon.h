@@ -7,5 +7,6 @@
 #include "NLRELog.h"
 #include "RenderingDevice\NLREInputLayoutDescriptions.h"
 
+
 #endif
 

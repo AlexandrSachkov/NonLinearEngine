@@ -95,7 +95,7 @@ inline NLE_VECTOR	_NLE_CALLCONV_	NLEMath::NLEVector4RefractV(NLE_FVECTOR inciden
 
 inline NLE_VECTOR	_NLE_CALLCONV_ NLEMath::NLEVectorSet(float x, float y, float z, float w)
 {
-	return NLEVectorSet(x, y, z, w);
+	return DirectX::XMVectorSet(x, y, z, w);
 }
 
 inline NLE_VECTOR	_NLE_CALLCONV_	NLEMath::NLEVector4Transform(NLE_FVECTOR v, NLE_FMATRIX m)
