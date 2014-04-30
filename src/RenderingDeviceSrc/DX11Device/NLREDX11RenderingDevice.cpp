@@ -325,7 +325,7 @@ bool NLREDX11RenderingDevice::loadPixelShader(std::wstring path, NLRE_PixelShade
 	return true;
 }
 
-/*
+
 bool NLREDX11RenderingDevice::loadTexture(
 std::wstring path,
 NLRE_USAGE usage,
@@ -377,7 +377,7 @@ return false;
 }
 return true;
 }
-*/
+
 
 bool NLREDX11RenderingDevice::createInputLayout(NLRE_InputLayoutDesc& ilDesc, NLRE_VertexShader& vShader, NLRE_APIInputLayout*& inputLayout)
 {

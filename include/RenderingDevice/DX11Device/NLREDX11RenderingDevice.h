@@ -5,6 +5,8 @@
 #include <d3d11.h>
 #include <d3dcompiler.h>
 
+#include "DDSTextureLoader.h"
+#include "WICTextureLoader.h"
 
 class NLREDX11RenderingDevice
 {
@@ -73,7 +75,7 @@ public:
 
 	bool loadVertexShader(std::wstring path, NLRE_VertexShader& vertexShader);
 	bool loadPixelShader(std::wstring path, NLRE_PixelShader& pixelShader);
-	//bool loadTexture(std::wstring path, NLRE_USAGE usage, NLRE_BIND_FLAG bindFlag, NLRE_APIResource* texture, NLRE_APIShaderResourceView* resourceView);
+	bool loadTexture(std::wstring path, NLRE_USAGE usage, NLRE_BIND_FLAG bindFlag, NLRE_APIResource* texture, NLRE_APIShaderResourceView* resourceView);
 
 	void VSSetShaderResources(unsigned int startSlot, unsigned int numViews, NLRE_APIShaderResourceView* resourceViewArr);
 	void PSSetShaderResources(unsigned int startSlot, unsigned int numViews, NLRE_APIShaderResourceView* resourceViewArr);

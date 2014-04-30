@@ -117,6 +117,12 @@
     <ClInclude Include="..\include\Container.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\include\RenderingDevice\DX11Device\DDSTextureLoader.h">
+      <Filter>Header Files\RenderingDevice\DX11Device</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\RenderingDevice\DX11Device\WICTextureLoader.h">
+      <Filter>Header Files\RenderingDevice\DX11Device</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\src\MathSrc\DXMath\DXMathMatrixFunctions.inl">
@@ -162,6 +168,12 @@
     </ClCompile>
     <ClCompile Include="..\src\RenderingDeviceSrc\NLREForwardRT.cpp">
       <Filter>Source Files\RenderingDeviceSrc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\RenderingDeviceSrc\DX11Device\DDSTextureLoader.cpp">
+      <Filter>Source Files\RenderingDeviceSrc\DX11Device</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\RenderingDeviceSrc\DX11Device\WICTextureLoader.cpp">
+      <Filter>Source Files\RenderingDeviceSrc\DX11Device</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

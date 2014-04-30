@@ -306,9 +306,11 @@
     <ClInclude Include="..\include\NLREMain\NLRELog.h" />
     <ClInclude Include="..\include\NLREMain\stdafx.h" />
     <ClInclude Include="..\include\NLREResources.h" />
+    <ClInclude Include="..\include\RenderingDevice\DX11Device\DDSTextureLoader.h" />
     <ClInclude Include="..\include\RenderingDevice\DX11Device\NLREDX11InputLayoutDescriptions.h" />
     <ClInclude Include="..\include\RenderingDevice\DX11Device\NLREDX11RenderingDevice.h" />
     <ClInclude Include="..\include\RenderingDevice\DX11Device\NLREDX11ResourceWrap.h" />
+    <ClInclude Include="..\include\RenderingDevice\DX11Device\WICTextureLoader.h" />
     <ClInclude Include="..\include\RenderingDevice\NLREDeviceController.h" />
     <ClInclude Include="..\include\RenderingDevice\NLREForwardRT.h" />
     <ClInclude Include="..\include\RenderingDevice\NLREInputLayoutDescriptions.h" />
@@ -328,8 +330,10 @@
     <ClCompile Include="..\src\NLRE.cpp" />
     <ClCompile Include="..\src\NLREMainSrc\NLRELog.cpp" />
     <ClCompile Include="..\src\NLREMainSrc\stdafx.cpp" />
+    <ClCompile Include="..\src\RenderingDeviceSrc\DX11Device\DDSTextureLoader.cpp" />
     <ClCompile Include="..\src\RenderingDeviceSrc\DX11Device\NLREDX11InputLayoutDescriptions.cpp" />
     <ClCompile Include="..\src\RenderingDeviceSrc\DX11Device\NLREDX11RenderingDevice.cpp" />
+    <ClCompile Include="..\src\RenderingDeviceSrc\DX11Device\WICTextureLoader.cpp" />
     <ClCompile Include="..\src\RenderingDeviceSrc\NLREDeviceController.cpp" />
     <ClCompile Include="..\src\RenderingDeviceSrc\NLREForwardRT.cpp" />
   </ItemGroup>
