@@ -40,6 +40,53 @@ Vertex vertexArray[] =
 	Vertex(1.0f, -1.0f, 1.0f, 1.0f, 1.0f),
 };
 
+Vertex2 vertexArray3[] =
+{
+	// Front Face
+	Vertex2(-1.0f, -1.0f, -1.0f),
+	Vertex2(-1.0f, 1.0f, -1.0f),
+	Vertex2(1.0f, 1.0f, -1.0f),
+	Vertex2(1.0f, -1.0f, -1.0f),
+
+	// Back Face
+	Vertex2(-1.0f, -1.0f, 1.0f),
+	Vertex2(1.0f, -1.0f, 1.0f),
+	Vertex2(1.0f, 1.0f, 1.0f),
+	Vertex2(-1.0f, 1.0f, 1.0f),
+
+	// Top Face
+	Vertex2(-1.0f, 1.0f, -1.0f),
+	Vertex2(-1.0f, 1.0f, 1.0f),
+	Vertex2(1.0f, 1.0f, 1.0f),
+	Vertex2(1.0f, 1.0f, -1.0f),
+
+	// Bottom Face
+	Vertex2(-1.0f, -1.0f, -1.0f),
+	Vertex2(1.0f, -1.0f, -1.0f),
+	Vertex2(1.0f, -1.0f, 1.0f),
+	Vertex2(-1.0f, -1.0f, 1.0f),
+
+	// Left Face
+	Vertex2(-1.0f, -1.0f, 1.0f),
+	Vertex2(-1.0f, 1.0f, 1.0f),
+	Vertex2(-1.0f, 1.0f, -1.0f),
+	Vertex2(-1.0f, -1.0f, -1.0f),
+
+	// Right Face
+	Vertex2(1.0f, -1.0f, -1.0f),
+	Vertex2(1.0f, 1.0f, -1.0f),
+	Vertex2(1.0f, 1.0f, 1.0f),
+	Vertex2(1.0f, -1.0f, 1.0f),
+};
+
+Vertex2 vertexArray2[] =
+{
+	Vertex2(0.0f, 0.5f, 0.5f),
+	Vertex2(0.5f, -0.5f, 0.5f),
+	Vertex2(-0.5f, -0.5f, 0.5f),
+
+};
+
 DWORD indices[] = {
 	// Front Face
 	0, 1, 2,
@@ -79,9 +126,8 @@ Container::Container(NLREDeviceController* deviceController, NLRERenderingDevice
 
 	mCamView = new NLE_FLOAT4X4();
 	mCamProjection = new NLE_FLOAT4X4();
-	mObjWorld = new NLE_FLOAT4X4();
 
-	NLE_VECTOR camPosition = NLEMath::NLEVectorSet(0.0f, 3.0f, -20.0f, 0.0f);
+	NLE_VECTOR camPosition = NLEMath::NLEVectorSet(0.0f, 5.0f, -10.0f, 0.0f);
 	NLE_VECTOR camTarget = NLEMath::NLEVectorSet(0.0f, 0.0f, 0.0f, 0.0f);
 	NLE_VECTOR camUp = NLEMath::NLEVectorSet(0.0f, 1.0f, 0.0f, 0.0f);
 
@@ -95,7 +141,11 @@ Container::Container(NLREDeviceController* deviceController, NLRERenderingDevice
 
 
 
-	NLE_MATRIX objWorld = NLEMath::NLELoadFloat4x4(mObjWorld);
+	NLE_MATRIX objWorld = NLEMath::NLEMatrixIdentity();
+	//XMVECTOR rotAxis = XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f);
+	//XMMATRIX rotation = XMMatrixRotationAxis(rotAxis, rot);
+	//NLE_MATRIX translation = NLEMath::NLEMatrixTranslation(0.0f, 0.0f, 4.0f);
+	//NLE_MATRIX scale = NLEMath::NLEMatrixScaling(1.3f, 1.3f, 1.3f);
 
 	NLE_MATRIX WVP = objWorld * camView * camProjection;
 	NLEMath::NLEStoreFloat4x4(&(cbPerObj.WVP), XMMatrixTranspose(WVP));
@@ -114,13 +164,14 @@ Container::~Container()
 
 bool Container::initialize()
 {
-
-	if (!_renderingDevice->createBuffer<Vertex>(NLRE_BIND_SHADER_RESOURCE, NLRE_USAGE_IMMUTABLE, vertexArray, 24, _vertexBuffer)) return false;
-	if (!_renderingDevice->createBuffer<DWORD>(NLRE_BIND_SHADER_RESOURCE, NLRE_USAGE_IMMUTABLE, indices, 24, _indexBuffer)) return false;
-	if (!_renderingDevice->createBuffer<cbPerObject>(NLRE_BIND_SHADER_RESOURCE, NLRE_USAGE_DYNAMIC, &cbPerObj, 1, _constantBuffer)) return false;
-	if (!_renderingDevice->loadTexture(L"C:\\Users\\Alex\\Desktop\\braynzar.jpg", NLRE_USAGE_IMMUTABLE, NLRE_BIND_SHADER_RESOURCE, NULL, _texture)) return false;
+	
+	if (!_renderingDevice->createBuffer<Vertex>(NLRE_BIND_VERTEX_BUFFER, NLRE_USAGE_IMMUTABLE, vertexArray, 24, _vertexBuffer)) return false;
+	if (!_renderingDevice->createBuffer<DWORD>(NLRE_BIND_INDEX_BUFFER, NLRE_USAGE_IMMUTABLE, indices, 36, _indexBuffer)) return false;
+	if (!_renderingDevice->createBuffer<cbPerObject>(NLRE_BIND_CONSTANT_BUFFER, NLRE_USAGE_IMMUTABLE, &cbPerObj, 1, _constantBuffer)) return false;
+	//if (!_renderingDevice->loadTexture(L"C:\\Users\\Alex\\Desktop\\braynzar.jpg", NLRE_USAGE_IMMUTABLE, NLRE_BIND_SHADER_RESOURCE, NULL, _texture)) return false;
 	return true;
 }
+
 
 void Container::render()
 {

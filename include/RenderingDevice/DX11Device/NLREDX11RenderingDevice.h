@@ -5,9 +5,6 @@
 #include <d3d11.h>
 #include <d3dcompiler.h>
 
-#include "DDSTextureLoader.h"
-#include "WICTextureLoader.h"
-
 class NLREDX11RenderingDevice
 {
 public:
@@ -63,6 +60,7 @@ public:
 		buffer.bindFlag = bindFlag;
 		buffer.usage = usage;
 		buffer.elementSize = sizeof(DataType);
+		buffer.numberElements = arrayLength;
 
 		return true;
 	}
@@ -105,6 +103,8 @@ public:
 
 	void clearRenderTargetView(NLRE_APIRenderTargetView* renderTargetView, float colorRGBA[]);
 	void clearDepthStencilView(NLRE_APIDepthStencilView* depthStencilView);
+	void drawIndexed(const NLRE_Buffer& indexBuffer);
+	void draw(const NLRE_Buffer& vertexBuffer);
 	void display();
 
 

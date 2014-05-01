@@ -20,6 +20,15 @@ struct Vertex
 	NLE_FLOAT2 texCoord;
 };
 
+struct Vertex2
+{
+	Vertex2(){}
+	Vertex2(float x, float y, float z)
+		: pos(x, y, z){}
+
+	NLE_FLOAT3 pos;
+};
+
 class Container
 {
 public:

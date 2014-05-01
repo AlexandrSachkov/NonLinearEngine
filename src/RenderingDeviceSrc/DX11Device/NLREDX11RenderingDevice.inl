@@ -55,7 +55,8 @@ inline void NLREDX11RenderingDevice::GSSetConstantBuffer(unsigned int startSlot,
 
 inline void NLREDX11RenderingDevice::setVertexBuffer(const NLRE_Buffer& buffer, unsigned int slotNum)
 {
-	_d3d11DevCon->IASetVertexBuffers(slotNum, 1, &(buffer.apiBuffer), &(buffer.elementSize), 0);
+	unsigned int stride = 0;
+	_d3d11DevCon->IASetVertexBuffers(slotNum, 1, &(buffer.apiBuffer), &(buffer.elementSize), &stride);
 }
 
 inline void NLREDX11RenderingDevice::setIndexBuffer(const NLRE_Buffer& buffer)
@@ -133,6 +134,16 @@ inline void NLREDX11RenderingDevice::clearRenderTargetView(NLRE_APIRenderTargetV
 inline void NLREDX11RenderingDevice::clearDepthStencilView(NLRE_APIDepthStencilView* depthStencilView)
 {
 	_d3d11DevCon->ClearDepthStencilView(depthStencilView, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
+}
+
+inline void NLREDX11RenderingDevice::drawIndexed(const NLRE_Buffer& indexBuffer)
+{
+	_d3d11DevCon->DrawIndexed(indexBuffer.numberElements, 0, 0);
+}
+
+inline void NLREDX11RenderingDevice::draw(const NLRE_Buffer& vertexBuffer)
+{
+	_d3d11DevCon->Draw(vertexBuffer.numberElements, 0);
 }
 
 inline void NLREDX11RenderingDevice::display()

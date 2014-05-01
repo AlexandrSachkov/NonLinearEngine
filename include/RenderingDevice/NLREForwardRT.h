@@ -15,6 +15,7 @@ public:
 	void render(NLRE_Buffer vertexBuff, NLRE_Buffer indexBuff, NLRE_Buffer constBuff, NLRE_APIShaderResourceView* texture);
 private:
 	bool initialize();
+	
 	NLRERenderingDevice* _renderingDevice;
 
 	//Resources and States

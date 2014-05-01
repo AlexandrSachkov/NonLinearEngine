@@ -333,6 +333,7 @@ NLRE_BIND_FLAG bindFlag,
 NLRE_APIResource* texture,
 NLRE_APIShaderResourceView* resourceView)
 {
+	/*
 HRESULT hr;
 
 std::wstring fileExt = path.substr(path.find_last_of(L"."));
@@ -375,6 +376,8 @@ if (FAILED(hr))
 NLRE_Log::err(NLRE_Log::ErrorFlag::CRITICAL, "Texture failed to load: ", path);
 return false;
 }
+
+*/
 return true;
 }
 

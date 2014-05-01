@@ -29,12 +29,12 @@ bool NLREForwardRT::initialize()
 	if (!_renderingDevice->createBlendStates(false, false, 1, false, _noBlendState)) return false;
 	if (!_renderingDevice->createBlendStates(true, false, 1, false, _blendState)) return false;
 	if (!_renderingDevice->createDepthStencilView(_depthStencilView)) return false;
-	if (!_renderingDevice->loadVertexShader(L"Shaders\\Forward_PosText_VS.cso", _vertexShader)) return false;
-	if (!_renderingDevice->createInputLayout(NLREInputLayoutDescriptions::forwardPosText, _vertexShader, _inputLayout)) return false;
+	if (!_renderingDevice->loadVertexShader(L"Shaders\\Forward_Pos_VS.cso", _vertexShader)) return false;
+	if (!_renderingDevice->createInputLayout(NLREInputLayoutDescriptions::forwardPos, _vertexShader, _inputLayout)) return false;
 	if (!_renderingDevice->createRasterizerState(NLRE_CULL_BACK, NLRE_FILL_SOLID, _backFaceCull)) return false;
 	if (!_renderingDevice->createRasterizerState(NLRE_CULL_FRONT, NLRE_FILL_SOLID, _backFaceCull)) return false;
-	if (!_renderingDevice->createTextureSamplerState(_textureSamplerState)) return false;
-	if (!_renderingDevice->loadPixelShader(L"Shaders\\Forward_PosText_PS.cso", _pixelShader)) return false;
+	//if (!_renderingDevice->createTextureSamplerState(_textureSamplerState)) return false;
+	if (!_renderingDevice->loadPixelShader(L"Shaders\\Forward_Pos_PS.cso", _pixelShader)) return false;
 	
 	_renderingDevice->setRenderTargets(1, _backBufferRenderTargetView, _depthStencilView);
 	_renderingDevice->setVertexShader(_vertexShader);
@@ -43,7 +43,7 @@ bool NLREForwardRT::initialize()
 	_renderingDevice->setPrimitiveTopology(NLRE_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 	_renderingDevice->setViewPort();
 
-	_renderingDevice->PSSetTextureSamplerState(0, 1, _textureSamplerState);
+	//_renderingDevice->PSSetTextureSamplerState(0, 1, _textureSamplerState);
 	_renderingDevice->setRasterizerState(_backFaceCull);
 	
 	return true;
@@ -71,8 +71,8 @@ void NLREForwardRT::render(NLRE_Buffer vertexBuff, NLRE_Buffer indexBuff, NLRE_B
 	_renderingDevice->clearRenderTargetView(_backBufferRenderTargetView, bgColor);
 	_renderingDevice->clearDepthStencilView(_depthStencilView);
 
-	float blendFactor[] = { 0.75f, 0.75f, 0.75f, 1.0f };
-	_renderingDevice->setBlendState(_noBlendState, 0);
+	//float blendFactor[] = { 0.75f, 0.75f, 0.75f, 1.0f };
+	//_renderingDevice->setBlendState(_noBlendState, 0);
 
 	//	======= for every opaque object ========
 	//set vertex buffer
@@ -83,7 +83,7 @@ void NLREForwardRT::render(NLRE_Buffer vertexBuff, NLRE_Buffer indexBuff, NLRE_B
 	_renderingDevice->setVertexBuffer(vertexBuff, 0);
 	_renderingDevice->setIndexBuffer(indexBuff);
 	_renderingDevice->VSSetConstantBuffer(0, 1, constBuff);
-	_renderingDevice->PSSetShaderResources(0, 1, texture);
+	//_renderingDevice->PSSetShaderResources(0, 1, texture);
 
 	//	======= for transparant objects ========
 	//_renderingDevice->setBlendState(_blendState, blendFactor);
@@ -98,7 +98,7 @@ void NLREForwardRT::render(NLRE_Buffer vertexBuff, NLRE_Buffer indexBuff, NLRE_B
 	//draw object
 	//_renderingDevice->setRasterizerState(_backFaceCull);
 	//draw object
-
+	_renderingDevice->drawIndexed(indexBuff);
 	_renderingDevice->display();
 }
 

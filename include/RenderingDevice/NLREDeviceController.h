@@ -14,10 +14,11 @@ public:
 	NLRE_RENDERING_TECHNIQUE_ID getCurrentRenderingTechniqueId();
 	void render(NLRE_Buffer vertexBuff, NLRE_Buffer indexBuff, NLRE_Buffer constBuff, NLRE_APIShaderResourceView* texture);
 
+NLRERenderingTechnique* _renderingTechnique;
 private:
 	bool initialize();
 	NLRE_RENDERING_TECHNIQUE_ID _renderingTechniqueId;
 	NLRERenderingDevice _renderingDevice;
-	NLRERenderingTechnique* _renderingTechnique;
+	
 };
 #endif

@@ -117,19 +117,10 @@
     <ClInclude Include="..\include\Container.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\RenderingDevice\DX11Device\DDSTextureLoader.h">
-      <Filter>Header Files\RenderingDevice\DX11Device</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\RenderingDevice\DX11Device\WICTextureLoader.h">
-      <Filter>Header Files\RenderingDevice\DX11Device</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\src\MathSrc\DXMath\DXMathMatrixFunctions.inl">
       <Filter>Source Files\MathSrc\DXMath</Filter>
-    </None>
-    <None Include="..\src\RenderingDeviceSrc\DX11Device\NLREDX11RenderingDevice.inl">
-      <Filter>Source Files\RenderingDeviceSrc\DX11Device</Filter>
     </None>
     <None Include="..\src\MathSrc\DXMath\DXMathVector4DFunctions.inl">
       <Filter>Source Files\MathSrc\DXMath</Filter>
@@ -139,6 +130,9 @@
     </None>
     <None Include="..\src\MathSrc\DXMath\DXMathVectorStoreFunctions.inl">
       <Filter>Source Files\MathSrc\DXMath</Filter>
+    </None>
+    <None Include="..\src\RenderingDeviceSrc\DX11Device\NLREDX11RenderingDevice.inl">
+      <Filter>Source Files\RenderingDeviceSrc\DX11Device</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
@@ -169,12 +163,6 @@
     <ClCompile Include="..\src\RenderingDeviceSrc\NLREForwardRT.cpp">
       <Filter>Source Files\RenderingDeviceSrc</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\RenderingDeviceSrc\DX11Device\DDSTextureLoader.cpp">
-      <Filter>Source Files\RenderingDeviceSrc\DX11Device</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\RenderingDeviceSrc\DX11Device\WICTextureLoader.cpp">
-      <Filter>Source Files\RenderingDeviceSrc\DX11Device</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="..\src\RenderingDeviceSrc\DX11Device\Shaders\DeferredGBuff_TextNormal_BlinnPhong_PS.hlsl">
@@ -187,6 +175,12 @@
       <Filter>Source Files\RenderingDeviceSrc\DX11Device\Shaders</Filter>
     </FxCompile>
     <FxCompile Include="..\src\RenderingDeviceSrc\DX11Device\Shaders\Forward_PosText_VS.hlsl">
+      <Filter>Source Files\RenderingDeviceSrc\DX11Device\Shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="..\src\RenderingDeviceSrc\DX11Device\Shaders\Forward_Pos_VS.hlsl">
+      <Filter>Source Files\RenderingDeviceSrc\DX11Device\Shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="..\src\RenderingDeviceSrc\DX11Device\Shaders\Forward_Pos_PS.hlsl">
       <Filter>Source Files\RenderingDeviceSrc\DX11Device\Shaders</Filter>
     </FxCompile>
   </ItemGroup>

@@ -8,9 +8,11 @@ class NLREDX11InputLayoutDescriptions
 public:
 	static const NLRE_APIInputLayoutDecs forwardPosNormTanTextDesc[];
 	static const NLRE_APIInputLayoutDecs forwardPosTextDesc[];
+	static const NLRE_APIInputLayoutDecs forwardPosDesc[];
 
 	static NLRE_InputLayoutDesc forwardPosNormTanText;
 	static NLRE_InputLayoutDesc forwardPosText;
+	static NLRE_InputLayoutDesc forwardPos;
 };
 
 #endif

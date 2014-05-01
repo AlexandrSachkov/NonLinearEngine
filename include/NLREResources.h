@@ -9,7 +9,7 @@ struct NLRE_Buffer
 {
 	NLRE_Buffer() : apiBuffer(NULL),
 		usage(NLRE_USAGE::NLRE_USAGE_DEFAULT),
-		elementSize(0){}
+		elementSize(0), numberElements(0){}
 	~NLRE_Buffer()
 	{ 
 		if (apiBuffer)
@@ -23,6 +23,7 @@ struct NLRE_Buffer
 	NLRE_BIND_FLAG bindFlag;
 	NLRE_USAGE usage;
 	unsigned int elementSize;
+	unsigned int numberElements;
 };
 
 struct NLRE_VertexShader
