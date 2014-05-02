@@ -156,7 +156,7 @@ $RECYCLE.BIN/
 
 # Mac desktop service store files
 .DS_Store
-*.lib
+#*.lib
 lib/Profile/Win32/intermediate/NLRE.tlog/CL.read.1.tlog
 lib/Profile/Win32/intermediate/NLRE.tlog/CL.write.1.tlog
 lib/Profile/Win32/intermediate/NLRE.tlog/Lib-link.read.1.tlog
