@@ -178,7 +178,7 @@ bool Container::initialize()
 	if (!_renderingDevice->createBuffer<Vertex>(NLRE_BIND_VERTEX_BUFFER, NLRE_USAGE_IMMUTABLE, vertexArray, 24, _vertexBuffer)) return false;
 	if (!_renderingDevice->createBuffer<DWORD>(NLRE_BIND_INDEX_BUFFER, NLRE_USAGE_IMMUTABLE, indices, 36, _indexBuffer)) return false;
 	if (!_renderingDevice->createBuffer<cbPerObject>(NLRE_BIND_CONSTANT_BUFFER, NLRE_USAGE_IMMUTABLE, &cbPerObj, 1, _constantBuffer)) return false;
-	if (!_textureLoader->loadTexture2D(L"C:\\Users\\Alex\\Desktop\\colors.jpg", NLRE_USAGE_IMMUTABLE, NLRE_BIND_SHADER_RESOURCE, _texture2D, _texture2DResourceView)) return false;
+	if (!_textureLoader->loadTexture2D(L"C:\\Users\\Alex\\Desktop\\colors.jpg", NLRE_BIND_SHADER_RESOURCE, NLRE_USAGE_IMMUTABLE, _texture2D, _texture2DResourceView)) return false;
 		//loadTexture(L"C:\\Users\\Alex\\Desktop\\braynzar.jpg", NLRE_USAGE_IMMUTABLE, NLRE_BIND_SHADER_RESOURCE, NULL, _texture)) return false;
 	return true;
 }

@@ -36,7 +36,7 @@ void NLREFreeImgTextureLoader::freeImgErrorCallback(FREE_IMAGE_FORMAT fif, const
 	NLRE_Log::err(NLRE_Log::REG, "Texture Loader Error -> FORMAT: ", format == NULL ? "NULL" : format,", MESSAGE: ",message);
 }
 
-bool NLREFreeImgTextureLoader::loadTexture2D(std::wstring path, NLRE_USAGE usage, NLRE_BIND_FLAG bindFlag, NLRE_APITexture2D*& texture2D, NLRE_APIShaderResourceView*& resourceView)
+bool NLREFreeImgTextureLoader::loadTexture2D(std::wstring path, NLRE_BIND_FLAG bindFlag, NLRE_USAGE usage, NLRE_APITexture2D*& texture2D, NLRE_APIShaderResourceView*& resourceView)
 {
 	std::string filePath(path.begin(),path.end());
 	FREE_IMAGE_FORMAT format = FreeImage_GetFileType(filePath.c_str(), 0);
