@@ -331,12 +331,6 @@ bool NLREDX11RenderingDevice::createTexture2D(
 		NLRE_Log::err(NLRE_Log::REG, "Failed to create texture");
 		return false;
 	}
-
-	//================================== TEMP FORMAT TEST ======================================
-
-
-
-
 	return true;
 }
 

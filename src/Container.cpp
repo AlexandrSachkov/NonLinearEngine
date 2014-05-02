@@ -165,10 +165,11 @@ Container::~Container()
 	_texture2D = NULL;
 
 	if (_texture2DResourceView) _texture2DResourceView->Release();
+	_texture2DResourceView = NULL;
 
-	if (mCamView) delete mCamView;
-	if (mCamProjection) delete mCamProjection;
-	if (mObjWorld) delete mObjWorld;
+	delete mCamView;
+	delete mCamProjection;
+	delete mObjWorld;
 }
 
 bool Container::initialize()
