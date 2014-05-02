@@ -2,6 +2,7 @@
 #define CONTAINER_
 
 #include "NLREMain\stdafx.h"
+#include "ResourceLoader\NLRETextureLoader.h"
 #include "RenderingDevice\NLREDeviceController.h"
 
 struct cbPerObject
@@ -32,7 +33,7 @@ struct Vertex2
 class Container
 {
 public:
-	Container(NLREDeviceController* _deviceController, NLRERenderingDevice* _renderingDevice, int width, int height);
+	Container(NLREDeviceController* deviceController, NLRERenderingDevice* renderingDevice, NLRETextureLoader* textureLoader, int width, int height);
 	~Container();
 
 	void render();
@@ -41,11 +42,13 @@ private:
 
 	NLREDeviceController* _deviceController;
 	NLRERenderingDevice* _renderingDevice;
+	NLRETextureLoader* _textureLoader;
 
 	NLRE_Buffer _vertexBuffer;
 	NLRE_Buffer _indexBuffer;
 	NLRE_Buffer _constantBuffer;
-	NLRE_APIShaderResourceView* _texture;
+	NLRE_APITexture2D* _texture2D;
+	NLRE_APIShaderResourceView* _texture2DResourceView;
 
 	NLE_FLOAT4X4* mCamView;
 	NLE_FLOAT4X4* mCamProjection;

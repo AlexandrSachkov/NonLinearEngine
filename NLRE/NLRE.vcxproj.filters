@@ -46,6 +46,12 @@
     <Filter Include="Source Files\RenderingDeviceSrc\DX11Device\Shaders">
       <UniqueIdentifier>{713249b8-4cf3-4ba0-8369-2b734fa123d9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\ResourceLoader">
+      <UniqueIdentifier>{ba3cada5-c953-4ff8-8a6f-fa0fcde1f47a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\ResourceLoaderSrc">
+      <UniqueIdentifier>{afd4480c-f316-47b4-a50a-744be13159c7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -117,6 +123,12 @@
     <ClInclude Include="..\include\Container.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\include\ResourceLoader\NLREFreeImgTextureLoader.h">
+      <Filter>Header Files\ResourceLoader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\ResourceLoader\NLRETextureLoader.h">
+      <Filter>Header Files\ResourceLoader</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\src\MathSrc\DXMath\DXMathMatrixFunctions.inl">
@@ -162,6 +174,9 @@
     </ClCompile>
     <ClCompile Include="..\src\RenderingDeviceSrc\NLREForwardRT.cpp">
       <Filter>Source Files\RenderingDeviceSrc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\ResourceLoaderSrc\NLREFreeImgTextureLoader.cpp">
+      <Filter>Source Files\ResourceLoaderSrc</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

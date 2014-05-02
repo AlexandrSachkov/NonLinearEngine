@@ -69,11 +69,22 @@ public:
 	bool createInputLayout(NLRE_InputLayoutDesc& ilDesc, NLRE_VertexShader& vShader, NLRE_APIInputLayout*& inputLayout);
 	bool createRasterizerState(NLRE_CULL_MODE cullMode, NLRE_FILL_MODE fillMode, NLRE_APIRasterizerState*& rasterizerState);
 	bool createRenderTargetViews(unsigned int numViews, NLRE_APIRenderTargetView*& renderTargetViewArr);
+	bool createShaderResourceViewFromTexture2D(NLRE_APITexture2D* texture, NLRE_APIShaderResourceView*& resourceView);
+	bool createTexture2D(
+		unsigned int width,
+		unsigned int height,
+		bool generateMipMaps,
+		unsigned int MSAALevel,
+		NLRE_USAGE usage,
+		NLRE_BIND_FLAG bindFlag,
+		void* data,
+		unsigned int memPitch,
+		NLRE_APITexture2D*& texture);
+
 	bool createTextureSamplerState(NLRE_APISamplerState*& samplerState);
 
 	bool loadVertexShader(std::wstring path, NLRE_VertexShader& vertexShader);
 	bool loadPixelShader(std::wstring path, NLRE_PixelShader& pixelShader);
-	bool loadTexture(std::wstring path, NLRE_USAGE usage, NLRE_BIND_FLAG bindFlag, NLRE_APIResource* texture, NLRE_APIShaderResourceView* resourceView);
 
 	void VSSetShaderResources(unsigned int startSlot, unsigned int numViews, NLRE_APIShaderResourceView* resourceViewArr);
 	void PSSetShaderResources(unsigned int startSlot, unsigned int numViews, NLRE_APIShaderResourceView* resourceViewArr);

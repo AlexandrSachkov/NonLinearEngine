@@ -270,6 +270,76 @@ bool NLREDX11RenderingDevice::createDepthStencilView(NLRE_APIDepthStencilView*& 
 	return true;
 }
 
+bool NLREDX11RenderingDevice::createShaderResourceViewFromTexture2D(NLRE_APITexture2D* texture, NLRE_APIShaderResourceView*& resourceView)
+{
+	D3D11_SHADER_RESOURCE_VIEW_DESC srvDesc;
+	ZeroMemory(&srvDesc, sizeof(srvDesc));
+	srvDesc.Format = DXGI_FORMAT_B8G8R8A8_UNORM; //changes based on the image format
+	srvDesc.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2D;
+	srvDesc.Texture2D.MipLevels = -1;
+	srvDesc.Texture2D.MostDetailedMip = 0;
+
+	HRESULT hr;
+	hr = _d3d11Device->CreateShaderResourceView(texture, &srvDesc, &resourceView);
+	if (FAILED(hr))
+	{
+		NLRE_Log::err(NLRE_Log::REG, "Failed to create Shader Resource View from Texture2D");
+		return false;
+	}
+	return true;
+}
+
+bool NLREDX11RenderingDevice::createTexture2D(
+	unsigned int width, 
+	unsigned int height, 
+	bool generateMipMaps, 
+	unsigned int MSAALevel, 
+	NLRE_USAGE usage, 
+	NLRE_BIND_FLAG bindFlag, 
+	void* data, 
+	unsigned int memPitch,
+	NLRE_APITexture2D*& texture)
+{
+	D3D11_TEXTURE2D_DESC textDesc;
+	ZeroMemory(&textDesc, sizeof(textDesc));
+	textDesc.Width = width;
+	textDesc.Height = height;
+	textDesc.MipLevels = generateMipMaps == true ? 0 : 1;
+	textDesc.ArraySize = 1;
+	textDesc.Format = DXGI_FORMAT_B8G8R8A8_UNORM; //needs to change based on texture format
+
+	DXGI_SAMPLE_DESC sampleDesc;
+	ZeroMemory(&sampleDesc, sizeof(sampleDesc));
+	sampleDesc.Count = MSAALevel;
+	sampleDesc.Quality = D3D11_STANDARD_MULTISAMPLE_PATTERN;
+
+	textDesc.SampleDesc = sampleDesc;
+	textDesc.Usage = (D3D11_USAGE)usage;
+	textDesc.BindFlags = bindFlag;
+	textDesc.CPUAccessFlags = usage == NLRE_USAGE_DYNAMIC ? D3D11_CPU_ACCESS_WRITE : 0;
+	textDesc.MiscFlags = 0;
+
+	D3D11_SUBRESOURCE_DATA subresData;
+	ZeroMemory(&subresData, sizeof(subresData));
+	subresData.pSysMem = data;
+	subresData.SysMemPitch = memPitch;
+
+	HRESULT hr;
+	hr = _d3d11Device->CreateTexture2D(&textDesc, &subresData, &texture);
+	if (FAILED(hr))
+	{
+		NLRE_Log::err(NLRE_Log::REG, "Failed to create texture");
+		return false;
+	}
+
+	//================================== TEMP FORMAT TEST ======================================
+
+
+
+
+	return true;
+}
+
 
 bool NLREDX11RenderingDevice::loadBlobFromFile(std::wstring path, NLRE_ShaderBlob*& blob)
 {
@@ -324,63 +394,6 @@ bool NLREDX11RenderingDevice::loadPixelShader(std::wstring path, NLRE_PixelShade
 
 	return true;
 }
-
-
-bool NLREDX11RenderingDevice::loadTexture(
-std::wstring path,
-NLRE_USAGE usage,
-NLRE_BIND_FLAG bindFlag,
-NLRE_APIResource* texture,
-NLRE_APIShaderResourceView* resourceView)
-{
-	/*
-HRESULT hr;
-
-std::wstring fileExt = path.substr(path.find_last_of(L"."));
-
-if (fileExt == L".DDS" || fileExt == L".dds") {
-
-hr = DirectX::CreateDDSTextureFromFileEx(
-_d3d11Device,
-_d3d11DevCon,
-path.c_str(),
-0,
-(D3D11_USAGE)usage,
-bindFlag,
-usage == NLRE_USAGE_DYNAMIC ? D3D11_CPU_ACCESS_WRITE : 0,
-0,
-false,
-&texture,
-&resourceView
-);
-}
-else
-{
-hr = DirectX::CreateWICTextureFromFileEx(
-_d3d11Device,
-_d3d11DevCon,
-path.c_str(),
-0,
-(D3D11_USAGE)usage,
-bindFlag,
-usage == NLRE_USAGE_DYNAMIC ? D3D11_CPU_ACCESS_WRITE : 0,
-0,
-false,
-&texture,
-&resourceView
-);
-}
-
-if (FAILED(hr))
-{
-NLRE_Log::err(NLRE_Log::ErrorFlag::CRITICAL, "Texture failed to load: ", path);
-return false;
-}
-
-*/
-return true;
-}
-
 
 bool NLREDX11RenderingDevice::createInputLayout(NLRE_InputLayoutDesc& ilDesc, NLRE_VertexShader& vShader, NLRE_APIInputLayout*& inputLayout)
 {

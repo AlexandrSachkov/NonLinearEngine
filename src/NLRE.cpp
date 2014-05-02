@@ -4,7 +4,9 @@
 NLRE::NLRE(HWND hwndVal, int widthVal, int heightVal){
 	_deviceController = new NLREDeviceController(hwndVal, widthVal, heightVal, NLRE_RENDERING_TECHNIQUE_ID::NLRE_FORWARD_RT);
 	_renderingDevice = _deviceController->getRenderingDevice();
-	_container = new Container(_deviceController, _renderingDevice, widthVal, heightVal);
+	_textureLoader = new NLREFreeImgTextureLoader(_renderingDevice);
+	_container = new Container(_deviceController, _renderingDevice, _textureLoader, widthVal, heightVal);
+	
 }
 
 NLRE::~NLRE(){

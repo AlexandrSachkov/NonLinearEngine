@@ -113,21 +113,23 @@ DWORD indices[] = {
 	20, 22, 23
 };
 
-Container::Container(NLREDeviceController* deviceController, NLRERenderingDevice* renderingDevice, int width, int height)
+Container::Container(NLREDeviceController* deviceController, NLRERenderingDevice* renderingDevice, NLRETextureLoader* textureLoader, int width, int height)
 {
-	if (!deviceController || !renderingDevice)
+	if (!deviceController || !renderingDevice || !textureLoader)
 	{
 		throw std::exception("Container failed to initialize: null ptr");
 	}
 	_deviceController = deviceController;
 	_renderingDevice = renderingDevice;
+	_textureLoader = textureLoader;
 
-	_texture = NULL;
+	_texture2D = NULL;
+	_texture2DResourceView = NULL;
 
 	mCamView = new NLE_FLOAT4X4();
 	mCamProjection = new NLE_FLOAT4X4();
 
-	NLE_VECTOR camPosition = NLEMath::NLEVectorSet(0.0f, 5.0f, -10.0f, 0.0f);
+	NLE_VECTOR camPosition = NLEMath::NLEVectorSet(2.0f, 2.0f, -3.0f, 0.0f);
 	NLE_VECTOR camTarget = NLEMath::NLEVectorSet(0.0f, 0.0f, 0.0f, 0.0f);
 	NLE_VECTOR camUp = NLEMath::NLEVectorSet(0.0f, 1.0f, 0.0f, 0.0f);
 
@@ -159,7 +161,14 @@ Container::Container(NLREDeviceController* deviceController, NLRERenderingDevice
 
 Container::~Container()
 {
+	if (_texture2D) _texture2D->Release();
+	_texture2D = NULL;
 
+	if (_texture2DResourceView) _texture2DResourceView->Release();
+
+	if (mCamView) delete mCamView;
+	if (mCamProjection) delete mCamProjection;
+	if (mObjWorld) delete mObjWorld;
 }
 
 bool Container::initialize()
@@ -168,12 +177,13 @@ bool Container::initialize()
 	if (!_renderingDevice->createBuffer<Vertex>(NLRE_BIND_VERTEX_BUFFER, NLRE_USAGE_IMMUTABLE, vertexArray, 24, _vertexBuffer)) return false;
 	if (!_renderingDevice->createBuffer<DWORD>(NLRE_BIND_INDEX_BUFFER, NLRE_USAGE_IMMUTABLE, indices, 36, _indexBuffer)) return false;
 	if (!_renderingDevice->createBuffer<cbPerObject>(NLRE_BIND_CONSTANT_BUFFER, NLRE_USAGE_IMMUTABLE, &cbPerObj, 1, _constantBuffer)) return false;
-	//if (!_renderingDevice->loadTexture(L"C:\\Users\\Alex\\Desktop\\braynzar.jpg", NLRE_USAGE_IMMUTABLE, NLRE_BIND_SHADER_RESOURCE, NULL, _texture)) return false;
+	if (!_textureLoader->loadTexture2D(L"C:\\Users\\Alex\\Desktop\\colors.jpg", _texture2D, _texture2DResourceView)) return false;
+		//loadTexture(L"C:\\Users\\Alex\\Desktop\\braynzar.jpg", NLRE_USAGE_IMMUTABLE, NLRE_BIND_SHADER_RESOURCE, NULL, _texture)) return false;
 	return true;
 }
 
 
 void Container::render()
 {
-	_deviceController->render(_vertexBuffer, _indexBuffer, _constantBuffer, _texture);
+	_deviceController->render(_vertexBuffer, _indexBuffer, _constantBuffer, _texture2DResourceView);
 }

@@ -6,7 +6,7 @@ cbuffer cbPerObject
 struct VS_INPUT
 {
 	float4 inPos : POSITION;
-	float2 inTexCoord : TEXCOORD0;
+	float2 inTexCoord : TEXCOORD;
 };
 
 struct VS_OUTPUT

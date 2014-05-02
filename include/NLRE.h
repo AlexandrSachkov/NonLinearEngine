@@ -2,6 +2,7 @@
 #define NLRE_
 
 #include "Container.h"
+#include "ResourceLoader\NLREFreeImgTextureLoader.h"
 
 class NLRE
 {
@@ -15,5 +16,6 @@ private:
 	NLREDeviceController* _deviceController;
 	NLRERenderingDevice* _renderingDevice;
 	Container* _container;
+	NLRETextureLoader* _textureLoader;
 };
 #endif
