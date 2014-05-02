@@ -52,7 +52,7 @@ bool NLREFreeImgTextureLoader::loadTexture2D(std::wstring path, NLRE_APITexture2
 	unsigned int height = FreeImage_GetHeight(bitmap2);
 
 	std::vector<char> out(FreeImage_GetWidth(bitmap2) * FreeImage_GetHeight(bitmap2) * 4);
-	FreeImage_ConvertToRawBits((BYTE*)out.data(), bitmap2, FreeImage_GetWidth(bitmap2) * 4, 32, FI_RGBA_BLUE_MASK, FI_RGBA_GREEN_MASK, FI_RGBA_RED_MASK, true);
+	FreeImage_ConvertToRawBits((unsigned char*)out.data(), bitmap2, FreeImage_GetWidth(bitmap2) * 4, 32, FI_RGBA_BLUE_MASK, FI_RGBA_GREEN_MASK, FI_RGBA_RED_MASK, true);
 
 	bool status = false;
 	status = _renderingDevice->createTexture2D(
