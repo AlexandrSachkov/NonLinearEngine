@@ -13,7 +13,7 @@ public:
 	~NLREFreeImgTextureLoader();
 
 	static void freeImgErrorCallback(FREE_IMAGE_FORMAT format, const char* message);
-	bool loadTexture2D(std::wstring path, NLRE_APITexture2D*& texture2D, NLRE_APIShaderResourceView*& resourceView);
+	bool loadTexture2D(std::wstring path, NLRE_USAGE usage, NLRE_BIND_FLAG bindFlag, NLRE_APITexture2D*& texture2D, NLRE_APIShaderResourceView*& resourceView);
 private:
 	bool initialize();
 
