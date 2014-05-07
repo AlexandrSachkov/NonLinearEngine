@@ -3,6 +3,7 @@
 
 #include "Container.h"
 #include "ResourceLoader\NLREFreeImgTextureLoader.h"
+#include "ResourceLoader\NLREAssimpAssetImporter.h"
 
 class NLRE
 {
@@ -17,5 +18,6 @@ private:
 	NLRERenderingDevice* _renderingDevice;
 	Container* _container;
 	NLRETextureLoader* _textureLoader;
+	NLREAssetImporter* _assetImporter;
 };
 #endif

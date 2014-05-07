@@ -74,9 +74,68 @@ struct NLRE_InputLayoutDesc
 	const size_t numberElements;
 };
 
+struct NLRE_Mesh
+{
+	NLRE_Buffer geomBuffer;
+	NLRE_Buffer indexBuffer;
+};
+
+struct NLRE_MaterialBufferStruct
+{
+	NLE_FLOAT3 diffuseColor;
+	NLE_FLOAT3 ambientColor;
+	NLE_FLOAT3 specularColor;
+	NLE_FLOAT3 emissiveColor;
+	NLE_FLOAT3 transparentColor;	
+	
+	float opacity;
+	float shininess;
+	float shininess_str;
+	float refracti;
+};
+
+struct NLRE_Material
+{
+	NLRE_Buffer materialBuffer;
+
+	bool wireframe;
+	bool twoSided;
+	int blendMode;	//true = Default:    SourceColor*SourceAlpha + DestColor*(1-SourceAlpha),   false = Additive:  SourceColor*1 + DestColor*1
+	int shadingModel;
+	int textureMappingMode_u;
+	int textureMappingMode_v;
+};
+
+struct NLRE_RenderableAsset
+{
+	NLRE_Mesh* mesh;
+	NLRE_Material* material;
+};
+
 enum NLRE_RENDERING_TECHNIQUE_ID
 {
 	NLRE_FORWARD_RT
+};
+
+enum NLRE_SHADING_MODEL
+{
+	NLRE_SHADING_MODEL_FLAT,
+	NLRE_SHADING_MODEL_GOURAUD,
+	NLRE_SHADING_MODEL_PHONG,
+	NLRE_SHADING_MODEL_BLINN,
+	NLRE_SHADING_MODEL_TOON,
+	NLRE_SHADING_MODEL_OREN_NAYAR,
+	NLRE_SHADING_MODEL_MINNAERT,
+	NLRE_SHADING_MODEL_COOK_TORRANCE,
+	NLRE_SHADING_MODEL_NO_SHADING,
+	NLRE_SHADING_MODEL_FRESNEL
+};
+
+enum NLRE_BLENDING_MODE
+{
+	NLRE_BLENDING_MODE_DEFAULT,
+	NLRE_BLENDING_MODE_ADDITIVE,
+	NLRE_BLENDING_MODE_NONE
 };
 
 #endif

@@ -6,7 +6,7 @@ NLRE::NLRE(HWND hwndVal, int widthVal, int heightVal){
 	_renderingDevice = _deviceController->getRenderingDevice();
 	_textureLoader = new NLREFreeImgTextureLoader(_renderingDevice);
 	_container = new Container(_deviceController, _renderingDevice, _textureLoader, widthVal, heightVal);
-	
+	_assetImporter = new NLREAssimpAssetImporter(_renderingDevice, _textureLoader);
 }
 
 NLRE::~NLRE(){

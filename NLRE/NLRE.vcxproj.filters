@@ -129,6 +129,15 @@
     <ClInclude Include="..\include\ResourceLoader\NLRETextureLoader.h">
       <Filter>Header Files\ResourceLoader</Filter>
     </ClInclude>
+    <ClInclude Include="..\include\RenderingDevice\NLREStreamSet.h">
+      <Filter>Header Files\RenderingDevice</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\ResourceLoader\NLREAssimpAssetImporter.h">
+      <Filter>Header Files\ResourceLoader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\ResourceLoader\NLREAssetImporter.h">
+      <Filter>Header Files\ResourceLoader</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\src\MathSrc\DXMath\DXMathMatrixFunctions.inl">
@@ -176,6 +185,9 @@
       <Filter>Source Files\RenderingDeviceSrc</Filter>
     </ClCompile>
     <ClCompile Include="..\src\ResourceLoaderSrc\NLREFreeImgTextureLoader.cpp">
+      <Filter>Source Files\ResourceLoaderSrc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\ResourceLoaderSrc\NLREAssimpAssetImporter.cpp">
       <Filter>Source Files\ResourceLoaderSrc</Filter>
     </ClCompile>
   </ItemGroup>
