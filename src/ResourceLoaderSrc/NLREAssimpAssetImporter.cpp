@@ -176,10 +176,10 @@ void NLREAssimpAssetImporter::loadMaterialParams(aiMaterial* material, NLRE_Mate
 
 	int temp = 0;
 
-	if (material->Get(AI_MATKEY_BLEND_FUNC, temp) == AI_SUCCESS) nlreMaterial->blendMode = temp;
-	if (material->Get(AI_MATKEY_SHADING_MODEL, temp) == AI_SUCCESS) nlreMaterial->shadingModel = temp;
-	if (material->Get(AI_MATKEY_MAPPINGMODE_U_DIFFUSE(0), temp) == AI_SUCCESS) nlreMaterial->textureMappingMode_u = temp;
-	if (material->Get(AI_MATKEY_MAPPINGMODE_V_DIFFUSE(0), temp) == AI_SUCCESS) nlreMaterial->textureMappingMode_v = temp;
+	if (material->Get(AI_MATKEY_BLEND_FUNC, temp) == AI_SUCCESS)				nlreMaterial->blendMode = temp;
+	if (material->Get(AI_MATKEY_SHADING_MODEL, temp) == AI_SUCCESS)				nlreMaterial->shadingModel = temp;
+	if (material->Get(AI_MATKEY_MAPPINGMODE_U_DIFFUSE(0), temp) == AI_SUCCESS)	nlreMaterial->textureMappingMode_u = temp;
+	if (material->Get(AI_MATKEY_MAPPINGMODE_V_DIFFUSE(0), temp) == AI_SUCCESS)	nlreMaterial->textureMappingMode_v = temp;
 }
 
 void NLREAssimpAssetImporter::loadMaterialBuffer(aiMaterial* material, NLRE_MaterialBufferStruct& materialStruct)
@@ -217,8 +217,8 @@ void NLREAssimpAssetImporter::loadMaterialBuffer(aiMaterial* material, NLRE_Mate
 		}
 
 		float temp = 0.0f;
-		if (material->Get(AI_MATKEY_OPACITY, temp) == AI_SUCCESS) materialStruct.opacity = temp;
-		if(material->Get(AI_MATKEY_SHININESS, temp) == AI_SUCCESS) materialStruct.shininess = temp;
+		if(material->Get(AI_MATKEY_OPACITY, temp) == AI_SUCCESS)			materialStruct.opacity = temp;
+		if(material->Get(AI_MATKEY_SHININESS, temp) == AI_SUCCESS)			materialStruct.shininess = temp;
 		if(material->Get(AI_MATKEY_SHININESS_STRENGTH, temp) == AI_SUCCESS) materialStruct.shininess_str = temp;
-		if(material->Get(AI_MATKEY_REFRACTI, temp) == AI_SUCCESS) materialStruct.refracti = temp;
+		if(material->Get(AI_MATKEY_REFRACTI, temp) == AI_SUCCESS)			materialStruct.refracti = temp;
 }
