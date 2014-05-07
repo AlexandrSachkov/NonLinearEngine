@@ -5,6 +5,32 @@
 	#include "RenderingDevice\DX11Device\NLREDX11ResourceWrap.h"
 #endif
 
+enum NLRE_RENDERING_TECHNIQUE_ID
+{
+	NLRE_FORWARD_RT
+};
+
+enum NLRE_SHADING_MODEL
+{
+	NLRE_SHADING_MODEL_FLAT,
+	NLRE_SHADING_MODEL_GOURAUD,
+	NLRE_SHADING_MODEL_PHONG,
+	NLRE_SHADING_MODEL_BLINN,
+	NLRE_SHADING_MODEL_TOON,
+	NLRE_SHADING_MODEL_OREN_NAYAR,
+	NLRE_SHADING_MODEL_MINNAERT,
+	NLRE_SHADING_MODEL_COOK_TORRANCE,
+	NLRE_SHADING_MODEL_NO_SHADING,
+	NLRE_SHADING_MODEL_FRESNEL
+};
+
+enum NLRE_BLENDING_MODE
+{
+	NLRE_BLENDING_MODE_DEFAULT,
+	NLRE_BLENDING_MODE_ADDITIVE,
+	NLRE_BLENDING_MODE_NONE
+};
+
 struct NLRE_Buffer
 {
 	NLRE_Buffer() : apiBuffer(NULL),
@@ -82,6 +108,17 @@ struct NLRE_Mesh
 
 struct NLRE_MaterialBufferStruct
 {
+	NLRE_MaterialBufferStruct() :
+		diffuseColor(NLE_FLOAT3(1.0f, 0.0f, 1.0f)),
+		ambientColor(NLE_FLOAT3(1.0f, 0.0f, 1.0f)),
+		specularColor(NLE_FLOAT3(1.0f, 0.0f, 1.0f)),
+		emissiveColor(NLE_FLOAT3(1.0f, 0.0f, 1.0f)),
+		transparentColor(NLE_FLOAT3(1.0f, 0.0f, 1.0f)),
+		opacity(1.0f),
+		shininess(0.0f),
+		shininess_str(0.0f),
+		refracti(0.0f){};
+
 	NLE_FLOAT3 diffuseColor;
 	NLE_FLOAT3 ambientColor;
 	NLE_FLOAT3 specularColor;
@@ -96,6 +133,14 @@ struct NLRE_MaterialBufferStruct
 
 struct NLRE_Material
 {
+	NLRE_Material() :
+		wireframe(false),
+		twoSided(false),
+		blendMode(NLRE_BLENDING_MODE_NONE),
+		shadingModel(NLRE_SHADING_MODEL_PHONG),
+		textureMappingMode_u(NLRE_TEXTURE_MAP_MODE_WRAP),
+		textureMappingMode_v(NLRE_TEXTURE_MAP_MODE_WRAP){};
+
 	NLRE_Buffer materialBuffer;
 
 	bool wireframe;
@@ -108,34 +153,9 @@ struct NLRE_Material
 
 struct NLRE_RenderableAsset
 {
+	NLRE_RenderableAsset() : mesh(NULL), material(NULL){};
 	NLRE_Mesh* mesh;
 	NLRE_Material* material;
-};
-
-enum NLRE_RENDERING_TECHNIQUE_ID
-{
-	NLRE_FORWARD_RT
-};
-
-enum NLRE_SHADING_MODEL
-{
-	NLRE_SHADING_MODEL_FLAT,
-	NLRE_SHADING_MODEL_GOURAUD,
-	NLRE_SHADING_MODEL_PHONG,
-	NLRE_SHADING_MODEL_BLINN,
-	NLRE_SHADING_MODEL_TOON,
-	NLRE_SHADING_MODEL_OREN_NAYAR,
-	NLRE_SHADING_MODEL_MINNAERT,
-	NLRE_SHADING_MODEL_COOK_TORRANCE,
-	NLRE_SHADING_MODEL_NO_SHADING,
-	NLRE_SHADING_MODEL_FRESNEL
-};
-
-enum NLRE_BLENDING_MODE
-{
-	NLRE_BLENDING_MODE_DEFAULT,
-	NLRE_BLENDING_MODE_ADDITIVE,
-	NLRE_BLENDING_MODE_NONE
 };
 
 #endif
