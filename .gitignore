@@ -8,9 +8,9 @@
 
 # Build results
 
-[Dd]ebug/
-[Rr]elease/
-[Pp]rofile
+#[Dd]ebug/
+#[Rr]elease/
+#[Pp]rofile
 #x64/
 [Ii]ntermediate/
 build/
@@ -156,22 +156,9 @@ $RECYCLE.BIN/
 
 # Mac desktop service store files
 .DS_Store
-#*.lib
-lib/Profile/Win32/intermediate/NLRE.tlog/CL.read.1.tlog
-lib/Profile/Win32/intermediate/NLRE.tlog/CL.write.1.tlog
-lib/Profile/Win32/intermediate/NLRE.tlog/Lib-link.read.1.tlog
-lib/Profile/Win32/intermediate/NLRE.tlog/Lib-link.write.1.tlog
-lib/Profile/Win32/intermediate/NLRE.tlog/NLRE.lastbuildstate
-lib/Profile/Win32/intermediate/NLRE.tlog/cl.command.1.tlog
-lib/Profile/Win32/intermediate/NLRE.tlog/lib.command.1.tlog
-lib/Profile/Win32/NLRE_p.lib
-lib/Debug/Win32/NLRE_d.lib
-lib/Debug/x64/NLRE_d.bsc
-lib/Debug/x64/NLRE_d.lib
-lib/Profile/x64/NLRE_p.lib
-lib/Release/Win32/NLRE.lib
-lib/Release/x64/NLRE.lib
-lib/Profile/Win32/Shaders/DeferredGBuff_TextNormal_BlinnPhong_PS.cso
-lib/Profile/Win32/Shaders/DeferredGBuff_TextNormal_BlinnPhong_VS.cso
-lib/Profile/x64/Shaders/DeferredGBuff_TextNormal_BlinnPhong_PS.cso
-lib/Profile/x64/Shaders/DeferredGBuff_TextNormal_BlinnPhong_VS.cso
+lib/Debug/Win32/NLRE_d.exe
+lib/Debug/x64/NLRE_d.exe
+lib/Profile/Win32/NLRE_p.exe
+lib/Profile/x64/NLRE_p.exe
+lib/Release/Win32/NLRE.exe
+lib/Release/x64/NLRE.exe
