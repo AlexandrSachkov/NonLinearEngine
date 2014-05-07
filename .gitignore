@@ -162,3 +162,4 @@ lib/Profile/Win32/NLRE_p.exe
 lib/Profile/x64/NLRE_p.exe
 lib/Release/Win32/NLRE.exe
 lib/Release/x64/NLRE.exe
+lib/Debug/x64/NLRE_d.bsc
