@@ -334,8 +334,8 @@
     <None Include="..\src\RenderingDeviceSrc\DX11Device\NLREDX11RenderingDevice.inl" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\C++ Projects\NonLinearEngine_All_Versions\NonLinearEngine\NLE\main.cpp" />
     <ClCompile Include="..\src\Container.cpp" />
+    <ClCompile Include="..\src\main.cpp" />
     <ClCompile Include="..\src\NLRE.cpp" />
     <ClCompile Include="..\src\NLREMainSrc\NLRELog.cpp" />
     <ClCompile Include="..\src\NLREMainSrc\stdafx.cpp" />

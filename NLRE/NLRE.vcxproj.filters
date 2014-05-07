@@ -178,9 +178,6 @@
     <ClCompile Include="..\src\NLRE.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\C++ Projects\NonLinearEngine_All_Versions\NonLinearEngine\NLE\main.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\RenderingDeviceSrc\NLREForwardRT.cpp">
       <Filter>Source Files\RenderingDeviceSrc</Filter>
     </ClCompile>
@@ -189,6 +186,9 @@
     </ClCompile>
     <ClCompile Include="..\src\ResourceLoaderSrc\NLREAssimpAssetImporter.cpp">
       <Filter>Source Files\ResourceLoaderSrc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\main.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
