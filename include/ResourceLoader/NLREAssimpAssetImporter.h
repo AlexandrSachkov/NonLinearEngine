@@ -63,8 +63,8 @@ private:
 	void loadMaterialTextures(aiMaterial* material, NLRE_Material*& nlreMaterial);
 	NLRE_Material** loadMaterials(const aiScene* scene);
 
-	void nextNode(const aiScene* scene,aiNode* node, aiMatrix4x4& accTransform, std::vector<NLRE_Mesh*>& meshes);
-	void addMesh(const aiScene* scene, unsigned int meshIndex, aiMatrix4x4& transform, std::vector<NLRE_Mesh*>& meshes);
+	void nextNode(const aiScene* scene, aiNode* node, aiMatrix4x4& accTransform, NLRE_Mesh** meshArr, NLRE_Material** materialArr, std::vector<NLRE_RenderableAsset*>& assetArr);
+	void assembleAsset(const aiScene* scene, unsigned int meshIndex, aiMatrix4x4& transform, NLRE_Mesh** meshArr, NLRE_Material** materialArr, std::vector<NLRE_RenderableAsset*>& assetArr);
 
 	NLRERenderingDevice* _renderingDevice;
 	NLRETextureLoader* _textureLoader;

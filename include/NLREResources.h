@@ -257,8 +257,11 @@ struct NLRE_Material
 struct NLRE_RenderableAsset
 {
 	NLRE_RenderableAsset() : mesh(NULL), material(NULL){};
+
+	NLE_FLOAT4X4 transform;
 	NLRE_Mesh* mesh;
 	NLRE_Material* material;
+	
 };
 
 #endif

@@ -90,15 +90,21 @@ bool NLREAssimpAssetImporter::importAssets(std::wstring path, std::vector<NLRE_R
 
 std::vector<NLRE_RenderableAsset*> NLREAssimpAssetImporter::loadAsStatic(const aiScene* scene)
 {
-	std::vector<NLRE_RenderableAsset*> assets;
+	std::vector<NLRE_RenderableAsset*> assetArr;
 	NLRE_Mesh** meshArr = loadMeshes(scene);
 	NLRE_Material** materialArr = loadMaterials(scene);
 
-	//nextNode(scene, scene->mRootNode, scene->mRootNode->mTransformation, meshes);
-	return assets;
+	nextNode(scene, scene->mRootNode, scene->mRootNode->mTransformation, meshArr, materialArr, assetArr);
+	return assetArr;
 }
 
-/*void NLREAssimpAssetImporter::nextNode(const aiScene* scene, aiNode* node, aiMatrix4x4& accTransform, std::vector<NLRE_Mesh*>& meshes)
+void NLREAssimpAssetImporter::nextNode(
+	const aiScene* scene, 
+	aiNode* node, 
+	aiMatrix4x4& accTransform, 
+	NLRE_Mesh** meshArr, 
+	NLRE_Material** materialArr, 
+	std::vector<NLRE_RenderableAsset*>& assetArr)
 {
 	aiMatrix4x4 transform;
 
@@ -106,7 +112,7 @@ std::vector<NLRE_RenderableAsset*> NLREAssimpAssetImporter::loadAsStatic(const a
 	{
 		for (int i = 0; i < node->mNumMeshes; i++)
 		{
-			addMesh(scene, node->mMeshes[i], transform, meshes);
+			assembleAsset(scene, node->mMeshes[i], transform, meshArr, materialArr, assetArr);
 		}
 	}
 	else
@@ -115,10 +121,26 @@ std::vector<NLRE_RenderableAsset*> NLREAssimpAssetImporter::loadAsStatic(const a
 	}
 	for (int i = 0; i < node->mNumChildren; i++)
 	{
-		nextNode(scene, node->mChildren[i], transform, meshes);
+		nextNode(scene, node->mChildren[i], transform, meshArr, materialArr, assetArr);
 	}	
 }
-*/
+
+void NLREAssimpAssetImporter::assembleAsset(
+	const aiScene* scene, 
+	unsigned int meshIndex, 
+	aiMatrix4x4& transform, 
+	NLRE_Mesh** meshArr, 
+	NLRE_Material** materialArr, 
+	std::vector<NLRE_RenderableAsset*>& assetArr)
+{
+	NLRE_RenderableAsset* asset = new NLRE_RenderableAsset();
+	asset->mesh = meshArr[meshIndex];
+	asset->material = materialArr[scene->mMeshes[meshIndex]->mMaterialIndex];
+	asset->transform = NLE_FLOAT4X4((const float*)(&transform));
+
+	assetArr.push_back(asset);
+}
+
 NLRE_Mesh** NLREAssimpAssetImporter::loadMeshes(const aiScene* scene)
 {
 	if (!scene->HasMeshes()) return NULL;
