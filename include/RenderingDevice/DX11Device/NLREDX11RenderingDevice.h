@@ -146,7 +146,7 @@ public:
 	void draw(const NLRE_Buffer& vertexBuffer);
 	void display();
 
-
+	ID3D11Device* getAPIDevice();
 private:
 	bool initialize();
 	void release();

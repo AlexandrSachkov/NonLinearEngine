@@ -40,6 +40,7 @@ int Height = 800;
 NLRE* nlre = NULL;
 
 void debugCallback(char text[]);
+void consoleCallback(char text[]);
 void errorCallback(NLRE_Log::ErrorFlag flag, char text[]);
 bool InitializeWindow(HINSTANCE hInstance, int ShowWnd, int width, int height, bool windowed);
 int messageloop();
@@ -62,6 +63,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	}
 
 	NLRE_Log::registerErrorCallback(errorCallback);
+	NLRE_Log::registerConsoleCallback(debugCallback);
 	NLRE_Log::registerDebugCallback(debugCallback);
 
 	RECT clientRect;
@@ -219,6 +221,12 @@ void errorCallback(NLRE_Log::ErrorFlag flag, char text[])
 }
 
 void debugCallback(char text[])
+{
+	printf(text);
+	printf("\n");
+}
+
+void consoleCallback(char text[])
 {
 	printf(text);
 	printf("\n");

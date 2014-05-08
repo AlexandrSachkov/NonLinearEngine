@@ -30,7 +30,7 @@ THE SOFTWARE.
 #define NLRE_
 
 #include "Container.h"
-#include "ResourceLoader\NLREFreeImgTextureLoader.h"
+#include "ResourceLoader\NLRETextureLoader.h"
 #include "ResourceLoader\NLREAssimpAssetImporter.h"
 
 class NLRE

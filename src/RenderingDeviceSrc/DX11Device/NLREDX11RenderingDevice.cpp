@@ -477,3 +477,8 @@ bool NLREDX11RenderingDevice::createRasterizerState(NLRE_CULL_MODE cullMode, NLR
 	return true;
 }
 
+ID3D11Device* NLREDX11RenderingDevice::getAPIDevice()
+{
+	return _d3d11Device;
+}
+

@@ -120,12 +120,6 @@
     <ClInclude Include="..\include\Container.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\ResourceLoader\NLREFreeImgTextureLoader.h">
-      <Filter>Header Files\ResourceLoader</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\ResourceLoader\NLRETextureLoader.h">
-      <Filter>Header Files\ResourceLoader</Filter>
-    </ClInclude>
     <ClInclude Include="..\include\RenderingDevice\NLREStreamSet.h">
       <Filter>Header Files\RenderingDevice</Filter>
     </ClInclude>
@@ -136,6 +130,18 @@
       <Filter>Header Files\ResourceLoader</Filter>
     </ClInclude>
     <ClInclude Include="..\include\ResourceLoader\DDSTextureLoader.h">
+      <Filter>Header Files\ResourceLoader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\ResourceLoader\WICTextureLoader.h">
+      <Filter>Header Files\ResourceLoader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\ResourceLoader\NLREDirectXTexTextureLoader.h">
+      <Filter>Header Files\ResourceLoader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\ResourceLoader\NLRETextureLoaderBase.h">
+      <Filter>Header Files\ResourceLoader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\ResourceLoader\NLRETextureLoader.h">
       <Filter>Header Files\ResourceLoader</Filter>
     </ClInclude>
   </ItemGroup>
@@ -181,9 +187,6 @@
     <ClCompile Include="..\src\RenderingDeviceSrc\NLREForwardRT.cpp">
       <Filter>Source Files\RenderingDeviceSrc</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\ResourceLoaderSrc\NLREFreeImgTextureLoader.cpp">
-      <Filter>Source Files\ResourceLoaderSrc</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\ResourceLoaderSrc\NLREAssimpAssetImporter.cpp">
       <Filter>Source Files\ResourceLoaderSrc</Filter>
     </ClCompile>
@@ -191,6 +194,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\src\ResourceLoaderSrc\DDSTextureLoader.cpp">
+      <Filter>Source Files\ResourceLoaderSrc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\ResourceLoaderSrc\WICTextureLoader.cpp">
+      <Filter>Source Files\ResourceLoaderSrc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\ResourceLoaderSrc\NLREDirectXTexTextureLoader.cpp">
       <Filter>Source Files\ResourceLoaderSrc</Filter>
     </ClCompile>
   </ItemGroup>

@@ -26,24 +26,14 @@ THE SOFTWARE.
 -----------------------------------------------------------------------------
 */
 
-#include "stdafx.h"
-#include "NLRE.h"
+#ifndef NLRE_TEXTURE_LOADER_BASE_
+#define NLRE_TEXTURE_LOADER_BASE_
 
-NLRE::NLRE(HWND hwndVal, int widthVal, int heightVal){
-	_deviceController = new NLREDeviceController(hwndVal, widthVal, heightVal, NLRE_RENDERING_TECHNIQUE_ID::NLRE_FORWARD_RT);
-	_renderingDevice = _deviceController->getRenderingDevice();
-	_textureLoader = new NLRETextureLoader(_renderingDevice);
-	_container = new Container(_deviceController, _renderingDevice, _textureLoader, widthVal, heightVal);
-	_assetImporter = new NLREAssimpAssetImporter(_renderingDevice, _textureLoader);
-}
+#include "NLREMain\stdafx.h"
 
-NLRE::~NLRE(){
-
-	delete _deviceController;
-	delete _container;
-}
-
-void NLRE::render()
+class NLRETextureLoaderBase
 {
-	_container->render();
-}
+public:
+	virtual bool loadTexture(std::wstring path, NLRE_BIND_FLAG bindFlag, NLRE_USAGE usage, NLRE_APITexture2D*& texture2D, NLRE_APIShaderResourceView*& resourceView) = 0;
+};
+#endif

@@ -26,24 +26,27 @@ THE SOFTWARE.
 -----------------------------------------------------------------------------
 */
 
-#include "stdafx.h"
-#include "NLRE.h"
+#ifndef NLRE_DIRECTXTEX_TEXTURE_LOADER_
+#define NLRE_DIRECTXTEX_TEXTURE_LOADER_
 
-NLRE::NLRE(HWND hwndVal, int widthVal, int heightVal){
-	_deviceController = new NLREDeviceController(hwndVal, widthVal, heightVal, NLRE_RENDERING_TECHNIQUE_ID::NLRE_FORWARD_RT);
-	_renderingDevice = _deviceController->getRenderingDevice();
-	_textureLoader = new NLRETextureLoader(_renderingDevice);
-	_container = new Container(_deviceController, _renderingDevice, _textureLoader, widthVal, heightVal);
-	_assetImporter = new NLREAssimpAssetImporter(_renderingDevice, _textureLoader);
-}
+#include "NLRETextureLoaderBase.h"
+#include "RenderingDevice\NLRERenderingDevice.h"
 
-NLRE::~NLRE(){
+#include "DDSTextureLoader.h"
+#include "WICTextureLoader.h"
 
-	delete _deviceController;
-	delete _container;
-}
-
-void NLRE::render()
+class NLREDirectXTexTextureLoader : public virtual NLRETextureLoaderBase
 {
-	_container->render();
-}
+public:
+	NLREDirectXTexTextureLoader(NLRERenderingDevice* renderingDevice);
+	NLREDirectXTexTextureLoader(const NLREDirectXTexTextureLoader& other);
+	~NLREDirectXTexTextureLoader();
+
+	bool loadTexture(std::wstring path, NLRE_BIND_FLAG bindFlag, NLRE_USAGE usage, NLRE_APITexture2D*& texture2D, NLRE_APIShaderResourceView*& resourceView);
+
+private:
+	bool initialize();
+	NLRERenderingDevice* _renderingDevice;
+};
+
+#endif
