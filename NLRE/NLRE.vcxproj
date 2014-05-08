@@ -295,9 +295,6 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <Text Include="ReadMe.txt" />
-  </ItemGroup>
-  <ItemGroup>
     <ClInclude Include="..\include\Container.h" />
     <ClInclude Include="..\include\math\DXMath\DXMathMatrixFunctions.h" />
     <ClInclude Include="..\include\math\DXMath\DXMathStructures.h" />
@@ -321,6 +318,7 @@
     <ClInclude Include="..\include\RenderingDevice\NLRERenderingDevice.h" />
     <ClInclude Include="..\include\RenderingDevice\NLRERenderingTechnique.h" />
     <ClInclude Include="..\include\RenderingDevice\NLREStreamSet.h" />
+    <ClInclude Include="..\include\ResourceLoader\DDSTextureLoader.h" />
     <ClInclude Include="..\include\ResourceLoader\NLREAssetImporter.h" />
     <ClInclude Include="..\include\ResourceLoader\NLREAssimpAssetImporter.h" />
     <ClInclude Include="..\include\ResourceLoader\NLREFreeImgTextureLoader.h" />
@@ -343,6 +341,7 @@
     <ClCompile Include="..\src\RenderingDeviceSrc\DX11Device\NLREDX11RenderingDevice.cpp" />
     <ClCompile Include="..\src\RenderingDeviceSrc\NLREDeviceController.cpp" />
     <ClCompile Include="..\src\RenderingDeviceSrc\NLREForwardRT.cpp" />
+    <ClCompile Include="..\src\ResourceLoaderSrc\DDSTextureLoader.cpp" />
     <ClCompile Include="..\src\ResourceLoaderSrc\NLREAssimpAssetImporter.cpp" />
     <ClCompile Include="..\src\ResourceLoaderSrc\NLREFreeImgTextureLoader.cpp" />
   </ItemGroup>

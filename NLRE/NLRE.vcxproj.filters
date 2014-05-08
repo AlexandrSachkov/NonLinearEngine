@@ -54,9 +54,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="ReadMe.txt" />
-  </ItemGroup>
-  <ItemGroup>
     <ClInclude Include="..\include\math\DXMath\DXMathMatrixFunctions.h">
       <Filter>Header Files\math\DXMath</Filter>
     </ClInclude>
@@ -138,6 +135,9 @@
     <ClInclude Include="..\include\ResourceLoader\NLREAssetImporter.h">
       <Filter>Header Files\ResourceLoader</Filter>
     </ClInclude>
+    <ClInclude Include="..\include\ResourceLoader\DDSTextureLoader.h">
+      <Filter>Header Files\ResourceLoader</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\src\MathSrc\DXMath\DXMathMatrixFunctions.inl">
@@ -189,6 +189,9 @@
     </ClCompile>
     <ClCompile Include="..\src\main.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\ResourceLoaderSrc\DDSTextureLoader.cpp">
+      <Filter>Source Files\ResourceLoaderSrc</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
