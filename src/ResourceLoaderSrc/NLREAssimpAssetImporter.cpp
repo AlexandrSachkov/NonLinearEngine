@@ -137,7 +137,7 @@ void NLREAssimpAssetImporter::assembleAsset(
 	asset->mesh = meshArr[meshIndex];
 	asset->material = materialArr[scene->mMeshes[meshIndex]->mMaterialIndex];
 	asset->transform = NLE_FLOAT4X4((const float*)(&transform));
-
+	
 	assetArr.push_back(asset);
 }
 
