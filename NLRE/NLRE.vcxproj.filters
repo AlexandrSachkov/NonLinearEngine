@@ -126,9 +126,6 @@
     <ClInclude Include="..\include\ResourceLoader\NLREAssimpAssetImporter.h">
       <Filter>Header Files\ResourceLoader</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\ResourceLoader\NLREAssetImporter.h">
-      <Filter>Header Files\ResourceLoader</Filter>
-    </ClInclude>
     <ClInclude Include="..\include\ResourceLoader\DDSTextureLoader.h">
       <Filter>Header Files\ResourceLoader</Filter>
     </ClInclude>
@@ -142,6 +139,12 @@
       <Filter>Header Files\ResourceLoader</Filter>
     </ClInclude>
     <ClInclude Include="..\include\ResourceLoader\NLRETextureLoader.h">
+      <Filter>Header Files\ResourceLoader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\ResourceLoader\NLREAssetImporterBase.h">
+      <Filter>Header Files\ResourceLoader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\ResourceLoader\NLREAssetImporter.h">
       <Filter>Header Files\ResourceLoader</Filter>
     </ClInclude>
   </ItemGroup>

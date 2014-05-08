@@ -26,24 +26,14 @@ THE SOFTWARE.
 -----------------------------------------------------------------------------
 */
 
-#include "stdafx.h"
-#include "NLRE.h"
+#ifndef NLRE_ASSET_IMPORTER_BASE_
+#define NLRE_ASSET_IMPORTER_BASE_
 
-NLRE::NLRE(HWND hwndVal, int widthVal, int heightVal){
-	_deviceController = new NLREDeviceController(hwndVal, widthVal, heightVal, NLRE_RENDERING_TECHNIQUE_ID::NLRE_FORWARD_RT);
-	_renderingDevice = _deviceController->getRenderingDevice();
-	_textureLoader = new NLRETextureLoader(_renderingDevice);
-	_container = new Container(_deviceController, _renderingDevice, _textureLoader, widthVal, heightVal);
-	_assetImporter = new NLREAssetImporter(_renderingDevice, _textureLoader);
-}
-
-NLRE::~NLRE(){
-
-	delete _deviceController;
-	delete _container;
-}
-
-void NLRE::render()
+class NLREAssetImporterBase
 {
-	_container->render();
-}
+public:
+
+private:
+};
+
+#endif

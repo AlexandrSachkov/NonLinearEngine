@@ -250,3 +250,119 @@ void NLREAssimpAssetImporter::loadMaterialBuffer(aiMaterial* material, NLRE_Mate
 		if(material->Get(AI_MATKEY_SHININESS_STRENGTH, temp) == AI_SUCCESS) materialStruct.shininess_str = temp;
 		if(material->Get(AI_MATKEY_REFRACTI, temp) == AI_SUCCESS)			materialStruct.refracti = temp;
 }
+
+void NLREAssimpAssetImporter::loadMaterialTextures(aiMaterial* material, NLRE_Material*& nlreMaterial)
+{
+	aiString path;
+	std::string strPath;
+
+	if (material->GetTextureCount(aiTextureType_DIFFUSE) > 0)
+	{
+		if (material->GetTexture(aiTextureType_DIFFUSE, 0, &path, NULL, NULL, NULL, NULL, NULL) == AI_SUCCESS)
+		{
+			strPath = path.data;
+			std::wstring wstrPath(strPath.begin(), strPath.end());
+			_textureLoader->loadTexture(wstrPath, NLRE_BIND_SHADER_RESOURCE, NLRE_USAGE_IMMUTABLE, nlreMaterial->diffuseText, nlreMaterial->diffuseTextView);
+		}
+	}
+
+	if (material->GetTextureCount(aiTextureType_SPECULAR) > 0)
+	{
+		if (material->GetTexture(aiTextureType_SPECULAR, 0, &path, NULL, NULL, NULL, NULL, NULL) == AI_SUCCESS)
+		{
+			strPath = path.data;
+			std::wstring wstrPath(strPath.begin(), strPath.end());
+			_textureLoader->loadTexture(wstrPath, NLRE_BIND_SHADER_RESOURCE, NLRE_USAGE_IMMUTABLE, nlreMaterial->specularText, nlreMaterial->specularTextView);
+		}
+	}
+
+	if (material->GetTextureCount(aiTextureType_AMBIENT) > 0)
+	{
+		if (material->GetTexture(aiTextureType_AMBIENT, 0, &path, NULL, NULL, NULL, NULL, NULL) == AI_SUCCESS)
+		{
+			strPath = path.data;
+			std::wstring wstrPath(strPath.begin(), strPath.end());
+			_textureLoader->loadTexture(wstrPath, NLRE_BIND_SHADER_RESOURCE, NLRE_USAGE_IMMUTABLE, nlreMaterial->ambientText, nlreMaterial->ambientTextView);
+		}
+	}
+
+	if (material->GetTextureCount(aiTextureType_EMISSIVE) > 0)
+	{
+		if (material->GetTexture(aiTextureType_EMISSIVE, 0, &path, NULL, NULL, NULL, NULL, NULL) == AI_SUCCESS)
+		{
+			strPath = path.data;
+			std::wstring wstrPath(strPath.begin(), strPath.end());
+			_textureLoader->loadTexture(wstrPath, NLRE_BIND_SHADER_RESOURCE, NLRE_USAGE_IMMUTABLE, nlreMaterial->emissiveText, nlreMaterial->emissiveTextView);
+		}
+	}
+
+	if (material->GetTextureCount(aiTextureType_HEIGHT) > 0)
+	{
+		if (material->GetTexture(aiTextureType_HEIGHT, 0, &path, NULL, NULL, NULL, NULL, NULL) == AI_SUCCESS)
+		{
+			strPath = path.data;
+			std::wstring wstrPath(strPath.begin(), strPath.end());
+			_textureLoader->loadTexture(wstrPath, NLRE_BIND_SHADER_RESOURCE, NLRE_USAGE_IMMUTABLE, nlreMaterial->heightmapText, nlreMaterial->heightmapTextView);
+		}
+	}
+
+	if (material->GetTextureCount(aiTextureType_NORMALS) > 0)
+	{
+		if (material->GetTexture(aiTextureType_NORMALS, 0, &path, NULL, NULL, NULL, NULL, NULL) == AI_SUCCESS)
+		{
+			strPath = path.data;
+			std::wstring wstrPath(strPath.begin(), strPath.end());
+			_textureLoader->loadTexture(wstrPath, NLRE_BIND_SHADER_RESOURCE, NLRE_USAGE_IMMUTABLE, nlreMaterial->normalText, nlreMaterial->normalTextView);
+		}
+	}
+
+	if (material->GetTextureCount(aiTextureType_SHININESS) > 0)
+	{
+		if (material->GetTexture(aiTextureType_SHININESS, 0, &path, NULL, NULL, NULL, NULL, NULL) == AI_SUCCESS)
+		{
+			strPath = path.data;
+			std::wstring wstrPath(strPath.begin(), strPath.end());
+			_textureLoader->loadTexture(wstrPath, NLRE_BIND_SHADER_RESOURCE, NLRE_USAGE_IMMUTABLE, nlreMaterial->shininessText, nlreMaterial->shininessTextView);
+		}
+	}
+
+	if (material->GetTextureCount(aiTextureType_OPACITY) > 0)
+	{
+		if (material->GetTexture(aiTextureType_OPACITY, 0, &path, NULL, NULL, NULL, NULL, NULL) == AI_SUCCESS)
+		{
+			strPath = path.data;
+			std::wstring wstrPath(strPath.begin(), strPath.end());
+			_textureLoader->loadTexture(wstrPath, NLRE_BIND_SHADER_RESOURCE, NLRE_USAGE_IMMUTABLE, nlreMaterial->opacityText, nlreMaterial->opacityTextView);
+		}
+	}
+
+	if (material->GetTextureCount(aiTextureType_DISPLACEMENT) > 0)
+	{
+		if (material->GetTexture(aiTextureType_DISPLACEMENT, 0, &path, NULL, NULL, NULL, NULL, NULL) == AI_SUCCESS)
+		{
+			strPath = path.data;
+			std::wstring wstrPath(strPath.begin(), strPath.end());
+			_textureLoader->loadTexture(wstrPath, NLRE_BIND_SHADER_RESOURCE, NLRE_USAGE_IMMUTABLE, nlreMaterial->displacementText, nlreMaterial->displacementTextView);
+		}
+	}
+
+	if (material->GetTextureCount(aiTextureType_LIGHTMAP) > 0)
+	{
+		if (material->GetTexture(aiTextureType_LIGHTMAP, 0, &path, NULL, NULL, NULL, NULL, NULL) == AI_SUCCESS)
+		{
+			strPath = path.data;
+			std::wstring wstrPath(strPath.begin(), strPath.end());
+			_textureLoader->loadTexture(wstrPath, NLRE_BIND_SHADER_RESOURCE, NLRE_USAGE_IMMUTABLE, nlreMaterial->lightmapText, nlreMaterial->lightmapTextView);
+		}
+	}
+
+	if (material->GetTextureCount(aiTextureType_REFLECTION) > 0)
+	{
+		if (material->GetTexture(aiTextureType_REFLECTION, 0, &path, NULL, NULL, NULL, NULL, NULL) == AI_SUCCESS)
+		{
+			strPath = path.data;
+			std::wstring wstrPath(strPath.begin(), strPath.end());
+			_textureLoader->loadTexture(wstrPath, NLRE_BIND_SHADER_RESOURCE, NLRE_USAGE_IMMUTABLE, nlreMaterial->reflectionText, nlreMaterial->reflectionTextView);
+		}
+	}
+}

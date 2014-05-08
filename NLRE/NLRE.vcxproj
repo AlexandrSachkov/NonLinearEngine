@@ -320,6 +320,7 @@
     <ClInclude Include="..\include\RenderingDevice\NLREStreamSet.h" />
     <ClInclude Include="..\include\ResourceLoader\DDSTextureLoader.h" />
     <ClInclude Include="..\include\ResourceLoader\NLREAssetImporter.h" />
+    <ClInclude Include="..\include\ResourceLoader\NLREAssetImporterBase.h" />
     <ClInclude Include="..\include\ResourceLoader\NLREAssimpAssetImporter.h" />
     <ClInclude Include="..\include\ResourceLoader\NLREDirectXTexTextureLoader.h" />
     <ClInclude Include="..\include\ResourceLoader\NLRETextureLoader.h" />

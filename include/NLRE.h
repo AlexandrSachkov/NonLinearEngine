@@ -31,7 +31,7 @@ THE SOFTWARE.
 
 #include "Container.h"
 #include "ResourceLoader\NLRETextureLoader.h"
-#include "ResourceLoader\NLREAssimpAssetImporter.h"
+#include "ResourceLoader\NLREAssetImporter.h"
 
 class NLRE
 {

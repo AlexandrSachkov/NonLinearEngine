@@ -167,16 +167,91 @@ struct NLRE_Material
 		blendMode(NLRE_BLENDING_MODE_NONE),
 		shadingModel(NLRE_SHADING_MODEL_PHONG),
 		textureMappingMode_u(NLRE_TEXTURE_MAP_MODE_WRAP),
-		textureMappingMode_v(NLRE_TEXTURE_MAP_MODE_WRAP){};
+		textureMappingMode_v(NLRE_TEXTURE_MAP_MODE_WRAP),
+
+		diffuseText(NULL),
+		specularText(NULL),
+		ambientText(NULL),
+		emissiveText(NULL),
+		heightmapText(NULL),
+		normalText(NULL),
+		shininessText(NULL),
+		opacityText(NULL),
+		displacementText(NULL),
+		lightmapText(NULL),
+		reflectionText(NULL),
+
+		diffuseTextView(NULL),
+		specularTextView(NULL),
+		ambientTextView(NULL),
+		emissiveTextView(NULL),
+		heightmapTextView(NULL),
+		normalTextView(NULL),
+		shininessTextView(NULL),
+		opacityTextView(NULL),
+		displacementTextView(NULL),
+		lightmapTextView(NULL),
+		reflectionTextView(NULL){};
+
+	~NLRE_Material()
+	{
+		if (diffuseText) diffuseText->Release();
+		if (specularText) specularText->Release();
+		if (ambientText) ambientText->Release();
+		if (emissiveText) emissiveText->Release();
+		if (heightmapText) heightmapText->Release();
+		if (normalText) normalText->Release();
+		if (shininessText) shininessText->Release();
+		if (opacityText) opacityText->Release();
+		if (displacementText) displacementText->Release();
+		if (lightmapText) lightmapText->Release();
+		if (reflectionText) reflectionText->Release();
+
+		if (diffuseTextView) diffuseTextView->Release();
+		if (specularTextView) specularTextView->Release();
+		if (ambientTextView) ambientTextView->Release();
+		if (emissiveTextView) emissiveTextView->Release();
+		if (heightmapTextView) heightmapTextView->Release();
+		if (normalTextView) normalTextView->Release();
+		if (shininessTextView) shininessTextView->Release();
+		if (opacityTextView) opacityTextView->Release();
+		if (displacementTextView) displacementTextView->Release();
+		if (lightmapTextView) lightmapTextView->Release();
+		if (reflectionTextView) reflectionTextView->Release();
+	}
 
 	NLRE_Buffer materialBuffer;
 
 	bool wireframe;
 	bool twoSided;
-	int blendMode;	//true = Default:    SourceColor*SourceAlpha + DestColor*(1-SourceAlpha),   false = Additive:  SourceColor*1 + DestColor*1
+	int blendMode;	//0 = Default:    SourceColor*SourceAlpha + DestColor*(1-SourceAlpha),   1 = Additive:  SourceColor*1 + DestColor*1
 	int shadingModel;
 	int textureMappingMode_u;
 	int textureMappingMode_v;
+
+	NLRE_APITexture2D* diffuseText;
+	NLRE_APITexture2D* specularText;
+	NLRE_APITexture2D* ambientText;
+	NLRE_APITexture2D* emissiveText;
+	NLRE_APITexture2D* heightmapText;
+	NLRE_APITexture2D* normalText;
+	NLRE_APITexture2D* shininessText;
+	NLRE_APITexture2D* opacityText;
+	NLRE_APITexture2D* displacementText;
+	NLRE_APITexture2D* lightmapText;
+	NLRE_APITexture2D* reflectionText;
+
+	NLRE_APIShaderResourceView* diffuseTextView;
+	NLRE_APIShaderResourceView* specularTextView;
+	NLRE_APIShaderResourceView* ambientTextView;
+	NLRE_APIShaderResourceView* emissiveTextView;
+	NLRE_APIShaderResourceView* heightmapTextView;
+	NLRE_APIShaderResourceView* normalTextView;
+	NLRE_APIShaderResourceView* shininessTextView;
+	NLRE_APIShaderResourceView* opacityTextView;
+	NLRE_APIShaderResourceView* displacementTextView;
+	NLRE_APIShaderResourceView* lightmapTextView;
+	NLRE_APIShaderResourceView* reflectionTextView;
 };
 
 struct NLRE_RenderableAsset

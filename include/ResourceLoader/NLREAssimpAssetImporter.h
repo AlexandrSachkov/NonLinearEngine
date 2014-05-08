@@ -35,12 +35,12 @@ THE SOFTWARE.
 
 #define AI_CONFIG_PP_SBP_REMOVE aiPrimitiveType_POINT | aiPrimitiveType_LINE
 
-#include "NLREAssetImporter.h"
+#include "NLREAssetImporterBase.h"
 #include "RenderingDevice\NLREStreamSet.h"
 #include "RenderingDevice\NLRERenderingDevice.h"
 #include "NLRETextureLoader.h"
 
-class NLREAssimpAssetImporter : public virtual NLREAssetImporter
+class NLREAssimpAssetImporter : public virtual NLREAssetImporterBase
 {
 public:
 	NLREAssimpAssetImporter(NLRERenderingDevice* renderingDevice, NLRETextureLoader* textureLoader);
@@ -48,7 +48,6 @@ public:
 	~NLREAssimpAssetImporter();
 
 	bool importAssets(std::wstring path, std::vector<NLRE_RenderableAsset*>& assets);
-
 
 private:
 	bool initialize();
@@ -61,6 +60,7 @@ private:
 
 	void loadMaterialBuffer(aiMaterial* material, NLRE_MaterialBufferStruct& materialBuffStruct);
 	void loadMaterialParams(aiMaterial* material, NLRE_Material*& nlreMaterial);
+	void loadMaterialTextures(aiMaterial* material, NLRE_Material*& nlreMaterial);
 	NLRE_Material** loadMaterials(const aiScene* scene);
 
 	void nextNode(const aiScene* scene,aiNode* node, aiMatrix4x4& accTransform, std::vector<NLRE_Mesh*>& meshes);
