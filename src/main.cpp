@@ -30,6 +30,8 @@ THE SOFTWARE.
 #include <Windows.h>
 #include <stdio.h>
 
+
+
 #include "NLRE.h"
 
 LPCTSTR WndClassName = L"mainWindow";

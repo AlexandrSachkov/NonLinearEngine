@@ -29,10 +29,20 @@ THE SOFTWARE.
 #ifndef NLRE_CONFIGURATOR_
 #define NLRE_CONFIGURATOR_
 
+
+
 /*
-	Rendering Device
+	Platform
+	1. Windows Vista:				_WINDOWS_VISTA_
+	2. Windows 7:					_WINDOWS_7_
+	3. Windows 8:					_WINDOWS_8_
+	4. Windows 8.1:					_WINDOWS_8_1_
+*/
+#define _WINDOWS_7_
+
+/*
+	Graphics API
 	1. DirectX 11:					_DX11_
-	2. OpenGl 4.2:					_OPENGL4.2_		<= Unsupported
 */
 #define _DX11_	
 
@@ -41,6 +51,7 @@ THE SOFTWARE.
 	1. Parallel Patterns Library:	_PPL_
 	2. Threading Building Blocks:	_TBB_			<= Unsupported
 */
+
 #define _PPL_
 
 /*

@@ -17,7 +17,7 @@
 // http://go.microsoft.com/fwlink/?LinkId=248926
 // http://go.microsoft.com/fwlink/?LinkId=248929
 //--------------------------------------------------------------------------------------
-#define _WIN32_WINNT 0x0601
+
 #ifdef _MSC_VER
 #pragma once
 #endif
