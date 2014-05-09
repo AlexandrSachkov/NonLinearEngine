@@ -1,0 +1,7 @@
+bjam -a --toolset=msvc --stagedir=stage32debug address-model=32 variant=debug link=static threading=multi
+
+bjam -a --toolset=msvc --stagedir=stage32release address-model=32 variant=release link=static threading=multi
+
+bjam -a --toolset=msvc --stagedir=stage64debug address-model=64 variant=debug link=static threading=multi
+
+bjam -a --toolset=msvc --stagedir=stage64release address-model=64 variant=release link=static threading=multi

@@ -34,6 +34,7 @@ THE SOFTWARE.
 #include <unordered_map>
 #include <fstream>
 
+#include "boost\filesystem.hpp"
 
 #include "NLREMain\NLRECommon.h" //Must be the last statement in this file
 

@@ -52,7 +52,7 @@ public:
 private:
 	bool initialize();
 
-	std::vector<NLRE_RenderableAsset*> loadAsStatic(const aiScene* scene);
+	std::vector<NLRE_RenderableAsset*> loadAsStatic(std::string directory, const aiScene* scene);
 
 	NLRE_Mesh** loadMeshes(const aiScene* scene);
 	void loadGeometryStream(aiMesh* mesh, NLRE_GeomStr*& geomStreamArr, unsigned int& streamLength);
@@ -60,8 +60,8 @@ private:
 
 	void loadMaterialBuffer(aiMaterial* material, NLRE_MaterialBufferStruct& materialBuffStruct);
 	void loadMaterialParams(aiMaterial* material, NLRE_Material*& nlreMaterial);
-	void loadMaterialTextures(aiMaterial* material, NLRE_Material*& nlreMaterial);
-	NLRE_Material** loadMaterials(const aiScene* scene);
+	void loadMaterialTextures(std::string directory, aiMaterial* material, NLRE_Material*& nlreMaterial);
+	NLRE_Material** loadMaterials(std::string directory, const aiScene* scene);
 
 	void nextNode(const aiScene* scene, aiNode* node, aiMatrix4x4& accTransform, NLRE_Mesh** meshArr, NLRE_Material** materialArr, std::vector<NLRE_RenderableAsset*>& assetArr);
 	void assembleAsset(const aiScene* scene, unsigned int meshIndex, aiMatrix4x4& transform, NLRE_Mesh** meshArr, NLRE_Material** materialArr, std::vector<NLRE_RenderableAsset*>& assetArr);

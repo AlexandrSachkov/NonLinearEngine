@@ -82,17 +82,17 @@ bool NLREAssimpAssetImporter::importAssets(std::wstring path, std::vector<NLRE_R
 		NLRE_Log::err(NLRE_Log::REG, "Failed to import asset: ", assetPath);
 		return false;
 	}
-
-	assets = loadAsStatic(scene);
+	//std::string directory = NLREStatic::getDirectoryFromPath(assetPath);
+	assets = loadAsStatic(assetPath, scene);
 
 	return true;
 }
 
-std::vector<NLRE_RenderableAsset*> NLREAssimpAssetImporter::loadAsStatic(const aiScene* scene)
+std::vector<NLRE_RenderableAsset*> NLREAssimpAssetImporter::loadAsStatic(std::string directory, const aiScene* scene)
 {
 	std::vector<NLRE_RenderableAsset*> assetArr;
 	NLRE_Mesh** meshArr = loadMeshes(scene);
-	NLRE_Material** materialArr = loadMaterials(scene);
+	NLRE_Material** materialArr = loadMaterials(directory, scene);
 
 	nextNode(scene, scene->mRootNode, scene->mRootNode->mTransformation, meshArr, materialArr, assetArr);
 	return assetArr;
@@ -204,7 +204,7 @@ void NLREAssimpAssetImporter::loadIndices(aiMesh* mesh, NLRE_Index*& indexArr, u
 	}
 }
 
-NLRE_Material** NLREAssimpAssetImporter::loadMaterials(const aiScene* scene)
+NLRE_Material** NLREAssimpAssetImporter::loadMaterials(std::string directory, const aiScene* scene)
 {
 	if (!scene->HasMaterials()) return NULL;
 
@@ -273,7 +273,7 @@ void NLREAssimpAssetImporter::loadMaterialBuffer(aiMaterial* material, NLRE_Mate
 		if(material->Get(AI_MATKEY_REFRACTI, temp) == AI_SUCCESS)			materialStruct.refracti = temp;
 }
 
-void NLREAssimpAssetImporter::loadMaterialTextures(aiMaterial* material, NLRE_Material*& nlreMaterial)
+void NLREAssimpAssetImporter::loadMaterialTextures(std::string directory, aiMaterial* material, NLRE_Material*& nlreMaterial)
 {
 	aiString path;
 	std::string strPath;
