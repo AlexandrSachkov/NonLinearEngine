@@ -156,6 +156,7 @@ $RECYCLE.BIN/
 
 # Mac desktop service store files
 .DS_Store
+boost_1_55_0/
 lib/Debug/Win32/NLRE_d.exe
 lib/Debug/x64/NLRE_d.exe
 lib/Profile/Win32/NLRE_p.exe
