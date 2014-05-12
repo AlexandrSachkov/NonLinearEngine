@@ -32,6 +32,9 @@ THE SOFTWARE.
 #include <assimp\include\Importer.hpp>
 #include <assimp\include\scene.h> 
 #include <assimp\include\postprocess.h>  
+#include "assimp\include\Logger.hpp"
+#include "assimp\include\LogStream.hpp"
+#include "assimp\include\DefaultLogger.hpp"
 
 #define AI_CONFIG_PP_SBP_REMOVE aiPrimitiveType_POINT | aiPrimitiveType_LINE
 
@@ -39,6 +42,18 @@ THE SOFTWARE.
 #include "RenderingDevice\NLREStreamSet.h"
 #include "RenderingDevice\NLRERenderingDevice.h"
 #include "NLRETextureLoader.h"
+
+class NLREAssimpLogStream : public Assimp::LogStream
+{
+public:
+	NLREAssimpLogStream(){};
+	~NLREAssimpLogStream(){};
+
+	void write(const char* message)
+	{
+		NLRE_Log::console(message);
+	}
+};
 
 class NLREAssimpAssetImporter : public virtual NLREAssetImporterBase
 {
@@ -69,6 +84,7 @@ private:
 	void assembleAsset(const aiScene* scene, unsigned int meshIndex, aiMatrix4x4& transform, NLRE_Mesh** meshArr, NLRE_Material** materialArr, std::vector<NLRE_RenderableAsset*>& assetArr);
 
 	std::wstring generateTextureResourcePath(aiString textureResourcePath, std::string assetPath);
+
 	NLRERenderingDevice* _renderingDevice;
 	NLRETextureLoader* _textureLoader;
 	std::wstring _textureResourcePath;

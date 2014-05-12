@@ -49,7 +49,7 @@ NLREAssimpAssetImporter::NLREAssimpAssetImporter(const NLREAssimpAssetImporter& 
 
 NLREAssimpAssetImporter::~NLREAssimpAssetImporter()
 {
-
+	Assimp::DefaultLogger::kill();
 }
 
 bool NLREAssimpAssetImporter::initialize()
@@ -59,6 +59,16 @@ bool NLREAssimpAssetImporter::initialize()
 		NLRE_Log::err(NLRE_Log::CRITICAL, "Un-initialized parameters");
 		return false;
 	}
+
+#if defined(_DEBUG) || defined(DEBUG)
+	Assimp::DefaultLogger::create("", Assimp::Logger::VERBOSE);
+	const unsigned int severity = Assimp::Logger::Debugging | Assimp::Logger::Info | Assimp::Logger::Err | Assimp::Logger::Warn;
+#else
+	Assimp::DefaultLogger::create("", Assimp::Logger::NORMAL);
+	const unsigned int severity = Assimp::Logger::Err | Assimp::Logger::Warn;
+#endif
+	
+	Assimp::DefaultLogger::get()->attachStream(new NLREAssimpLogStream(), severity);
 
 	return true;
 }
