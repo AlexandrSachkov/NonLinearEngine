@@ -35,6 +35,7 @@ THE SOFTWARE.
 #include <fstream>
 
 #include "boost\filesystem.hpp"
+namespace fs = boost::filesystem;
 
 #include "NLREMain\NLRECommon.h" //Must be the last statement in this file
 

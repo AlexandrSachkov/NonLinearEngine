@@ -82,7 +82,8 @@ bool NLREAssimpAssetImporter::importAssets(std::wstring path, std::vector<NLRE_R
 		NLRE_Log::err(NLRE_Log::REG, "Failed to import asset: ", assetPath);
 		return false;
 	}
-	//std::string directory = NLREStatic::getDirectoryFromPath(assetPath);
+	fs::path directory(assetPath.c_str());
+	
 	assets = loadAsStatic(assetPath, scene);
 
 	return true;
