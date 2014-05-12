@@ -134,6 +134,7 @@ struct NLRE_Mesh
 	NLRE_Buffer indexBuffer;
 };
 
+__declspec(align(16)) 
 struct NLRE_MaterialBufferStruct
 {
 	NLRE_MaterialBufferStruct() :

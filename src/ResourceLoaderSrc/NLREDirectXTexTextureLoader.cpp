@@ -62,8 +62,10 @@ bool NLREDirectXTexTextureLoader::initialize()
 bool NLREDirectXTexTextureLoader::loadTexture(std::wstring path, NLRE_BIND_FLAG bindFlag, NLRE_USAGE usage, NLRE_APITexture2D*& texture2D, NLRE_APIShaderResourceView*& resourceView)
 {
 	HRESULT hr;
-	std::wstring extension = path.substr(path.find_last_of(L"."));
-	if (extension == L".dds" || extension == L".DDS") {
+	fs::path boostPath(path.c_str());
+	fs::path fileExt = boostPath.extension();
+
+	if (fileExt == L".dds" || fileExt == L".DDS") {
 
 		hr = DirectX::CreateDDSTextureFromFileEx(
 		_renderingDevice->getAPIDevice(),
