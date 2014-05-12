@@ -82,7 +82,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 		nlre = NULL;
 		return 0;
 	}
-	std::wstring path = L"C:\\Users\\Alex\\Desktop\\cube.obj";
+	std::wstring path = L"C:\\Users\\Alex\\Desktop\\cube.dae";
 	nlre->importAsset(path);
 	messageloop();
 
