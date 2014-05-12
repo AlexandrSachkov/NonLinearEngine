@@ -107,6 +107,10 @@ std::vector<NLRE_RenderableAsset*> NLREAssimpAssetImporter::loadAsStatic(std::st
 	NLRE_Material** materialArr = loadMaterials(path, scene);
 
 	nextNode(scene, scene->mRootNode, scene->mRootNode->mTransformation, meshArr, materialArr, assetArr);
+
+	delete[] meshArr;
+	delete[] materialArr;
+
 	return assetArr;
 }
 
