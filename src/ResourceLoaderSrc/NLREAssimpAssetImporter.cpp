@@ -91,7 +91,7 @@ bool NLREAssimpAssetImporter::importAssets(std::wstring path, std::vector<NLRE_R
 
 	if (!scene)
 	{
-		NLRE_Log::err(NLRE_Log::REG, "Failed to import asset: ", assetPath);
+		NLRE_Log::err(NLRE_Log::REG, "Failed to import asset: %s", assetPath.c_str());
 		return false;
 	}
 
