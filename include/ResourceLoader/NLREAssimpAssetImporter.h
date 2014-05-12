@@ -48,11 +48,13 @@ public:
 	~NLREAssimpAssetImporter();
 
 	bool importAssets(std::wstring path, std::vector<NLRE_RenderableAsset*>& assets);
+	void setTextureResourcePath(std::wstring path);
+	void enableBuiltInTexturePath(bool status);
 
 private:
 	bool initialize();
 
-	std::vector<NLRE_RenderableAsset*> loadAsStatic(std::string directory, const aiScene* scene);
+	std::vector<NLRE_RenderableAsset*> loadAsStatic(std::string path, const aiScene* scene);
 
 	NLRE_Mesh** loadMeshes(const aiScene* scene);
 	void loadGeometryStream(aiMesh* mesh, NLRE_GeomStr*& geomStreamArr, unsigned int& streamLength);
@@ -60,13 +62,16 @@ private:
 
 	void loadMaterialBuffer(aiMaterial* material, NLRE_MaterialBufferStruct& materialBuffStruct);
 	void loadMaterialParams(aiMaterial* material, NLRE_Material*& nlreMaterial);
-	void loadMaterialTextures(std::string directory, aiMaterial* material, NLRE_Material*& nlreMaterial);
-	NLRE_Material** loadMaterials(std::string directory, const aiScene* scene);
+	void loadMaterialTextures(std::string path, aiMaterial* material, NLRE_Material*& nlreMaterial);
+	NLRE_Material** loadMaterials(std::string path, const aiScene* scene);
 
 	void nextNode(const aiScene* scene, aiNode* node, aiMatrix4x4& accTransform, NLRE_Mesh** meshArr, NLRE_Material** materialArr, std::vector<NLRE_RenderableAsset*>& assetArr);
 	void assembleAsset(const aiScene* scene, unsigned int meshIndex, aiMatrix4x4& transform, NLRE_Mesh** meshArr, NLRE_Material** materialArr, std::vector<NLRE_RenderableAsset*>& assetArr);
 
+	std::wstring generateTextureResourcePath(aiString textureResourcePath, std::string assetPath);
 	NLRERenderingDevice* _renderingDevice;
 	NLRETextureLoader* _textureLoader;
+	std::wstring _textureResourcePath;
+	bool useBuiltInTexturePath;
 };
 #endif

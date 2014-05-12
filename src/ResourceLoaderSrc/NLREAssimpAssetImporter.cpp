@@ -33,6 +33,8 @@ NLREAssimpAssetImporter::NLREAssimpAssetImporter(NLRERenderingDevice* renderingD
 {
 	_renderingDevice = renderingDevice;
 	_textureLoader = textureLoader;
+	_textureResourcePath = L"";
+	useBuiltInTexturePath = true;
 
 	if (!initialize())
 	{
@@ -70,10 +72,10 @@ bool NLREAssimpAssetImporter::importAssets(std::wstring path, std::vector<NLRE_R
 		aiProcess_CalcTangentSpace |
 		aiProcess_Triangulate |
 		aiProcess_JoinIdenticalVertices |
-		aiProcess_GenUVCoords|
+		aiProcess_GenUVCoords |
 		aiProcess_GenNormals |
-		aiProcess_SortByPType|
-		aiProcess_RemoveComponent|	
+		aiProcess_SortByPType |
+		aiProcess_RemoveComponent |
 		//aiProcess_FlipUVs				|
 		aiProcess_SortByPType);
 
@@ -82,29 +84,28 @@ bool NLREAssimpAssetImporter::importAssets(std::wstring path, std::vector<NLRE_R
 		NLRE_Log::err(NLRE_Log::REG, "Failed to import asset: ", assetPath);
 		return false;
 	}
-	fs::path directory(assetPath.c_str());
-	
+
 	assets = loadAsStatic(assetPath, scene);
 
 	return true;
 }
 
-std::vector<NLRE_RenderableAsset*> NLREAssimpAssetImporter::loadAsStatic(std::string directory, const aiScene* scene)
+std::vector<NLRE_RenderableAsset*> NLREAssimpAssetImporter::loadAsStatic(std::string path, const aiScene* scene)
 {
 	std::vector<NLRE_RenderableAsset*> assetArr;
 	NLRE_Mesh** meshArr = loadMeshes(scene);
-	NLRE_Material** materialArr = loadMaterials(directory, scene);
+	NLRE_Material** materialArr = loadMaterials(path, scene);
 
 	nextNode(scene, scene->mRootNode, scene->mRootNode->mTransformation, meshArr, materialArr, assetArr);
 	return assetArr;
 }
 
 void NLREAssimpAssetImporter::nextNode(
-	const aiScene* scene, 
-	aiNode* node, 
-	aiMatrix4x4& accTransform, 
-	NLRE_Mesh** meshArr, 
-	NLRE_Material** materialArr, 
+	const aiScene* scene,
+	aiNode* node,
+	aiMatrix4x4& accTransform,
+	NLRE_Mesh** meshArr,
+	NLRE_Material** materialArr,
 	std::vector<NLRE_RenderableAsset*>& assetArr)
 {
 	aiMatrix4x4 transform;
@@ -123,22 +124,22 @@ void NLREAssimpAssetImporter::nextNode(
 	for (int i = 0; i < node->mNumChildren; i++)
 	{
 		nextNode(scene, node->mChildren[i], transform, meshArr, materialArr, assetArr);
-	}	
+	}
 }
 
 void NLREAssimpAssetImporter::assembleAsset(
-	const aiScene* scene, 
-	unsigned int meshIndex, 
-	aiMatrix4x4& transform, 
-	NLRE_Mesh** meshArr, 
-	NLRE_Material** materialArr, 
+	const aiScene* scene,
+	unsigned int meshIndex,
+	aiMatrix4x4& transform,
+	NLRE_Mesh** meshArr,
+	NLRE_Material** materialArr,
 	std::vector<NLRE_RenderableAsset*>& assetArr)
 {
 	NLRE_RenderableAsset* asset = new NLRE_RenderableAsset();
 	asset->mesh = meshArr[meshIndex];
 	asset->material = materialArr[scene->mMeshes[meshIndex]->mMaterialIndex];
 	asset->transform = NLE_FLOAT4X4((const float*)(&transform));
-	
+
 	assetArr.push_back(asset);
 }
 
@@ -149,6 +150,7 @@ NLRE_Mesh** NLREAssimpAssetImporter::loadMeshes(const aiScene* scene)
 	NLRE_Mesh** meshArr = new NLRE_Mesh*[scene->mNumMeshes];
 	for (int i = 0; i < scene->mNumMeshes; i++)
 	{
+		meshArr[i] = new NLRE_Mesh();
 		NLRE_GeomStr* geomStreamArr = NULL;
 		unsigned int geomStreamLength = 0;
 		loadGeometryStream(scene->mMeshes[i], geomStreamArr, geomStreamLength);
@@ -205,18 +207,20 @@ void NLREAssimpAssetImporter::loadIndices(aiMesh* mesh, NLRE_Index*& indexArr, u
 	}
 }
 
-NLRE_Material** NLREAssimpAssetImporter::loadMaterials(std::string directory, const aiScene* scene)
+NLRE_Material** NLREAssimpAssetImporter::loadMaterials(std::string path, const aiScene* scene)
 {
 	if (!scene->HasMaterials()) return NULL;
 
 	NLRE_Material** materialArr = new NLRE_Material*[scene->mNumMaterials];
 	for (int i = 0; i < scene->mNumMaterials; i++)
 	{
+		materialArr[i] = new NLRE_Material();
 		NLRE_MaterialBufferStruct materialBuffStruct;
 		loadMaterialBuffer(scene->mMaterials[i], materialBuffStruct);
 		_renderingDevice->createBuffer<NLRE_MaterialBufferStruct>(NLRE_BIND_CONSTANT_BUFFER, NLRE_USAGE_IMMUTABLE, &materialBuffStruct, 1, materialArr[i]->materialBuffer);
 
 		loadMaterialParams(scene->mMaterials[i], materialArr[i]);
+		loadMaterialTextures(path, scene->mMaterials[i], materialArr[i]);
 	}
 	return materialArr;
 }
@@ -235,57 +239,59 @@ void NLREAssimpAssetImporter::loadMaterialParams(aiMaterial* material, NLRE_Mate
 
 void NLREAssimpAssetImporter::loadMaterialBuffer(aiMaterial* material, NLRE_MaterialBufferStruct& materialStruct)
 {
-		aiColor3D tempColor;
-		if (material->Get(AI_MATKEY_COLOR_DIFFUSE, tempColor) == AI_SUCCESS)
-		{
-			materialStruct.diffuseColor.x = tempColor.r;
-			materialStruct.diffuseColor.y = tempColor.g;
-			materialStruct.diffuseColor.z = tempColor.b;
-		}
-		if (material->Get(AI_MATKEY_COLOR_AMBIENT, tempColor) == AI_SUCCESS)
-		{
-			materialStruct.ambientColor.x = tempColor.r;
-			materialStruct.ambientColor.y = tempColor.g;
-			materialStruct.ambientColor.z = tempColor.b;
-		}
-		if (material->Get(AI_MATKEY_COLOR_SPECULAR, tempColor) == AI_SUCCESS)
-		{
-			materialStruct.specularColor.x = tempColor.r;
-			materialStruct.specularColor.y = tempColor.g;
-			materialStruct.specularColor.z = tempColor.b;
-		}
-		if (material->Get(AI_MATKEY_COLOR_EMISSIVE, tempColor) == AI_SUCCESS)
-		{
-			materialStruct.emissiveColor.x = tempColor.r;
-			materialStruct.emissiveColor.y = tempColor.g;
-			materialStruct.emissiveColor.z = tempColor.b;
-		}
-		if (material->Get(AI_MATKEY_COLOR_TRANSPARENT, tempColor) == AI_SUCCESS)
-		{
-			materialStruct.transparentColor.x = tempColor.r;
-			materialStruct.transparentColor.y = tempColor.g;
-			materialStruct.transparentColor.z = tempColor.b;
-		}
+	aiColor3D tempColor;
+	if (material->Get(AI_MATKEY_COLOR_DIFFUSE, tempColor) == AI_SUCCESS)
+	{
+		materialStruct.diffuseColor.x = tempColor.r;
+		materialStruct.diffuseColor.y = tempColor.g;
+		materialStruct.diffuseColor.z = tempColor.b;
+	}
+	if (material->Get(AI_MATKEY_COLOR_AMBIENT, tempColor) == AI_SUCCESS)
+	{
+		materialStruct.ambientColor.x = tempColor.r;
+		materialStruct.ambientColor.y = tempColor.g;
+		materialStruct.ambientColor.z = tempColor.b;
+	}
+	if (material->Get(AI_MATKEY_COLOR_SPECULAR, tempColor) == AI_SUCCESS)
+	{
+		materialStruct.specularColor.x = tempColor.r;
+		materialStruct.specularColor.y = tempColor.g;
+		materialStruct.specularColor.z = tempColor.b;
+	}
+	if (material->Get(AI_MATKEY_COLOR_EMISSIVE, tempColor) == AI_SUCCESS)
+	{
+		materialStruct.emissiveColor.x = tempColor.r;
+		materialStruct.emissiveColor.y = tempColor.g;
+		materialStruct.emissiveColor.z = tempColor.b;
+	}
+	if (material->Get(AI_MATKEY_COLOR_TRANSPARENT, tempColor) == AI_SUCCESS)
+	{
+		materialStruct.transparentColor.x = tempColor.r;
+		materialStruct.transparentColor.y = tempColor.g;
+		materialStruct.transparentColor.z = tempColor.b;
+	}
 
-		float temp = 0.0f;
-		if(material->Get(AI_MATKEY_OPACITY, temp) == AI_SUCCESS)			materialStruct.opacity = temp;
-		if(material->Get(AI_MATKEY_SHININESS, temp) == AI_SUCCESS)			materialStruct.shininess = temp;
-		if(material->Get(AI_MATKEY_SHININESS_STRENGTH, temp) == AI_SUCCESS) materialStruct.shininess_str = temp;
-		if(material->Get(AI_MATKEY_REFRACTI, temp) == AI_SUCCESS)			materialStruct.refracti = temp;
+	float temp = 0.0f;
+	if (material->Get(AI_MATKEY_OPACITY, temp) == AI_SUCCESS)			materialStruct.opacity = temp;
+	if (material->Get(AI_MATKEY_SHININESS, temp) == AI_SUCCESS)			materialStruct.shininess = temp;
+	if (material->Get(AI_MATKEY_SHININESS_STRENGTH, temp) == AI_SUCCESS) materialStruct.shininess_str = temp;
+	if (material->Get(AI_MATKEY_REFRACTI, temp) == AI_SUCCESS)			materialStruct.refracti = temp;
 }
 
-void NLREAssimpAssetImporter::loadMaterialTextures(std::string directory, aiMaterial* material, NLRE_Material*& nlreMaterial)
+void NLREAssimpAssetImporter::loadMaterialTextures(std::string assetPath, aiMaterial* material, NLRE_Material*& nlreMaterial)
 {
 	aiString path;
-	std::string strPath;
 
 	if (material->GetTextureCount(aiTextureType_DIFFUSE) > 0)
 	{
 		if (material->GetTexture(aiTextureType_DIFFUSE, 0, &path, NULL, NULL, NULL, NULL, NULL) == AI_SUCCESS)
 		{
-			strPath = path.data;
-			std::wstring wstrPath(strPath.begin(), strPath.end());
-			_textureLoader->loadTexture(wstrPath, NLRE_BIND_SHADER_RESOURCE, NLRE_USAGE_IMMUTABLE, nlreMaterial->diffuseText, nlreMaterial->diffuseTextView);
+			_textureLoader->loadTexture(
+				generateTextureResourcePath(path, assetPath), 
+				NLRE_BIND_SHADER_RESOURCE, 
+				NLRE_USAGE_IMMUTABLE, 
+				nlreMaterial->diffuseText, 
+				nlreMaterial->diffuseTextView);
 		}
 	}
 
@@ -293,9 +299,12 @@ void NLREAssimpAssetImporter::loadMaterialTextures(std::string directory, aiMate
 	{
 		if (material->GetTexture(aiTextureType_SPECULAR, 0, &path, NULL, NULL, NULL, NULL, NULL) == AI_SUCCESS)
 		{
-			strPath = path.data;
-			std::wstring wstrPath(strPath.begin(), strPath.end());
-			_textureLoader->loadTexture(wstrPath, NLRE_BIND_SHADER_RESOURCE, NLRE_USAGE_IMMUTABLE, nlreMaterial->specularText, nlreMaterial->specularTextView);
+			_textureLoader->loadTexture(
+				generateTextureResourcePath(path, assetPath), 
+				NLRE_BIND_SHADER_RESOURCE, 
+				NLRE_USAGE_IMMUTABLE, 
+				nlreMaterial->specularText, 
+				nlreMaterial->specularTextView);
 		}
 	}
 
@@ -303,9 +312,12 @@ void NLREAssimpAssetImporter::loadMaterialTextures(std::string directory, aiMate
 	{
 		if (material->GetTexture(aiTextureType_AMBIENT, 0, &path, NULL, NULL, NULL, NULL, NULL) == AI_SUCCESS)
 		{
-			strPath = path.data;
-			std::wstring wstrPath(strPath.begin(), strPath.end());
-			_textureLoader->loadTexture(wstrPath, NLRE_BIND_SHADER_RESOURCE, NLRE_USAGE_IMMUTABLE, nlreMaterial->ambientText, nlreMaterial->ambientTextView);
+			_textureLoader->loadTexture(
+				generateTextureResourcePath(path, assetPath), 
+				NLRE_BIND_SHADER_RESOURCE, 
+				NLRE_USAGE_IMMUTABLE, 
+				nlreMaterial->ambientText, 
+				nlreMaterial->ambientTextView);
 		}
 	}
 
@@ -313,9 +325,12 @@ void NLREAssimpAssetImporter::loadMaterialTextures(std::string directory, aiMate
 	{
 		if (material->GetTexture(aiTextureType_EMISSIVE, 0, &path, NULL, NULL, NULL, NULL, NULL) == AI_SUCCESS)
 		{
-			strPath = path.data;
-			std::wstring wstrPath(strPath.begin(), strPath.end());
-			_textureLoader->loadTexture(wstrPath, NLRE_BIND_SHADER_RESOURCE, NLRE_USAGE_IMMUTABLE, nlreMaterial->emissiveText, nlreMaterial->emissiveTextView);
+			_textureLoader->loadTexture(
+				generateTextureResourcePath(path, assetPath), 
+				NLRE_BIND_SHADER_RESOURCE, 
+				NLRE_USAGE_IMMUTABLE, 
+				nlreMaterial->emissiveText, 
+				nlreMaterial->emissiveTextView);
 		}
 	}
 
@@ -323,9 +338,12 @@ void NLREAssimpAssetImporter::loadMaterialTextures(std::string directory, aiMate
 	{
 		if (material->GetTexture(aiTextureType_HEIGHT, 0, &path, NULL, NULL, NULL, NULL, NULL) == AI_SUCCESS)
 		{
-			strPath = path.data;
-			std::wstring wstrPath(strPath.begin(), strPath.end());
-			_textureLoader->loadTexture(wstrPath, NLRE_BIND_SHADER_RESOURCE, NLRE_USAGE_IMMUTABLE, nlreMaterial->heightmapText, nlreMaterial->heightmapTextView);
+			_textureLoader->loadTexture(
+				generateTextureResourcePath(path, assetPath), 
+				NLRE_BIND_SHADER_RESOURCE, 
+				NLRE_USAGE_IMMUTABLE, 
+				nlreMaterial->heightmapText, 
+				nlreMaterial->heightmapTextView);
 		}
 	}
 
@@ -333,9 +351,12 @@ void NLREAssimpAssetImporter::loadMaterialTextures(std::string directory, aiMate
 	{
 		if (material->GetTexture(aiTextureType_NORMALS, 0, &path, NULL, NULL, NULL, NULL, NULL) == AI_SUCCESS)
 		{
-			strPath = path.data;
-			std::wstring wstrPath(strPath.begin(), strPath.end());
-			_textureLoader->loadTexture(wstrPath, NLRE_BIND_SHADER_RESOURCE, NLRE_USAGE_IMMUTABLE, nlreMaterial->normalText, nlreMaterial->normalTextView);
+			_textureLoader->loadTexture(
+				generateTextureResourcePath(path, assetPath), 
+				NLRE_BIND_SHADER_RESOURCE, 
+				NLRE_USAGE_IMMUTABLE, 
+				nlreMaterial->normalText, 
+				nlreMaterial->normalTextView);
 		}
 	}
 
@@ -343,9 +364,12 @@ void NLREAssimpAssetImporter::loadMaterialTextures(std::string directory, aiMate
 	{
 		if (material->GetTexture(aiTextureType_SHININESS, 0, &path, NULL, NULL, NULL, NULL, NULL) == AI_SUCCESS)
 		{
-			strPath = path.data;
-			std::wstring wstrPath(strPath.begin(), strPath.end());
-			_textureLoader->loadTexture(wstrPath, NLRE_BIND_SHADER_RESOURCE, NLRE_USAGE_IMMUTABLE, nlreMaterial->shininessText, nlreMaterial->shininessTextView);
+			_textureLoader->loadTexture(
+				generateTextureResourcePath(path, assetPath), 
+				NLRE_BIND_SHADER_RESOURCE, 
+				NLRE_USAGE_IMMUTABLE, 
+				nlreMaterial->shininessText, 
+				nlreMaterial->shininessTextView);
 		}
 	}
 
@@ -353,9 +377,12 @@ void NLREAssimpAssetImporter::loadMaterialTextures(std::string directory, aiMate
 	{
 		if (material->GetTexture(aiTextureType_OPACITY, 0, &path, NULL, NULL, NULL, NULL, NULL) == AI_SUCCESS)
 		{
-			strPath = path.data;
-			std::wstring wstrPath(strPath.begin(), strPath.end());
-			_textureLoader->loadTexture(wstrPath, NLRE_BIND_SHADER_RESOURCE, NLRE_USAGE_IMMUTABLE, nlreMaterial->opacityText, nlreMaterial->opacityTextView);
+			_textureLoader->loadTexture(
+				generateTextureResourcePath(path, assetPath), 
+				NLRE_BIND_SHADER_RESOURCE, 
+				NLRE_USAGE_IMMUTABLE, 
+				nlreMaterial->opacityText, 
+				nlreMaterial->opacityTextView);
 		}
 	}
 
@@ -363,9 +390,12 @@ void NLREAssimpAssetImporter::loadMaterialTextures(std::string directory, aiMate
 	{
 		if (material->GetTexture(aiTextureType_DISPLACEMENT, 0, &path, NULL, NULL, NULL, NULL, NULL) == AI_SUCCESS)
 		{
-			strPath = path.data;
-			std::wstring wstrPath(strPath.begin(), strPath.end());
-			_textureLoader->loadTexture(wstrPath, NLRE_BIND_SHADER_RESOURCE, NLRE_USAGE_IMMUTABLE, nlreMaterial->displacementText, nlreMaterial->displacementTextView);
+			_textureLoader->loadTexture(
+				generateTextureResourcePath(path, assetPath), 
+				NLRE_BIND_SHADER_RESOURCE, 
+				NLRE_USAGE_IMMUTABLE, 
+				nlreMaterial->displacementText, 
+				nlreMaterial->displacementTextView);
 		}
 	}
 
@@ -373,9 +403,12 @@ void NLREAssimpAssetImporter::loadMaterialTextures(std::string directory, aiMate
 	{
 		if (material->GetTexture(aiTextureType_LIGHTMAP, 0, &path, NULL, NULL, NULL, NULL, NULL) == AI_SUCCESS)
 		{
-			strPath = path.data;
-			std::wstring wstrPath(strPath.begin(), strPath.end());
-			_textureLoader->loadTexture(wstrPath, NLRE_BIND_SHADER_RESOURCE, NLRE_USAGE_IMMUTABLE, nlreMaterial->lightmapText, nlreMaterial->lightmapTextView);
+			_textureLoader->loadTexture(
+				generateTextureResourcePath(path, assetPath), 
+				NLRE_BIND_SHADER_RESOURCE, 
+				NLRE_USAGE_IMMUTABLE, 
+				nlreMaterial->lightmapText, 
+				nlreMaterial->lightmapTextView);
 		}
 	}
 
@@ -383,9 +416,48 @@ void NLREAssimpAssetImporter::loadMaterialTextures(std::string directory, aiMate
 	{
 		if (material->GetTexture(aiTextureType_REFLECTION, 0, &path, NULL, NULL, NULL, NULL, NULL) == AI_SUCCESS)
 		{
-			strPath = path.data;
-			std::wstring wstrPath(strPath.begin(), strPath.end());
-			_textureLoader->loadTexture(wstrPath, NLRE_BIND_SHADER_RESOURCE, NLRE_USAGE_IMMUTABLE, nlreMaterial->reflectionText, nlreMaterial->reflectionTextView);
+			_textureLoader->loadTexture(
+				generateTextureResourcePath(path, assetPath), 
+				NLRE_BIND_SHADER_RESOURCE, 
+				NLRE_USAGE_IMMUTABLE, 
+				nlreMaterial->reflectionText, 
+				nlreMaterial->reflectionTextView);
 		}
+	}
+}
+
+void NLREAssimpAssetImporter::setTextureResourcePath(std::wstring path)
+{
+	_textureResourcePath = path;
+}
+
+void NLREAssimpAssetImporter::enableBuiltInTexturePath(bool status)
+{
+	useBuiltInTexturePath = status;
+}
+
+std::wstring NLREAssimpAssetImporter::generateTextureResourcePath(aiString textureResourcePath, std::string assetResourcePath)
+{
+
+	fs::path texturePath(textureResourcePath.data);
+	texturePath = texturePath.make_preferred();
+
+	if (!useBuiltInTexturePath)
+	{
+		fs::path providedPath(_textureResourcePath.c_str());
+		providedPath /= texturePath.filename();
+		texturePath = providedPath.make_preferred();
+	}
+
+	if (texturePath.is_absolute())
+	{
+		return texturePath.generic_wstring();
+	}
+	else
+	{
+		fs::path assetPath(assetResourcePath.c_str());
+		assetPath /= texturePath;
+		assetPath = assetPath.make_preferred();
+		return assetPath.generic_wstring();
 	}
 }

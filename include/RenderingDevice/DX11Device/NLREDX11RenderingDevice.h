@@ -80,7 +80,7 @@ public:
 
 		if (FAILED(hr))
 		{
-			NLRE_Log::err(NLRE_Log::ErrorFlag::CRITICAL, "Failed to create Buffer Type: ", bindFlag, ", Usage: ", usage);
+			NLRE_Log::err(NLRE_Log::ErrorFlag::CRITICAL, "Failed to create Buffer Type: %i%s%i", bindFlag, ", Usage: ", usage);
 			return false;
 		}
 

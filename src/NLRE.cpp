@@ -47,3 +47,18 @@ void NLRE::render()
 {
 	_container->render();
 }
+
+void NLRE::importAsset(std::wstring path)
+{
+	std::vector<NLRE_RenderableAsset*> assets;
+	std::string strPath(path.begin(), path.end());
+	if (_assetImporter->importAssets(path, assets))
+	{
+		NLRE_Log::console("Successfully imported asset at: %s", strPath.c_str());
+		NLRE_Log::console("Number of items in the asset vector: %i", assets.size());
+	}
+	else
+	{
+		NLRE_Log::console("Failed to import asset at: %s", strPath.c_str());
+	}
+}

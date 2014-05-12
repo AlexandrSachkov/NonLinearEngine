@@ -40,7 +40,7 @@ public:
 	~NLRE();
 
 	void render();
-
+	void importAsset(std::wstring path);
 private:
 	NLREDeviceController* _deviceController;
 	NLRERenderingDevice* _renderingDevice;
