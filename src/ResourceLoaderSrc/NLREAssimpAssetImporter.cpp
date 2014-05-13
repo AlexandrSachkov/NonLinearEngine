@@ -321,7 +321,7 @@ void NLREAssimpAssetImporter::loadMaterialTextures(std::string assetPath, aiMate
 				nlreMaterial->specularTextView);
 		}
 	}
-
+	
 	if (material->GetTextureCount(aiTextureType_AMBIENT) > 0)
 	{
 		if (material->GetTexture(aiTextureType_AMBIENT, 0, &path, NULL, NULL, NULL, NULL, NULL) == AI_SUCCESS)
