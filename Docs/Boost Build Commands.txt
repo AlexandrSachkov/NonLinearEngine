@@ -16,5 +16,4 @@ bjam --with-filesystem --toolset=msvc --stagedir=stage32release address-model=32
 bjam --with-filesystem --toolset=msvc --stagedir=stage64debug address-model=64 variant=debug link=static threading=multi runtime-link=static
 	
 bjam --with-filesystem --toolset=msvc --stagedir=stage64release address-model=64 variant=release link=static threading=multi runtime-link=static
-	
-bjam -a --toolset=msvc --stagedir=stage64release address-model=64 variant=release link=static threading=multi runtime-link=static
+
