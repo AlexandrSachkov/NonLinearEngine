@@ -78,7 +78,7 @@ bool NLREAssimpAssetImporter::importAssets(std::wstring path, std::vector<NLRE_R
 	Assimp::Importer importer;
 	std::string assetPath(path.begin(), path.end());
 	const aiScene* scene = importer.ReadFile(assetPath.c_str(),
-		aiProcess_MakeLeftHanded |
+		aiProcess_ConvertToLeftHanded |
 		aiProcess_CalcTangentSpace |
 		aiProcess_Triangulate |
 		aiProcess_JoinIdenticalVertices |

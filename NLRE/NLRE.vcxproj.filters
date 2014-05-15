@@ -225,5 +225,11 @@
     <FxCompile Include="..\src\RenderingDeviceSrc\DX11Device\Shaders\Forward_Pos_PS.hlsl">
       <Filter>Source Files\RenderingDeviceSrc\DX11Device\Shaders</Filter>
     </FxCompile>
+    <FxCompile Include="..\src\RenderingDeviceSrc\DX11Device\Shaders\Forward_PosNormText_VS.hlsl">
+      <Filter>Source Files\RenderingDeviceSrc\DX11Device\Shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="..\src\RenderingDeviceSrc\DX11Device\Shaders\Forward_PosNormText_PS.hlsl">
+      <Filter>Source Files\RenderingDeviceSrc\DX11Device\Shaders</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>

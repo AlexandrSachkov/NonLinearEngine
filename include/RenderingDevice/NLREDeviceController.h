@@ -40,7 +40,7 @@ public:
 	NLRERenderingDevice* getRenderingDevice();
 	bool setRenderingTechnique(NLRE_RENDERING_TECHNIQUE_ID techniqueId);
 	NLRE_RENDERING_TECHNIQUE_ID getCurrentRenderingTechniqueId();
-	void render(NLRE_Buffer vertexBuff, NLRE_Buffer indexBuff, NLRE_Buffer constBuff, NLRE_APIShaderResourceView* texture);
+	void render(std::vector<NLRE_RenderableAsset*>& assets);
 
 NLRERenderingTechnique* _renderingTechnique;
 private:

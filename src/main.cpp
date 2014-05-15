@@ -84,6 +84,9 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	}
 	std::wstring path = L"C:\\Users\\Alex\\Desktop\\cube.dae";
 	nlre->importAsset(path);
+
+	//path = L"C:\\Users\\Alex\\Desktop\\sphere.dae";
+	//nlre->importAsset(path);
 	messageloop();
 
 	ReleaseResources();

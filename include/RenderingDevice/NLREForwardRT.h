@@ -40,7 +40,7 @@ public:
 	NLREForwardRT(const NLREForwardRT& other);
 	~NLREForwardRT();
 
-	void render(NLRE_Buffer vertexBuff, NLRE_Buffer indexBuff, NLRE_Buffer constBuff, NLRE_APIShaderResourceView* texture);
+	void render(std::vector<NLRE_RenderableAsset*>& assets);
 private:
 	bool initialize();
 	

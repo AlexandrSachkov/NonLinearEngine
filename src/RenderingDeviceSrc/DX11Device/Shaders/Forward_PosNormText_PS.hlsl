@@ -26,23 +26,16 @@ THE SOFTWARE.
 -----------------------------------------------------------------------------
 */
 
-#ifndef NLRE_DX11_INPUT_LAYOUT_DESCRIPTIONS_
-#define NLRE_DX11_INPUT_LAYOUT_DESCRIPTIONS_
-
-#include "NLREMain\stdafx.h"
-
-class NLREDX11InputLayoutDescriptions
+struct PS_INPUT
 {
-public:
-	static const NLRE_APIInputLayoutDecs forwardPosNormTanTextDesc[];
-	static const NLRE_APIInputLayoutDecs forwardPosNormTextDesc[];
-	static const NLRE_APIInputLayoutDecs forwardPosTextDesc[];
-	static const NLRE_APIInputLayoutDecs forwardPosDesc[];
-
-	static NLRE_InputLayoutDesc forwardPosNormTanText;
-	static NLRE_InputLayoutDesc forwardPosNormText;
-	static NLRE_InputLayoutDesc forwardPosText;
-	static NLRE_InputLayoutDesc forwardPos;
+	float4 Pos : SV_POSITION;
+	float2 TexCoord : TEXCOORD;
 };
 
-#endif
+Texture2D ObjTexture;
+SamplerState ObjSamplerState;
+
+float4 PSMain(PS_INPUT input) : SV_TARGET
+{
+	return ObjTexture.Sample(ObjSamplerState, input.TexCoord);
+}

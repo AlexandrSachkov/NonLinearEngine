@@ -82,7 +82,7 @@ NLRE_RENDERING_TECHNIQUE_ID NLREDeviceController::getCurrentRenderingTechniqueId
 	return _renderingTechniqueId;
 }
 
-void NLREDeviceController::render(NLRE_Buffer vertexBuff, NLRE_Buffer indexBuff, NLRE_Buffer constBuff, NLRE_APIShaderResourceView* texture)
+void NLREDeviceController::render(std::vector<NLRE_RenderableAsset*>& assets)
 {
-	_renderingTechnique->render(vertexBuff, indexBuff, constBuff, texture);
+	_renderingTechnique->render(assets);
 }
