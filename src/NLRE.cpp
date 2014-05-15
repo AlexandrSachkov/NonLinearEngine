@@ -56,6 +56,6 @@ void NLRE::importAsset(std::wstring path)
 	{
 		NLRE_Log::console("Successfully imported asset at: %s", strPath.c_str());
 		NLRE_Log::console("Number of items in the asset vector: %i", assets.size());
+		_container->addAssets(assets);
 	}
-	_container->addAssets(assets);
 }
