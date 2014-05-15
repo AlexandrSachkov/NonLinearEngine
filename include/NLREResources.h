@@ -290,7 +290,6 @@ struct NLRE_RenderableAsset
 	NLRE_Buffer transformationBuffer;
 	NLRE_Mesh* mesh;
 	NLRE_Material* material;
-	
 };
 
 
