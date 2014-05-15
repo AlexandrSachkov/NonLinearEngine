@@ -91,7 +91,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
 	ReleaseResources();
 
-	delete nlre;
+	
 
 	//destroys console window
 	fclose(stdout);
@@ -102,7 +102,11 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
 void ReleaseResources()
 {
+	NLRE_Log::unregisterConsoleCallbackAll();
+	NLRE_Log::unregisterDebugCallbackAll();
+	NLRE_Log::unregisterErrorCallbackAll();
 
+	delete nlre;
 }
 
 bool InitializeWindow(HINSTANCE hInstance, int ShowWnd, int width, int height, bool windowed)
