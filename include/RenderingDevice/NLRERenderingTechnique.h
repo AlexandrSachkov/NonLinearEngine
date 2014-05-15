@@ -33,6 +33,7 @@ THE SOFTWARE.
 class NLRERenderingTechnique
 {
 public:
+	virtual ~NLRERenderingTechnique(){};
 	virtual void render(std::vector<NLRE_RenderableAsset*>& assets) = 0;
 };
 

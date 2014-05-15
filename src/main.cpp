@@ -91,7 +91,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
 	ReleaseResources();
 
-	//delete renderingEngine;
+	delete nlre;
 
 	//destroys console window
 	fclose(stdout);

@@ -38,9 +38,10 @@ NLRE::NLRE(HWND hwndVal, int widthVal, int heightVal){
 }
 
 NLRE::~NLRE(){
-
-	delete _deviceController;
+	delete _assetImporter;
 	delete _container;
+	delete _textureLoader;
+	delete _deviceController;
 }
 
 void NLRE::render()

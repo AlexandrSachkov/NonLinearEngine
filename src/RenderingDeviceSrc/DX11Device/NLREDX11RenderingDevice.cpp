@@ -71,9 +71,12 @@ bool NLREDX11RenderingDevice::initialize()
 
 void NLREDX11RenderingDevice::release()
 {
-	_d3d11DevCon->Release();
-	_d3d11Device->Release();
-	_swapChain->Release();
+	if (_swapChain) _swapChain->Release();
+	_swapChain = NULL;
+	if (_d3d11DevCon) _d3d11DevCon->Release();
+	_d3d11DevCon = NULL;
+	if (_d3d11Device) _d3d11Device->Release();
+	_d3d11Device = NULL;
 }
 
 bool NLREDX11RenderingDevice::createDeviceAndSwapChain()

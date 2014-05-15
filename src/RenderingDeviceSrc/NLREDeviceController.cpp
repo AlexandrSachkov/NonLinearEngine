@@ -43,7 +43,7 @@ NLREDeviceController::NLREDeviceController(HWND hwndVal, int widthVal, int heigh
 
 NLREDeviceController::~NLREDeviceController()
 {
-	if (_renderingTechnique) delete _renderingTechnique;
+	delete _renderingTechnique;
 }
 
 bool NLREDeviceController::initialize()
