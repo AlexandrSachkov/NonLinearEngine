@@ -83,6 +83,8 @@ private:
 	NLE_FLOAT4X4* mObjWorld;
 
 	cbPerObject cbPerObj;
+
+	std::vector<NLRE_RenderableAsset*> assets;
 };
 
 #endif

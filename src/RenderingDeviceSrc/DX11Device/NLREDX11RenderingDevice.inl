@@ -134,6 +134,23 @@ inline void NLREDX11RenderingDevice::setViewPort()
 	_d3d11DevCon->RSSetViewports(1, &viewport);
 }
 
+inline void NLREDX11RenderingDevice::updateBuffer(NLRE_Buffer& buffer, void* data, unsigned int dataSize)
+{
+	if (buffer.usage == NLRE_USAGE_DYNAMIC)
+	{
+		D3D11_MAPPED_SUBRESOURCE mappedResource;
+		ZeroMemory(&mappedResource, sizeof(D3D11_MAPPED_SUBRESOURCE));
+		
+		_d3d11DevCon->Map(buffer.apiBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
+		memcpy(mappedResource.pData, data, dataSize);
+		_d3d11DevCon->Unmap(buffer.apiBuffer, 0);
+	}
+	else if (buffer.usage == NLRE_USAGE_DEFAULT)
+	{
+		//UpdateSubresource goes here
+	}
+}
+
 inline void NLREDX11RenderingDevice::VSSetTextureSamplerState(unsigned int startSlot, unsigned int numStates, NLRE_APISamplerState* samplerState)
 {
 	_d3d11DevCon->VSSetSamplers(startSlot, numStates, &samplerState);

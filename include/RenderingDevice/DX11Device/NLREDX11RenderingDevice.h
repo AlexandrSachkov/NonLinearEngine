@@ -135,6 +135,7 @@ public:
 	void setRenderTargets(unsigned int numRenderTargets, NLRE_APIRenderTargetView* renderTargerViewArr, NLRE_APIDepthStencilView* depthStencilView);
 	void setViewPort(int numViewports, int x, int y, int width, int height, float minDepth, float maxDepth);
 	void setViewPort();
+	void updateBuffer(NLRE_Buffer& buffer, void* data, unsigned int dataSize);
 	
 	void VSSetTextureSamplerState(unsigned int startSlot, unsigned int numStates, NLRE_APISamplerState* samplerState);
 	void PSSetTextureSamplerState(unsigned int startSlot, unsigned int numStates, NLRE_APISamplerState* samplerState);
