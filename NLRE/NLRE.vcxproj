@@ -325,6 +325,7 @@
     <ClInclude Include="..\include\ResourceLoader\NLRETextureLoader.h" />
     <ClInclude Include="..\include\ResourceLoader\NLRETextureLoaderBase.h" />
     <ClInclude Include="..\include\ResourceLoader\WICTextureLoader.h" />
+    <ClInclude Include="..\include\SceneManager\NLRECamera.h" />
     <ClInclude Include="..\include\SceneManager\NLRESceneManager.h" />
   </ItemGroup>
   <ItemGroup>
@@ -347,6 +348,7 @@
     <ClCompile Include="..\src\ResourceLoaderSrc\NLREAssimpAssetImporter.cpp" />
     <ClCompile Include="..\src\ResourceLoaderSrc\NLREDirectXTexTextureLoader.cpp" />
     <ClCompile Include="..\src\ResourceLoaderSrc\WICTextureLoader.cpp" />
+    <ClCompile Include="..\src\SceneManagerSrc\NLRECamera.cpp" />
     <ClCompile Include="..\src\SceneManagerSrc\NLRESceneManager.cpp" />
   </ItemGroup>
   <ItemGroup>

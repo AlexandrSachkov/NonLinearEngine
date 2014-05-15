@@ -153,6 +153,9 @@
     <ClInclude Include="..\include\SceneManager\NLRESceneManager.h">
       <Filter>Header Files\SceneManager</Filter>
     </ClInclude>
+    <ClInclude Include="..\include\SceneManager\NLRECamera.h">
+      <Filter>Header Files\SceneManager</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\src\MathSrc\DXMath\DXMathMatrixFunctions.inl">
@@ -209,6 +212,9 @@
       <Filter>Source Files\ResourceLoaderSrc</Filter>
     </ClCompile>
     <ClCompile Include="..\src\SceneManagerSrc\NLRESceneManager.cpp">
+      <Filter>Source Files\SceneManagerSrc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\SceneManagerSrc\NLRECamera.cpp">
       <Filter>Source Files\SceneManagerSrc</Filter>
     </ClCompile>
   </ItemGroup>
