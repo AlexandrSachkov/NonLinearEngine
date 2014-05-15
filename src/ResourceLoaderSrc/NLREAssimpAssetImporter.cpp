@@ -152,7 +152,8 @@ void NLREAssimpAssetImporter::assembleAsset(
 	NLRE_RenderableAsset* asset = new NLRE_RenderableAsset();
 	asset->mesh = meshArr[meshIndex];
 	asset->material = materialArr[scene->mMeshes[meshIndex]->mMaterialIndex];
-	asset->transform = NLE_FLOAT4X4((const float*)(&transform));
+	asset->transformStruct.transformation = NLE_FLOAT4X4((const float*)(&transform));
+	//_renderingDevice->createBuffer<
 
 	assetArr.push_back(asset);
 }

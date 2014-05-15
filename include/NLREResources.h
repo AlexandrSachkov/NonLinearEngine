@@ -197,28 +197,50 @@ struct NLRE_Material
 	~NLRE_Material()
 	{
 		if (diffuseText) diffuseText->Release();
+		diffuseText = NULL;
 		if (specularText) specularText->Release();
+		specularText = NULL;
 		if (ambientText) ambientText->Release();
+		ambientText = NULL;
 		if (emissiveText) emissiveText->Release();
+		emissiveText = NULL;
 		if (heightmapText) heightmapText->Release();
+		heightmapText = NULL;
 		if (normalText) normalText->Release();
+		normalText = NULL;
 		if (shininessText) shininessText->Release();
+		shininessText = NULL;
 		if (opacityText) opacityText->Release();
+		opacityText = NULL;
 		if (displacementText) displacementText->Release();
+		displacementText = NULL;
 		if (lightmapText) lightmapText->Release();
+		lightmapText = NULL;
 		if (reflectionText) reflectionText->Release();
+		reflectionText = NULL;
 
 		if (diffuseTextView) diffuseTextView->Release();
+		diffuseTextView = NULL;
 		if (specularTextView) specularTextView->Release();
+		specularTextView = NULL;
 		if (ambientTextView) ambientTextView->Release();
+		ambientTextView = NULL;
 		if (emissiveTextView) emissiveTextView->Release();
+		emissiveTextView = NULL;
 		if (heightmapTextView) heightmapTextView->Release();
+		heightmapTextView = NULL;
 		if (normalTextView) normalTextView->Release();
+		normalTextView = NULL;
 		if (shininessTextView) shininessTextView->Release();
+		shininessTextView = NULL;
 		if (opacityTextView) opacityTextView->Release();
+		opacityTextView = NULL;
 		if (displacementTextView) displacementTextView->Release();
+		displacementTextView = NULL;
 		if (lightmapTextView) lightmapTextView->Release();
+		lightmapTextView = NULL;
 		if (reflectionTextView) reflectionTextView->Release();
+		reflectionTextView = NULL;
 	}
 
 	NLRE_Buffer materialBuffer;
@@ -255,14 +277,22 @@ struct NLRE_Material
 	NLRE_APIShaderResourceView* reflectionTextView;
 };
 
+struct NLRE_Transformation
+{
+	NLE_FLOAT4X4 transformation;
+};
+
 struct NLRE_RenderableAsset
 {
 	NLRE_RenderableAsset() : mesh(NULL), material(NULL){};
 
-	NLE_FLOAT4X4 transform;
+	NLRE_Transformation transformStruct;
+	NLRE_Buffer transformationBuffer;
 	NLRE_Mesh* mesh;
 	NLRE_Material* material;
 	
 };
+
+
 
 #endif
