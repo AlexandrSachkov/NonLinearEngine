@@ -86,8 +86,8 @@ void Container::render()
 		NLRE_RenderableAsset* asset = (NLRE_RenderableAsset*)(*it);
 		NLE_MATRIX objWorld = NLEMath::NLELoadFloat4x4(&(asset->transformStruct.transformation));
 		NLE_MATRIX WVP = objWorld * camView * camProjection;
-		cbPerObject objTransform;
-		NLEMath::NLEStoreFloat4x4(&(objTransform.WVP), NLEMath::NLEMatrixTranspose(WVP));
+		NLRE_Transformation objTransform;
+		NLEMath::NLEStoreFloat4x4(&(objTransform.transformation), NLEMath::NLEMatrixTranspose(WVP));
 
 		_renderingDevice->updateBuffer(asset->transformationBuffer, &objTransform, sizeof(objTransform));
 	}

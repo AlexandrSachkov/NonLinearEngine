@@ -89,7 +89,6 @@ bool NLREAssimpAssetImporter::importAssets(std::wstring path, std::vector<NLRE_R
 		aiProcess_GenNormals |
 		aiProcess_SortByPType |
 		aiProcess_RemoveComponent |
-		//aiProcess_FlipUVs				|
 		aiProcess_SortByPType);
 
 	if (!scene)

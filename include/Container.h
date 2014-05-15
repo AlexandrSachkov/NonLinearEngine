@@ -33,11 +33,6 @@ THE SOFTWARE.
 #include "ResourceLoader\NLRETextureLoader.h"
 #include "RenderingDevice\NLREDeviceController.h"
 
-struct cbPerObject
-{
-	NLE_FLOAT4X4  WVP;
-};
-
 class Container
 {
 public:
