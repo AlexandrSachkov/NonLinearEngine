@@ -26,18 +26,18 @@ THE SOFTWARE.
 -----------------------------------------------------------------------------
 */
 
-#ifndef CONTAINER_
-#define CONTAINER_
+#ifndef NLRE_SCENE_MANAGER_
+#define NLRE_SCENE_MANAGER_
 
 #include "NLREMain\stdafx.h"
 #include "ResourceLoader\NLRETextureLoader.h"
 #include "RenderingDevice\NLREDeviceController.h"
 
-class Container
+class NLRESceneManager
 {
 public:
-	Container(NLREDeviceController* deviceController, NLRERenderingDevice* renderingDevice, NLRETextureLoader* textureLoader, int width, int height);
-	~Container();
+	NLRESceneManager(NLREDeviceController* deviceController, NLRERenderingDevice* renderingDevice, NLRETextureLoader* textureLoader, int width, int height);
+	~NLRESceneManager();
 
 	void render();
 	void render2();

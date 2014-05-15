@@ -33,20 +33,20 @@ NLRE::NLRE(HWND hwndVal, int widthVal, int heightVal){
 	_deviceController = new NLREDeviceController(hwndVal, widthVal, heightVal, NLRE_RENDERING_TECHNIQUE_ID::NLRE_FORWARD_RT);
 	_renderingDevice = _deviceController->getRenderingDevice();
 	_textureLoader = new NLRETextureLoader(_renderingDevice);
-	_container = new Container(_deviceController, _renderingDevice, _textureLoader, widthVal, heightVal);
+	_sceneManager = new NLRESceneManager(_deviceController, _renderingDevice, _textureLoader, widthVal, heightVal);
 	_assetImporter = new NLREAssetImporter(_renderingDevice, _textureLoader);
 }
 
 NLRE::~NLRE(){
 	delete _assetImporter;
-	delete _container;
+	delete _sceneManager;
 	delete _textureLoader;
 	delete _deviceController;
 }
 
 void NLRE::render()
 {
-	_container->render();
+	_sceneManager->render();
 }
 
 void NLRE::importAsset(std::wstring path)
@@ -57,6 +57,6 @@ void NLRE::importAsset(std::wstring path)
 	{
 		NLRE_Log::console("Successfully imported asset at: %s", strPath.c_str());
 		NLRE_Log::console("Number of items in the asset vector: %i", assets.size());
-		_container->addAssets(assets);
+		_sceneManager->addAssets(assets);
 	}
 }

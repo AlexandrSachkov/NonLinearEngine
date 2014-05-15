@@ -85,6 +85,8 @@ private:
 
 	std::wstring generateTextureResourcePath(aiString textureResourcePath, std::string assetPath);
 
+	void printFloat4x4(NLE_FLOAT4X4& matrix);
+
 	NLRERenderingDevice* _renderingDevice;
 	NLRETextureLoader* _textureLoader;
 	std::wstring _textureResourcePath;

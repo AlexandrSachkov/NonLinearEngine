@@ -52,6 +52,12 @@
     <Filter Include="Source Files\ResourceLoaderSrc">
       <UniqueIdentifier>{afd4480c-f316-47b4-a50a-744be13159c7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\SceneManager">
+      <UniqueIdentifier>{1eba17ed-d164-4495-9ed6-976c0932ee64}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\SceneManagerSrc">
+      <UniqueIdentifier>{8bfde228-a0ca-489b-96a8-3a876bff9555}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\include\math\DXMath\DXMathMatrixFunctions.h">
@@ -117,9 +123,6 @@
     <ClInclude Include="..\include\RenderingDevice\NLRERenderingTechnique.h">
       <Filter>Header Files\RenderingDevice</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\Container.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\include\RenderingDevice\NLREStreamSet.h">
       <Filter>Header Files\RenderingDevice</Filter>
     </ClInclude>
@@ -146,6 +149,9 @@
     </ClInclude>
     <ClInclude Include="..\include\ResourceLoader\NLREAssetImporter.h">
       <Filter>Header Files\ResourceLoader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\SceneManager\NLRESceneManager.h">
+      <Filter>Header Files\SceneManager</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -181,9 +187,6 @@
     <ClCompile Include="..\src\RenderingDeviceSrc\DX11Device\NLREDX11RenderingDevice.cpp">
       <Filter>Source Files\RenderingDeviceSrc\DX11Device</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\Container.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\NLRE.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -204,6 +207,9 @@
     </ClCompile>
     <ClCompile Include="..\src\ResourceLoaderSrc\NLREDirectXTexTextureLoader.cpp">
       <Filter>Source Files\ResourceLoaderSrc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\SceneManagerSrc\NLRESceneManager.cpp">
+      <Filter>Source Files\SceneManagerSrc</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

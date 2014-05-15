@@ -29,7 +29,7 @@ THE SOFTWARE.
 #ifndef NLRE_
 #define NLRE_
 
-#include "Container.h"
+#include "SceneManager\NLRESceneManager.h"
 #include "ResourceLoader\NLRETextureLoader.h"
 #include "ResourceLoader\NLREAssetImporter.h"
 
@@ -44,7 +44,7 @@ public:
 private:
 	NLREDeviceController* _deviceController;
 	NLRERenderingDevice* _renderingDevice;
-	Container* _container;
+	NLRESceneManager* _sceneManager;
 	NLRETextureLoader* _textureLoader;
 	NLREAssetImporter* _assetImporter;
 };

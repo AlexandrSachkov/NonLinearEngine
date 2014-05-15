@@ -27,10 +27,10 @@ THE SOFTWARE.
 */
 
 #include "stdafx.h"
-#include "Container.h"
+#include "SceneManager\NLRESceneManager.h"
 
 
-Container::Container(NLREDeviceController* deviceController, NLRERenderingDevice* renderingDevice, NLRETextureLoader* textureLoader, int width, int height)
+NLRESceneManager::NLRESceneManager(NLREDeviceController* deviceController, NLRERenderingDevice* renderingDevice, NLRETextureLoader* textureLoader, int width, int height)
 {
 	if (!deviceController || !renderingDevice || !textureLoader)
 	{
@@ -43,18 +43,22 @@ Container::Container(NLREDeviceController* deviceController, NLRERenderingDevice
 	mCamView = new NLE_FLOAT4X4();
 	mCamProjection = new NLE_FLOAT4X4();
 
-	NLE_VECTOR camPosition = NLEMath::NLEVectorSet(0.0f, -5.0f, -6.0f, 0.0f);
+	NLE_VECTOR camPosition = NLEMath::NLEVectorSet(0.0f, 0.0f, -20.0f, 0.0f);
 	NLE_VECTOR camTarget = NLEMath::NLEVectorSet(0.0f, 0.0f, 0.0f, 0.0f);
-	NLE_VECTOR camUp = NLEMath::NLEVectorSet(0.0f, 1.0f, 0.0f, 0.0f);
+	NLE_VECTOR camUp = NLEMath::NLEVectorSet(1.0f, 0.0f, 0.0f, 0.0f);
 
 	//Set the View matrix
 	NLE_MATRIX camView = NLEMath::NLEMatrixLookAtLH(camPosition, camTarget, camUp);
+	NLE_VECTOR rotAxis = NLEMath::NLEVectorSet(0.0f, 1.0f, 0.0f, 0.0f);
+	NLE_MATRIX rotation = NLEMath::NLEMatrixRotationAxis(rotAxis, 0.0f);
+	camView = camView * rotation;
 	NLEMath::NLEStoreFloat4x4(mCamView, camView);
 	
 	//Set the Projection matrix
 	NLE_MATRIX camProjection = NLEMath::NLEMatrixPerspectiveFovLH(0.4f*3.14f, (float)width / height, 1.0f, 1000.0f);
 	NLEMath::NLEStoreFloat4x4(mCamProjection, camProjection);
 
+	
 	//XMVECTOR rotAxis = XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f);
 	//XMMATRIX rotation = XMMatrixRotationAxis(rotAxis, rot);
 	//NLE_MATRIX translation = NLEMath::NLEMatrixTranslation(0.0f, 0.0f, 4.0f);
@@ -62,7 +66,7 @@ Container::Container(NLREDeviceController* deviceController, NLRERenderingDevice
 
 }
 
-Container::~Container()
+NLRESceneManager::~NLRESceneManager()
 {
 	delete mCamView;
 	delete mCamProjection;
@@ -73,7 +77,7 @@ Container::~Container()
 	}
 }
 
-void Container::addAssets(std::vector<NLRE_RenderableAsset*>& assets)
+void NLRESceneManager::addAssets(std::vector<NLRE_RenderableAsset*>& assets)
 {
 	for (std::vector<NLRE_RenderableAsset*>::iterator it = assets.begin(); it != assets.end(); ++it)
 	{
@@ -81,7 +85,7 @@ void Container::addAssets(std::vector<NLRE_RenderableAsset*>& assets)
 	}
 }
 
-void Container::render()
+void NLRESceneManager::render()
 {
 	NLE_MATRIX camView = NLEMath::NLELoadFloat4x4(mCamView);
 	NLE_MATRIX camProjection = NLEMath::NLELoadFloat4x4(mCamProjection);
@@ -90,6 +94,7 @@ void Container::render()
 	{
 		NLRE_RenderableAsset* asset = (NLRE_RenderableAsset*)(*it);
 		NLE_MATRIX objWorld = NLEMath::NLELoadFloat4x4(&(asset->transformStruct.transformation));
+
 		NLE_MATRIX WVP = objWorld * camView * camProjection;
 		NLRE_Transformation objTransform;
 		NLEMath::NLEStoreFloat4x4(&(objTransform.transformation), NLEMath::NLEMatrixTranspose(WVP));

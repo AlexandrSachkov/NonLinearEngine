@@ -130,15 +130,13 @@ void NLREAssimpAssetImporter::nextNode(
 	{
 		for (int i = 0; i < node->mNumMeshes; i++)
 		{
-			assembleAsset(scene, node->mMeshes[i], transform, meshArr, materialArr, assetArr);
+			assembleAsset(scene, node->mMeshes[i], accTransform, meshArr, materialArr, assetArr);
 		}
 	}
-	else
-	{
-		transform = node->mTransformation * accTransform;
-	}
+
 	for (int i = 0; i < node->mNumChildren; i++)
 	{
+		transform = node->mChildren[i]->mTransformation * accTransform;
 		nextNode(scene, node->mChildren[i], transform, meshArr, materialArr, assetArr);
 	}
 }
@@ -154,7 +152,7 @@ void NLREAssimpAssetImporter::assembleAsset(
 	NLRE_RenderableAsset* asset = new NLRE_RenderableAsset();
 	asset->mesh = meshArr[meshIndex];
 	asset->material = materialArr[scene->mMeshes[meshIndex]->mMaterialIndex];
-	asset->transformStruct.transformation = NLE_FLOAT4X4((const float*)(&transform));
+	asset->transformStruct.transformation = NLE_FLOAT4X4((const float*)(&transform.Transpose()));
 	_renderingDevice->createBuffer<NLRE_Transformation>(NLRE_BIND_CONSTANT_BUFFER, NLRE_USAGE_DYNAMIC, &asset->transformStruct, 1, asset->transformationBuffer);
 
 	assetArr.push_back(asset);
@@ -477,4 +475,12 @@ std::wstring NLREAssimpAssetImporter::generateTextureResourcePath(aiString textu
 		assetPath = assetPath.make_preferred();
 		return assetPath.generic_wstring();
 	}
+}
+
+void NLREAssimpAssetImporter::printFloat4x4(NLE_FLOAT4X4& matrix)
+{
+	NLRE_Log::console("%f %f %f %f\n",matrix._11, matrix._12, matrix._13, matrix._14);
+	NLRE_Log::console("%f %f %f %f\n", matrix._21, matrix._22, matrix._23, matrix._24);
+	NLRE_Log::console("%f %f %f %f\n", matrix._31, matrix._32, matrix._33, matrix._34);
+	NLRE_Log::console("%f %f %f %f\n", matrix._41, matrix._42, matrix._43, matrix._44);
 }

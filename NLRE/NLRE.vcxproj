@@ -295,7 +295,6 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="..\include\Container.h" />
     <ClInclude Include="..\include\math\DXMath\DXMathMatrixFunctions.h" />
     <ClInclude Include="..\include\math\DXMath\DXMathStructures.h" />
     <ClInclude Include="..\include\math\DXMath\DXMathVector4DFunctions.h" />
@@ -326,6 +325,7 @@
     <ClInclude Include="..\include\ResourceLoader\NLRETextureLoader.h" />
     <ClInclude Include="..\include\ResourceLoader\NLRETextureLoaderBase.h" />
     <ClInclude Include="..\include\ResourceLoader\WICTextureLoader.h" />
+    <ClInclude Include="..\include\SceneManager\NLRESceneManager.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\src\MathSrc\DXMath\DXMathMatrixFunctions.inl" />
@@ -335,7 +335,6 @@
     <None Include="..\src\RenderingDeviceSrc\DX11Device\NLREDX11RenderingDevice.inl" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\src\Container.cpp" />
     <ClCompile Include="..\src\main.cpp" />
     <ClCompile Include="..\src\NLRE.cpp" />
     <ClCompile Include="..\src\NLREMainSrc\NLRELog.cpp" />
@@ -348,6 +347,7 @@
     <ClCompile Include="..\src\ResourceLoaderSrc\NLREAssimpAssetImporter.cpp" />
     <ClCompile Include="..\src\ResourceLoaderSrc\NLREDirectXTexTextureLoader.cpp" />
     <ClCompile Include="..\src\ResourceLoaderSrc\WICTextureLoader.cpp" />
+    <ClCompile Include="..\src\SceneManagerSrc\NLRESceneManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="..\src\RenderingDeviceSrc\DX11Device\Shaders\DeferredGBuff_TextNormal_BlinnPhong_PS.hlsl">
