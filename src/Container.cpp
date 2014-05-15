@@ -66,6 +66,11 @@ Container::~Container()
 {
 	delete mCamView;
 	delete mCamProjection;
+
+	for (std::vector<NLRE_RenderableAsset*>::iterator it = _assets.begin(); it != _assets.end(); ++it)
+	{
+		delete (NLRE_RenderableAsset*)(*it);
+	}
 }
 
 void Container::addAssets(std::vector<NLRE_RenderableAsset*>& assets)
