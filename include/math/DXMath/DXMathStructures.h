@@ -58,7 +58,7 @@ typedef DirectX::GXMVECTOR		NLE_GVECTOR;
 typedef DirectX::HXMVECTOR		NLE_HVECTOR;
 typedef DirectX::CXMVECTOR		NLE_CVECTOR;
 
-#if _XM_VECTORCALL_
+#if defined(_XM_VECTORCALL_)
 #define _NLE_CALLCONV_ __vectorcall
 #else
 #define _NLE_CALLCONV_ __fastcall

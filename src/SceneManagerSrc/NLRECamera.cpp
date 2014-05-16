@@ -52,7 +52,29 @@ NLRECamera::NLRECamera(float x, float y, float z, int width, int height)
 	NLE_VECTOR up = NLEMath::NLEVectorSet(0.0f, 1.0f, 0.0f, 0.0f);
 
 	NLE_MATRIX rotation = NLEMath::NLEMatrixRotationRollPitchYaw(_pitch, _yaw, _roll);
-	//NLE_VECTOR target = NLEMath::NLEV
+	NLE_VECTOR target = NLEMath::NLEVector3TransformCoord(defaultForward, rotation);
+	target = NLEMath::NLEVector3Normalize(target);
+
+	NLE_MATRIX RotateYTempMatrix;
+	RotateYTempMatrix = NLEMath::NLEMatrixRotationY(_yaw);
+
+	right = XMVector3TransformCoord(defaultRight, RotateYTempMatrix);
+	up = XMVector3TransformCoord(up, RotateYTempMatrix);
+	forward = XMVector3TransformCoord(defaultForward, RotateYTempMatrix);
+	/*
+	NLE_VECTOR camPosition;
+	camPosition = (_distanceRight *right);
+	camPosition += _distanceForward*forward;
+	DirectX::XMVECTOR oneVect;
+	DirectX::XMVECTOR otherVect;
+	oneVect += (oneVect * otherVect);
+	_distanceRight = 0.0f;
+	_distanceForward = 0.0f;
+
+	NLE_VECTOR camTarget = camPosition + camTarget;
+
+	camView = XMMatrixLookAtLH(camPosition, camTarget, up);
+	*/
 }
 
 NLRECamera::NLRECamera(const NLRECamera& other)

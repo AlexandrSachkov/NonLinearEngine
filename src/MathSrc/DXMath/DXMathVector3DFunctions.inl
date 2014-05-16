@@ -28,12 +28,17 @@ THE SOFTWARE.
 
 #ifdef DX_MATH_VECTOR_3D_
 
-inline NLE_VECTOR _NLE_CALLCONV_ NLEVector3InverseRotate(NLE_FVECTOR v, NLE_FVECTOR rotationQuaternion)
+inline NLE_VECTOR _NLE_CALLCONV_ NLEMath::NLEVector3InverseRotate(NLE_FVECTOR v, NLE_FVECTOR rotationQuaternion)
 {
 	return DirectX::XMVector3InverseRotate(v, rotationQuaternion);
 }
 
-inline NLE_VECTOR _NLE_CALLCONV_ NLEVector3Project(
+inline NLE_VECTOR _NLE_CALLCONV_ NLEMath::NLEVector3Normalize(NLE_FVECTOR v)
+{
+	return DirectX::XMVector3Normalize(v);
+}
+
+inline NLE_VECTOR _NLE_CALLCONV_ NLEMath::NLEVector3Project(
 	NLE_FVECTOR v,
 	float viewportX,
 	float viewportY,
@@ -48,27 +53,27 @@ inline NLE_VECTOR _NLE_CALLCONV_ NLEVector3Project(
 	return DirectX::XMVector3Project(v, viewportX, viewportY, viewportWidth, viewportHeight, viewportMinZ, viewportMaxZ, projection, view, world);
 }
 
-inline NLE_VECTOR _NLE_CALLCONV_ NLEVector3Rotate(NLE_FVECTOR v, NLE_FVECTOR rotationQuaternion)
+inline NLE_VECTOR _NLE_CALLCONV_ NLEMath::NLEVector3Rotate(NLE_FVECTOR v, NLE_FVECTOR rotationQuaternion)
 {
 	return DirectX::XMVector3Rotate(v, rotationQuaternion);
 }
 
-inline NLE_VECTOR _NLE_CALLCONV_ NLEVector3Transform(NLE_FVECTOR v, NLE_FMATRIX m)
+inline NLE_VECTOR _NLE_CALLCONV_ NLEMath::NLEVector3Transform(NLE_FVECTOR v, NLE_FMATRIX m)
 {
 	return DirectX::XMVector3Transform(v, m);
 }
 
-inline NLE_VECTOR _NLE_CALLCONV_ NLEVector3TransformCoord(NLE_FVECTOR v, NLE_FMATRIX m)
+inline NLE_VECTOR _NLE_CALLCONV_ NLEMath::NLEVector3TransformCoord(NLE_FVECTOR v, NLE_FMATRIX m)
 {
 	return DirectX::XMVector3TransformCoord(v, m);
 }
 
-inline 	NLE_VECTOR _NLE_CALLCONV_ NLEVector3TransformNormal(NLE_FVECTOR v, NLE_FMATRIX m)
+inline 	NLE_VECTOR _NLE_CALLCONV_ NLEMath::NLEVector3TransformNormal(NLE_FVECTOR v, NLE_FMATRIX m)
 {
 	return DirectX::XMVector3TransformNormal(v, m);
 }
 
-inline NLE_VECTOR _NLE_CALLCONV_ NLEVector3Unproject(
+inline NLE_VECTOR _NLE_CALLCONV_ NLEMath::NLEVector3Unproject(
 	NLE_FVECTOR v,
 	float viewportX,
 	float viewportY,

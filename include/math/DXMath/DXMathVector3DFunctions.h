@@ -32,6 +32,7 @@ THE SOFTWARE.
 namespace NLEMath
 {
 	NLE_VECTOR _NLE_CALLCONV_ NLEVector3InverseRotate(NLE_FVECTOR v, NLE_FVECTOR rotationQuaternion);
+	NLE_VECTOR _NLE_CALLCONV_ NLEVector3Normalize(NLE_FVECTOR v);
 	NLE_VECTOR _NLE_CALLCONV_ NLEVector3Project(
 		NLE_FVECTOR v,
 		float viewportX,

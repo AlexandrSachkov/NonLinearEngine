@@ -177,17 +177,17 @@ inline NLE_MATRIX	_NLE_CALLCONV_ NLEMath::NLEMatrixRotationRollPitchYawFromVecto
 
 inline NLE_MATRIX	_NLE_CALLCONV_ NLEMath::NLEMatrixRotationX(float angle)
 {
-	return NLEMatrixRotationX(angle);
+	return DirectX::XMMatrixRotationX(angle);
 }
 
 inline NLE_MATRIX	_NLE_CALLCONV_ NLEMath::NLEMatrixRotationY(float angle)
 {
-	return NLEMatrixRotationY(angle);
+	return DirectX::XMMatrixRotationY(angle);
 }
 
 inline NLE_MATRIX	_NLE_CALLCONV_ NLEMath::NLEMatrixRotationZ(float angle)
 {
-	return NLEMatrixRotationZ(angle);
+	return DirectX::XMMatrixRotationZ(angle);
 }
 
 inline NLE_MATRIX	_NLE_CALLCONV_ NLEMath::NLEMatrixScaling(float scaleX, float scaleY, float scaleZ)
