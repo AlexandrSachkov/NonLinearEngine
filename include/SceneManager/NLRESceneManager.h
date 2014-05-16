@@ -32,6 +32,7 @@ THE SOFTWARE.
 #include "NLREMain\stdafx.h"
 #include "ResourceLoader\NLRETextureLoader.h"
 #include "RenderingDevice\NLREDeviceController.h"
+#include "NLRECamera.h"
 
 class NLRESceneManager
 {
@@ -52,6 +53,7 @@ private:
 	NLE_FLOAT4X4* mCamView;
 	NLE_FLOAT4X4* mCamProjection;
 
+	NLRECamera* _mainCamera;
 	std::vector<NLRE_RenderableAsset*> _assets;
 };
 

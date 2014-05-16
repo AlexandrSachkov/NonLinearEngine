@@ -34,6 +34,7 @@ THE SOFTWARE.
 #include "DXMathStructures.h"
 #include "DXMathMatrixFunctions.h"
 #include "DXMathVector4DFunctions.h"
+#include "DXMathVector3DFunctions.h"
 #include "DXMathVectorLoadFunctions.h"
 #include "DXMathVectorStoreFunctions.h"
 

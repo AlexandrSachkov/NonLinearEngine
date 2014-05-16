@@ -26,57 +26,39 @@ THE SOFTWARE.
 -----------------------------------------------------------------------------
 */
 
-#ifndef NLRE_CAMERA_
-#define NLRE_CAMERA_
+#ifndef DX_MATH_VECTOR_3D_
+#define DX_MATH_VECTOR_3D_
 
-class NLRECamera
+namespace NLEMath
 {
-public:
-	NLRECamera(float x, float y, float z, int width, int height);
-	NLRECamera(const NLRECamera& other);
-	~NLRECamera();
-
-	void reset();
-
-	void pitchUp();
-	void pitchDOwn();
-	void yawLeft();
-	void yawRight();
-	void rollClk();
-	void rollCClk();
-
-	void moveForward();
-	void moveBackward();
-	void moveLeft();
-	void moveRight();
-	void moveUp();
-	void moveDown();
-
-	void setSensitivity(float movementSensitivity, float rotationSensitivity);
-
-private:
-	NLE_FLOAT4X4 _viewProjection;
-	NLE_FLOAT4X4 _view;
-	NLE_FLOAT4X4 _projection;
-
-	NLE_FLOAT4 _defaultForward;
-	NLE_FLOAT4 _defaultRight;
-	NLE_FLOAT4 _defaultUp;
-
-	NLE_FLOAT4 _forward;
-	NLE_FLOAT4 _right;
-	NLE_FLOAT4 _up;
-
-	float _movementSensitivity;
-	float _rotationSensitivity;
-
-	float _distanceForward;
-	float _distanceRight;
-	float _distanceUp;
-
-	float _pitch;
-	float _yaw;
-	float _roll;
-};
+	NLE_VECTOR _NLE_CALLCONV_ NLEVector3InverseRotate(NLE_FVECTOR v, NLE_FVECTOR rotationQuaternion);
+	NLE_VECTOR _NLE_CALLCONV_ NLEVector3Project(
+		NLE_FVECTOR v,
+		float viewportX,
+		float viewportY,
+		float viewportWidth,
+		float viewportHeight,
+		float viewportMinZ,
+		float viewportMaxZ,
+		NLE_FMATRIX projection,
+		NLE_CMATRIX view,
+		NLE_CMATRIX world);
+	NLE_VECTOR _NLE_CALLCONV_ NLEVector3Rotate(NLE_FVECTOR v, NLE_FVECTOR rotationQuaternion);
+	NLE_VECTOR _NLE_CALLCONV_ NLEVector3Transform(NLE_FVECTOR v, NLE_FMATRIX m);
+	NLE_VECTOR _NLE_CALLCONV_ NLEVector3TransformCoord(NLE_FVECTOR v, NLE_FMATRIX m);
+	NLE_VECTOR _NLE_CALLCONV_ NLEVector3TransformNormal(NLE_FVECTOR v, NLE_FMATRIX m);
+	NLE_VECTOR _NLE_CALLCONV_ NLEVector3Unproject(
+		NLE_FVECTOR v,
+		float viewportX,
+		float viewportY,
+		float viewportWidth,
+		float viewportHeight,
+		float viewportMinZ,
+		float viewportMaxZ,
+		NLE_FMATRIX projection,
+		NLE_CMATRIX view,
+		NLE_CMATRIX world);
+}
+#include "MathSrc\DXMath\DXMathVector3DFunctions.inl"
 
 #endif

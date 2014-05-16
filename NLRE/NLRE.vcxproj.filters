@@ -156,6 +156,9 @@
     <ClInclude Include="..\include\SceneManager\NLRECamera.h">
       <Filter>Header Files\SceneManager</Filter>
     </ClInclude>
+    <ClInclude Include="..\include\math\DXMath\DXMathVector3DFunctions.h">
+      <Filter>Header Files\math\DXMath</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\src\MathSrc\DXMath\DXMathMatrixFunctions.inl">
@@ -172,6 +175,9 @@
     </None>
     <None Include="..\src\RenderingDeviceSrc\DX11Device\NLREDX11RenderingDevice.inl">
       <Filter>Source Files\RenderingDeviceSrc\DX11Device</Filter>
+    </None>
+    <None Include="..\src\MathSrc\DXMath\DXMathVector3DFunctions.inl">
+      <Filter>Source Files\MathSrc\DXMath</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

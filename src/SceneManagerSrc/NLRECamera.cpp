@@ -29,3 +29,37 @@ THE SOFTWARE.
 #include "stdafx.h"
 #include "SceneManager\NLRECamera.h"
 
+
+NLRECamera::NLRECamera(float x, float y, float z, int width, int height)
+{
+	_movementSensitivity = 10.0f;
+	_rotationSensitivity = 10.0f;
+
+	_distanceForward = 0.0f;
+	_distanceRight = 0.0f;
+	_distanceUp = 0.0f;
+
+	_pitch = 0.0f;
+	_yaw = 0.0f;
+	_roll = 0.0f;
+
+	NLE_VECTOR defaultForward = NLEMath::NLEVectorSet(0.0f, 0.0f, 1.0f, 0.0f);
+	NLE_VECTOR defaultRight = NLEMath::NLEVectorSet(1.0f, 0.0f, 0.0f, 0.0f);
+	NLE_VECTOR defaultUp = NLEMath::NLEVectorSet(0.0f, 1.0f, 0.0f, 0.0f);
+
+	NLE_VECTOR forward = NLEMath::NLEVectorSet(0.0f, 0.0f, 1.0f, 0.0f);
+	NLE_VECTOR right = NLEMath::NLEVectorSet(1.0f, 0.0f, 0.0f, 0.0f);
+	NLE_VECTOR up = NLEMath::NLEVectorSet(0.0f, 1.0f, 0.0f, 0.0f);
+
+	NLE_MATRIX rotation = NLEMath::NLEMatrixRotationRollPitchYaw(_pitch, _yaw, _roll);
+	//NLE_VECTOR target = NLEMath::NLEV
+}
+
+NLRECamera::NLRECamera(const NLRECamera& other)
+{
+}
+
+NLRECamera::~NLRECamera()
+{
+
+}

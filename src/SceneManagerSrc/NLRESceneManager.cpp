@@ -40,12 +40,14 @@ NLRESceneManager::NLRESceneManager(NLREDeviceController* deviceController, NLRER
 	_renderingDevice = renderingDevice;
 	_textureLoader = textureLoader;
 
+	_mainCamera = new NLRECamera(0.0f, 4.0f, -4.0f, width, height);
+
 	mCamView = new NLE_FLOAT4X4();
 	mCamProjection = new NLE_FLOAT4X4();
 
-	NLE_VECTOR camPosition = NLEMath::NLEVectorSet(0.0f, 0.0f, -20.0f, 0.0f);
+	NLE_VECTOR camPosition = NLEMath::NLEVectorSet(0.0f, 4.0f, -4.0f, 0.0f);
 	NLE_VECTOR camTarget = NLEMath::NLEVectorSet(0.0f, 0.0f, 0.0f, 0.0f);
-	NLE_VECTOR camUp = NLEMath::NLEVectorSet(1.0f, 0.0f, 0.0f, 0.0f);
+	NLE_VECTOR camUp = NLEMath::NLEVectorSet(0.0f, 1.0f, 0.0f, 0.0f);
 
 	//Set the View matrix
 	NLE_MATRIX camView = NLEMath::NLEMatrixLookAtLH(camPosition, camTarget, camUp);
@@ -55,7 +57,7 @@ NLRESceneManager::NLRESceneManager(NLREDeviceController* deviceController, NLRER
 	NLEMath::NLEStoreFloat4x4(mCamView, camView);
 	
 	//Set the Projection matrix
-	NLE_MATRIX camProjection = NLEMath::NLEMatrixPerspectiveFovLH(0.4f*3.14f, (float)width / height, 1.0f, 1000.0f);
+	NLE_MATRIX camProjection = NLEMath::NLEMatrixPerspectiveFovLH(0.5f*3.14f, (float)width / height, 1.0f, 1000.0f);
 	NLEMath::NLEStoreFloat4x4(mCamProjection, camProjection);
 
 	
