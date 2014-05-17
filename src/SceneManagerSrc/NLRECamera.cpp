@@ -32,9 +32,19 @@ THE SOFTWARE.
 
 NLRECamera::NLRECamera(float x, float y, float z, int width, int height)
 {
+	_fullRotation = 6.283f;
+
 	_initXPos = x;
 	_initYPos = y;
 	_initZPos = z;
+
+	_fov = _fullRotation / 4;
+	_nearZ = 1.0f;
+	_farZ = 1000.0f;
+	_width = width;
+	_height = height;
+
+	_hasMoved = true;
 
 	_position = NLREAA::alloc<NLE_VECTOR>(16);
 	_target = NLREAA::alloc<NLE_VECTOR>(16);
@@ -51,8 +61,9 @@ NLRECamera::NLRECamera(float x, float y, float z, int width, int height)
 
 	_view = NLREAA::alloc<NLE_MATRIX>(16);
 	_projection = NLREAA::alloc<NLE_MATRIX>(16);
+	_viewProjection = NLREAA::alloc<NLE_MATRIX>(16);
 
-	*_projection = NLEMath::NLEMatrixPerspectiveFovLH(1.571f, (float)width / height, 1.0f, 1000.0f);
+	*_projection = NLEMath::NLEMatrixPerspectiveFovLH(_fov, (float)_width / _height, _nearZ, _farZ);
 	
 	reset();
 	update();
@@ -96,6 +107,8 @@ void NLRECamera::reset()
 
 void NLRECamera::update()
 {
+	if (!_hasMoved) return;
+
 	NLE_MATRIX _rotation = NLEMath::NLEMatrixRotationRollPitchYaw(_pitch, _yaw, 0);
 	*_target = NLEMath::NLEVector3TransformCoord(*_defaultForward, _rotation);
 	*_target = NLEMath::NLEVector3Normalize(*_target);
@@ -132,4 +145,91 @@ void NLRECamera::update()
 
 	*_target = NLEMath::NLEVectorAdd(*_position, *_target);
 	*_view = NLEMath::NLEMatrixLookAtLH(*_position, *_target, *_up);
+	*_viewProjection = *_view * *_projection;
+
+	_hasMoved = false;
+}
+
+void NLRECamera::changeFoV(float fov)
+{
+	_fov = fov;
+	*_projection = NLEMath::NLEMatrixPerspectiveFovLH(_fov, (float)_width / _height, _nearZ, _farZ);
+}
+
+void NLRECamera::changeViewport(unsigned int width, unsigned int height)
+{
+	_width = width;
+	_height = height;
+	*_projection = NLEMath::NLEMatrixPerspectiveFovLH(_fov, (float)_width / _height, _nearZ, _farZ);
+}
+
+void NLRECamera::changeViewDistance(float nearZ, float farZ)
+{
+	_nearZ = nearZ;
+	_farZ = farZ;
+	*_projection = NLEMath::NLEMatrixPerspectiveFovLH(_fov, (float)_width / _height, _nearZ, _farZ);
+}
+
+NLE_MATRIX NLRECamera::getViewProjection()
+{
+	return *_viewProjection;
+}
+
+void NLRECamera::setSensitivity(float movementSensitivity, float rotationSensitivity)
+{
+	_movementSensitivity = movementSensitivity;
+	_rotationSensitivity = rotationSensitivity;
+}
+
+void NLRECamera::pitchUp()
+{
+	_pitch += _rotationSensitivity;
+	if (_pitch >= _fullRotation) _pitch -= _fullRotation;
+
+	_hasMoved = true;
+}
+
+void NLRECamera::pitchDOwn()
+{
+
+}
+
+void NLRECamera::yawLeft()
+{
+
+}
+
+void NLRECamera::yawRight()
+{
+
+}
+
+void NLRECamera::moveForward()
+{
+
+}
+
+void NLRECamera::moveBackward()
+{
+
+}
+
+void NLRECamera::moveLeft()
+{
+
+}
+
+void NLRECamera::moveRight()
+{
+
+}
+
+void NLRECamera::moveUp()
+{
+
+}
+
+void NLRECamera::moveDown()
+{
+
 }

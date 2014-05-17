@@ -38,6 +38,11 @@ public:
 
 	void reset();
 	void update();
+	void changeFoV(float fov);
+	void changeViewport(unsigned int width, unsigned int height);
+	void changeViewDistance(float nearZ, float farZ);
+	NLE_MATRIX getViewProjection();
+	void setSensitivity(float movementSensitivity, float rotationSensitivity);
 
 	void pitchUp();
 	void pitchDOwn();
@@ -51,13 +56,20 @@ public:
 	void moveUp();
 	void moveDown();
 
-	bool hasMoved();
-	void setSensitivity(float movementSensitivity, float rotationSensitivity);
-
 private:
+	float _fullRotation;
+
 	float _initXPos;
 	float _initYPos;
 	float _initZPos;
+
+	float _fov;
+	float _nearZ;
+	float _farZ;
+	unsigned int _width;
+	unsigned int _height;
+
+	bool _hasMoved;
 
 	NLE_MATRIX* _viewProjection;
 	NLE_MATRIX* _view;
