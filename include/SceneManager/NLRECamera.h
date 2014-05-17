@@ -37,6 +37,7 @@ public:
 	~NLRECamera();
 
 	void reset();
+	void update();
 
 	void pitchUp();
 	void pitchDOwn();
@@ -54,9 +55,9 @@ public:
 	void setSensitivity(float movementSensitivity, float rotationSensitivity);
 
 private:
-
-	void updatePosition();
-	void updateRotation();
+	float _initXPos;
+	float _initYPos;
+	float _initZPos;
 
 	NLE_MATRIX* _viewProjection;
 	NLE_MATRIX* _view;
