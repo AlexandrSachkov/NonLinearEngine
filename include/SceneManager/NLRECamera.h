@@ -54,18 +54,21 @@ public:
 	void setSensitivity(float movementSensitivity, float rotationSensitivity);
 
 private:
-	NLE_FLOAT4X4 _viewProjection;
-	NLE_FLOAT4X4 _view;
-	NLE_FLOAT4X4 _projection;
 
-	NLE_FLOAT4 _defaultForward;
-	NLE_FLOAT4 _defaultRight;
-	NLE_FLOAT4 _defaultUp;
+	NLE_MATRIX* _viewProjection;
+	NLE_MATRIX* _view;
+	NLE_MATRIX* _projection;
 
-	NLE_FLOAT4 _forward;
-	NLE_FLOAT4 _right;
-	NLE_FLOAT4 _up;
+	NLE_VECTOR* _defaultForward;
+	NLE_VECTOR* _defaultRight;
 
+	NLE_VECTOR* _position;
+	NLE_VECTOR* _target;
+	NLE_VECTOR* _up;
+
+	NLE_VECTOR* _forward;
+	NLE_VECTOR* _right;
+	
 	float _movementSensitivity;
 	float _rotationSensitivity;
 

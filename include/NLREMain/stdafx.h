@@ -33,6 +33,7 @@ THE SOFTWARE.
 #include <cstdarg>
 #include <unordered_map>
 #include <fstream>
+#include <malloc.h>
 
 #include "boost\filesystem.hpp"
 namespace fs = boost::filesystem;

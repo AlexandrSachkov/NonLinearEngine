@@ -28,17 +28,17 @@ THE SOFTWARE.
 
 #ifdef DX_MATH_VECTOR_ARITHMETIC_
 
-inline NLE_VECTOR _NLE_CALLCONV_ NLEVectorAbs(NLE_FVECTOR v)
+inline NLE_VECTOR _NLE_CALLCONV_ NLEMath::NLEVectorAbs(NLE_FVECTOR v)
 {
 	return DirectX::XMVectorAbs(v);
 }
 
-inline NLE_VECTOR _NLE_CALLCONV_ NLEVectorAdd(NLE_FVECTOR v1, NLE_FVECTOR v2)
+inline NLE_VECTOR _NLE_CALLCONV_ NLEMath::NLEVectorAdd(NLE_FVECTOR v1, NLE_FVECTOR v2)
 {
 	return DirectX::XMVectorAdd(v1, v2);
 }
 
-inline NLE_VECTOR _NLE_CALLCONV_ NLEVectorMultiply(NLE_FVECTOR v1, NLE_FVECTOR v2)
+inline NLE_VECTOR _NLE_CALLCONV_ NLEMath::NLEVectorMultiply(NLE_FVECTOR v1, NLE_FVECTOR v2)
 {
 	return DirectX::XMVectorMultiply(v1, v2);
 }

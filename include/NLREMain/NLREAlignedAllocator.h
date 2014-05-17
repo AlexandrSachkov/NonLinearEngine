@@ -26,18 +26,17 @@ THE SOFTWARE.
 -----------------------------------------------------------------------------
 */
 
-#ifndef DXMATH_WRAP_
-#define DXMATH_WRAP_
+#ifndef NLRE_ALIGNED_ALLOCATOR_
+#define NLRE_ALIGNED_ALLOCATOR_
 
-#include <DirectXMath.h>
-
-#include "DXMathStructures.h"
-#include "DXMathMatrixFunctions.h"
-#include "DXMathVector4DFunctions.h"
-#include "DXMathVector3DFunctions.h"
-#include "DXMathVectorArithmetic.h"
-#include "DXMathVectorAccessorFunctions.h"
-#include "DXMathVectorLoadFunctions.h"
-#include "DXMathVectorStoreFunctions.h"
+class NLREAA
+{
+public:
+	template <class T>
+	static T* alloc(size_t alignment)
+	{
+		return (T*)_aligned_malloc(sizeof(T), alignment);
+	}
+};
 
 #endif

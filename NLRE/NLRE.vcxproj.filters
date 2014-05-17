@@ -162,6 +162,12 @@
     <ClInclude Include="..\include\math\DXMath\DXMathVectorArithmetic.h">
       <Filter>Header Files\math\DXMath</Filter>
     </ClInclude>
+    <ClInclude Include="..\include\math\DXMath\DXMathVectorAccessorFunctions.h">
+      <Filter>Header Files\math\DXMath</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\NLREMain\NLREAlignedAllocator.h">
+      <Filter>Header Files\NLREMain</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\src\MathSrc\DXMath\DXMathMatrixFunctions.inl">
@@ -183,6 +189,9 @@
       <Filter>Source Files\MathSrc\DXMath</Filter>
     </None>
     <None Include="..\src\MathSrc\DXMath\DXMathVectorArithmetic.inl">
+      <Filter>Source Files\MathSrc\DXMath</Filter>
+    </None>
+    <None Include="..\src\MathSrc\DXMath\DxMathVectorAccessorFunctions.inl">
       <Filter>Source Files\MathSrc\DXMath</Filter>
     </None>
   </ItemGroup>

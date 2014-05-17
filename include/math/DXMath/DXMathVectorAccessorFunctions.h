@@ -26,18 +26,21 @@ THE SOFTWARE.
 -----------------------------------------------------------------------------
 */
 
-#ifndef DXMATH_WRAP_
-#define DXMATH_WRAP_
+#ifndef DX_MATH_VECTOR_ACCESSOR_FUNCTIONS_
+#define DX_MATH_VECTOR_ACCESSOR_FUNCTIONS_
 
-#include <DirectXMath.h>
-
-#include "DXMathStructures.h"
-#include "DXMathMatrixFunctions.h"
-#include "DXMathVector4DFunctions.h"
-#include "DXMathVector3DFunctions.h"
-#include "DXMathVectorArithmetic.h"
-#include "DXMathVectorAccessorFunctions.h"
-#include "DXMathVectorLoadFunctions.h"
-#include "DXMathVectorStoreFunctions.h"
-
+namespace NLEMath
+{
+	float _NLE_CALLCONV_ NLEVectorGetByIndex(NLE_FVECTOR v, size_t i);
+	uint32_t _NLE_CALLCONV_ NLEVectorGetIntByIndex(NLE_FVECTOR v, size_t i);
+	uint32_t _NLE_CALLCONV_ NLEVectorGetIntW(NLE_FVECTOR v);
+	uint32_t _NLE_CALLCONV_ NLEVectorGetIntX(NLE_FVECTOR v);
+	uint32_t _NLE_CALLCONV_ NLEVectorGetIntY(NLE_FVECTOR v);
+	uint32_t _NLE_CALLCONV_ NLEVectorGetIntZ(NLE_FVECTOR v);
+	float _NLE_CALLCONV_ NLEVectorGetW(NLE_FVECTOR v);
+	float _NLE_CALLCONV_ NLEVectorGetX(NLE_FVECTOR v);
+	float _NLE_CALLCONV_ NLEVectorGetY(NLE_FVECTOR v);
+	float _NLE_CALLCONV_ NLEVectorGetZ(NLE_FVECTOR v);
+}
+#include "MathSrc\DXMath\DXMathVectorAccessorFunctions.inl"
 #endif

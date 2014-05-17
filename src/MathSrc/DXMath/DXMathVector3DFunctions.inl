@@ -28,6 +28,11 @@ THE SOFTWARE.
 
 #ifdef DX_MATH_VECTOR_3D_
 
+inline NLE_VECTOR _NLE_CALLCONV_ NLEMath::NLEVector3Cross(NLE_FVECTOR v1, NLE_FVECTOR v2)
+{
+	return DirectX::XMVector3Cross(v1, v2);
+}
+
 inline NLE_VECTOR _NLE_CALLCONV_ NLEMath::NLEVector3InverseRotate(NLE_FVECTOR v, NLE_FVECTOR rotationQuaternion)
 {
 	return DirectX::XMVector3InverseRotate(v, rotationQuaternion);
