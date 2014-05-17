@@ -65,6 +65,7 @@ NLRECamera::NLRECamera(float x, float y, float z, int width, int height)
 
 	_view = NLREAA::alloc<NLE_MATRIX>(16);
 	_projection = NLREAA::alloc<NLE_MATRIX>(16);
+	*_projection = NLEMath::NLEMatrixPerspectiveFovLH(1.571f, (float)width / height, 1.0f, 1000.0f);
 	//=========================
 	NLE_MATRIX _rotation = NLEMath::NLEMatrixRotationRollPitchYaw(_pitch, _yaw, 0);
 	*_target = NLEMath::NLEVector3TransformCoord(*_defaultForward, _rotation);
@@ -102,7 +103,6 @@ NLRECamera::NLRECamera(float x, float y, float z, int width, int height)
 
 	*_target = NLEMath::NLEVectorAdd(*_position, *_target);
 	*_view = NLEMath::NLEMatrixLookAtLH(*_position, *_target, *_up);
-	*_projection = NLEMath::NLEMatrixPerspectiveFovLH(1.571f, (float)width / height, 1.0f, 1000.0f);
 }
 
 NLRECamera::NLRECamera(const NLRECamera& other)
@@ -111,5 +111,17 @@ NLRECamera::NLRECamera(const NLRECamera& other)
 
 NLRECamera::~NLRECamera()
 {
+	NLREAA::free(_viewProjection);
+	NLREAA::free(_view);
+	NLREAA::free(_projection);
 
+	NLREAA::free(_defaultForward);
+	NLREAA::free(_defaultRight);
+
+	NLREAA::free(_position);
+	NLREAA::free(_target);
+	NLREAA::free(_up);
+
+	NLREAA::free(_forward);
+	NLREAA::free(_right);
 }

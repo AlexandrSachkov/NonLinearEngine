@@ -55,6 +55,9 @@ public:
 
 private:
 
+	void updatePosition();
+	void updateRotation();
+
 	NLE_MATRIX* _viewProjection;
 	NLE_MATRIX* _view;
 	NLE_MATRIX* _projection;
