@@ -299,6 +299,7 @@
     <ClInclude Include="..\include\math\DXMath\DXMathStructures.h" />
     <ClInclude Include="..\include\math\DXMath\DXMathVector3DFunctions.h" />
     <ClInclude Include="..\include\math\DXMath\DXMathVector4DFunctions.h" />
+    <ClInclude Include="..\include\math\DXMath\DXMathVectorArithmetic.h" />
     <ClInclude Include="..\include\math\DXMath\DXMathVectorLoadFunctions.h" />
     <ClInclude Include="..\include\math\DXMath\DXMathVectorStoreFunctions.h" />
     <ClInclude Include="..\include\math\DXMath\DXMathWrap.h" />
@@ -331,6 +332,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="..\src\MathSrc\DXMath\DXMathMatrixFunctions.inl" />
+    <None Include="..\src\MathSrc\DXMath\DXMathVectorArithmetic.inl" />
     <None Include="..\src\MathSrc\DXMath\DXMathVector3DFunctions.inl" />
     <None Include="..\src\MathSrc\DXMath\DXMathVector4DFunctions.inl" />
     <None Include="..\src\MathSrc\DXMath\DXMathVectorLoadFunctions.inl" />

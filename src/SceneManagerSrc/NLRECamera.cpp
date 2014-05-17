@@ -41,7 +41,6 @@ NLRECamera::NLRECamera(float x, float y, float z, int width, int height)
 
 	_pitch = 0.0f;
 	_yaw = 0.0f;
-	_roll = 0.0f;
 
 	NLE_VECTOR defaultForward = NLEMath::NLEVectorSet(0.0f, 0.0f, 1.0f, 0.0f);
 	NLE_VECTOR defaultRight = NLEMath::NLEVectorSet(1.0f, 0.0f, 0.0f, 0.0f);
@@ -51,7 +50,7 @@ NLRECamera::NLRECamera(float x, float y, float z, int width, int height)
 	NLE_VECTOR right = NLEMath::NLEVectorSet(1.0f, 0.0f, 0.0f, 0.0f);
 	NLE_VECTOR up = NLEMath::NLEVectorSet(0.0f, 1.0f, 0.0f, 0.0f);
 
-	NLE_MATRIX rotation = NLEMath::NLEMatrixRotationRollPitchYaw(_pitch, _yaw, _roll);
+	NLE_MATRIX rotation = NLEMath::NLEMatrixRotationRollPitchYaw(_pitch, _yaw, 0);
 	NLE_VECTOR target = NLEMath::NLEVector3TransformCoord(defaultForward, rotation);
 	target = NLEMath::NLEVector3Normalize(target);
 

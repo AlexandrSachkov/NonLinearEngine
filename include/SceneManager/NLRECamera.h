@@ -42,8 +42,6 @@ public:
 	void pitchDOwn();
 	void yawLeft();
 	void yawRight();
-	void rollClk();
-	void rollCClk();
 
 	void moveForward();
 	void moveBackward();
@@ -52,6 +50,7 @@ public:
 	void moveUp();
 	void moveDown();
 
+	bool hasMoved();
 	void setSensitivity(float movementSensitivity, float rotationSensitivity);
 
 private:
@@ -76,7 +75,6 @@ private:
 
 	float _pitch;
 	float _yaw;
-	float _roll;
 };
 
 #endif

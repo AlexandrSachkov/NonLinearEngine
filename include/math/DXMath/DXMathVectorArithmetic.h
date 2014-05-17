@@ -26,17 +26,14 @@ THE SOFTWARE.
 -----------------------------------------------------------------------------
 */
 
-#ifndef DXMATH_WRAP_
-#define DXMATH_WRAP_
+#ifndef DX_MATH_VECTOR_ARITHMETIC_
+#define DX_MATH_VECTOR_ARITHMETIC_
 
-#include <DirectXMath.h>
-
-#include "DXMathStructures.h"
-#include "DXMathMatrixFunctions.h"
-#include "DXMathVector4DFunctions.h"
-#include "DXMathVector3DFunctions.h"
-#include "DXMathVectorArithmetic.h"
-#include "DXMathVectorLoadFunctions.h"
-#include "DXMathVectorStoreFunctions.h"
-
+namespace NLEMath
+{
+	NLE_VECTOR _NLE_CALLCONV_ NLEVectorAbs(NLE_FVECTOR v);
+	NLE_VECTOR _NLE_CALLCONV_ NLEVectorAdd(NLE_FVECTOR v1, NLE_FVECTOR v2);
+	NLE_VECTOR _NLE_CALLCONV_ NLEVectorMultiply(NLE_FVECTOR v1, NLE_FVECTOR v2);
+}
+#include "MathSrc\DXMath\DXMathVectorArithmetic.inl"
 #endif
