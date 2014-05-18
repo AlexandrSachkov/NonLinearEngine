@@ -36,16 +36,16 @@ public:
 	NLRECamera(const NLRECamera& other);
 	~NLRECamera();
 
-	void reset();
-	void update();
 	void changeFoV(float fov);
 	void changeViewport(unsigned int width, unsigned int height);
 	void changeViewDistance(float nearZ, float farZ);
 	NLE_MATRIX getViewProjection();
+	void reset();
 	void setSensitivity(float movementSensitivity, float rotationSensitivity);
+	void update();
 
 	void pitchUp();
-	void pitchDOwn();
+	void pitchDown();
 	void yawLeft();
 	void yawRight();
 

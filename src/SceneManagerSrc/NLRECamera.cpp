@@ -185,51 +185,62 @@ void NLRECamera::pitchUp()
 {
 	_pitch += _rotationSensitivity;
 	if (_pitch >= _fullRotation) _pitch -= _fullRotation;
-
 	_hasMoved = true;
 }
 
-void NLRECamera::pitchDOwn()
+void NLRECamera::pitchDown()
 {
-
+	_pitch -= _rotationSensitivity;
+	if (_pitch <= -_fullRotation) _pitch += _fullRotation;
+	_hasMoved = true;
 }
 
 void NLRECamera::yawLeft()
 {
-
+	_yaw -= _rotationSensitivity;
+	if (_yaw <= -_fullRotation) _yaw += _fullRotation;
+	_hasMoved = true;
 }
 
 void NLRECamera::yawRight()
 {
-
+	_yaw += _rotationSensitivity;
+	if (_yaw >= _fullRotation) _yaw -= _fullRotation;
+	_hasMoved = true;
 }
 
 void NLRECamera::moveForward()
 {
-
+	_distanceForward += _movementSensitivity;
+	_hasMoved = true;
 }
 
 void NLRECamera::moveBackward()
 {
-
+	_distanceForward -= _movementSensitivity;
+	_hasMoved = true;
 }
 
 void NLRECamera::moveLeft()
 {
-
+	_distanceRight -= _movementSensitivity;
+	_hasMoved = true;
 }
 
 void NLRECamera::moveRight()
 {
-
+	_distanceRight += _movementSensitivity;
+	_hasMoved = true;
 }
 
 void NLRECamera::moveUp()
 {
-
+	_distanceUp += _movementSensitivity;
+	_hasMoved = true;
 }
 
 void NLRECamera::moveDown()
 {
-
+	_distanceUp -= _movementSensitivity;
+	_hasMoved = true;
 }
