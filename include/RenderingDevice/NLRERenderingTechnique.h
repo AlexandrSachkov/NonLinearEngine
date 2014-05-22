@@ -34,7 +34,7 @@ class NLRERenderingTechnique
 {
 public:
 	virtual ~NLRERenderingTechnique(){};
-	virtual void render(std::vector<NLRE_RenderableAsset*>& assets) = 0;
+	virtual void render(std::vector<std::shared_ptr<NLRE_RenderableAsset>>& assets) = 0;
 };
 
 #endif

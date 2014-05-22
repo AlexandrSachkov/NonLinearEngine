@@ -29,7 +29,9 @@ THE SOFTWARE.
 #include "stdafx.h"
 #include "ResourceLoader\NLREAssimpAssetImporter.h"
 
-NLREAssimpAssetImporter::NLREAssimpAssetImporter(NLRERenderingDevice* renderingDevice, NLRETextureLoader* textureLoader)
+NLREAssimpAssetImporter::NLREAssimpAssetImporter(
+	std::shared_ptr<NLRERenderingDevice> renderingDevice,
+	std::shared_ptr<NLRETextureLoader> textureLoader)
 {
 	_renderingDevice = renderingDevice;
 	_textureLoader = textureLoader;
@@ -73,7 +75,7 @@ bool NLREAssimpAssetImporter::initialize()
 	return true;
 }
 
-bool NLREAssimpAssetImporter::importAssets(std::wstring path, std::vector<NLRE_RenderableAsset*>& assets)
+bool NLREAssimpAssetImporter::importAssets(std::wstring path, std::vector<std::shared_ptr<NLRE_RenderableAsset>>& assets)
 {
 	Assimp::Importer importer;
 	std::string assetPath(path.begin(), path.end());
@@ -101,11 +103,11 @@ bool NLREAssimpAssetImporter::importAssets(std::wstring path, std::vector<NLRE_R
 	return true;
 }
 
-std::vector<NLRE_RenderableAsset*> NLREAssimpAssetImporter::loadAsStatic(std::string path, const aiScene* scene)
+std::vector<std::shared_ptr<NLRE_RenderableAsset>> NLREAssimpAssetImporter::loadAsStatic(std::string path, const aiScene* scene)
 {
-	std::vector<NLRE_RenderableAsset*> assetArr;
-	NLRE_Mesh** meshArr = loadMeshes(scene);
-	NLRE_Material** materialArr = loadMaterials(path, scene);
+	std::vector<std::shared_ptr<NLRE_RenderableAsset>> assetArr;
+	std::shared_ptr<NLRE_Mesh>* meshArr = loadMeshes(scene);
+	std::shared_ptr<NLRE_Material>* materialArr = loadMaterials(path, scene);
 
 	nextNode(scene, scene->mRootNode, scene->mRootNode->mTransformation, meshArr, materialArr, assetArr);
 
@@ -119,9 +121,9 @@ void NLREAssimpAssetImporter::nextNode(
 	const aiScene* scene,
 	aiNode* node,
 	aiMatrix4x4& accTransform,
-	NLRE_Mesh** meshArr,
-	NLRE_Material** materialArr,
-	std::vector<NLRE_RenderableAsset*>& assetArr)
+	std::shared_ptr<NLRE_Mesh>* meshArr,
+	std::shared_ptr<NLRE_Material>* materialArr,
+	std::vector<std::shared_ptr<NLRE_RenderableAsset>>& assetArr)
 {
 	aiMatrix4x4 transform;
 
@@ -144,11 +146,11 @@ void NLREAssimpAssetImporter::assembleAsset(
 	const aiScene* scene,
 	unsigned int meshIndex,
 	aiMatrix4x4& transform,
-	NLRE_Mesh** meshArr,
-	NLRE_Material** materialArr,
-	std::vector<NLRE_RenderableAsset*>& assetArr)
+	std::shared_ptr<NLRE_Mesh>* meshArr,
+	std::shared_ptr<NLRE_Material>* materialArr,
+	std::vector<std::shared_ptr<NLRE_RenderableAsset>>& assetArr)
 {
-	NLRE_RenderableAsset* asset = new NLRE_RenderableAsset();
+	std::shared_ptr<NLRE_RenderableAsset> asset (new NLRE_RenderableAsset());
 	asset->mesh = meshArr[meshIndex];
 	asset->material = materialArr[scene->mMeshes[meshIndex]->mMaterialIndex];
 	asset->transformStruct.transformation = NLE_FLOAT4X4((const float*)(&transform.Transpose()));
@@ -157,14 +159,14 @@ void NLREAssimpAssetImporter::assembleAsset(
 	assetArr.push_back(asset);
 }
 
-NLRE_Mesh** NLREAssimpAssetImporter::loadMeshes(const aiScene* scene)
+std::shared_ptr<NLRE_Mesh>* NLREAssimpAssetImporter::loadMeshes(const aiScene* scene)
 {
 	if (!scene->HasMeshes()) return NULL;
 
-	NLRE_Mesh** meshArr = new NLRE_Mesh*[scene->mNumMeshes];
+	std::shared_ptr<NLRE_Mesh>* meshArr = new std::shared_ptr<NLRE_Mesh>[scene->mNumMeshes];
 	for (int i = 0; i < scene->mNumMeshes; i++)
 	{
-		meshArr[i] = new NLRE_Mesh();
+		meshArr[i].reset(new NLRE_Mesh());
 		NLRE_GeomStr* geomStreamArr = NULL;
 		unsigned int geomStreamLength = 0;
 		loadGeometryStream(scene->mMeshes[i], geomStreamArr, geomStreamLength);
@@ -221,14 +223,14 @@ void NLREAssimpAssetImporter::loadIndices(aiMesh* mesh, NLRE_Index*& indexArr, u
 	}
 }
 
-NLRE_Material** NLREAssimpAssetImporter::loadMaterials(std::string path, const aiScene* scene)
+std::shared_ptr<NLRE_Material>* NLREAssimpAssetImporter::loadMaterials(std::string path, const aiScene* scene)
 {
 	if (!scene->HasMaterials()) return NULL;
 
-	NLRE_Material** materialArr = new NLRE_Material*[scene->mNumMaterials];
+	std::shared_ptr<NLRE_Material>* materialArr = new std::shared_ptr<NLRE_Material>[scene->mNumMaterials];
 	for (int i = 0; i < scene->mNumMaterials; i++)
 	{
-		materialArr[i] = new NLRE_Material();
+		materialArr[i].reset(new NLRE_Material());
 		NLRE_MaterialBufferStruct materialBuffStruct;
 		loadMaterialBuffer(scene->mMaterials[i], materialBuffStruct);
 		_renderingDevice->createBuffer<NLRE_MaterialBufferStruct>(NLRE_BIND_CONSTANT_BUFFER, NLRE_USAGE_IMMUTABLE, &materialBuffStruct, 1, materialArr[i]->materialBuffer);
@@ -239,7 +241,7 @@ NLRE_Material** NLREAssimpAssetImporter::loadMaterials(std::string path, const a
 	return materialArr;
 }
 
-void NLREAssimpAssetImporter::loadMaterialParams(aiMaterial* material, NLRE_Material*& nlreMaterial)
+void NLREAssimpAssetImporter::loadMaterialParams(aiMaterial* material, std::shared_ptr<NLRE_Material>& nlreMaterial)
 {
 	material->Get(AI_MATKEY_TWOSIDED, nlreMaterial->twoSided);
 
@@ -292,7 +294,7 @@ void NLREAssimpAssetImporter::loadMaterialBuffer(aiMaterial* material, NLRE_Mate
 	if (material->Get(AI_MATKEY_REFRACTI, temp) == AI_SUCCESS)			materialStruct.refracti = temp;
 }
 
-void NLREAssimpAssetImporter::loadMaterialTextures(std::string assetPath, aiMaterial* material, NLRE_Material*& nlreMaterial)
+void NLREAssimpAssetImporter::loadMaterialTextures(std::string assetPath, aiMaterial* material, std::shared_ptr<NLRE_Material>& nlreMaterial)
 {
 	aiString path;
 

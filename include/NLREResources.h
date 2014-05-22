@@ -285,15 +285,11 @@ struct NLRE_Transformation
 struct NLRE_RenderableAsset
 {
 	NLRE_RenderableAsset() : mesh(NULL), material(NULL){};
-	~NLRE_RenderableAsset()
-	{
-		delete mesh;
-		delete material;
-	}
+
 	NLRE_Transformation transformStruct;
 	NLRE_Buffer transformationBuffer;
-	NLRE_Mesh* mesh;
-	NLRE_Material* material;
+	std::shared_ptr<NLRE_Mesh> mesh;
+	std::shared_ptr<NLRE_Material> material;
 };
 
 

@@ -37,16 +37,16 @@ public:
 	NLREDeviceController(HWND hwndVal, int widthVal, int heightVal, NLRE_RENDERING_TECHNIQUE_ID techniqueId);
 	NLREDeviceController(const NLREDeviceController&);
 	~NLREDeviceController();
-	NLRERenderingDevice* getRenderingDevice();
+	std::shared_ptr<NLRERenderingDevice> getRenderingDevice();
 	bool setRenderingTechnique(NLRE_RENDERING_TECHNIQUE_ID techniqueId);
 	NLRE_RENDERING_TECHNIQUE_ID getCurrentRenderingTechniqueId();
-	void render(std::vector<NLRE_RenderableAsset*>& assets);
+	void render(std::vector<std::shared_ptr<NLRE_RenderableAsset>>& assets);
 
-NLRERenderingTechnique* _renderingTechnique;
+	std::shared_ptr<NLRERenderingTechnique> _renderingTechnique;
 private:
 	bool initialize();
 	NLRE_RENDERING_TECHNIQUE_ID _renderingTechniqueId;
-	NLRERenderingDevice _renderingDevice;
+	std::shared_ptr<NLRERenderingDevice> _renderingDevice;
 	
 };
 #endif

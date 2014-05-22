@@ -37,24 +37,29 @@ THE SOFTWARE.
 class NLRESceneManager
 {
 public:
-	NLRESceneManager(NLREDeviceController* deviceController, NLRERenderingDevice* renderingDevice, NLRETextureLoader* textureLoader, int width, int height);
+	NLRESceneManager(
+		std::shared_ptr<NLREDeviceController> deviceController, 
+		std::shared_ptr<NLRERenderingDevice> renderingDevice, 
+		std::shared_ptr<NLRETextureLoader> textureLoader,
+		int width, 
+		int height);
 	~NLRESceneManager();
 
 	void render();
 	void render2();
-	void addAssets(std::vector<NLRE_RenderableAsset*>& assets);
+	void addAssets(std::vector<std::shared_ptr<NLRE_RenderableAsset>>& assets);
 private:
 	bool initialize();
 
-	NLREDeviceController* _deviceController;
-	NLRERenderingDevice* _renderingDevice;
-	NLRETextureLoader* _textureLoader;
+	std::shared_ptr<NLREDeviceController> _deviceController;
+	std::shared_ptr<NLRERenderingDevice> _renderingDevice;
+	std::shared_ptr<NLRETextureLoader> _textureLoader;
 
-	NLE_FLOAT4X4* mCamView;
-	NLE_FLOAT4X4* mCamProjection;
+	//NLE_FLOAT4X4* mCamView;
+	//NLE_FLOAT4X4* mCamProjection;
 
 	NLRECamera* _mainCamera;
-	std::vector<NLRE_RenderableAsset*> _assets;
+	std::vector<std::shared_ptr<NLRE_RenderableAsset>> _assets;
 };
 
 #endif

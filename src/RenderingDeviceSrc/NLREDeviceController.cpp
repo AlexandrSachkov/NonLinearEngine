@@ -30,10 +30,9 @@ THE SOFTWARE.
 #include "RenderingDevice\NLREDeviceController.h"
 
 NLREDeviceController::NLREDeviceController(HWND hwndVal, int widthVal, int heightVal, NLRE_RENDERING_TECHNIQUE_ID techniqueId)
-: _renderingDevice(hwndVal, widthVal, heightVal)
 {
 	_renderingTechniqueId = techniqueId;
-	
+	_renderingDevice.reset(new NLRERenderingDevice(hwndVal, widthVal, heightVal));
 	if (!initialize())
 	{
 		NLRE_Log::err(NLRE_Log::CRITICAL, "Device controller failed to initialize");
@@ -43,7 +42,6 @@ NLREDeviceController::NLREDeviceController(HWND hwndVal, int widthVal, int heigh
 
 NLREDeviceController::~NLREDeviceController()
 {
-	delete _renderingTechnique;
 }
 
 bool NLREDeviceController::initialize()
@@ -52,9 +50,9 @@ bool NLREDeviceController::initialize()
 	return true;
 }
 
-NLRERenderingDevice* NLREDeviceController::getRenderingDevice()
+std::shared_ptr<NLRERenderingDevice> NLREDeviceController::getRenderingDevice()
 {
-	return &_renderingDevice;
+	return _renderingDevice;
 }
 
 bool NLREDeviceController::setRenderingTechnique(NLRE_RENDERING_TECHNIQUE_ID techniqueId)
@@ -64,7 +62,7 @@ bool NLREDeviceController::setRenderingTechnique(NLRE_RENDERING_TECHNIQUE_ID tec
 		switch (techniqueId)
 		{
 		case NLRE_FORWARD_RT:
-			_renderingTechnique = new NLREForwardRT(&_renderingDevice);
+			_renderingTechnique.reset(new NLREForwardRT(getRenderingDevice()));
 			break;
 		default:
 			throw std::exception("Unsupported Rendering Technique.");
@@ -82,7 +80,7 @@ NLRE_RENDERING_TECHNIQUE_ID NLREDeviceController::getCurrentRenderingTechniqueId
 	return _renderingTechniqueId;
 }
 
-void NLREDeviceController::render(std::vector<NLRE_RenderableAsset*>& assets)
+void NLREDeviceController::render(std::vector<std::shared_ptr<NLRE_RenderableAsset>>& assets)
 {
 	_renderingTechnique->render(assets);
 }

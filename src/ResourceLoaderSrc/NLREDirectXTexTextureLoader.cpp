@@ -29,7 +29,7 @@ THE SOFTWARE.
 #include "stdafx.h"
 #include "ResourceLoader\NLREDirectXTexTextureLoader.h"
 
-NLREDirectXTexTextureLoader::NLREDirectXTexTextureLoader(NLRERenderingDevice* renderingDevice)
+NLREDirectXTexTextureLoader::NLREDirectXTexTextureLoader(std::shared_ptr<NLRERenderingDevice> renderingDevice)
 {
 	_renderingDevice = renderingDevice;
 

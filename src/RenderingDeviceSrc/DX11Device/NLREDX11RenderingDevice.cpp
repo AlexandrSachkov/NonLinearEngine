@@ -48,8 +48,15 @@ NLREDX11RenderingDevice::NLREDX11RenderingDevice(HWND hwndVal, int screenWidthVa
 	}
 }
 
-NLREDX11RenderingDevice::NLREDX11RenderingDevice(const NLREDX11RenderingDevice& val)
+NLREDX11RenderingDevice::NLREDX11RenderingDevice(const NLREDX11RenderingDevice& device)
 {
+	_hwnd = device._hwnd;
+	_screenWidth = device._screenWidth;
+	_screenHeight = device._screenHeight;
+
+	_d3d11Device = device._d3d11Device;
+	_d3d11DevCon = device._d3d11DevCon;
+	_swapChain = device._swapChain;
 }
 
 NLREDX11RenderingDevice::~NLREDX11RenderingDevice()

@@ -38,7 +38,7 @@ THE SOFTWARE.
 class NLREDirectXTexTextureLoader : public virtual NLRETextureLoaderBase
 {
 public:
-	NLREDirectXTexTextureLoader(NLRERenderingDevice* renderingDevice);
+	NLREDirectXTexTextureLoader(std::shared_ptr<NLRERenderingDevice> renderingDevice);
 	NLREDirectXTexTextureLoader(const NLREDirectXTexTextureLoader& other);
 	~NLREDirectXTexTextureLoader();
 
@@ -46,7 +46,7 @@ public:
 
 private:
 	bool initialize();
-	NLRERenderingDevice* _renderingDevice;
+	std::shared_ptr<NLRERenderingDevice> _renderingDevice;
 };
 
 #endif

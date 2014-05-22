@@ -36,15 +36,15 @@ class NLREForwardRT : public virtual NLRERenderingTechnique
 {
 public:
 
-	NLREForwardRT(NLRERenderingDevice* renderingDevice);
+	NLREForwardRT(std::shared_ptr<NLRERenderingDevice> renderingDevice);
 	NLREForwardRT(const NLREForwardRT& other);
 	~NLREForwardRT();
 
-	void render(std::vector<NLRE_RenderableAsset*>& assets);
+	void render(std::vector<std::shared_ptr<NLRE_RenderableAsset>>& assets);
 private:
 	bool initialize();
 	
-	NLRERenderingDevice* _renderingDevice;
+	std::shared_ptr<NLRERenderingDevice> _renderingDevice;
 
 	//Resources and States
 

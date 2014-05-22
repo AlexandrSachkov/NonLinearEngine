@@ -29,7 +29,7 @@ THE SOFTWARE.
 #include "stdafx.h"
 #include "RenderingDevice\NLREForwardRT.h"
 
-NLREForwardRT::NLREForwardRT(NLRERenderingDevice* renderingDevice)
+NLREForwardRT::NLREForwardRT(std::shared_ptr<NLRERenderingDevice> renderingDevice)
 {
 	_renderingDevice = renderingDevice;
 
@@ -93,7 +93,7 @@ NLREForwardRT::~NLREForwardRT()
 	if (_textureSamplerState) _textureSamplerState->Release();
 }
 
-void NLREForwardRT::render(std::vector<NLRE_RenderableAsset*>& assets)
+void NLREForwardRT::render(std::vector<std::shared_ptr<NLRE_RenderableAsset>>& assets)
 {
 	float bgColor[4] = { 0.0f, 0.0f, 0.0f, 0.0f };
 	_renderingDevice->clearRenderTargetView(_backBufferRenderTargetView, bgColor);
@@ -101,9 +101,9 @@ void NLREForwardRT::render(std::vector<NLRE_RenderableAsset*>& assets)
 
 	float blendFactor[] = { 0.75f, 0.75f, 0.75f, 1.0f };
 
-	for (std::vector<NLRE_RenderableAsset*>::iterator it = assets.begin(); it != assets.end(); ++it)
+	for (std::vector<std::shared_ptr<NLRE_RenderableAsset>>::iterator it = assets.begin(); it != assets.end(); ++it)
 	{
-		NLRE_RenderableAsset* asset = (NLRE_RenderableAsset*)(*it);
+		std::shared_ptr<NLRE_RenderableAsset> asset = *it;
 		if (asset->mesh->geomBuffer.apiBuffer)
 		{
 			_renderingDevice->setVertexBuffer(asset->mesh->geomBuffer, 0);

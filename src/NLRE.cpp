@@ -30,18 +30,15 @@ THE SOFTWARE.
 #include "NLRE.h"
 
 NLRE::NLRE(HWND hwndVal, int widthVal, int heightVal){
-	_deviceController = new NLREDeviceController(hwndVal, widthVal, heightVal, NLRE_RENDERING_TECHNIQUE_ID::NLRE_FORWARD_RT);
+	_deviceController.reset(new NLREDeviceController(hwndVal, widthVal, heightVal, NLRE_RENDERING_TECHNIQUE_ID::NLRE_FORWARD_RT));
 	_renderingDevice = _deviceController->getRenderingDevice();
-	_textureLoader = new NLRETextureLoader(_renderingDevice);
-	_sceneManager = new NLRESceneManager(_deviceController, _renderingDevice, _textureLoader, widthVal, heightVal);
-	_assetImporter = new NLREAssetImporter(_renderingDevice, _textureLoader);
+	_textureLoader.reset(new NLRETextureLoader(_renderingDevice));
+	_sceneManager.reset(new NLRESceneManager(_deviceController, _renderingDevice, _textureLoader, widthVal, heightVal));
+	_assetImporter.reset(new NLREAssetImporter(_renderingDevice, _textureLoader));
 }
 
 NLRE::~NLRE(){
-	delete _assetImporter;
-	delete _sceneManager;
-	delete _textureLoader;
-	delete _deviceController;
+
 }
 
 void NLRE::render()
@@ -51,7 +48,7 @@ void NLRE::render()
 
 void NLRE::importAsset(std::wstring path)
 {
-	std::vector<NLRE_RenderableAsset*> assets;
+	std::vector<std::shared_ptr<NLRE_RenderableAsset>> assets;
 	std::string strPath(path.begin(), path.end());
 	if (_assetImporter->importAssets(path, assets))
 	{

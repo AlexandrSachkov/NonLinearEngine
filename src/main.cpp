@@ -83,10 +83,10 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 		return 0;
 	}
 	nlre->_assetImporter->enableBuiltInTexturePath(false);
-	nlre->_assetImporter->setTextureResourcePath(L"C:\\Users\\Alexandr\\Documents\\3D Models\\Altair Model\\tex\\");
-	std::wstring path = L"C:\\Users\\Alexandr\\Documents\\3D Models\\Altair Model\\altair.dae";
+	nlre->_assetImporter->setTextureResourcePath(L"D:\\3DModels\\Altair Model\\tex\\");
+	std::wstring path = L"D:\\3DModels\\Altair Model\\altair.dae";
 	nlre->importAsset(path);
-	//path = L"C:\\Users\\Alex\\Desktop\\torus2.dae";
+	//std::wstring path = L"C:\\Users\\Alex\\Desktop\\torus2.dae";
 	//nlre->importAsset(path);
 	//path = L"C:\\Users\\Alex\\Desktop\\torus3.dae";
 	//nlre->importAsset(path);
