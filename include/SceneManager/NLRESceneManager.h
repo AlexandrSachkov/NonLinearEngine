@@ -46,8 +46,23 @@ public:
 	~NLRESceneManager();
 
 	void render();
-	void render2();
 	void addAssets(std::vector<std::shared_ptr<NLRE_RenderableAsset>>& assets);
+
+	void cameraReset();
+	void cameraUpdate();
+
+	void cameraPitchUp();
+	void cameraPitchDown();
+	void cameraYawLeft();
+	void cameraYawRight();
+
+	void cameraMoveForward();
+	void cameraMoveBackward();
+	void cameraMoveLeft();
+	void cameraMoveRight();
+	void cameraMoveUp();
+	void cameraMoveDown();
+
 private:
 	bool initialize();
 
@@ -55,7 +70,7 @@ private:
 	std::shared_ptr<NLRERenderingDevice> _renderingDevice;
 	std::shared_ptr<NLRETextureLoader> _textureLoader;
 
-	NLRECamera* _mainCamera;
+	std::shared_ptr<NLRECamera> _activeCamera;
 	std::vector<std::shared_ptr<NLRE_RenderableAsset>> _assets;
 };
 

@@ -45,12 +45,12 @@ NLRESceneManager::NLRESceneManager(
 	_renderingDevice = renderingDevice;
 	_textureLoader = textureLoader;
 
-	_mainCamera = new NLRECamera(0.0f, 40.0f, -100.0f, width, height);
+	_activeCamera.reset(new NLRECamera(0.0f, 40.0f, -100.0f, width, height));
 }
 
 NLRESceneManager::~NLRESceneManager()
 {
-
+	_assets.clear();
 }
 
 void NLRESceneManager::addAssets(std::vector<std::shared_ptr<NLRE_RenderableAsset>>& assets)
@@ -68,11 +68,71 @@ void NLRESceneManager::render()
 		std::shared_ptr<NLRE_RenderableAsset> asset = *it;
 		NLE_MATRIX objWorld = NLEMath::NLELoadFloat4x4(&(asset->transformStruct.transformation));
 
-		NLE_MATRIX WVP = objWorld * _mainCamera->getViewProjection();
+		NLE_MATRIX WVP = objWorld * _activeCamera->getViewProjection();
 		NLRE_Transformation objTransform;
 		NLEMath::NLEStoreFloat4x4(&(objTransform.transformation), NLEMath::NLEMatrixTranspose(WVP));
 
 		_renderingDevice->updateBuffer(asset->transformationBuffer, &objTransform, sizeof(objTransform));
 	}
 	_deviceController->render(_assets);
+}
+
+void NLRESceneManager::cameraReset()
+{
+	if (_activeCamera) _activeCamera->reset();
+}
+
+void NLRESceneManager::cameraUpdate()
+{
+	if (_activeCamera) _activeCamera->update();
+}
+
+void NLRESceneManager::cameraPitchUp()
+{
+	if (_activeCamera) _activeCamera->pitchUp();
+}
+
+void NLRESceneManager::cameraPitchDown()
+{
+	if (_activeCamera) _activeCamera->pitchDown();
+}
+
+void NLRESceneManager::cameraYawLeft()
+{
+	if (_activeCamera) _activeCamera->yawLeft();
+}
+
+void NLRESceneManager::cameraYawRight()
+{
+	if (_activeCamera) _activeCamera->yawRight();
+}
+
+void NLRESceneManager::cameraMoveForward()
+{
+	if (_activeCamera) _activeCamera->moveForward();
+}
+
+void NLRESceneManager::cameraMoveBackward()
+{
+	if (_activeCamera) _activeCamera->moveBackward();
+}
+
+void NLRESceneManager::cameraMoveLeft()
+{
+	if (_activeCamera) _activeCamera->moveLeft();
+}
+
+void NLRESceneManager::cameraMoveRight()
+{
+	if (_activeCamera) _activeCamera->moveRight();
+}
+
+void NLRESceneManager::cameraMoveUp()
+{
+	if (_activeCamera) _activeCamera->moveUp();
+}
+
+void NLRESceneManager::cameraMoveDown()
+{
+	if (_activeCamera) _activeCamera->moveDown();
 }

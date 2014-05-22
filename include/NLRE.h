@@ -42,8 +42,10 @@ public:
 	void render();
 	void importAsset(std::wstring path);
 
-	std::shared_ptr<NLREAssetImporter> _assetImporter;
+	std::shared_ptr<NLREAssetImporter> getAssetImporter();
+	std::shared_ptr<NLRESceneManager> getSceneManager();
 private:
+	std::shared_ptr<NLREAssetImporter> _assetImporter;
 	std::shared_ptr<NLREDeviceController> _deviceController;
 	std::shared_ptr<NLRERenderingDevice> _renderingDevice;
 	std::shared_ptr<NLRESceneManager> _sceneManager;

@@ -82,8 +82,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 		nlre = NULL;
 		return 0;
 	}
-	nlre->_assetImporter->enableBuiltInTexturePath(false);
-	nlre->_assetImporter->setTextureResourcePath(L"D:\\3DModels\\Altair Model\\tex\\");
+	nlre->getAssetImporter()->enableBuiltInTexturePath(false);
+	nlre->getAssetImporter()->setTextureResourcePath(L"D:\\3DModels\\Altair Model\\tex\\");
 	std::wstring path = L"D:\\3DModels\\Altair Model\\altair.dae";
 	nlre->importAsset(path);
 	//std::wstring path = L"C:\\Users\\Alex\\Desktop\\torus2.dae";
@@ -101,7 +101,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
 	ReleaseResources();
 
-	
+
 
 	//destroys console window
 	fclose(stdout);
@@ -200,16 +200,49 @@ int messageloop()
 			TranslateMessage(&msg);
 			DispatchMessage(&msg);
 		}
-		else{
 
-			nlre->render();
-			counter++;
-			if (counter == 20000)
-			{
-				printf("Rendering");
-				counter = 0;
-			}
+		if (GetAsyncKeyState('W'))
+		{
+			nlre->getSceneManager()->cameraMoveForward();
 		}
+		if (GetAsyncKeyState('S'))
+		{
+			nlre->getSceneManager()->cameraMoveBackward();
+		}
+		if (GetAsyncKeyState('D'))
+		{
+			nlre->getSceneManager()->cameraMoveRight();
+		}
+		if (GetAsyncKeyState('A'))
+		{
+			nlre->getSceneManager()->cameraMoveLeft();
+		}
+		if (GetAsyncKeyState('E'))
+		{
+			nlre->getSceneManager()->cameraMoveUp();
+		}
+		if (GetAsyncKeyState('Q'))
+		{
+			nlre->getSceneManager()->cameraMoveDown();
+		}
+		if (GetAsyncKeyState('R'))
+		{
+			nlre->getSceneManager()->cameraReset();
+		}
+
+		POINT mousePoint;
+		GetCursorPos(&mousePoint);
+		ScreenToClient(hwnd, &mousePoint);
+
+		nlre->getSceneManager()->cameraUpdate();
+		nlre->render();
+		counter++;
+		if (counter == 20000)
+		{
+			printf("Rendering");
+			counter = 0;
+		}
+
 	}
 	return msg.wParam;
 }
@@ -219,7 +252,8 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 	switch (msg)
 	{
 	case WM_KEYDOWN:
-		if (wParam == VK_ESCAPE){
+		if (wParam == VK_ESCAPE)
+		{
 			DestroyWindow(hwnd);
 		}
 		return 0;

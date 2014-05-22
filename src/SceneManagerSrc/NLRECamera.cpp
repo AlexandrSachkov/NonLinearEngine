@@ -103,6 +103,8 @@ void NLRECamera::reset()
 	_yaw = 0.0f;
 
 	*_position = NLEMath::NLEVectorSet(_initXPos, _initYPos, _initZPos, 0.0f);
+
+	_hasMoved = true;
 }
 
 void NLRECamera::update()

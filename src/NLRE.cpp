@@ -57,3 +57,13 @@ void NLRE::importAsset(std::wstring path)
 		_sceneManager->addAssets(assets);
 	}
 }
+
+std::shared_ptr<NLREAssetImporter> NLRE::getAssetImporter()
+{
+	return _assetImporter;
+}
+
+std::shared_ptr<NLRESceneManager> NLRE::getSceneManager()
+{
+	return _sceneManager;
+}
