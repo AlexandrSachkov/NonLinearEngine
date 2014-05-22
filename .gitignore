@@ -165,3 +165,5 @@ lib/Release/Win32/NLRE.exe
 lib/Release/x64/NLRE.exe
 lib/Debug/x64/NLRE_d.bsc
 lib/Debug/x64/NLRE_d.bsc
+*.cso
+*.cso

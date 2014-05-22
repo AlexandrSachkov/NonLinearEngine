@@ -470,7 +470,7 @@ std::wstring NLREAssimpAssetImporter::generateTextureResourcePath(aiString textu
 	else
 	{
 		fs::path assetPath(assetResourcePath.c_str());
-		assetPath /= texturePath;
+		assetPath /= texturePath.filename();
 		assetPath = assetPath.make_preferred();
 		return assetPath.generic_wstring();
 	}

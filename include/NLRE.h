@@ -41,11 +41,13 @@ public:
 
 	void render();
 	void importAsset(std::wstring path);
+
+	NLREAssetImporter* _assetImporter;
 private:
 	NLREDeviceController* _deviceController;
 	NLRERenderingDevice* _renderingDevice;
 	NLRESceneManager* _sceneManager;
 	NLRETextureLoader* _textureLoader;
-	NLREAssetImporter* _assetImporter;
+	
 };
 #endif

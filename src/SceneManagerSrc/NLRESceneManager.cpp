@@ -40,7 +40,7 @@ NLRESceneManager::NLRESceneManager(NLREDeviceController* deviceController, NLRER
 	_renderingDevice = renderingDevice;
 	_textureLoader = textureLoader;
 
-	_mainCamera = new NLRECamera(0.0f, 4.0f, -4.0f, width, height);
+	_mainCamera = new NLRECamera(0.0f, 40.0f, -40.0f, width, height);
 
 	mCamView = new NLE_FLOAT4X4();
 	mCamProjection = new NLE_FLOAT4X4();
