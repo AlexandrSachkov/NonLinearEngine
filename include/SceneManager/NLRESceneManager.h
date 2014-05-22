@@ -55,9 +55,6 @@ private:
 	std::shared_ptr<NLRERenderingDevice> _renderingDevice;
 	std::shared_ptr<NLRETextureLoader> _textureLoader;
 
-	//NLE_FLOAT4X4* mCamView;
-	//NLE_FLOAT4X4* mCamProjection;
-
 	NLRECamera* _mainCamera;
 	std::vector<std::shared_ptr<NLRE_RenderableAsset>> _assets;
 };

@@ -46,38 +46,11 @@ NLRESceneManager::NLRESceneManager(
 	_textureLoader = textureLoader;
 
 	_mainCamera = new NLRECamera(0.0f, 40.0f, -100.0f, width, height);
-
-	/*
-	mCamView = new NLE_FLOAT4X4();
-	mCamProjection = new NLE_FLOAT4X4();
-
-	NLE_VECTOR camPosition = NLEMath::NLEVectorSet(0.0f, 40.0f, -100.0f, 0.0f);
-	NLE_VECTOR camTarget = NLEMath::NLEVectorSet(0.0f, 0.0f, 0.0f, 0.0f);
-	NLE_VECTOR camUp = NLEMath::NLEVectorSet(0.0f, -1.0f, 0.0f, 0.0f);
-
-	//Set the View matrix
-	NLE_MATRIX camView = NLEMath::NLEMatrixLookAtLH(camPosition, camTarget, camUp);
-	NLE_VECTOR rotAxis = NLEMath::NLEVectorSet(0.0f, 1.0f, 0.0f, 0.0f);
-	NLE_MATRIX rotation = NLEMath::NLEMatrixRotationAxis(rotAxis, 0.0f);
-	camView = camView * rotation;
-	NLEMath::NLEStoreFloat4x4(mCamView, camView);
-	
-	//Set the Projection matrix
-	NLE_MATRIX camProjection = NLEMath::NLEMatrixPerspectiveFovLH(0.5f*3.14f, (float)width / height, 1.0f, 1000.0f);
-	NLEMath::NLEStoreFloat4x4(mCamProjection, camProjection);
-
-	
-	//XMVECTOR rotAxis = XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f);
-	//XMMATRIX rotation = XMMatrixRotationAxis(rotAxis, rot);
-	//NLE_MATRIX translation = NLEMath::NLEMatrixTranslation(0.0f, 0.0f, 4.0f);
-	//NLE_MATRIX scale = NLEMath::NLEMatrixScaling(1.3f, 1.3f, 1.3f);
-	*/
 }
 
 NLRESceneManager::~NLRESceneManager()
 {
-	//delete mCamView;
-	//delete mCamProjection;
+
 }
 
 void NLRESceneManager::addAssets(std::vector<std::shared_ptr<NLRE_RenderableAsset>>& assets)
@@ -90,9 +63,6 @@ void NLRESceneManager::addAssets(std::vector<std::shared_ptr<NLRE_RenderableAsse
 
 void NLRESceneManager::render()
 {
-	//NLE_MATRIX camView = NLEMath::NLELoadFloat4x4(mCamView);
-	//NLE_MATRIX camProjection = NLEMath::NLELoadFloat4x4(mCamProjection);
-
 	for (std::vector<std::shared_ptr<NLRE_RenderableAsset>>::iterator it = _assets.begin(); it != _assets.end(); ++it)
 	{
 		std::shared_ptr<NLRE_RenderableAsset> asset = *it;
