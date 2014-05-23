@@ -78,6 +78,8 @@ bool NLREDX11RenderingDevice::initialize()
 
 void NLREDX11RenderingDevice::release()
 {
+	_swapChain->SetFullscreenState(FALSE, NULL);
+
 	if (_swapChain) _swapChain->Release();
 	_swapChain = NULL;
 	if (_d3d11DevCon) _d3d11DevCon->Release();
@@ -116,6 +118,7 @@ bool NLREDX11RenderingDevice::createDeviceAndSwapChain()
 	swapChainDesc.OutputWindow = _hwnd;
 	swapChainDesc.Windowed = TRUE;
 	swapChainDesc.SwapEffect = DXGI_SWAP_EFFECT_DISCARD;
+	swapChainDesc.Flags = DXGI_SWAP_CHAIN_FLAG_ALLOW_MODE_SWITCH;
 
 	UINT creationFlags = 0;
 #ifdef _DEBUG || DEBUG

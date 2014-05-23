@@ -87,6 +87,11 @@ void NLRESceneManager::cameraUpdate()
 	if (_activeCamera) _activeCamera->update();
 }
 
+void NLRESceneManager::cameraRotate(float yaw, float pitch)
+{
+	if (_activeCamera) _activeCamera->rotate(yaw, pitch);
+}
+
 void NLRESceneManager::cameraPitchUp()
 {
 	if (_activeCamera) _activeCamera->pitchUp();

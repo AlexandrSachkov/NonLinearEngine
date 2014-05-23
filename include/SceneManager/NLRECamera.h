@@ -49,6 +49,7 @@ public:
 	void yawLeft();
 	void yawRight();
 
+	void rotate(float yaw, float pitch);
 	void moveForward();
 	void moveBackward();
 	void moveLeft();

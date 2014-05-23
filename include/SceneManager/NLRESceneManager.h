@@ -51,6 +51,7 @@ public:
 	void cameraReset();
 	void cameraUpdate();
 
+	void cameraRotate(float yaw, float pitch);
 	void cameraPitchUp();
 	void cameraPitchDown();
 	void cameraYawLeft();

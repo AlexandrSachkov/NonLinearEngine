@@ -92,8 +92,8 @@ NLRECamera::~NLRECamera()
 
 void NLRECamera::reset()
 {
-	_movementSensitivity = 1.0f;
-	_rotationSensitivity = 1.0f;
+	_movementSensitivity = 0.2f;
+	_rotationSensitivity = 0.1f;
 
 	_distanceForward = 0.0f;
 	_distanceRight = 0.0f;
@@ -181,6 +181,19 @@ void NLRECamera::setSensitivity(float movementSensitivity, float rotationSensiti
 {
 	_movementSensitivity = movementSensitivity;
 	_rotationSensitivity = rotationSensitivity;
+}
+
+void NLRECamera::rotate(float yaw, float pitch)
+{
+	_yaw += yaw * _rotationSensitivity;
+	if (_yaw <= -_fullRotation) _yaw += _fullRotation;
+	else if (_yaw >= _fullRotation) _yaw -= _fullRotation;
+
+	_pitch += pitch * _rotationSensitivity;
+	if (_pitch <= -_fullRotation) _pitch += _fullRotation;
+	else if (_pitch >= _fullRotation) _pitch -= _fullRotation;
+
+	_hasMoved = true;
 }
 
 void NLRECamera::pitchUp()
