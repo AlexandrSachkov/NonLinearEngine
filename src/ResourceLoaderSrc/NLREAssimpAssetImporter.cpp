@@ -90,6 +90,8 @@ bool NLREAssimpAssetImporter::importAssets(std::wstring path, std::vector<std::s
 		aiProcess_GenUVCoords |
 		aiProcess_GenNormals |
 		aiProcess_RemoveComponent |
+		aiProcessPreset_TargetRealtime_Quality |
+		aiProcess_FindInvalidData |
 		aiProcess_SortByPType);
 
 	if (!scene)
@@ -153,9 +155,13 @@ void NLREAssimpAssetImporter::assembleAsset(
 	std::shared_ptr<NLRE_RenderableAsset> asset (new NLRE_RenderableAsset());
 	asset->mesh = meshArr[meshIndex];
 	asset->material = materialArr[scene->mMeshes[meshIndex]->mMaterialIndex];
+
+	//NLE_MATRIX temp = NLEMath::NLEMatrixIdentity();
+	//NLEMath::NLEStoreFloat4x4(&asset->transformStruct.transformation, temp);
 	asset->transformStruct.transformation = NLE_FLOAT4X4((const float*)(&transform.Transpose()));
 	_renderingDevice->createBuffer<NLRE_Transformation>(NLRE_BIND_CONSTANT_BUFFER, NLRE_USAGE_DYNAMIC, &asset->transformStruct, 1, asset->transformationBuffer);
 
+	printFloat4x4(asset->transformStruct.transformation);
 	assetArr.push_back(asset);
 }
 
@@ -480,8 +486,8 @@ std::wstring NLREAssimpAssetImporter::generateTextureResourcePath(aiString textu
 
 void NLREAssimpAssetImporter::printFloat4x4(NLE_FLOAT4X4& matrix)
 {
-	NLRE_Log::console("%f %f %f %f\n",matrix._11, matrix._12, matrix._13, matrix._14);
-	NLRE_Log::console("%f %f %f %f\n", matrix._21, matrix._22, matrix._23, matrix._24);
-	NLRE_Log::console("%f %f %f %f\n", matrix._31, matrix._32, matrix._33, matrix._34);
-	NLRE_Log::console("%f %f %f %f\n", matrix._41, matrix._42, matrix._43, matrix._44);
+	NLRE_Log::console("%f %f %f %f",matrix._11, matrix._12, matrix._13, matrix._14);
+	NLRE_Log::console("%f %f %f %f", matrix._21, matrix._22, matrix._23, matrix._24);
+	NLRE_Log::console("%f %f %f %f", matrix._31, matrix._32, matrix._33, matrix._34);
+	NLRE_Log::console("%f %f %f %f\n\n", matrix._41, matrix._42, matrix._43, matrix._44);
 }

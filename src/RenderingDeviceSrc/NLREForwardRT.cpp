@@ -101,8 +101,11 @@ void NLREForwardRT::render(std::vector<std::shared_ptr<NLRE_RenderableAsset>>& a
 
 	float blendFactor[] = { 0.75f, 0.75f, 0.75f, 1.0f };
 
+	int counter = 0;
 	for (std::vector<std::shared_ptr<NLRE_RenderableAsset>>::iterator it = assets.begin(); it != assets.end(); ++it)
 	{
+		//if (counter == 2) break;
+
 		std::shared_ptr<NLRE_RenderableAsset> asset = *it;
 		if (asset->mesh->geomBuffer.apiBuffer)
 		{
@@ -122,6 +125,7 @@ void NLREForwardRT::render(std::vector<std::shared_ptr<NLRE_RenderableAsset>>& a
 			_renderingDevice->PSSetShaderResources(0, 1, asset->material->diffuseTextView);
 		}
 		_renderingDevice->drawIndexed(asset->mesh->indexBuffer);
+		counter++;
 	}
 	_renderingDevice->display();
 }

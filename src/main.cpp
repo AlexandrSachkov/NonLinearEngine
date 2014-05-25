@@ -89,11 +89,20 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 		nlre = NULL;
 		return 0;
 	}
+
 	nlre->getAssetImporter()->enableBuiltInTexturePath(false);
 	nlre->getAssetImporter()->setTextureResourcePath(L"D:\\3DModels\\Altair Model\\tex\\");
 	std::wstring path = L"D:\\3DModels\\Altair Model\\altair.dae";
 	nlre->importAsset(path);
-	//std::wstring path = L"C:\\Users\\Alex\\Desktop\\torus2.dae";
+
+	/*
+	nlre->getAssetImporter()->enableBuiltInTexturePath(false);
+	nlre->getAssetImporter()->setTextureResourcePath(L"D:\\3DModels\\Crytek Sponza Scene\\textures\\");
+	std::wstring path = L"D:\\3DModels\\Crytek Sponza Scene\\sponza.dae";
+	nlre->importAsset(path);
+	*/
+
+	//std::wstring path = L"C:\\Users\\Alex\\Desktop\\olympic_ring.dae";
 	//nlre->importAsset(path);
 	//path = L"C:\\Users\\Alex\\Desktop\\torus3.dae";
 	//nlre->importAsset(path);
@@ -237,31 +246,31 @@ int messageloop()
 			nlre->getSceneManager()->cameraReset();
 		}
 
-		POINT mousePoint;
-		GetCursorPos(&mousePoint);
-
-		float distX = (float)mousePoint.x - clientCenterX;
-		float distY = (float)mousePoint.y - clientCenterY;
-		
-		if (pow(distX,2.0) > mouseJitter || pow(distY,2.0) > mouseJitter)
-		{	
-			NLE_VECTOR velocity = NLEMath::NLEVectorSet(distX, distY, 0.0f, 0.0f);
-			velocity = NLEMath::NLEVector4Normalize(velocity);
-			nlre->getSceneManager()->cameraRotate(NLEMath::NLEVectorGetX(velocity), NLEMath::NLEVectorGetY(velocity));
-			SetCursorPos(clientCenterX, clientCenterY);
-		}
-		
-		
-
-		nlre->getSceneManager()->cameraUpdate();
-		nlre->render();
-		counter++;
-		if (counter == 20000)
+		if (GetActiveWindow() == hwnd)
 		{
-			printf("Rendering");
-			counter = 0;
-		}
+			POINT mousePoint;
+			GetCursorPos(&mousePoint);
 
+			float distX = (float)mousePoint.x - clientCenterX;
+			float distY = (float)mousePoint.y - clientCenterY;
+
+			if (pow(distX, 2.0) > mouseJitter || pow(distY, 2.0) > mouseJitter)
+			{
+				NLE_VECTOR velocity = NLEMath::NLEVectorSet(distX, distY, 0.0f, 0.0f);
+				velocity = NLEMath::NLEVector4Normalize(velocity);
+				nlre->getSceneManager()->cameraRotate(NLEMath::NLEVectorGetX(velocity), NLEMath::NLEVectorGetY(velocity));
+				SetCursorPos(clientCenterX, clientCenterY);
+			}
+
+			nlre->getSceneManager()->cameraUpdate();
+			nlre->render();
+			counter++;
+			if (counter == 20000)
+			{
+				printf("Rendering");
+				counter = 0;
+			}
+		}
 	}
 	return msg.wParam;
 }
