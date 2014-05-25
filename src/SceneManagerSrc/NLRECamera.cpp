@@ -185,7 +185,9 @@ void NLRECamera::setSensitivity(float movementSensitivity, float rotationSensiti
 
 void NLRECamera::rotate(float yaw, float pitch)
 {
-	_yaw += yaw * _rotationSensitivity;
+	if (NLEMath::NLEVectorGetY(*_up) > 0) _yaw += yaw * _rotationSensitivity;
+	else _yaw -= yaw * _rotationSensitivity;
+
 	if (_yaw <= -_fullRotation) _yaw += _fullRotation;
 	else if (_yaw >= _fullRotation) _yaw -= _fullRotation;
 
