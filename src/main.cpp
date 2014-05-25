@@ -40,12 +40,9 @@ int Width = GetSystemMetrics(SM_CXSCREEN);
 int Height = GetSystemMetrics(SM_CYSCREEN);
 
 RECT clientRect;
-RECT windowRect;
-float winCenterX = 0.0f;
-float winCenterY = 0.0f;
 float clientCenterX = 0.0f;
 float clientCenterY = 0.0f;
-float mouseJitter = 5.0f;
+float mouseJitter = 0.0001f;
 
 NLRE* nlre = NULL;
 
@@ -76,16 +73,11 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	NLRE_Log::registerConsoleCallback(debugCallback);
 	NLRE_Log::registerDebugCallback(debugCallback);
 
-	GetWindowRect(hwnd, &windowRect);
 	GetClientRect(hwnd, &clientRect);
-	clientCenterX = (clientRect.right - clientRect.left) / 2 + clientRect.left;
-	clientCenterY = (clientRect.bottom - clientRect.top) / 2 + clientRect.top;
-	winCenterX = (windowRect.right - windowRect.left) / 2;
-	winCenterY = (windowRect.bottom - windowRect.top) / 2;
+	clientCenterX = (clientRect.right - clientRect.left) / 2;
+	clientCenterY = (clientRect.bottom - clientRect.top) / 2;
 
-	printf("dist x: %f\n", windowRect.left);
-	printf("dist y: %f\n", windowRect.top);
-	SetCursorPos(winCenterX, winCenterY);
+	SetCursorPos(clientCenterX, clientCenterY);
 	try
 	{
 		nlre = new NLRE(hwnd, clientRect.right - clientRect.left, clientRect.bottom - clientRect.top);
@@ -161,7 +153,6 @@ bool InitializeWindow(HINSTANCE hInstance, int ShowWnd, int width, int height, b
 	wc.hIcon = LoadIcon(NULL, IDI_APPLICATION);
 	wc.hCursor = LoadCursor(NULL, IDC_ARROW);
 	wc.hbrBackground = NULL;
-	//wc.hbrBackground = (HBRUSH)(COLOR_WINDOW + 2);
 	wc.lpszMenuName = NULL;
 	wc.lpszClassName = WndClassName;
 	wc.hIconSm = LoadIcon(NULL, IDI_APPLICATION);
@@ -248,25 +239,16 @@ int messageloop()
 
 		POINT mousePoint;
 		GetCursorPos(&mousePoint);
-		ScreenToClient(hwnd, &mousePoint);
-
-		//printf("mouse point x: %f\n", mousePoint.x);
-		//printf("mouse point y: %f\n", mousePoint.y);
-		//printf("client center x: %f\n", clientCenterX);
-		//printf("client center y: %f\n", clientCenterY);
 
 		float distX = (float)mousePoint.x - clientCenterX;
 		float distY = (float)mousePoint.y - clientCenterY;
-
-		//printf("dist x: %f\n", distX);
-		//printf("dist y: %f\n", distY);
-
-		NLE_VECTOR velocity = NLEMath::NLEVectorSet(distX, distY, 0.0f, 0.0f);
-		velocity = NLEMath::NLEVector4Normalize(velocity);
-		if (pow(distX,2.0) > mouseJitter && pow(distY,2.0) > mouseJitter)
-		{
+		
+		if (pow(distX,2.0) > mouseJitter || pow(distY,2.0) > mouseJitter)
+		{	
+			NLE_VECTOR velocity = NLEMath::NLEVectorSet(distX, distY, 0.0f, 0.0f);
+			velocity = NLEMath::NLEVector4Normalize(velocity);
 			nlre->getSceneManager()->cameraRotate(NLEMath::NLEVectorGetX(velocity), NLEMath::NLEVectorGetY(velocity));
-			//SetCursorPos(winCenterX, winCenterY);
+			SetCursorPos(clientCenterX, clientCenterY);
 		}
 		
 		

@@ -121,7 +121,7 @@ bool NLREDX11RenderingDevice::createDeviceAndSwapChain()
 	swapChainDesc.Flags = DXGI_SWAP_CHAIN_FLAG_ALLOW_MODE_SWITCH;
 
 	UINT creationFlags = 0;
-#ifdef _DEBUG || DEBUG
+#if defined(_DEBUG) || defined(DEBUG)
 	creationFlags |= D3D11_CREATE_DEVICE_DEBUG;
 #endif
 
