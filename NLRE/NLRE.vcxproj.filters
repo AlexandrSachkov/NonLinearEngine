@@ -220,9 +220,6 @@
     <ClCompile Include="..\src\ResourceLoaderSrc\NLREAssimpAssetImporter.cpp">
       <Filter>Source Files\ResourceLoaderSrc</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\main.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\ResourceLoaderSrc\DDSTextureLoader.cpp">
       <Filter>Source Files\ResourceLoaderSrc</Filter>
     </ClCompile>
@@ -237,6 +234,9 @@
     </ClCompile>
     <ClCompile Include="..\src\SceneManagerSrc\NLRECamera.cpp">
       <Filter>Source Files\SceneManagerSrc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\main.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

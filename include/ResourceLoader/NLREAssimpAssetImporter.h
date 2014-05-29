@@ -85,22 +85,25 @@ private:
 	void nextNode(
 		const aiScene* scene, 
 		aiNode* node, 
-		aiMatrix4x4& accTransform, 
+		aiMatrix4x4 accTransform, 
 		std::shared_ptr<NLRE_Mesh>* meshArr,
 		std::shared_ptr<NLRE_Material>* materialArr,
-		std::vector<std::shared_ptr<NLRE_RenderableAsset>>& assetArr);
+		std::vector<std::shared_ptr<NLRE_RenderableAsset>>& assetArr,
+		int level);
 
 	void assembleAsset(
 		const aiScene* scene, 
 		unsigned int meshIndex, 
-		aiMatrix4x4& transform, 
+		aiMatrix4x4 transform, 
 		std::shared_ptr<NLRE_Mesh>* meshArr,
 		std::shared_ptr<NLRE_Material>* materialArr,
-		std::vector<std::shared_ptr<NLRE_RenderableAsset>>& assetArr);
+		std::vector<std::shared_ptr<NLRE_RenderableAsset>>& assetArr,
+		int level);
 
 	std::wstring generateTextureResourcePath(aiString textureResourcePath, std::string assetPath);
 
 	void printFloat4x4(NLE_FLOAT4X4& matrix);
+	void printFloat4x4(aiMatrix4x4& matrix);
 
 	std::shared_ptr<NLRERenderingDevice> _renderingDevice;
 	std::shared_ptr<NLRETextureLoader> _textureLoader;

@@ -90,9 +90,11 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 		return 0;
 	}
 
-	nlre->getAssetImporter()->enableBuiltInTexturePath(false);
-	nlre->getAssetImporter()->setTextureResourcePath(L"D:\\3DModels\\Altair Model\\tex\\");
-	std::wstring path = L"D:\\3DModels\\Altair Model\\altair.dae";
+	//nlre->getAssetImporter()->enableBuiltInTexturePath(false);
+	//nlre->getAssetImporter()->setTextureResourcePath(L"D:\\3DModels\\Altair Model\\tex\\");
+
+	std::wstring path = L"D:\\3DModels\\Altair Model\\altair2.dae";
+	//std::wstring path = L"C:\\Users\\Alex\\Desktop\\2teapot.dae";
 	nlre->importAsset(path);
 
 	/*

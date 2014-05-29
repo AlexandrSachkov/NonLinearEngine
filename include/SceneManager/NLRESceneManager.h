@@ -29,7 +29,6 @@ THE SOFTWARE.
 #ifndef NLRE_SCENE_MANAGER_
 #define NLRE_SCENE_MANAGER_
 
-#include "NLREMain\stdafx.h"
 #include "ResourceLoader\NLRETextureLoader.h"
 #include "RenderingDevice\NLREDeviceController.h"
 #include "NLRECamera.h"
@@ -44,6 +43,8 @@ public:
 		int width, 
 		int height);
 	~NLRESceneManager();
+
+	void NLRESceneManager::printFloat4x4(NLE_FLOAT4X4& matrix);
 
 	void render();
 	void addAssets(std::vector<std::shared_ptr<NLRE_RenderableAsset>>& assets);

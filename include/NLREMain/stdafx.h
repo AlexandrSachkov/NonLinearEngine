@@ -39,5 +39,4 @@ THE SOFTWARE.
 namespace fs = boost::filesystem;
 
 #include "NLREMain\NLRECommon.h" //Must be the last statement in this file
-
 #endif

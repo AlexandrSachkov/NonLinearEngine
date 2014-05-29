@@ -67,14 +67,25 @@ void NLRESceneManager::render()
 	{
 		std::shared_ptr<NLRE_RenderableAsset> asset = *it;
 		NLE_MATRIX objWorld = NLEMath::NLELoadFloat4x4(&(asset->transformStruct.transformation));
+		//objWorld = NLEMath::NLEMatrixTranspose(objWorld);
+		//printFloat4x4(asset->transformStruct.transformation);
 
 		NLE_MATRIX WVP = objWorld * _activeCamera->getViewProjection();
 		NLRE_Transformation objTransform;
 		NLEMath::NLEStoreFloat4x4(&(objTransform.transformation), NLEMath::NLEMatrixTranspose(WVP));
+		
 
 		_renderingDevice->updateBuffer(asset->transformationBuffer, &objTransform, sizeof(objTransform));
 	}
 	_deviceController->render(_assets);
+}
+
+void NLRESceneManager::printFloat4x4(NLE_FLOAT4X4& matrix)
+{
+	NLRE_Log::console("%f %f %f %f", matrix._11, matrix._12, matrix._13, matrix._14);
+	NLRE_Log::console("%f %f %f %f", matrix._21, matrix._22, matrix._23, matrix._24);
+	NLRE_Log::console("%f %f %f %f", matrix._31, matrix._32, matrix._33, matrix._34);
+	NLRE_Log::console("%f %f %f %f\n\n", matrix._41, matrix._42, matrix._43, matrix._44);
 }
 
 void NLRESceneManager::cameraReset()

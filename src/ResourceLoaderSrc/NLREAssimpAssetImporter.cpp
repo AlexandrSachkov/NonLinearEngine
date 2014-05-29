@@ -90,8 +90,6 @@ bool NLREAssimpAssetImporter::importAssets(std::wstring path, std::vector<std::s
 		aiProcess_GenUVCoords |
 		aiProcess_GenNormals |
 		aiProcess_RemoveComponent |
-		aiProcessPreset_TargetRealtime_Quality |
-		aiProcess_FindInvalidData |
 		aiProcess_SortByPType);
 
 	if (!scene)
@@ -111,7 +109,7 @@ std::vector<std::shared_ptr<NLRE_RenderableAsset>> NLREAssimpAssetImporter::load
 	std::shared_ptr<NLRE_Mesh>* meshArr = loadMeshes(scene);
 	std::shared_ptr<NLRE_Material>* materialArr = loadMaterials(path, scene);
 
-	nextNode(scene, scene->mRootNode, scene->mRootNode->mTransformation, meshArr, materialArr, assetArr);
+	nextNode(scene, scene->mRootNode, scene->mRootNode->mTransformation, meshArr, materialArr, assetArr, 0);
 
 	delete[] meshArr;
 	delete[] materialArr;
@@ -122,35 +120,74 @@ std::vector<std::shared_ptr<NLRE_RenderableAsset>> NLREAssimpAssetImporter::load
 void NLREAssimpAssetImporter::nextNode(
 	const aiScene* scene,
 	aiNode* node,
-	aiMatrix4x4& accTransform,
+	aiMatrix4x4 accTransform,
 	std::shared_ptr<NLRE_Mesh>* meshArr,
 	std::shared_ptr<NLRE_Material>* materialArr,
-	std::vector<std::shared_ptr<NLRE_RenderableAsset>>& assetArr)
+	std::vector<std::shared_ptr<NLRE_RenderableAsset>>& assetArr,
+	int level)
 {
 	aiMatrix4x4 transform;
+	if (level == 1)
+	{
+		printFloat4x4(transform);
+		printFloat4x4(accTransform);
 
+		accTransform = transform;
+	}
+	
 	if (node->mNumMeshes > 0)
 	{
 		for (int i = 0; i < node->mNumMeshes; i++)
 		{
-			assembleAsset(scene, node->mMeshes[i], accTransform, meshArr, materialArr, assetArr);
+			assembleAsset(scene, node->mMeshes[i], accTransform, meshArr, materialArr, assetArr, level);
 		}
 	}
 
 	for (int i = 0; i < node->mNumChildren; i++)
 	{
 		transform = node->mChildren[i]->mTransformation * accTransform;
-		nextNode(scene, node->mChildren[i], transform, meshArr, materialArr, assetArr);
+		nextNode(scene, node->mChildren[i], transform, meshArr, materialArr, assetArr, level + 1);
 	}
 }
+/*
+void NLREAssimpAssetImporter::nextNode(
+	const aiScene* scene,
+	aiNode* node,
+	aiMatrix4x4 accTransform,
+	std::shared_ptr<NLRE_Mesh>* meshArr,
+	std::shared_ptr<NLRE_Material>* materialArr,
+	std::vector<std::shared_ptr<NLRE_RenderableAsset>>& assetArr,
+	int level)
+{
+	aiMatrix4x4 transform;
+	if (level == 1)
+	{
+		accTransform = transform;
+	}
+	printFloat4x4(transform);
+	if (node->mNumMeshes > 0)
+	{
+		for (int i = 0; i < node->mNumMeshes; i++)
+		{
+			assembleAsset(scene, node->mMeshes[i], accTransform, meshArr, materialArr, assetArr, level);
+		}
+	}
 
+	for (int i = 0; i < node->mNumChildren; i++)
+	{
+		transform = node->mChildren[i]->mTransformation * accTransform;
+		nextNode(scene, node->mChildren[i], transform, meshArr, materialArr, assetArr, level+1);
+	}
+}
+*/
 void NLREAssimpAssetImporter::assembleAsset(
 	const aiScene* scene,
 	unsigned int meshIndex,
-	aiMatrix4x4& transform,
+	aiMatrix4x4 transform,
 	std::shared_ptr<NLRE_Mesh>* meshArr,
 	std::shared_ptr<NLRE_Material>* materialArr,
-	std::vector<std::shared_ptr<NLRE_RenderableAsset>>& assetArr)
+	std::vector<std::shared_ptr<NLRE_RenderableAsset>>& assetArr,
+	int level)
 {
 	std::shared_ptr<NLRE_RenderableAsset> asset (new NLRE_RenderableAsset());
 	asset->mesh = meshArr[meshIndex];
@@ -161,7 +198,8 @@ void NLREAssimpAssetImporter::assembleAsset(
 	asset->transformStruct.transformation = NLE_FLOAT4X4((const float*)(&transform.Transpose()));
 	_renderingDevice->createBuffer<NLRE_Transformation>(NLRE_BIND_CONSTANT_BUFFER, NLRE_USAGE_DYNAMIC, &asset->transformStruct, 1, asset->transformationBuffer);
 
-	printFloat4x4(asset->transformStruct.transformation);
+	//printf("===\n");
+	//printFloat4x4(transform);
 	assetArr.push_back(asset);
 }
 
@@ -478,7 +516,8 @@ std::wstring NLREAssimpAssetImporter::generateTextureResourcePath(aiString textu
 	else
 	{
 		fs::path assetPath(assetResourcePath.c_str());
-		assetPath /= texturePath.filename();
+		assetPath = assetPath.remove_leaf();
+		assetPath /= texturePath;
 		assetPath = assetPath.make_preferred();
 		return assetPath.generic_wstring();
 	}
@@ -490,4 +529,12 @@ void NLREAssimpAssetImporter::printFloat4x4(NLE_FLOAT4X4& matrix)
 	NLRE_Log::console("%f %f %f %f", matrix._21, matrix._22, matrix._23, matrix._24);
 	NLRE_Log::console("%f %f %f %f", matrix._31, matrix._32, matrix._33, matrix._34);
 	NLRE_Log::console("%f %f %f %f\n\n", matrix._41, matrix._42, matrix._43, matrix._44);
+}
+
+void NLREAssimpAssetImporter::printFloat4x4(aiMatrix4x4& matrix)
+{
+	NLRE_Log::console("%f %f %f %f", matrix.a1, matrix.a2, matrix.a3, matrix.a4);
+	NLRE_Log::console("%f %f %f %f", matrix.b1, matrix.b2, matrix.b3, matrix.b4);
+	NLRE_Log::console("%f %f %f %f", matrix.c1, matrix.c2, matrix.c3, matrix.c4);
+	NLRE_Log::console("%f %f %f %f\n\n", matrix.d1, matrix.d2, matrix.d3, matrix.d4);
 }
