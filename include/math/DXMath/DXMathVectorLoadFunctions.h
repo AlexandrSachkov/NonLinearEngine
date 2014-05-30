@@ -39,6 +39,6 @@ namespace NLEMath
 	NLE_MATRIX	NLELoadFloat4x4(const NLE_FLOAT4X4* source);
 	NLE_MATRIX	NLELoadFloat4x4A(const NLE_FLOAT4X4A* source);
 }
-#include "MathSrc\DXMath\DXMathVectorLoadFunctions.inl"
+#include "math\DXMath\DXMathVectorLoadFunctions.inl"
 
 #endif

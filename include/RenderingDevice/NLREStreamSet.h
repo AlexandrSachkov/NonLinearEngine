@@ -29,7 +29,7 @@ THE SOFTWARE.
 #ifndef NLRE_STREAM_SET_
 #define NLRE_STREAM_SET_
 
-#include "stdafx.h"
+#include "NLREMain\stdafx.h"
 
 class NLRE_GeomStr
 {

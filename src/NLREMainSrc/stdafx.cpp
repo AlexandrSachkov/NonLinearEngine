@@ -26,6 +26,6 @@ THE SOFTWARE.
 -----------------------------------------------------------------------------
 */
 
-#include "stdafx.h"
+#include "NLREMain\stdafx.h"
 
 

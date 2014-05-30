@@ -29,6 +29,6 @@ THE SOFTWARE.
 #ifndef NLRE_ASSET_IMPORTER_
 #define NLRE_ASSET_IMPORTER_
 
-#include "NLREAssimpAssetImporter.h"
+#include "ResourceLoader\NLREAssimpAssetImporter.h"
 typedef NLREAssimpAssetImporter NLREAssetImporter;
 #endif

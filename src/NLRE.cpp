@@ -26,7 +26,7 @@ THE SOFTWARE.
 -----------------------------------------------------------------------------
 */
 
-#include "stdafx.h"
+#include "NLREMain\stdafx.h"
 #include "NLRE.h"
 
 NLRE::NLRE(HWND hwndVal, int widthVal, int heightVal){

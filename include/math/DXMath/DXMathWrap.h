@@ -31,13 +31,13 @@ THE SOFTWARE.
 
 #include <DirectXMath.h>
 
-#include "DXMathStructures.h"
-#include "DXMathMatrixFunctions.h"
-#include "DXMathVector4DFunctions.h"
-#include "DXMathVector3DFunctions.h"
-#include "DXMathVectorArithmetic.h"
-#include "DXMathVectorAccessorFunctions.h"
-#include "DXMathVectorLoadFunctions.h"
-#include "DXMathVectorStoreFunctions.h"
+#include "math\DXMath\DXMathStructures.h"
+#include "math\DXMath\DXMathMatrixFunctions.h"
+#include "math\DXMath\DXMathVector4DFunctions.h"
+#include "math\DXMath\DXMathVector3DFunctions.h"
+#include "math\DXMath\DXMathVectorArithmetic.h"
+#include "math\DXMath\DXMathVectorAccessorFunctions.h"
+#include "math\DXMath\DXMathVectorLoadFunctions.h"
+#include "math\DXMath\DXMathVectorStoreFunctions.h"
 
 #endif

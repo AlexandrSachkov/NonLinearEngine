@@ -26,7 +26,7 @@ THE SOFTWARE.
 -----------------------------------------------------------------------------
 */
 
-#include "stdafx.h"
+#include "NLREMain\stdafx.h"
 #include "RenderingDevice\NLREDeviceController.h"
 
 NLREDeviceController::NLREDeviceController(HWND hwndVal, int widthVal, int heightVal, NLRE_RENDERING_TECHNIQUE_ID techniqueId)
@@ -43,6 +43,7 @@ NLREDeviceController::NLREDeviceController(HWND hwndVal, int widthVal, int heigh
 NLREDeviceController::~NLREDeviceController()
 {
 }
+
 
 bool NLREDeviceController::initialize()
 {

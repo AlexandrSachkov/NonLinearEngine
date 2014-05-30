@@ -29,7 +29,7 @@ THE SOFTWARE.
 #ifndef NLRE_COMMON_
 #define NLRE_COMMON_
 
-#include "NLREConfigurator.h"	//must be the first line in this file
+#include "NLREMain\NLREConfigurator.h"	//must be the first line in this file
 
 #if defined(_WINDOWS_VISTA_)
 	#define WINVER 0x0600
@@ -49,10 +49,10 @@ THE SOFTWARE.
 
 #endif
 
-#include "NLREAlignedAllocator.h"
+#include "NLREMain\NLREAlignedAllocator.h"
 #include "NLEMath.h"
 #include "NLREResources.h"
-#include "NLRELog.h"
+#include "NLREMain\NLRELog.h"
 #include "RenderingDevice\NLREInputLayoutDescriptions.h"
 
 #endif

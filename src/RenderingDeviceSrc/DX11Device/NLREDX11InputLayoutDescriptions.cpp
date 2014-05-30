@@ -26,7 +26,7 @@ THE SOFTWARE.
 -----------------------------------------------------------------------------
 */
 
-#include "stdafx.h"
+#include "NLREMain\stdafx.h"
 #include "RenderingDevice\DX11Device\NLREDX11InputLayoutDescriptions.h"
 
 const NLRE_APIInputLayoutDecs NLREDX11InputLayoutDescriptions::forwardPosNormTanTextDesc[] = {

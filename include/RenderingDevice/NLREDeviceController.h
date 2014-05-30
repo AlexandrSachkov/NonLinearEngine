@@ -29,7 +29,7 @@ THE SOFTWARE.
 #ifndef NLRE_DEVICE_CONTROLLER_
 #define NLRE_DEVICE_CONTROLLER_
 
-#include "NLREForwardRT.h"
+#include "RenderingDevice\NLREForwardRT.h"
 
 class NLREDeviceController
 {
@@ -37,6 +37,7 @@ public:
 	NLREDeviceController(HWND hwndVal, int widthVal, int heightVal, NLRE_RENDERING_TECHNIQUE_ID techniqueId);
 	NLREDeviceController(const NLREDeviceController&);
 	~NLREDeviceController();
+
 	std::shared_ptr<NLRERenderingDevice> getRenderingDevice();
 	bool setRenderingTechnique(NLRE_RENDERING_TECHNIQUE_ID techniqueId);
 	NLRE_RENDERING_TECHNIQUE_ID getCurrentRenderingTechniqueId();

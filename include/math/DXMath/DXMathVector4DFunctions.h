@@ -58,5 +58,5 @@ namespace NLEMath
 	NLE_VECTOR					NLEVectorZero();
 }
 
-#include "MathSrc\DXMath\DXMathVector4DFunctions.inl"
+#include "math\DXMath\DXMathVector4DFunctions.inl"
 #endif

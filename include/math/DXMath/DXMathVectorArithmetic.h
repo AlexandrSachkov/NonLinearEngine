@@ -35,5 +35,5 @@ namespace NLEMath
 	NLE_VECTOR _NLE_CALLCONV_ NLEVectorAdd(NLE_FVECTOR v1, NLE_FVECTOR v2);
 	NLE_VECTOR _NLE_CALLCONV_ NLEVectorMultiply(NLE_FVECTOR v1, NLE_FVECTOR v2);
 }
-#include "MathSrc\DXMath\DXMathVectorArithmetic.inl"
+#include "math\DXMath\DXMathVectorArithmetic.inl"
 #endif

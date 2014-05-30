@@ -17,7 +17,7 @@
 // http://go.microsoft.com/fwlink/?LinkId=248926
 // http://go.microsoft.com/fwlink/?LinkId=248929
 //--------------------------------------------------------------------------------------
-#include "stdafx.h"
+#include "NLREMain\stdafx.h"
 
 #include <assert.h>
 #include <algorithm>

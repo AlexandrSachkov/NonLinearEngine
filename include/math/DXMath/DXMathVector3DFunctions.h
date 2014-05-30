@@ -61,6 +61,6 @@ namespace NLEMath
 		NLE_CMATRIX view,
 		NLE_CMATRIX world);
 }
-#include "MathSrc\DXMath\DXMathVector3DFunctions.inl"
+#include "math\DXMath\DXMathVector3DFunctions.inl"
 
 #endif

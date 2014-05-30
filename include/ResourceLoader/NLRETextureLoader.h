@@ -29,10 +29,10 @@ THE SOFTWARE.
 #ifndef NLRE_TEXTURE_LOADER_
 #define NLRE_TEXTURE_LOADER_
 
-#ifdef _DX11_
+//#ifdef _DX11_
 
-#include "NLREDirectXTexTextureLoader.h"
+#include "ResourceLoader\NLREDirectXTexTextureLoader.h"
 typedef NLREDirectXTexTextureLoader NLRETextureLoader;
-#endif
+//#endif
 
 #endif

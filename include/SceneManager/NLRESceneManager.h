@@ -31,7 +31,7 @@ THE SOFTWARE.
 
 #include "ResourceLoader\NLRETextureLoader.h"
 #include "RenderingDevice\NLREDeviceController.h"
-#include "NLRECamera.h"
+#include "SceneManager\NLRECamera.h"
 
 class NLRESceneManager
 {

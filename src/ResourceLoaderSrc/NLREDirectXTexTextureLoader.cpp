@@ -26,7 +26,7 @@ THE SOFTWARE.
 -----------------------------------------------------------------------------
 */
 
-#include "stdafx.h"
+#include "NLREMain\stdafx.h"
 #include "ResourceLoader\NLREDirectXTexTextureLoader.h"
 
 NLREDirectXTexTextureLoader::NLREDirectXTexTextureLoader(std::shared_ptr<NLRERenderingDevice> renderingDevice)

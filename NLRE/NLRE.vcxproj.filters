@@ -28,12 +28,6 @@
     <Filter Include="Header Files\RenderingDevice\DX11Device">
       <UniqueIdentifier>{d1d5c9ed-c501-42db-8b4b-900eef235a12}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\MathSrc">
-      <UniqueIdentifier>{46ec3148-6285-49ae-b7bc-5b382b83be5f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\MathSrc\DXMath">
-      <UniqueIdentifier>{9506c07c-365e-4b31-bc5a-8a772471ecb8}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\NLREMainSrc">
       <UniqueIdentifier>{4a67f3a9-581d-4b72-9609-61338c30e35f}</UniqueIdentifier>
     </Filter>
@@ -170,29 +164,29 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\src\MathSrc\DXMath\DXMathMatrixFunctions.inl">
-      <Filter>Source Files\MathSrc\DXMath</Filter>
+    <None Include="..\include\math\DXMath\DXMathMatrixFunctions.inl">
+      <Filter>Header Files\math\DXMath</Filter>
     </None>
-    <None Include="..\src\MathSrc\DXMath\DXMathVector4DFunctions.inl">
-      <Filter>Source Files\MathSrc\DXMath</Filter>
+    <None Include="..\include\math\DXMath\DXMathVector3DFunctions.inl">
+      <Filter>Header Files\math\DXMath</Filter>
     </None>
-    <None Include="..\src\MathSrc\DXMath\DXMathVectorLoadFunctions.inl">
-      <Filter>Source Files\MathSrc\DXMath</Filter>
+    <None Include="..\include\math\DXMath\DXMathVector4DFunctions.inl">
+      <Filter>Header Files\math\DXMath</Filter>
     </None>
-    <None Include="..\src\MathSrc\DXMath\DXMathVectorStoreFunctions.inl">
-      <Filter>Source Files\MathSrc\DXMath</Filter>
+    <None Include="..\include\math\DXMath\DxMathVectorAccessorFunctions.inl">
+      <Filter>Header Files\math\DXMath</Filter>
     </None>
-    <None Include="..\src\RenderingDeviceSrc\DX11Device\NLREDX11RenderingDevice.inl">
-      <Filter>Source Files\RenderingDeviceSrc\DX11Device</Filter>
+    <None Include="..\include\math\DXMath\DXMathVectorArithmetic.inl">
+      <Filter>Header Files\math\DXMath</Filter>
     </None>
-    <None Include="..\src\MathSrc\DXMath\DXMathVector3DFunctions.inl">
-      <Filter>Source Files\MathSrc\DXMath</Filter>
+    <None Include="..\include\math\DXMath\DXMathVectorLoadFunctions.inl">
+      <Filter>Header Files\math\DXMath</Filter>
     </None>
-    <None Include="..\src\MathSrc\DXMath\DXMathVectorArithmetic.inl">
-      <Filter>Source Files\MathSrc\DXMath</Filter>
+    <None Include="..\include\math\DXMath\DXMathVectorStoreFunctions.inl">
+      <Filter>Header Files\math\DXMath</Filter>
     </None>
-    <None Include="..\src\MathSrc\DXMath\DxMathVectorAccessorFunctions.inl">
-      <Filter>Source Files\MathSrc\DXMath</Filter>
+    <None Include="..\include\RenderingDevice\DX11Device\NLREDX11RenderingDevice.inl">
+      <Filter>Header Files\RenderingDevice\DX11Device</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

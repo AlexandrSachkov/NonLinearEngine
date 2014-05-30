@@ -164,5 +164,5 @@ private:
 	IDXGISwapChain* _swapChain;
 };
 
-#include "RenderingDeviceSrc\DX11Device\NLREDX11RenderingDevice.inl"
+#include "RenderingDevice\DX11Device\NLREDX11RenderingDevice.inl"
 #endif

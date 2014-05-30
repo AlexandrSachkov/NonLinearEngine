@@ -26,7 +26,7 @@ THE SOFTWARE.
 -----------------------------------------------------------------------------
 */
 
-#include "stdafx.h"
+#include "NLREMain\stdafx.h"
 #include "RenderingDevice\NLREForwardRT.h"
 
 NLREForwardRT::NLREForwardRT(std::shared_ptr<NLRERenderingDevice> renderingDevice)

@@ -26,7 +26,7 @@ THE SOFTWARE.
 -----------------------------------------------------------------------------
 */
 
-#include "stdafx.h"
+#include "NLREMain\stdafx.h"
 
 std::vector <void(*)(char[])> NLRE_Log::debugCallbackList;
 std::vector <void(*)(char[])> NLRE_Log::consoleCallbackList;

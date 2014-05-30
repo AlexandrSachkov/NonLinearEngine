@@ -26,7 +26,8 @@ THE SOFTWARE.
 -----------------------------------------------------------------------------
 */
 
-#ifndef NLRE_CONFIGURATOR_
+#if defined(NLRE_CONFIGURATOR_) || defined (NLE_CONFIGURATOR_)
+#else
 #define NLRE_CONFIGURATOR_
 
 

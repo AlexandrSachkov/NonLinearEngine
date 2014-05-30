@@ -29,7 +29,7 @@ THE SOFTWARE.
 #ifndef NLRE_LOG_
 #define NLRE_LOG_
 
-#include "stdafx.h"
+#include "NLREMain\stdafx.h"
 
 #ifdef _DEBUG || DEBUG
 #define _NLRE_debug(...) NLRE_Log::debug(__VA_ARGS__)
