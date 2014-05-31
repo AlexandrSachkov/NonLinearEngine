@@ -30,7 +30,7 @@ THE SOFTWARE.
 #include "RenderingEngine\RenderingDevice\DX11Device\NLREDX11RenderingDevice.h"
 
 
-NLREDX11RenderingDevice::NLREDX11RenderingDevice(HWND hwndVal, int screenWidthVal, int screenHeightVal)
+NLREDX11RenderingDevice::NLREDX11RenderingDevice(NLEWindowReference hwndVal, int screenWidthVal, int screenHeightVal)
 {
 
 	_hwnd = hwndVal;

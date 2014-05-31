@@ -179,6 +179,9 @@
     <ClInclude Include="..\include\NLEConfigurator.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\include\NLEResources.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\include\math\DXMath\DXMathMatrixFunctions.inl">
@@ -207,9 +210,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\src\RenderingEngineSrc\main.cpp">
-      <Filter>Source Files\RenderingEngineSrc</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\RenderingEngineSrc\NLRE.cpp">
       <Filter>Source Files\RenderingEngineSrc</Filter>
     </ClCompile>
@@ -256,6 +256,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\src\NLELog.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\NLEApplicationLayer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

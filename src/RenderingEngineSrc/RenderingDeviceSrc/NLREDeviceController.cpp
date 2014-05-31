@@ -29,7 +29,7 @@ THE SOFTWARE.
 #include "stdafx.h"
 #include "RenderingEngine\RenderingDevice\NLREDeviceController.h"
 
-NLREDeviceController::NLREDeviceController(HWND hwndVal, int widthVal, int heightVal, NLRE_RENDERING_TECHNIQUE_ID techniqueId)
+NLREDeviceController::NLREDeviceController(NLEWindowReference hwndVal, int widthVal, int heightVal, NLRE_RENDERING_TECHNIQUE_ID techniqueId)
 {
 	_renderingTechniqueId = techniqueId;
 	_renderingDevice.reset(new NLRERenderingDevice(hwndVal, widthVal, heightVal));

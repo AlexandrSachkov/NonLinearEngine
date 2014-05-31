@@ -37,7 +37,7 @@ THE SOFTWARE.
 class NLRE
 {
 public:
-	NLRE(HWND hwndVal, int widthVal, int heightVal);
+	NLRE(NLEWindowReference hwndVal, int widthVal, int heightVal);
 	~NLRE();
 
 	void render();

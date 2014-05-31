@@ -34,7 +34,7 @@ THE SOFTWARE.
 class NLREDeviceController
 {
 public:
-	NLREDeviceController(HWND hwndVal, int widthVal, int heightVal, NLRE_RENDERING_TECHNIQUE_ID techniqueId);
+	NLREDeviceController(NLEWindowReference hwndVal, int widthVal, int heightVal, NLRE_RENDERING_TECHNIQUE_ID techniqueId);
 	NLREDeviceController(const NLREDeviceController&);
 	~NLREDeviceController();
 

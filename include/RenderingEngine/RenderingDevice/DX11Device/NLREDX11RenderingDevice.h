@@ -36,7 +36,7 @@ THE SOFTWARE.
 class NLREDX11RenderingDevice
 {
 public:
-	NLREDX11RenderingDevice(HWND hwndVal, int widthVal, int heightVal);
+	NLREDX11RenderingDevice(NLEWindowReference hwndVal, int widthVal, int heightVal);
 	NLREDX11RenderingDevice(const NLREDX11RenderingDevice&);
 	~NLREDX11RenderingDevice();
 
@@ -155,7 +155,7 @@ private:
 	bool createDeviceAndSwapChain();
 	bool loadBlobFromFile(std::wstring path, NLRE_ShaderBlob*& blob);
 	
-	HWND _hwnd;
+	NLEWindowReference _hwnd;
 	int _screenWidth;
 	int _screenHeight;
 	

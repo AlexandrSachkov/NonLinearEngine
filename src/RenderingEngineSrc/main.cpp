@@ -139,6 +139,7 @@ void ReleaseResources()
 
 bool InitializeWindow(HINSTANCE hInstance, int ShowWnd, int width, int height, bool windowed)
 {
+	/*
 	typedef struct _WNDCLASS {
 		UINT cbSize;
 		UINT style;
@@ -152,7 +153,7 @@ bool InitializeWindow(HINSTANCE hInstance, int ShowWnd, int width, int height, b
 		LPCTSTR lpszMenuName;
 		LPCTSTR lpszClassName;
 	} WNDCLASS;
-
+	*/
 	WNDCLASSEX wc;
 
 	wc.cbSize = sizeof(WNDCLASSEX);
@@ -178,8 +179,8 @@ bool InitializeWindow(HINSTANCE hInstance, int ShowWnd, int width, int height, b
 	hwnd = CreateWindowEx(
 		NULL,
 		WndClassName,
-		L"NonLinear Rendering Engine Test",
-		WS_OVERLAPPEDWINDOW,
+		L"NonLinear Engine",
+		WS_OVERLAPPED | WS_CAPTION | WS_SYSMENU | WS_THICKFRAME | WS_MINIMIZEBOX,
 		CW_USEDEFAULT, CW_USEDEFAULT,
 		width, height,
 		NULL,
@@ -195,7 +196,7 @@ bool InitializeWindow(HINSTANCE hInstance, int ShowWnd, int width, int height, b
 		return 1;
 	}
 
-	ShowWindow(hwnd, ShowWnd);
+	ShowWindow(hwnd, SW_MAXIMIZE);
 	UpdateWindow(hwnd);
 
 	return true;

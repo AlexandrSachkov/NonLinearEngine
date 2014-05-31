@@ -29,9 +29,17 @@ THE SOFTWARE.
 #include "stdafx.h"
 #include "NLE.h"
 
-NLE::NLE()
+NLE::NLE(NLEWindowReference winRef, int width, int height)
 {
+	_winRef = winRef;
+	_width = width;
+	_height = height;
 
+	NLRE_Log::registerDebugCallback(NLE::NLREdebugOutputHook);
+	NLRE_Log::registerConsoleCallback(NLE::NLREconsoleOutputHook);
+	NLRE_Log::registerErrorCallback(NLE::NLREerrorOutputHook);
+
+	_renderingEngine.reset(new NLRE(winRef, width, height));
 }
 
 NLE::NLE(const NLE& other)
@@ -39,7 +47,8 @@ NLE::NLE(const NLE& other)
 
 	if (!initialize())
 	{
-
+		NLE_Log::err(NLE_Log::CRITICAL, "NonLinear Engine failed to initialize");
+		throw std::exception("NonLinear Engine failed to initialize");
 	}
 }
 
@@ -50,17 +59,30 @@ NLE::~NLE()
 
 bool NLE::initialize()
 {
+	if (!_winRef)
+	{
+		NLE_Log::err(NLE_Log::CRITICAL, "Window Reference is uninitialized");
+		return false;
+	}
 	return true;
+}
+
+void NLE::NLREdebugOutputHook(char text[])
+{
+	NLE_Log::debug(text);
+}
+
+void NLE::NLREconsoleOutputHook(char text[])
+{
+	NLE_Log::console(text);
+}
+
+void NLE::NLREerrorOutputHook(NLRE_Log::ErrorFlag flag, char text[])
+{
+	NLE_Log::err((NLE_Log::ErrorFlag)flag, text);
 }
 
 void NLE::run()
 {
 
 }
-/*
-int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine,
-	int nShowCmd)
-{
-	return 0;
-}
-*/

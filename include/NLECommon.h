@@ -31,5 +31,6 @@ THE SOFTWARE.
 
 #include "NLEConfigurator.h"
 #include "NLELog.h"
+#include "NLEResources.h"
 
 #endif

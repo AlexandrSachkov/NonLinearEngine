@@ -35,7 +35,7 @@ THE SOFTWARE.
 class NLE
 {
 public:
-	NLE();
+	NLE(NLEWindowReference winRef, int width, int height);
 	NLE(const NLE& other);
 	~NLE();
 
@@ -43,8 +43,17 @@ public:
 
 private:
 	bool initialize();
+	bool initializeWindow();
 
-	std::shared_ptr<NLRE> nlre;
+	static void NLREdebugOutputHook(char text[]);
+	static void NLREconsoleOutputHook(char text[]);
+	static void NLREerrorOutputHook(NLRE_Log::ErrorFlag flag, char text[]);
+
+	NLEWindowReference _winRef;
+	int _width;
+	int _height;
+
+	std::shared_ptr<NLRE> _renderingEngine;
 };
 
 #endif
