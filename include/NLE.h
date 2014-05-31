@@ -1,10 +1,10 @@
 /*
 -----------------------------------------------------------------------------
-This source file is part of NLRE
-(NonLinear Rendering Engine)
-For the latest info, see https://github.com/AlexandrSachkov/NonLinearRenderingEngine
+This source file is part of NLE
+(NonLinear Engine)
+For the latest info, see https://github.com/AlexandrSachkov/NonLinearEngine
 
-Copyright (c) 2014 NonLinear Rendering Engine Team
+Copyright (c) 2014 NonLinear Engine Team
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -26,18 +26,25 @@ THE SOFTWARE.
 -----------------------------------------------------------------------------
 */
 
-#ifndef STDAFX_
-#define STDAFX_
 
-#include <vector>
-#include <cstdarg>
-#include <unordered_map>
-#include <fstream>
-#include <malloc.h>
+#ifndef NLE_
+#define NLE_
 
-#include "boost\filesystem.hpp"
-namespace fs = boost::filesystem;
+#include "RenderingEngine\NLRE.h"
 
-#include "NLECommon.h"
-#include "RenderingEngine\NLREMain\NLRECommon.h" //Must be the last statement in this file
+class NLE
+{
+public:
+	NLE();
+	NLE(const NLE& other);
+	~NLE();
+
+	void run();
+
+private:
+	bool initialize();
+
+	std::shared_ptr<NLRE> nlre;
+};
+
 #endif

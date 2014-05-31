@@ -309,6 +309,10 @@
     <ClInclude Include="..\include\math\DXMath\DXMathVectorStoreFunctions.h" />
     <ClInclude Include="..\include\math\DXMath\DXMathWrap.h" />
     <ClInclude Include="..\include\Math\NLEMath.h" />
+    <ClInclude Include="..\include\NLE.h" />
+    <ClInclude Include="..\include\NLECommon.h" />
+    <ClInclude Include="..\include\NLEConfigurator.h" />
+    <ClInclude Include="..\include\NLELog.h" />
     <ClInclude Include="..\include\RenderingEngine\NLRE.h" />
     <ClInclude Include="..\include\RenderingEngine\NLREMain\NLREAlignedAllocator.h" />
     <ClInclude Include="..\include\RenderingEngine\NLREMain\NLRECommon.h" />
@@ -348,6 +352,8 @@
     <None Include="..\include\RenderingEngine\RenderingDevice\DX11Device\NLREDX11RenderingDevice.inl" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\src\NLE.cpp" />
+    <ClCompile Include="..\src\NLELog.cpp" />
     <ClCompile Include="..\src\RenderingEngineSrc\main.cpp" />
     <ClCompile Include="..\src\RenderingEngineSrc\NLRE.cpp" />
     <ClCompile Include="..\src\RenderingEngineSrc\NLREMainSrc\NLRELog.cpp" />

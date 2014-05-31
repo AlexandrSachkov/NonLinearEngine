@@ -1,10 +1,10 @@
 /*
 -----------------------------------------------------------------------------
-This source file is part of NLRE
-(NonLinear Rendering Engine)
-For the latest info, see https://github.com/AlexandrSachkov/NonLinearRenderingEngine
+This source file is part of NLE
+(NonLinear Engine)
+For the latest info, see https://github.com/AlexandrSachkov/NonLinearEngine
 
-Copyright (c) 2014 NonLinear Rendering Engine Team
+Copyright (c) 2014 NonLinear Engine Team
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -26,18 +26,49 @@ THE SOFTWARE.
 -----------------------------------------------------------------------------
 */
 
-#ifndef STDAFX_
-#define STDAFX_
+#ifndef NLE_CONFIGURATOR_
+#define NLE_CONFIGURATOR_
 
-#include <vector>
-#include <cstdarg>
-#include <unordered_map>
-#include <fstream>
-#include <malloc.h>
 
-#include "boost\filesystem.hpp"
-namespace fs = boost::filesystem;
 
-#include "NLECommon.h"
-#include "RenderingEngine\NLREMain\NLRECommon.h" //Must be the last statement in this file
+/*
+Platform
+1. Windows Vista:				_WINDOWS_VISTA_
+2. Windows 7:					_WINDOWS_7_
+3. Windows 8:					_WINDOWS_8_
+4. Windows 8.1:					_WINDOWS_8_1_
+*/
+#define _WINDOWS_7_
+
+/*
+Graphics API
+1. DirectX 11:					_DX11_
+*/
+#define _DX11_	
+
+/*
+Task Management
+1. Parallel Patterns Library:	_PPL_
+2. Threading Building Blocks:	_TBB_			<= Unsupported
+*/
+
+#define _PPL_
+
+/*
+SIMD Math library:
+1. DirectX Math:				_DXMATH_
+*/
+#define _DXMATH_
+
+/*
+SIMD Collision Library:
+1. DirectX Collision			_DXCOLLISION_
+*/
+#define _DXCOLLISION_
+
+/*
+Log message character max size
+*/
+#define _LOG_MSG_MAX_SIZE	256
+
 #endif
