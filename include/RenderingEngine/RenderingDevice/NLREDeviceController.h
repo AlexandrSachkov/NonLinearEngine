@@ -26,19 +26,28 @@ THE SOFTWARE.
 -----------------------------------------------------------------------------
 */
 
-#ifndef DX_MATH_VECTOR_LOAD_FUNCTIONS_
-#define DX_MATH_VECTOR_LOAD_FUNCTIONS_
+#ifndef NLRE_DEVICE_CONTROLLER_
+#define NLRE_DEVICE_CONTROLLER_
 
-namespace NLEMath
+#include "RenderingEngine\RenderingDevice\NLREForwardRT.h"
+
+class NLREDeviceController
 {
-	NLE_VECTOR	NLELoadFloat3(const NLE_FLOAT3* source);
-	NLE_VECTOR	NLELoadFloat3A(const NLE_FLOAT3A* source);
-	NLE_MATRIX	NLELoadFloat3x3(const NLE_FLOAT3X3* source);
-	NLE_VECTOR	NLELoadFloat4(const NLE_FLOAT4* source);
-	NLE_VECTOR	NLELoadFloat4A(const NLE_FLOAT4A* source);
-	NLE_MATRIX	NLELoadFloat4x4(const NLE_FLOAT4X4* source);
-	NLE_MATRIX	NLELoadFloat4x4A(const NLE_FLOAT4X4A* source);
-}
-#include "Math\DXMath\DXMathVectorLoadFunctions.inl"
+public:
+	NLREDeviceController(HWND hwndVal, int widthVal, int heightVal, NLRE_RENDERING_TECHNIQUE_ID techniqueId);
+	NLREDeviceController(const NLREDeviceController&);
+	~NLREDeviceController();
 
+	std::shared_ptr<NLRERenderingDevice> getRenderingDevice();
+	bool setRenderingTechnique(NLRE_RENDERING_TECHNIQUE_ID techniqueId);
+	NLRE_RENDERING_TECHNIQUE_ID getCurrentRenderingTechniqueId();
+	void render(std::vector<std::shared_ptr<NLRE_RenderableAsset>>& assets);
+
+	std::shared_ptr<NLRERenderingTechnique> _renderingTechnique;
+private:
+	bool initialize();
+	NLRE_RENDERING_TECHNIQUE_ID _renderingTechniqueId;
+	std::shared_ptr<NLRERenderingDevice> _renderingDevice;
+	
+};
 #endif

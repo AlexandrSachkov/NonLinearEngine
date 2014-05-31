@@ -26,19 +26,46 @@ THE SOFTWARE.
 -----------------------------------------------------------------------------
 */
 
-#ifndef DX_MATH_VECTOR_LOAD_FUNCTIONS_
-#define DX_MATH_VECTOR_LOAD_FUNCTIONS_
+#ifndef NLRE_LOG_
+#define NLRE_LOG_
 
-namespace NLEMath
+#include "stdafx.h"
+
+#ifdef _DEBUG || DEBUG
+#define _NLRE_debug(...) NLRE_Log::debug(__VA_ARGS__)
+#else
+#define _NLRE_debug(...) 
+#endif
+
+
+
+class NLRE_Log
 {
-	NLE_VECTOR	NLELoadFloat3(const NLE_FLOAT3* source);
-	NLE_VECTOR	NLELoadFloat3A(const NLE_FLOAT3A* source);
-	NLE_MATRIX	NLELoadFloat3x3(const NLE_FLOAT3X3* source);
-	NLE_VECTOR	NLELoadFloat4(const NLE_FLOAT4* source);
-	NLE_VECTOR	NLELoadFloat4A(const NLE_FLOAT4A* source);
-	NLE_MATRIX	NLELoadFloat4x4(const NLE_FLOAT4X4* source);
-	NLE_MATRIX	NLELoadFloat4x4A(const NLE_FLOAT4X4A* source);
-}
-#include "Math\DXMath\DXMathVectorLoadFunctions.inl"
+
+public:
+
+	enum ErrorFlag {
+		CRITICAL,
+		REG
+	};
+	static void debug(const char* format, ...);
+	static void console(const char* format, ...);
+	static void err(ErrorFlag flag, const char* format, ...);
+	static void registerDebugCallback(void(*callback)(char msg[]));
+	static void registerConsoleCallback(void(*callback)(char msg[]));
+	static void registerErrorCallback(void(*callback)(NLRE_Log::ErrorFlag, char msg[]));
+	static void unregisterDebugCallback(void(*callback)(char msg[]));
+	static void unregisterConsoleCallback(void(*callback)(char msg[]));
+	static void unregisterErrorCallback(void(*callback)(NLRE_Log::ErrorFlag, char msg[]));
+	static void unregisterDebugCallbackAll();
+	static void unregisterConsoleCallbackAll();
+	static void unregisterErrorCallbackAll();
+
+
+	static std::vector <void(*)(char[])> debugCallbackList;
+	static std::vector <void(*)(char[])> consoleCallbackList;
+	static std::vector <void(*)(NLRE_Log::ErrorFlag, char[])> errCallbackList;
+};
+
 
 #endif

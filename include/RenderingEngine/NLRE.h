@@ -25,20 +25,32 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 -----------------------------------------------------------------------------
 */
+#pragma once
 
-#ifndef DX_MATH_VECTOR_LOAD_FUNCTIONS_
-#define DX_MATH_VECTOR_LOAD_FUNCTIONS_
+#ifndef NLRE_
+#define NLRE_
 
-namespace NLEMath
+#include "RenderingEngine\SceneManager\NLRESceneManager.h"
+#include "RenderingEngine\ResourceLoader\NLRETextureLoader.h"
+#include "RenderingEngine\ResourceLoader\NLREAssetImporter.h"
+
+class NLRE
 {
-	NLE_VECTOR	NLELoadFloat3(const NLE_FLOAT3* source);
-	NLE_VECTOR	NLELoadFloat3A(const NLE_FLOAT3A* source);
-	NLE_MATRIX	NLELoadFloat3x3(const NLE_FLOAT3X3* source);
-	NLE_VECTOR	NLELoadFloat4(const NLE_FLOAT4* source);
-	NLE_VECTOR	NLELoadFloat4A(const NLE_FLOAT4A* source);
-	NLE_MATRIX	NLELoadFloat4x4(const NLE_FLOAT4X4* source);
-	NLE_MATRIX	NLELoadFloat4x4A(const NLE_FLOAT4X4A* source);
-}
-#include "Math\DXMath\DXMathVectorLoadFunctions.inl"
+public:
+	NLRE(HWND hwndVal, int widthVal, int heightVal);
+	~NLRE();
 
+	void render();
+	void importAsset(std::wstring path);
+
+	std::shared_ptr<NLREAssetImporter> getAssetImporter();
+	std::shared_ptr<NLRESceneManager> getSceneManager();
+private:
+	std::shared_ptr<NLREAssetImporter> _assetImporter;
+	std::shared_ptr<NLREDeviceController> _deviceController;
+	std::shared_ptr<NLRERenderingDevice> _renderingDevice;
+	std::shared_ptr<NLRESceneManager> _sceneManager;
+	std::shared_ptr<NLRETextureLoader> _textureLoader;
+	
+};
 #endif

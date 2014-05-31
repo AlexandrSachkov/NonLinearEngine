@@ -38,7 +38,7 @@ namespace NLEMath
 	NLE_VECTOR	_NLE_CALLCONV_ NLEVector4ClampLengthV(NLE_FVECTOR v, NLE_FVECTOR lengthMin, NLE_FVECTOR lengthMax);
 	NLE_VECTOR	_NLE_CALLCONV_ NLEVector4Cross(NLE_FVECTOR v1, NLE_FVECTOR v2, NLE_FVECTOR v3);
 	NLE_VECTOR	_NLE_CALLCONV_ NLEVector4Dot(NLE_FVECTOR v1, NLE_FVECTOR v2);
-	bool			_NLE_CALLCONV_ NLEVector4InBounds(NLE_FVECTOR v, NLE_FVECTOR bounds);
+	bool		_NLE_CALLCONV_ NLEVector4InBounds(NLE_FVECTOR v, NLE_FVECTOR bounds);
 	NLE_VECTOR	_NLE_CALLCONV_ NLEVector4Length(NLE_FVECTOR v);
 	NLE_VECTOR	_NLE_CALLCONV_ NLEVector4LengthEst(NLE_FVECTOR v);
 	NLE_VECTOR	_NLE_CALLCONV_ NLEVector4LengthSq(NLE_FVECTOR v);
@@ -58,5 +58,5 @@ namespace NLEMath
 	NLE_VECTOR					NLEVectorZero();
 }
 
-#include "math\DXMath\DXMathVector4DFunctions.inl"
+#include "Math\DXMath\DXMathVector4DFunctions.inl"
 #endif

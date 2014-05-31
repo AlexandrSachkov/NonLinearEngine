@@ -26,19 +26,12 @@ THE SOFTWARE.
 -----------------------------------------------------------------------------
 */
 
-#ifndef DX_MATH_VECTOR_LOAD_FUNCTIONS_
-#define DX_MATH_VECTOR_LOAD_FUNCTIONS_
+#ifndef NLRE_INPUT_LAYOUT_DESCRIPTIONS_
+#define NLRE_INPUT_LAYOUT_DESCRIPTIONS_
 
-namespace NLEMath
-{
-	NLE_VECTOR	NLELoadFloat3(const NLE_FLOAT3* source);
-	NLE_VECTOR	NLELoadFloat3A(const NLE_FLOAT3A* source);
-	NLE_MATRIX	NLELoadFloat3x3(const NLE_FLOAT3X3* source);
-	NLE_VECTOR	NLELoadFloat4(const NLE_FLOAT4* source);
-	NLE_VECTOR	NLELoadFloat4A(const NLE_FLOAT4A* source);
-	NLE_MATRIX	NLELoadFloat4x4(const NLE_FLOAT4X4* source);
-	NLE_MATRIX	NLELoadFloat4x4A(const NLE_FLOAT4X4A* source);
-}
-#include "Math\DXMath\DXMathVectorLoadFunctions.inl"
+#ifdef _DX11_
+	#include "RenderingEngine\RenderingDevice\DX11Device\NLREDX11InputLayoutDescriptions.h"
+typedef NLREDX11InputLayoutDescriptions NLREInputLayoutDescriptions;
+#endif
 
 #endif

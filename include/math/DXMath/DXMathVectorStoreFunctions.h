@@ -39,5 +39,5 @@ namespace NLEMath
 	void _NLE_CALLCONV_ NLEStoreFloat4x4(NLE_FLOAT4X4* destination, NLE_FMATRIX v);
 	void _NLE_CALLCONV_ NLEStoreFloat4x4A(NLE_FLOAT4X4A* destination, NLE_FMATRIX v);
 }
-#include "math\DXMath\DXMathVectorStoreFunctions.inl"
+#include "Math\DXMath\DXMathVectorStoreFunctions.inl"
 #endif

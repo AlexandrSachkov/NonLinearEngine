@@ -26,19 +26,34 @@ THE SOFTWARE.
 -----------------------------------------------------------------------------
 */
 
-#ifndef DX_MATH_VECTOR_LOAD_FUNCTIONS_
-#define DX_MATH_VECTOR_LOAD_FUNCTIONS_
+#ifndef NLRE_COMMON_
+#define NLRE_COMMON_
 
-namespace NLEMath
-{
-	NLE_VECTOR	NLELoadFloat3(const NLE_FLOAT3* source);
-	NLE_VECTOR	NLELoadFloat3A(const NLE_FLOAT3A* source);
-	NLE_MATRIX	NLELoadFloat3x3(const NLE_FLOAT3X3* source);
-	NLE_VECTOR	NLELoadFloat4(const NLE_FLOAT4* source);
-	NLE_VECTOR	NLELoadFloat4A(const NLE_FLOAT4A* source);
-	NLE_MATRIX	NLELoadFloat4x4(const NLE_FLOAT4X4* source);
-	NLE_MATRIX	NLELoadFloat4x4A(const NLE_FLOAT4X4A* source);
-}
-#include "Math\DXMath\DXMathVectorLoadFunctions.inl"
+#include "RenderingEngine\NLREMain\NLREConfigurator.h"	//must be the first line in this file
+
+#if defined(_WINDOWS_VISTA_)
+	#define WINVER 0x0600
+	#define _WIN32_WINNT 0x0600
+
+#elif defined(_WINDOWS_7_)
+	#define WINVER 0x0601
+	#define _WIN32_WINNT 0x0601
+
+#elif defined(_WINDOWS_8_)
+	#define WINVER 0x0602
+	#define _WIN32_WINNT 0x0602
+
+#elif defined(_WINDOWS_8_1_)
+	#define WINVER 0x0603
+	#define _WIN32_WINNT 0x0603
 
 #endif
+
+#include "RenderingEngine\NLREMain\NLREAlignedAllocator.h"
+#include "Math\NLEMath.h"
+#include "RenderingEngine\NLREResources.h"
+#include "RenderingEngine\NLREMain\NLRELog.h"
+#include "RenderingEngine\RenderingDevice\NLREInputLayoutDescriptions.h"
+
+#endif
+

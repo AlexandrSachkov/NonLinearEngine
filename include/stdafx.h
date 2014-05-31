@@ -26,19 +26,17 @@ THE SOFTWARE.
 -----------------------------------------------------------------------------
 */
 
-#ifndef DX_MATH_VECTOR_LOAD_FUNCTIONS_
-#define DX_MATH_VECTOR_LOAD_FUNCTIONS_
+#ifndef STDAFX_
+#define STDAFX_
 
-namespace NLEMath
-{
-	NLE_VECTOR	NLELoadFloat3(const NLE_FLOAT3* source);
-	NLE_VECTOR	NLELoadFloat3A(const NLE_FLOAT3A* source);
-	NLE_MATRIX	NLELoadFloat3x3(const NLE_FLOAT3X3* source);
-	NLE_VECTOR	NLELoadFloat4(const NLE_FLOAT4* source);
-	NLE_VECTOR	NLELoadFloat4A(const NLE_FLOAT4A* source);
-	NLE_MATRIX	NLELoadFloat4x4(const NLE_FLOAT4X4* source);
-	NLE_MATRIX	NLELoadFloat4x4A(const NLE_FLOAT4X4A* source);
-}
-#include "Math\DXMath\DXMathVectorLoadFunctions.inl"
+#include <vector>
+#include <cstdarg>
+#include <unordered_map>
+#include <fstream>
+#include <malloc.h>
 
+#include "boost\filesystem.hpp"
+namespace fs = boost::filesystem;
+
+#include "RenderingEngine\NLREMain\NLRECommon.h" //Must be the last statement in this file
 #endif

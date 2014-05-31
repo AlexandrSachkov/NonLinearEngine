@@ -42,5 +42,5 @@ namespace NLEMath
 	float _NLE_CALLCONV_ NLEVectorGetY(NLE_FVECTOR v);
 	float _NLE_CALLCONV_ NLEVectorGetZ(NLE_FVECTOR v);
 }
-#include "math\DXMath\DXMathVectorAccessorFunctions.inl"
+#include "Math\DXMath\DXMathVectorAccessorFunctions.inl"
 #endif

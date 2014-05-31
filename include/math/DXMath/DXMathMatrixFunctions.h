@@ -82,6 +82,6 @@ namespace NLEMath
 	NLE_MATRIX	_NLE_CALLCONV_ NLEMatrixTranslationFromVector(NLE_FVECTOR offset);
 	NLE_MATRIX	_NLE_CALLCONV_ NLEMatrixTranspose(NLE_FMATRIX m);
 }
-#include "math\DXMath\DXMathMatrixFunctions.inl"
+#include "Math\DXMath\DXMathMatrixFunctions.inl"
 
 #endif

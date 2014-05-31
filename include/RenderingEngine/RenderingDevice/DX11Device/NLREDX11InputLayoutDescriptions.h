@@ -26,19 +26,23 @@ THE SOFTWARE.
 -----------------------------------------------------------------------------
 */
 
-#ifndef DX_MATH_VECTOR_LOAD_FUNCTIONS_
-#define DX_MATH_VECTOR_LOAD_FUNCTIONS_
+#ifndef NLRE_DX11_INPUT_LAYOUT_DESCRIPTIONS_
+#define NLRE_DX11_INPUT_LAYOUT_DESCRIPTIONS_
 
-namespace NLEMath
+#include "stdafx.h"
+
+class NLREDX11InputLayoutDescriptions
 {
-	NLE_VECTOR	NLELoadFloat3(const NLE_FLOAT3* source);
-	NLE_VECTOR	NLELoadFloat3A(const NLE_FLOAT3A* source);
-	NLE_MATRIX	NLELoadFloat3x3(const NLE_FLOAT3X3* source);
-	NLE_VECTOR	NLELoadFloat4(const NLE_FLOAT4* source);
-	NLE_VECTOR	NLELoadFloat4A(const NLE_FLOAT4A* source);
-	NLE_MATRIX	NLELoadFloat4x4(const NLE_FLOAT4X4* source);
-	NLE_MATRIX	NLELoadFloat4x4A(const NLE_FLOAT4X4A* source);
-}
-#include "Math\DXMath\DXMathVectorLoadFunctions.inl"
+public:
+	static const NLRE_APIInputLayoutDecs forwardPosNormTanTextDesc[];
+	static const NLRE_APIInputLayoutDecs forwardPosNormTextDesc[];
+	static const NLRE_APIInputLayoutDecs forwardPosTextDesc[];
+	static const NLRE_APIInputLayoutDecs forwardPosDesc[];
+
+	static NLRE_InputLayoutDesc forwardPosNormTanText;
+	static NLRE_InputLayoutDesc forwardPosNormText;
+	static NLRE_InputLayoutDesc forwardPosText;
+	static NLRE_InputLayoutDesc forwardPos;
+};
 
 #endif
