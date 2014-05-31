@@ -26,36 +26,25 @@ THE SOFTWARE.
 -----------------------------------------------------------------------------
 */
 
+#ifndef NLE_INPUT_PROCESSOR_
+#define NLE_INPUT_PROCESSOR_
 
-#ifndef NLE_
-#define NLE_
+#include <Windows.h>
 
-#include "InputProcessor\NLEInputProcessor.h"
-#include "RenderingEngine\NLRE.h"
-
-class NLE
+class NLEInputProcessor
 {
 public:
-	NLE(NLEWindowReference winRef, int width, int height);
-	NLE(const NLE& other);
-	~NLE();
+	NLEInputProcessor(NLEWindowReference hwnd);
+	NLEInputProcessor(const NLEInputProcessor& other);
+	~NLEInputProcessor();
 
-	void run();
 	void processInput(LPARAM lParam);
 private:
 	bool initialize();
-	bool initializeWindow();
 
-	static void NLREdebugOutputHook(char text[]);
-	static void NLREconsoleOutputHook(char text[]);
-	static void NLREerrorOutputHook(NLRE_Log::ErrorFlag flag, char text[]);
-
-	NLEWindowReference _winRef;
-	int _width;
-	int _height;
-
-	std::shared_ptr<NLEInputProcessor> _inputProcessor;
-	std::shared_ptr<NLRE> _renderingEngine;
+	void processKeyboardEvent(PRAWINPUT raw);
+	void processMouseEvent(PRAWINPUT raw);
+	NLEWindowReference _hwnd;
 };
 
 #endif

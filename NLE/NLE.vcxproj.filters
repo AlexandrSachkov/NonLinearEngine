@@ -54,6 +54,12 @@
     <Filter Include="Header Files\Math\DXMath">
       <UniqueIdentifier>{5dbb3d82-ecdc-4450-810d-180b138f5ea1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\InputProcessor">
+      <UniqueIdentifier>{1fddf3f0-56be-499f-9419-4cbcc4089700}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\InputProcessorSrc">
+      <UniqueIdentifier>{7fbc4ac6-1547-4424-8383-bb53c2c4a476}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\include\math\DXMath\DXMathMatrixFunctions.h">
@@ -182,6 +188,9 @@
     <ClInclude Include="..\include\NLEResources.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\include\InputProcessor\NLEInputProcessor.h">
+      <Filter>Header Files\InputProcessor</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\include\math\DXMath\DXMathMatrixFunctions.inl">
@@ -260,6 +269,9 @@
     </ClCompile>
     <ClCompile Include="..\src\NLEApplicationLayer.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\InputProcessorSrc\NLEInputProcessor.cpp">
+      <Filter>Source Files\InputProcessorSrc</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

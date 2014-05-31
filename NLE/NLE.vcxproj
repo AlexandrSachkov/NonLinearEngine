@@ -299,6 +299,7 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="..\include\InputProcessor\NLEInputProcessor.h" />
     <ClInclude Include="..\include\math\DXMath\DXMathMatrixFunctions.h" />
     <ClInclude Include="..\include\math\DXMath\DXMathStructures.h" />
     <ClInclude Include="..\include\math\DXMath\DXMathVector3DFunctions.h" />
@@ -353,6 +354,7 @@
     <None Include="..\include\RenderingEngine\RenderingDevice\DX11Device\NLREDX11RenderingDevice.inl" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\src\InputProcessorSrc\NLEInputProcessor.cpp" />
     <ClCompile Include="..\src\NLE.cpp" />
     <ClCompile Include="..\src\NLEApplicationLayer.cpp" />
     <ClCompile Include="..\src\NLELog.cpp" />

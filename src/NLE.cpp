@@ -39,7 +39,10 @@ NLE::NLE(NLEWindowReference winRef, int width, int height)
 	NLRE_Log::registerConsoleCallback(NLE::NLREconsoleOutputHook);
 	NLRE_Log::registerErrorCallback(NLE::NLREerrorOutputHook);
 
+	_inputProcessor.reset(new NLEInputProcessor(winRef));
 	_renderingEngine.reset(new NLRE(winRef, width, height));
+
+	NLE_Log::console("======> NLE successfully initialized.");
 }
 
 NLE::NLE(const NLE& other)
@@ -85,4 +88,9 @@ void NLE::NLREerrorOutputHook(NLRE_Log::ErrorFlag flag, char text[])
 void NLE::run()
 {
 
+}
+
+void NLE::processInput(LPARAM lParam)
+{
+	_inputProcessor->processInput(lParam);
 }

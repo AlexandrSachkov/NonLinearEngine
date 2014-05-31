@@ -27,10 +27,14 @@ THE SOFTWARE.
 */
 
 #include "stdafx.h"
+
+#define WIN32_LEAN_AND_MEAN
 #include <Windows.h>
 #include <stdio.h>
 
 #include "NLE.h"
+
+NLE* nle = NULL;
 
 void debugCallback(char text[]);
 void consoleCallback(char text[]);
@@ -38,8 +42,8 @@ void errorCallback(NLE_Log::ErrorFlag flag, char text[]);
 
 int messageloop();
 void releaseResources(NLE* nle);
-bool InitializeWindow(HINSTANCE hInstance, int ShowWnd, int width, int height, HWND& hwnd);
-LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
+bool initializeWindow(HINSTANCE hInstance, int width, int height, HWND& hwnd);
+LRESULT CALLBACK wndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
 
 int WINAPI WinMain(
@@ -55,13 +59,11 @@ int WINAPI WinMain(
 	int width = GetSystemMetrics(SM_CXMAXIMIZED);
 	int height = GetSystemMetrics(SM_CYMAXIMIZED);
 
-	NLE* nle = NULL;
-
 	NLE_Log::registerErrorCallback(errorCallback);
 	NLE_Log::registerConsoleCallback(debugCallback);
 	NLE_Log::registerDebugCallback(debugCallback);
 
-	if (!InitializeWindow(hInstance, nShowCmd, width, height, hwnd))
+	if (!initializeWindow(hInstance, width, height, hwnd))
 	{
 		MessageBox(0, L"Window Initialization - Failed",
 			L"Error", MB_OK);
@@ -87,14 +89,14 @@ int WINAPI WinMain(
 	return 0;
 }
 
-bool InitializeWindow(HINSTANCE hInstance, int ShowWnd, int width, int height, HWND& hwnd)
+bool initializeWindow(HINSTANCE hInstance, int width, int height, HWND& hwnd)
 {
 	WNDCLASSEX wc;
 	std::wstring windowClassName = L"mainWindow";
 
 	wc.cbSize = sizeof(WNDCLASSEX);
 	wc.style = CS_HREDRAW | CS_VREDRAW;
-	wc.lpfnWndProc = WndProc;
+	wc.lpfnWndProc = wndProc;
 	wc.cbClsExtra = NULL;
 	wc.cbWndExtra = NULL;
 	wc.hInstance = hInstance;
@@ -142,15 +144,12 @@ int messageloop()
 
 	while (true)
 	{
-
 		if (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE))
 		{
 			if (msg.message == WM_QUIT) break;
 			TranslateMessage(&msg);
 			DispatchMessage(&msg);
 		}
-
-		Sleep(5);
 	}
 	return msg.wParam;
 }
@@ -163,15 +162,12 @@ void releaseResources(NLE* nle)
 	FreeConsole();
 }
 
-LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
+LRESULT CALLBACK wndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
 	switch (msg)
 	{
-	case WM_KEYDOWN:
-		if (wParam == VK_ESCAPE)
-		{
-			DestroyWindow(hwnd);
-		}
+	case WM_INPUT:
+		nle->processInput(lParam);
 		return 0;
 
 	case WM_DESTROY:

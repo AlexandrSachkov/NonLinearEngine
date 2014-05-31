@@ -36,7 +36,7 @@ NLRE::NLRE(NLEWindowReference hwndVal, int widthVal, int heightVal){
 	_sceneManager.reset(new NLRESceneManager(_deviceController, _renderingDevice, _textureLoader, widthVal, heightVal));
 	_assetImporter.reset(new NLREAssetImporter(_renderingDevice, _textureLoader));
 
-	NLRE_Log::console("NLRE successfully initialized");
+	NLRE_Log::console("======> NLRE successfully initialized.");
 }
 
 NLRE::~NLRE(){
