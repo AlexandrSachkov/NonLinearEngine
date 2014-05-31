@@ -168,3 +168,4 @@ lib/Debug/x64/NLRE_d.bsc
 *.cso
 *.cso
 lib/Debug/Win32/NLRE_d.lib
+lib/Debug/Win32/NLE_d.exe
