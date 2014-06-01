@@ -41,7 +41,11 @@ public:
 	~NLE();
 
 	void run();
-	void processInput(LPARAM lParam);
+	inline void processInput(LPARAM lParam)
+	{
+		_inputProcessor->processInput(lParam);
+	}
+
 private:
 	bool initialize();
 	bool initializeWindow();

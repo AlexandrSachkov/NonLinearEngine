@@ -90,7 +90,3 @@ void NLE::run()
 
 }
 
-void NLE::processInput(LPARAM lParam)
-{
-	_inputProcessor->processInput(lParam);
-}

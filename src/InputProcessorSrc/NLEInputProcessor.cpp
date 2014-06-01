@@ -121,6 +121,8 @@ void NLEInputProcessor::processInput(LPARAM lParam)
 	{
 		processMouseEvent(raw);
 	}
+
+	delete[] lpb;
 }
 
 void NLEInputProcessor::processKeyboardEvent(PRAWINPUT raw)
@@ -144,5 +146,15 @@ void NLEInputProcessor::processKeyboardEvent(PRAWINPUT raw)
 
 void NLEInputProcessor::processMouseEvent(PRAWINPUT raw)
 {
-	printf("Mouse event");
+	USHORT flag;
+	flag = raw->data.mouse.usFlags;
+
+	if (flag == MOUSE_MOVE_ABSOLUTE)
+	{
+		//printf("absolute");
+	}
+	else if (flag == MOUSE_MOVE_RELATIVE)
+	{
+		//printf("relative");
+	}
 }
