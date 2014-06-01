@@ -8,11 +8,12 @@
 
 # Build results
 
-#[Dd]ebug/
-#[Rr]elease/
-#[Pp]rofile
-#x64/
+[Dd]ebug/
+[Rr]elease/
+[Pp]rofile
+x64/
 [Ii]ntermediate/
+[Dd]ependencies
 build/
 [Bb]in/
 [Oo]bj/
@@ -157,6 +158,6 @@ $RECYCLE.BIN/
 # Mac desktop service store files
 .DS_Store
 boost_1_55_0/
-#lib/
+lib/
 *.cso
 
