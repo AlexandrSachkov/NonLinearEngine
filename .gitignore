@@ -169,3 +169,4 @@ lib/Debug/x64/NLRE_d.bsc
 *.cso
 lib/Debug/Win32/NLRE_d.lib
 lib/Debug/Win32/NLE_d.exe
+lib/Release/x64/NLE.exe
