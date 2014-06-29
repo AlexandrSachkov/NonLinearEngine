@@ -30,21 +30,20 @@ THE SOFTWARE.
 #ifndef NLE_
 #define NLE_
 
+#include "NLEApplicationLayer.h"
 #include "InputProcessor\NLEInputProcessor.h"
 #include "RenderingEngine\NLRE.h"
 
 class NLE
 {
 public:
-	NLE(NLEWindowReference winRef, int width, int height);
+	NLE(HINSTANCE hInstance);
 	NLE(const NLE& other);
 	~NLE();
 
 	void run();
-	inline void processInput(LPARAM lParam)
-	{
-		_inputProcessor->processInput(lParam);
-	}
+	std::shared_ptr<NLRE> getRenderingEngine();
+	std::shared_ptr<NLEInputProcessor> getInputProcessor();
 
 private:
 	bool initialize();
@@ -58,6 +57,7 @@ private:
 	int _width;
 	int _height;
 
+	std::shared_ptr<NLEApplicationLayer> _applicationLayer;
 	std::shared_ptr<NLEInputProcessor> _inputProcessor;
 	std::shared_ptr<NLRE> _renderingEngine;
 };

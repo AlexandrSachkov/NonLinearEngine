@@ -28,78 +28,77 @@ THE SOFTWARE.
 
 #include "stdafx.h"
 
+#include "NLEApplicationLayer.h"
+#include "NLE.h"
+
 #define WIN32_LEAN_AND_MEAN
 #include <Windows.h>
 #include <stdio.h>
+#include <tchar.h>
 
-#include "NLE.h"
+NLE* nle = nullptr;
 
-NLE* nle = NULL;
+NLEApplicationLayer::NLEApplicationLayer(HINSTANCE hInstance, NLE* nle)
+{
+	_hInstance = hInstance;
+	_nle = nle;
+	_hwnd = nullptr;
+	_screenWidth = 0;
+	_screenHeight = 0;
+	_clientWidth = 0;
+	_clientHeight = 0;
 
-void debugCallback(char text[]);
-void consoleCallback(char text[]);
-void errorCallback(NLE_Log::ErrorFlag flag, char text[]);
+	if (!initialize())
+	{
+		NLE_Log::err(NLE_Log::CRITICAL, "Application Layer failed to initialize");
+		throw std::exception("Application Layer failed to initialize");
+	}
+}
 
-int messageloop();
-void releaseResources(NLE* nle);
-bool initializeWindow(HINSTANCE hInstance, int width, int height, HWND& hwnd);
-LRESULT CALLBACK wndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
+NLEApplicationLayer::NLEApplicationLayer(const NLEApplicationLayer& other)
+{
+}
 
-
-int WINAPI WinMain(
-	HINSTANCE hInstance,
-	HINSTANCE hPrevInstance,
-	LPSTR lpCmdLine,
-	int nShowCmd)
+bool NLEApplicationLayer::initialize()
 {
 	AllocConsole();
 	freopen("CONOUT$", "wb", stdout);
 
-	HWND hwnd = NULL;
-	int width = GetSystemMetrics(SM_CXMAXIMIZED);
-	int height = GetSystemMetrics(SM_CYMAXIMIZED);
+	NLE_Log::registerErrorCallback(NLEApplicationLayer::errorCallback);
+	NLE_Log::registerConsoleCallback(NLEApplicationLayer::debugCallback);
+	NLE_Log::registerDebugCallback(NLEApplicationLayer::debugCallback);
 
-	NLE_Log::registerErrorCallback(errorCallback);
-	NLE_Log::registerConsoleCallback(debugCallback);
-	NLE_Log::registerDebugCallback(debugCallback);
-
-	if (!initializeWindow(hInstance, width, height, hwnd))
+	if (!initializeWindow())
 	{
-		MessageBox(0, L"Window Initialization - Failed",
-			L"Error", MB_OK);
-		return 0;
-	}
+		NLE_Log::err(NLE_Log::CRITICAL, "Window failed to initialize");
+		return false;
+	}	
+	
+	updateClientDimensions();
+	updateScreenDimensions();
 
-	RECT clientRect;
-	GetClientRect(hwnd, &clientRect);
-	try
-	{
-		nle = new NLE(hwnd, clientRect.right - clientRect.left, clientRect.bottom - clientRect.top);
-	}
-	catch (std::exception& e)
-	{
-		MessageBox(0, L"NonLinear Engine failed to initialize",
-			L"Error", MB_OK);
-		releaseResources(nle);
-		return 0;
-	}
-
-	messageloop();
-	releaseResources(nle);
-	return 0;
+	NLE_Log::console("======> Application Layer successfully initialized.");
+	return true;
 }
 
-bool initializeWindow(HINSTANCE hInstance, int width, int height, HWND& hwnd)
+
+NLEApplicationLayer::~NLEApplicationLayer()
+{
+	fclose(stdout);
+	FreeConsole();
+}
+
+bool NLEApplicationLayer::initializeWindow()
 {
 	WNDCLASSEX wc;
 	std::wstring windowClassName = L"mainWindow";
 
 	wc.cbSize = sizeof(WNDCLASSEX);
 	wc.style = CS_HREDRAW | CS_VREDRAW;
-	wc.lpfnWndProc = wndProc;
+	wc.lpfnWndProc = NLEApplicationLayer::wndProc;
 	wc.cbClsExtra = NULL;
 	wc.cbWndExtra = NULL;
-	wc.hInstance = hInstance;
+	wc.hInstance = _hInstance;
 	wc.hIcon = LoadIcon(NULL, IDI_APPLICATION);
 	wc.hCursor = LoadCursor(NULL, IDC_ARROW);
 	wc.hbrBackground = NULL;
@@ -112,31 +111,31 @@ bool initializeWindow(HINSTANCE hInstance, int width, int height, HWND& hwnd)
 		return false;
 	}
 
-	hwnd = CreateWindowEx(
+	_hwnd = CreateWindowEx(
 		NULL,
 		windowClassName.c_str(),
 		L"NonLinear Engine",
 		WS_OVERLAPPED | WS_CAPTION | WS_SYSMENU | WS_THICKFRAME | WS_MINIMIZEBOX,
 		CW_USEDEFAULT, CW_USEDEFAULT,
-		width, height,
+		_screenWidth, _screenHeight,
 		NULL,
 		NULL,
-		hInstance,
+		_hInstance,
 		NULL
 		);
 
-	if (!hwnd)
+	if (!_hwnd)
 	{
 		return false;
 	}
 
-	ShowWindow(hwnd, SW_MAXIMIZE);
-	UpdateWindow(hwnd);
+	ShowWindow(_hwnd, SW_MAXIMIZE);
+	UpdateWindow(_hwnd);
 
 	return true;
 }
 
-int messageloop()
+int NLEApplicationLayer::runMessageLoop()
 {
 	MSG msg;
 	ZeroMemory(&msg, sizeof(MSG));
@@ -149,24 +148,21 @@ int messageloop()
 			if (msg.message == WM_QUIT) break;
 			DispatchMessage(&msg);
 		}
+		//======================= FOR TESTING PURPOSES =================
+		_nle->getRenderingEngine()->render();
+		_nle->getRenderingEngine()->getSceneManager()->cameraUpdate();
+		//==============================================================
 	}
 	return msg.wParam;
 }
 
-void releaseResources(NLE* nle)
+LRESULT CALLBACK NLEApplicationLayer::wndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
-	if (nle) delete nle;
-
-	fclose(stdout);
-	FreeConsole();
-}
-
-LRESULT CALLBACK wndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
-{
+	
 	switch (msg)
-	{
+	{	
 	case WM_INPUT:
-		nle->processInput(lParam);
+		nle->getInputProcessor()->processInput(lParam);
 		return 0;
 
 	case WM_DESTROY:
@@ -179,20 +175,91 @@ LRESULT CALLBACK wndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 }
 
 
-void errorCallback(NLE_Log::ErrorFlag flag, char text[])
+void NLEApplicationLayer::errorCallback(NLE_Log::ErrorFlag flag, char text[])
 {
 	printf(text);
 	printf("\n");
 }
 
-void debugCallback(char text[])
+void NLEApplicationLayer::debugCallback(char text[])
 {
 	printf(text);
 	printf("\n");
 }
 
-void consoleCallback(char text[])
+void NLEApplicationLayer::consoleCallback(char text[])
 {
 	printf(text);
 	printf("\n");
+}
+
+void NLEApplicationLayer::displayErrorBox(std::wstring title, std::wstring message)
+{
+	MessageBox(_hwnd, message.c_str(), title.c_str(), MB_OK);
+}
+
+NLEWindowReference& NLEApplicationLayer::getWindowReference()
+{
+	return _hwnd;
+}
+
+int NLEApplicationLayer::getScreenWidth()
+{
+	return _screenWidth;
+}
+
+int NLEApplicationLayer::getScreenHeight()
+{
+	return _screenHeight;
+}
+
+void NLEApplicationLayer::updateScreenDimensions()
+{
+	_screenWidth = GetSystemMetrics(SM_CXMAXIMIZED);
+	_screenHeight = GetSystemMetrics(SM_CYMAXIMIZED);
+}
+
+int NLEApplicationLayer::getClientWidth()
+{
+	return _clientWidth;
+}
+
+int NLEApplicationLayer::getClientHeight()
+{
+	return _clientHeight;
+}
+
+void NLEApplicationLayer::updateClientDimensions()
+{
+	RECT clientRect;
+	GetClientRect(_hwnd, &clientRect);
+	_clientWidth = clientRect.right - clientRect.left;
+	_clientHeight = clientRect.bottom - clientRect.top;
+}
+
+void NLEApplicationLayer::setCursorPosition(float x, float y)
+{
+	SetCursorPos(x, y);
+}
+
+int WINAPI WinMain(
+	HINSTANCE hInstance,
+	HINSTANCE hPrevInstance,
+	LPSTR lpCmdLine,
+	int nShowCmd)
+{
+	try
+	{
+		nle = new NLE(hInstance);
+	}
+	catch (std::exception& e)
+	{
+		MessageBox(nullptr, L"NonLinear Engine failed to start.", L"ERROR", MB_OK);
+		delete nle;
+		return 0;
+	}
+	nle->run();
+	delete nle;
+
+	return 0;
 }

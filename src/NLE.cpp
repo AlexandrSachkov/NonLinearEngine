@@ -29,18 +29,24 @@ THE SOFTWARE.
 #include "stdafx.h"
 #include "NLE.h"
 
-NLE::NLE(NLEWindowReference winRef, int width, int height)
+NLE::NLE(HINSTANCE hInstance)
 {
-	_winRef = winRef;
-	_width = width;
-	_height = height;
-
 	NLRE_Log::registerDebugCallback(NLE::NLREdebugOutputHook);
 	NLRE_Log::registerConsoleCallback(NLE::NLREconsoleOutputHook);
 	NLRE_Log::registerErrorCallback(NLE::NLREerrorOutputHook);
 
-	_inputProcessor.reset(new NLEInputProcessor(winRef));
-	_renderingEngine.reset(new NLRE(winRef, width, height));
+	_applicationLayer.reset(new NLEApplicationLayer(hInstance, this));
+	_winRef = _applicationLayer->getWindowReference();
+	_width = _applicationLayer->getClientWidth();
+	_height = _applicationLayer->getClientHeight();
+
+	_renderingEngine.reset(new NLRE(_winRef, _width, _height));
+	_inputProcessor.reset(new NLEInputProcessor(_winRef, _applicationLayer, _renderingEngine));
+
+	//======================= FOR TESTING PURPOSES =================
+	std::wstring path = L"D:\\3DModels\\Altair Model\\altair2.dae";
+	_renderingEngine->importAsset(path);
+	//==============================================================
 
 	NLE_Log::console("======> NLE successfully initialized.");
 }
@@ -87,6 +93,19 @@ void NLE::NLREerrorOutputHook(NLRE_Log::ErrorFlag flag, char text[])
 
 void NLE::run()
 {
-
+	//======================= FOR TESTING PURPOSES =================
+	_applicationLayer->runMessageLoop();
+	//==============================================================
 }
+
+std::shared_ptr<NLRE> NLE::getRenderingEngine()
+{
+	return _renderingEngine;
+}
+
+std::shared_ptr<NLEInputProcessor> NLE::getInputProcessor()
+{
+	return _inputProcessor;
+}
+
 

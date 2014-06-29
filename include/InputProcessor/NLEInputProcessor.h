@@ -30,21 +30,42 @@ THE SOFTWARE.
 #define NLE_INPUT_PROCESSOR_
 
 #include <Windows.h>
+#include "RenderingEngine\NLRE.h"
+#include "NLEApplicationLayer.h"
 
 class NLEInputProcessor
 {
 public:
-	NLEInputProcessor(NLEWindowReference hwnd);
-	NLEInputProcessor(const NLEInputProcessor& other);
+	NLEInputProcessor(
+		NLEWindowReference hwnd, 
+		std::shared_ptr<NLEApplicationLayer> applicationLayer, 
+		std::shared_ptr<NLRE> renderingEngine);
 	~NLEInputProcessor();
 
 	void processInput(LPARAM lParam);
+
 private:
+	NLEInputProcessor(const NLEInputProcessor& other);
 	bool initialize();
 
-	void processKeyboardEvent(PRAWINPUT raw);
+	void processKeyboardEvent(PRAWINPUT raw, LPARAM lparam);
 	void processMouseEvent(PRAWINPUT raw);
+	void processEngineKeyboardControls(UINT event, UINT key, USHORT flag);
+	void processGameKeyboardControls(UINT event, UINT key, USHORT flag);
+
+	void processInputBuffered(LPARAM lParam);
+	void processInputUnbuffered(LPARAM lParam);
+
 	NLEWindowReference _hwnd;
+	std::shared_ptr<NLEApplicationLayer> _applicationLayer;
+	std::shared_ptr<NLRE> _renderingEngine;
+
+	bool _gameInput;
+	bool _buffered;
+
+	float _mouseJitter;
+	float _clientCenterX;
+	float _clientCenterY;
 };
 
 #endif

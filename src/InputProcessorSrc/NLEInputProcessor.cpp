@@ -29,9 +29,20 @@ THE SOFTWARE.
 #include "stdafx.h"
 #include "InputProcessor\NLEInputProcessor.h"
 
-NLEInputProcessor::NLEInputProcessor(NLEWindowReference hwnd)
+NLEInputProcessor::NLEInputProcessor(
+	NLEWindowReference hwnd, 
+	std::shared_ptr<NLEApplicationLayer> applicationLayer, 
+	std::shared_ptr<NLRE> renderingEngine)
 {
 	_hwnd = hwnd;
+	_applicationLayer = applicationLayer;
+	_renderingEngine = renderingEngine;
+	_gameInput = false;
+	_buffered = false;
+
+	_mouseJitter = 0.0001f;
+	_clientCenterX = _applicationLayer->getClientWidth() / 2;
+	_clientCenterY = _applicationLayer->getClientHeight() / 2;
 
 	if (!initialize())
 	{
@@ -53,9 +64,9 @@ NLEInputProcessor::~NLEInputProcessor()
 
 bool NLEInputProcessor::initialize()
 {
-	if (!_hwnd)
+	if (!_hwnd || !_renderingEngine)
 	{
-		NLE_Log::err(NLE_Log::CRITICAL, "Window reference is uninitialized");
+		NLE_Log::err(NLE_Log::CRITICAL, "Uninitialized input parameters.");
 		return false;
 	}
 
@@ -72,7 +83,7 @@ bool NLEInputProcessor::initialize()
 	rid[1].hwndTarget = _hwnd;
 
 	LPTSTR errorText = NULL;
-	
+
 	if (RegisterRawInputDevices(rid, 2, sizeof(rid[0])) == FALSE) {
 		FormatMessage(
 			FORMAT_MESSAGE_FROM_SYSTEM |
@@ -93,11 +104,28 @@ bool NLEInputProcessor::initialize()
 		}
 		return false;
 	}
-	
+
 	return true;
 }
 
 void NLEInputProcessor::processInput(LPARAM lParam)
+{
+	if (_buffered)
+	{
+		processInputBuffered(lParam);
+	}
+	else
+	{
+		processInputUnbuffered(lParam);
+	}
+}
+
+void NLEInputProcessor::processInputBuffered(LPARAM lParam)
+{
+
+}
+
+void NLEInputProcessor::processInputUnbuffered(LPARAM lParam)
 {
 	UINT dwSize;
 	if (GetRawInputData((HRAWINPUT)lParam, RID_INPUT, NULL, &dwSize, sizeof(RAWINPUTHEADER)) == -1){
@@ -115,7 +143,7 @@ void NLEInputProcessor::processInput(LPARAM lParam)
 
 	if (raw->header.dwType == RIM_TYPEKEYBOARD)
 	{
-		processKeyboardEvent(raw);
+		processKeyboardEvent(raw, lParam);
 	}
 	else if (raw->header.dwType == RIM_TYPEMOUSE)
 	{
@@ -125,36 +153,114 @@ void NLEInputProcessor::processInput(LPARAM lParam)
 	delete[] lpb;
 }
 
-void NLEInputProcessor::processKeyboardEvent(PRAWINPUT raw)
+void NLEInputProcessor::processKeyboardEvent(PRAWINPUT raw, LPARAM lParam)
 {
-	UINT event;
-	WCHAR keyNum;
+	UINT scanCode = raw->data.keyboard.MakeCode;
+	UINT key = MapVirtualKey(scanCode, MAPVK_VSC_TO_VK_EX);
+	UINT event = raw->data.keyboard.Message;
+	USHORT flag = raw->data.keyboard.Flags;
+	USHORT vkey = raw->data.keyboard.VKey;
 
-	event = raw->data.keyboard.Message;
-
-	if (event == WM_KEYDOWN)
+	if (event == WM_KEYDOWN || event == WM_SYSKEYDOWN)
 	{
-		keyNum = MapVirtualKey(raw->data.keyboard.VKey, MAPVK_VK_TO_CHAR);
-
-		if (keyNum == 27)
+		processEngineKeyboardControls(event, key, flag);
+		if (_gameInput)
 		{
-			DestroyWindow(_hwnd);
+			processGameKeyboardControls(event, key, flag);
 		}
 	}
 
+	//NLE_Log::console("Scan code: %x", scanCode);
+	//NLE_Log::console("Unmapped key: %i", vkey);
+	//NLE_Log::console("Mapped key: %i", key);
+	//NLE_Log::console("Flag: %i", flag);
+	//NLE_Log::console("Event: %i\n", event);
+
+	
+}
+
+void NLEInputProcessor::processEngineKeyboardControls(UINT event, UINT key, USHORT flag)
+{
+	if (key == VK_ESCAPE)
+	{
+		DestroyWindow(_hwnd);
+	}
+	if (key == VK_F1)
+	{
+		if (!_gameInput)
+		{
+			_gameInput = true;
+			NLE_Log::console("Game input ON.");
+		}
+		else
+		{
+			_gameInput = false;
+			NLE_Log::console("Game input OFF.");
+		}
+	}
+}
+
+void NLEInputProcessor::processGameKeyboardControls(UINT event, UINT key, USHORT flag)
+{
+	if (key == VK_F1)
+	{
+		_applicationLayer->setCursorPosition(_clientCenterX, _clientCenterY);
+	}
+	if (key == 87)
+	{
+		_renderingEngine->getSceneManager()->cameraMoveForward();
+	}
+	if (key == 83)
+	{
+		_renderingEngine->getSceneManager()->cameraMoveBackward();
+	}
+	if (key == 68)
+	{
+		_renderingEngine->getSceneManager()->cameraMoveRight();
+	}
+	if (key == 65)
+	{
+		_renderingEngine->getSceneManager()->cameraMoveLeft();
+	}
+	if (key == 69)
+	{
+		_renderingEngine->getSceneManager()->cameraMoveUp();
+	}
+	if (key == 81)
+	{
+		_renderingEngine->getSceneManager()->cameraMoveDown();
+	}
+	if (key == 82)
+	{
+		_renderingEngine->getSceneManager()->cameraReset();
+	}
 }
 
 void NLEInputProcessor::processMouseEvent(PRAWINPUT raw)
 {
-	USHORT flag;
-	flag = raw->data.mouse.usFlags;
+	if (_gameInput)
+	{
+		USHORT flag;
+		flag = raw->data.mouse.usFlags;
 
-	if (flag == MOUSE_MOVE_ABSOLUTE)
-	{
-		//printf("absolute");
-	}
-	else if (flag == MOUSE_MOVE_RELATIVE)
-	{
-		//printf("relative");
+		if (flag == MOUSE_MOVE_ABSOLUTE)
+		{
+			//printf("absolute");
+		}
+		else if (flag == MOUSE_MOVE_RELATIVE)
+		{
+
+			float distX = (float)raw->data.mouse.lLastX - _clientCenterX;
+			float distY = (float)raw->data.mouse.lLastY - _clientCenterY;
+
+			if (pow(distX, 2.0) > _mouseJitter || pow(distY, 2.0) > _mouseJitter)
+			{
+				NLE_VECTOR velocity = NLEMath::NLEVectorSet(distX, distY, 0.0f, 0.0f);
+				velocity = NLEMath::NLEVector4Normalize(velocity);
+				_renderingEngine->getSceneManager()->cameraRotate(NLEMath::NLEVectorGetX(velocity), NLEMath::NLEVectorGetY(velocity));
+				SetCursorPos(_clientCenterX, _clientCenterY);
+			}
+			
+		}
 	}
 }

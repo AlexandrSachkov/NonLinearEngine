@@ -61,7 +61,7 @@ public:
 	static void unregisterConsoleCallbackAll();
 	static void unregisterErrorCallbackAll();
 
-
+private:
 	static std::vector <void(*)(char[])> debugCallbackList;
 	static std::vector <void(*)(char[])> consoleCallbackList;
 	static std::vector <void(*)(NLE_Log::ErrorFlag, char[])> errCallbackList;

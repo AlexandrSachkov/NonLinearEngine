@@ -311,6 +311,7 @@
     <ClInclude Include="..\include\math\DXMath\DXMathWrap.h" />
     <ClInclude Include="..\include\Math\NLEMath.h" />
     <ClInclude Include="..\include\NLE.h" />
+    <ClInclude Include="..\include\NLEApplicationLayer.h" />
     <ClInclude Include="..\include\NLECommon.h" />
     <ClInclude Include="..\include\NLEConfigurator.h" />
     <ClInclude Include="..\include\NLELog.h" />
