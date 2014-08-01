@@ -29,7 +29,8 @@ THE SOFTWARE.
 #ifndef NLRE_DEVICE_CONTROLLER_
 #define NLRE_DEVICE_CONTROLLER_
 
-#include "RenderingEngine\RenderingDevice\NLREForwardRT.h"
+#include "RenderingEngine\RenderingDevice\NLRERenderingDevice.h"
+class NLRERenderingTechnique;
 
 class NLREDeviceController
 {

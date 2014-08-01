@@ -28,6 +28,7 @@ THE SOFTWARE.
 
 #include "stdafx.h"
 #include "RenderingEngine\RenderingDevice\NLREDeviceController.h"
+#include "RenderingEngine\RenderingDevice\NLREForwardRT.h"
 
 NLREDeviceController::NLREDeviceController(NLEWindowReference hwndVal, int widthVal, int heightVal, NLRE_RENDERING_TECHNIQUE_ID techniqueId)
 {

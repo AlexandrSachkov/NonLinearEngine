@@ -29,7 +29,6 @@ THE SOFTWARE.
 #ifndef NLRE_RENDERING_TECHNIQUE_
 #define NLRE_RENDERING_TECHNIQUE_
 
-#include "stdafx.h"
 class NLRERenderingTechnique
 {
 public:
