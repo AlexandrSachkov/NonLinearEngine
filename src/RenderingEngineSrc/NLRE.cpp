@@ -28,13 +28,16 @@ THE SOFTWARE.
 
 #include "stdafx.h"
 #include "RenderingEngine\NLRE.h"
+#include "RenderingEngine\SceneManager\NLRESceneManager.h"
+#include "RenderingEngine\ResourceLoader\NLREAssimpAssetImporter.h"
+#include "RenderingEngine\ResourceLoader\NLREDirectXTexTextureLoader.h"
 
 NLRE::NLRE(NLEWindowReference hwndVal, int widthVal, int heightVal){
 	_deviceController.reset(new NLREDeviceController(hwndVal, widthVal, heightVal, NLRE_RENDERING_TECHNIQUE_ID::NLRE_FORWARD_RT));
 	_renderingDevice = _deviceController->getRenderingDevice();
-	_textureLoader.reset(new NLRETextureLoader(_renderingDevice));
+	_textureLoader.reset(new NLREDirectXTexTextureLoader(_renderingDevice));
 	_sceneManager.reset(new NLRESceneManager(_deviceController, _renderingDevice, _textureLoader, widthVal, heightVal));
-	_assetImporter.reset(new NLREAssetImporter(_renderingDevice, _textureLoader));
+	_assetImporter.reset(new NLREAssimpAssetImporter(_renderingDevice, _textureLoader));
 
 	NLRE_Log::console("======> NLRE successfully initialized.");
 }

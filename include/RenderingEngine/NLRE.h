@@ -30,9 +30,11 @@ THE SOFTWARE.
 #ifndef NLRE_
 #define NLRE_
 
-#include "RenderingEngine\SceneManager\NLRESceneManager.h"
-#include "RenderingEngine\ResourceLoader\NLRETextureLoader.h"
-#include "RenderingEngine\ResourceLoader\NLREAssetImporter.h"
+#include "RenderingDevice\NLRERenderingDevice.h"
+class NLREAssetImporter;
+class NLRESceneManager;
+class NLREDeviceController;
+class NLRETextureLoader;
 
 class NLRE
 {

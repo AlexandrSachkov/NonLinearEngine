@@ -29,10 +29,10 @@ THE SOFTWARE.
 #ifndef NLRE_RENDERING_DEVICE_
 #define NLRE_RENDERING_DEVICE_
 
-//#ifdef _DX11_
+#ifdef _DX11_
 	#include "RenderingEngine\RenderingDevice\DX11Device\NLREDX11RenderingDevice.h"
 	typedef NLREDX11RenderingDevice NLRERenderingDevice;
-//#endif
+#endif
 
 
 #endif

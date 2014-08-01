@@ -29,6 +29,11 @@ THE SOFTWARE.
 #ifndef NLRE_ASSET_IMPORTER_
 #define NLRE_ASSET_IMPORTER_
 
-#include "RenderingEngine\ResourceLoader\NLREAssimpAssetImporter.h"
-typedef NLREAssimpAssetImporter NLREAssetImporter;
+class NLREAssetImporter
+{
+public:
+	virtual ~NLREAssetImporter(){};
+	virtual bool importAssets(std::wstring path, std::vector<std::shared_ptr<NLRE_RenderableAsset>>& assets) = 0;
+private:
+};
 #endif

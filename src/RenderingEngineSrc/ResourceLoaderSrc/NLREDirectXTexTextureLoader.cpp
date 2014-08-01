@@ -27,7 +27,10 @@ THE SOFTWARE.
 */
 
 #include "stdafx.h"
+
 #include "RenderingEngine\ResourceLoader\NLREDirectXTexTextureLoader.h"
+#include "RenderingEngine\ResourceLoader\DDSTextureLoader.h"
+#include "RenderingEngine\ResourceLoader\WICTextureLoader.h"
 
 NLREDirectXTexTextureLoader::NLREDirectXTexTextureLoader(std::shared_ptr<NLRERenderingDevice> renderingDevice)
 {

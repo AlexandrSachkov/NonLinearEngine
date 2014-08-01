@@ -29,13 +29,10 @@ THE SOFTWARE.
 #ifndef NLRE_DIRECTXTEX_TEXTURE_LOADER_
 #define NLRE_DIRECTXTEX_TEXTURE_LOADER_
 
-#include "RenderingEngine\ResourceLoader\NLRETextureLoaderBase.h"
 #include "RenderingEngine\RenderingDevice\NLRERenderingDevice.h"
+#include "RenderingEngine\ResourceLoader\NLRETextureLoader.h"
 
-#include "RenderingEngine\ResourceLoader\DDSTextureLoader.h"
-#include "RenderingEngine\ResourceLoader\WICTextureLoader.h"
-
-class NLREDirectXTexTextureLoader : public virtual NLRETextureLoaderBase
+class NLREDirectXTexTextureLoader : public virtual NLRETextureLoader
 {
 public:
 	NLREDirectXTexTextureLoader(std::shared_ptr<NLRERenderingDevice> renderingDevice);

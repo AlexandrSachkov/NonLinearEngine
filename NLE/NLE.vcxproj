@@ -337,7 +337,6 @@
     <ClInclude Include="..\include\RenderingEngine\ResourceLoader\NLREAssimpAssetImporter.h" />
     <ClInclude Include="..\include\RenderingEngine\ResourceLoader\NLREDirectXTexTextureLoader.h" />
     <ClInclude Include="..\include\RenderingEngine\ResourceLoader\NLRETextureLoader.h" />
-    <ClInclude Include="..\include\RenderingEngine\ResourceLoader\NLRETextureLoaderBase.h" />
     <ClInclude Include="..\include\RenderingEngine\ResourceLoader\WICTextureLoader.h" />
     <ClInclude Include="..\include\RenderingEngine\SceneManager\NLRECamera.h" />
     <ClInclude Include="..\include\RenderingEngine\SceneManager\NLRESceneManager.h" />

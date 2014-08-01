@@ -38,7 +38,7 @@ THE SOFTWARE.
 
 #define AI_CONFIG_PP_SBP_REMOVE aiPrimitiveType_POINT | aiPrimitiveType_LINE
 
-#include "RenderingEngine\ResourceLoader\NLREAssetImporterBase.h"
+#include "RenderingEngine\ResourceLoader\NLREAssetImporter.h"
 #include "RenderingEngine\RenderingDevice\NLREStreamSet.h"
 #include "RenderingEngine\RenderingDevice\NLRERenderingDevice.h"
 #include "RenderingEngine\ResourceLoader\NLRETextureLoader.h"
@@ -55,7 +55,7 @@ public:
 	}
 };
 
-class NLREAssimpAssetImporter : public virtual NLREAssetImporterBase
+class NLREAssimpAssetImporter : public virtual NLREAssetImporter
 {
 public:
 	NLREAssimpAssetImporter(

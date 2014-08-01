@@ -29,7 +29,6 @@ THE SOFTWARE.
 #ifndef NLRE_DX11_RENDERING_DEVICE_
 #define NLRE_DX11_RENDERING_DEVICE_
 
-#include "stdafx.h"
 #include <d3d11.h>
 #include <d3dcompiler.h>
 

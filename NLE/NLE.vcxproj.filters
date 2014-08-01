@@ -155,9 +155,6 @@
     <ClInclude Include="..\include\RenderingEngine\ResourceLoader\NLRETextureLoader.h">
       <Filter>Header Files\RenderingEngine\ResourceLoader</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\RenderingEngine\ResourceLoader\NLRETextureLoaderBase.h">
-      <Filter>Header Files\RenderingEngine\ResourceLoader</Filter>
-    </ClInclude>
     <ClInclude Include="..\include\RenderingEngine\ResourceLoader\WICTextureLoader.h">
       <Filter>Header Files\RenderingEngine\ResourceLoader</Filter>
     </ClInclude>

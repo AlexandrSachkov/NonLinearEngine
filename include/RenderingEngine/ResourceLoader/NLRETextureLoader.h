@@ -29,10 +29,11 @@ THE SOFTWARE.
 #ifndef NLRE_TEXTURE_LOADER_
 #define NLRE_TEXTURE_LOADER_
 
-//#ifdef _DX11_
-
-#include "RenderingEngine\ResourceLoader\NLREDirectXTexTextureLoader.h"
-typedef NLREDirectXTexTextureLoader NLRETextureLoader;
-//#endif
+class NLRETextureLoader
+{
+public:
+	virtual ~NLRETextureLoader(){};
+	virtual bool loadTexture(std::wstring path, NLRE_BIND_FLAG bindFlag, NLRE_USAGE usage, NLRE_APITexture2D*& texture2D, NLRE_APIShaderResourceView*& resourceView) = 0;
+};
 
 #endif
