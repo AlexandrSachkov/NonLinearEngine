@@ -26,27 +26,22 @@ THE SOFTWARE.
 -----------------------------------------------------------------------------
 */
 
-#include "stdafx.h"
-#include "SDL.h"
-#include "NLEApplicationLayer.h"
-#include "NLE.h"
 
-#define WIN32_LEAN_AND_MEAN
-#include <Windows.h>
-#include <stdio.h>
-#include <tchar.h>
+#include "stdafx.h"
+#include "NLEApplicationLayer.h"
+#include "RenderingEngine\SceneManager\NLRESceneManager.h"
+#include "NLE.h"
+#include "RenderingEngine\NLRE.h"
+#include "SDL.h"
+#include "SDL_syswm.h"
 
 NLE* nle = nullptr;
 
-NLEApplicationLayer::NLEApplicationLayer(HINSTANCE hInstance, NLE* nle)
+NLEApplicationLayer::NLEApplicationLayer(NLE* nle)
 {
-	_hInstance = hInstance;
 	_nle = nle;
-	_hwnd = nullptr;
-	_screenWidth = 0;
-	_screenHeight = 0;
-	_clientWidth = 0;
-	_clientHeight = 0;
+	_window = nullptr;
+	_sysInfo = nullptr;
 
 	if (!initialize())
 	{
@@ -59,6 +54,16 @@ NLEApplicationLayer::NLEApplicationLayer(const NLEApplicationLayer& other)
 {
 }
 
+NLEApplicationLayer::~NLEApplicationLayer()
+{
+	if (_sysInfo) delete _sysInfo;
+
+	SDL_DestroyWindow(_window);
+	SDL_Quit();
+	fclose(stdout);
+	FreeConsole();
+}
+
 bool NLEApplicationLayer::initialize()
 {
 	AllocConsole();
@@ -68,110 +73,100 @@ bool NLEApplicationLayer::initialize()
 	NLE_Log::registerConsoleCallback(NLEApplicationLayer::debugCallback);
 	NLE_Log::registerDebugCallback(NLEApplicationLayer::debugCallback);
 
-	if (!initializeWindow())
+	if (SDL_Init(SDL_INIT_EVERYTHING) != 0)
 	{
-		NLE_Log::err(NLE_Log::CRITICAL, "Window failed to initialize");
+		NLE_Log::err(NLE_Log::CRITICAL, "SDL failed to initialize: %s\n", SDL_GetError());
 		return false;
-	}	
-	
-	updateClientDimensions();
-	updateScreenDimensions();
+	}
+
+	_window = SDL_CreateWindow("NonLinear Engine", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 1900, 1000, SDL_WINDOW_SHOWN);
+	if (_window == NULL)
+	{
+		NLE_Log::err(NLE_Log::CRITICAL, "Window could not be created! SDL_Error: %s\n", SDL_GetError());
+		return false;
+	}
+
+	if (!getWindowInfo())
+	{
+		NLE_Log::err(NLE_Log::CRITICAL, "Window information could not be retrieved: %s\n", SDL_GetError());
+		return false;
+	}
+
 
 	NLE_Log::console("======> Application Layer successfully initialized.");
 	return true;
 }
 
-
-NLEApplicationLayer::~NLEApplicationLayer()
+bool NLEApplicationLayer::getWindowInfo()
 {
-	fclose(stdout);
-	FreeConsole();
-}
-
-bool NLEApplicationLayer::initializeWindow()
-{
-	WNDCLASSEX wc;
-	std::wstring windowClassName = L"mainWindow";
-
-	wc.cbSize = sizeof(WNDCLASSEX);
-	wc.style = CS_HREDRAW | CS_VREDRAW;
-	wc.lpfnWndProc = NLEApplicationLayer::wndProc;
-	wc.cbClsExtra = NULL;
-	wc.cbWndExtra = NULL;
-	wc.hInstance = _hInstance;
-	wc.hIcon = LoadIcon(NULL, IDI_APPLICATION);
-	wc.hCursor = LoadCursor(NULL, IDC_ARROW);
-	wc.hbrBackground = NULL;
-	wc.lpszMenuName = NULL;
-	wc.lpszClassName = windowClassName.c_str();
-	wc.hIconSm = LoadIcon(NULL, IDI_APPLICATION);
-
-	if (!RegisterClassEx(&wc))
+	_sysInfo = new SDL_SysWMinfo();
+	SDL_VERSION(&_sysInfo->version);
+	if (!SDL_GetWindowWMInfo(_window, _sysInfo))
 	{
 		return false;
 	}
 
-	_hwnd = CreateWindowEx(
-		NULL,
-		windowClassName.c_str(),
-		L"NonLinear Engine",
-		WS_OVERLAPPED | WS_CAPTION | WS_SYSMENU | WS_THICKFRAME | WS_MINIMIZEBOX,
-		CW_USEDEFAULT, CW_USEDEFAULT,
-		_screenWidth, _screenHeight,
-		NULL,
-		NULL,
-		_hInstance,
-		NULL
-		);
-
-	if (!_hwnd)
-	{
-		return false;
+	const char *subsystem = "an unknown system!";
+	switch (_sysInfo->subsystem) {
+	case SDL_SYSWM_UNKNOWN:   break;
+	case SDL_SYSWM_WINDOWS:   
+		subsystem = "Microsoft Windows(TM)";  
+		_windowRef = static_cast<NLEWindowReference>(_sysInfo->info.win.window);
+		break;
+	case SDL_SYSWM_X11:       subsystem = "X Window System";        break;
+#if SDL_VERSION_ATLEAST(2, 0, 3)
+	case SDL_SYSWM_WINRT:     subsystem = "WinRT";                  break;
+#endif
+	case SDL_SYSWM_DIRECTFB:  subsystem = "DirectFB";               break;
+	case SDL_SYSWM_COCOA:     subsystem = "Apple OS X";             break;
+	case SDL_SYSWM_UIKIT:     subsystem = "UIKit";                  break;
+#if SDL_VERSION_ATLEAST(2, 0, 2)
+	case SDL_SYSWM_WAYLAND:   subsystem = "Wayland";                break;
+	case SDL_SYSWM_MIR:       subsystem = "Mir";                    break;
+#endif
+#if SDL_VERSION_ATLEAST(2, 0, 4)
+	case SDL_SYSWM_ANDROID:   subsystem = "Android";                break;
+#endif
 	}
 
-	ShowWindow(_hwnd, SW_MAXIMIZE);
-	UpdateWindow(_hwnd);
-
+	NLE_Log::console("This program is running SDL version %d.%d.%d on %s\n",
+		(int)_sysInfo->version.major,
+		(int)_sysInfo->version.minor,
+		(int)_sysInfo->version.patch,
+		subsystem);
 	return true;
 }
 
 int NLEApplicationLayer::runMessageLoop()
 {
-	MSG msg;
-	ZeroMemory(&msg, sizeof(MSG));
-	int counter = 0;
+	SDL_Event event;
+	bool quit = false;
 
-	while (true)
+	while (!quit)
 	{
-		if (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE))
+		while (SDL_PollEvent(&event) != 0)
 		{
-			if (msg.message == WM_QUIT) break;
-			DispatchMessage(&msg);
+			if (event.type == SDL_QUIT)
+			{
+				quit = true;
+			}
 		}
-		//======================= FOR TESTING PURPOSES =================
+
+		//=========================== for testing only
 		_nle->getRenderingEngine()->getSceneManager()->cameraUpdate();
 		_nle->getRenderingEngine()->render();
-		//==============================================================
 	}
-	return msg.wParam;
+	return 0;
 }
 
-LRESULT CALLBACK NLEApplicationLayer::wndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
+NLEWindowReference& NLEApplicationLayer::getWindowReference()
 {
-	
-	switch (msg)
-	{	
-	case WM_INPUT:
-		nle->getInputProcessor()->processInput(lParam);
-		return 0;
+	return _windowRef;
+}
 
-	case WM_DESTROY:
-
-		PostQuitMessage(0);
-		return 0;
-	}
-
-	return DefWindowProc(hwnd, msg, wParam, lParam);
+void NLEApplicationLayer::getClientSize(int& width, int& height)
+{
+	SDL_GetWindowSize(_window,&width, &height);
 }
 
 
@@ -193,54 +188,6 @@ void NLEApplicationLayer::consoleCallback(char text[])
 	printf("\n");
 }
 
-void NLEApplicationLayer::displayErrorBox(std::wstring title, std::wstring message)
-{
-	MessageBox(_hwnd, message.c_str(), title.c_str(), MB_OK);
-}
-
-NLEWindowReference& NLEApplicationLayer::getWindowReference()
-{
-	return _hwnd;
-}
-
-int NLEApplicationLayer::getScreenWidth()
-{
-	return _screenWidth;
-}
-
-int NLEApplicationLayer::getScreenHeight()
-{
-	return _screenHeight;
-}
-
-void NLEApplicationLayer::updateScreenDimensions()
-{
-	_screenWidth = GetSystemMetrics(SM_CXMAXIMIZED);
-	_screenHeight = GetSystemMetrics(SM_CYMAXIMIZED);
-}
-
-int NLEApplicationLayer::getClientWidth()
-{
-	return _clientWidth;
-}
-
-int NLEApplicationLayer::getClientHeight()
-{
-	return _clientHeight;
-}
-
-void NLEApplicationLayer::updateClientDimensions()
-{
-	RECT clientRect;
-	GetClientRect(_hwnd, &clientRect);
-	_clientWidth = clientRect.right - clientRect.left;
-	_clientHeight = clientRect.bottom - clientRect.top;
-}
-
-void NLEApplicationLayer::setCursorPosition(float x, float y)
-{
-	SetCursorPos(x, y);
-}
 
 int WINAPI WinMain(
 	HINSTANCE hInstance,
@@ -250,7 +197,7 @@ int WINAPI WinMain(
 {
 	try
 	{
-		nle = new NLE(hInstance);
+		nle = new NLE();
 	}
 	catch (std::exception& e)
 	{

@@ -28,6 +28,8 @@ THE SOFTWARE.
 
 #include "stdafx.h"
 #include "NLE.h"
+#include "NLEApplicationLayer.h"
+#include "RenderingEngine\NLRE.h"
 
 NLE::NLE()
 {
@@ -102,11 +104,11 @@ std::shared_ptr<NLRE> NLE::getRenderingEngine()
 	return _renderingEngine;
 }
 
-std::shared_ptr<NLEInputProcessor> NLE::getInputProcessor()
+/*std::shared_ptr<NLEInputProcessor> NLE::getInputProcessor()
 {
 	return _inputProcessor;
 }
-
+*/
 std::shared_ptr<NLEApplicationLayer> NLE::getApplicationLayer()
 {
 	return _applicationLayer;

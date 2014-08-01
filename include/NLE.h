@@ -30,9 +30,8 @@ THE SOFTWARE.
 #ifndef NLE_
 #define NLE_
 
-#include "NLEApplicationLayer.h"
-#include "InputProcessor\NLEInputProcessor.h"
-#include "RenderingEngine\NLRE.h"
+class NLEApplicationLayer;
+class NLRE;
 
 class NLE
 {
@@ -43,7 +42,7 @@ public:
 
 	void run();
 	std::shared_ptr<NLRE> getRenderingEngine();
-	std::shared_ptr<NLEInputProcessor> getInputProcessor();
+	//std::shared_ptr<NLEInputProcessor> getInputProcessor();
 	std::shared_ptr<NLEApplicationLayer> getApplicationLayer();
 
 private:
@@ -59,7 +58,7 @@ private:
 	int _height;
 
 	std::shared_ptr<NLEApplicationLayer> _applicationLayer;
-	std::shared_ptr<NLEInputProcessor> _inputProcessor;
+	//std::shared_ptr<NLEInputProcessor> _inputProcessor;
 	std::shared_ptr<NLRE> _renderingEngine;
 };
 

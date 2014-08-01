@@ -146,9 +146,6 @@
     <ClInclude Include="..\include\RenderingEngine\ResourceLoader\NLREAssetImporter.h">
       <Filter>Header Files\RenderingEngine\ResourceLoader</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\RenderingEngine\ResourceLoader\NLREAssetImporterBase.h">
-      <Filter>Header Files\RenderingEngine\ResourceLoader</Filter>
-    </ClInclude>
     <ClInclude Include="..\include\RenderingEngine\ResourceLoader\NLREAssimpAssetImporter.h">
       <Filter>Header Files\RenderingEngine\ResourceLoader</Filter>
     </ClInclude>
@@ -190,6 +187,9 @@
     </ClInclude>
     <ClInclude Include="..\include\NLEApplicationLayer.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\InputProcessor\NLEInputProcessor.h">
+      <Filter>Header Files\InputProcessor</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -267,8 +267,11 @@
     <ClCompile Include="..\src\NLELog.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="NLEApplicationLayer.cpp">
+    <ClCompile Include="..\src\NLEApplicationLayer.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\InputProcessorSrc\NLEInputProcessor.cpp">
+      <Filter>Source Files\InputProcessorSrc</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
