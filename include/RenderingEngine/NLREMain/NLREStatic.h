@@ -1,8 +1,6 @@
 #ifndef NLRE_STATIC_
 #define NLRE_STATIC_
 
-#include "stdafx.h"
-
 class NLREStatic
 {
 public:

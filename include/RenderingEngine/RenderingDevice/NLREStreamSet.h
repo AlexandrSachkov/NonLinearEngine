@@ -29,8 +29,6 @@ THE SOFTWARE.
 #ifndef NLRE_STREAM_SET_
 #define NLRE_STREAM_SET_
 
-#include "stdafx.h"
-
 class NLRE_GeomStr
 {
 public:

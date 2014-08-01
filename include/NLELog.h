@@ -29,8 +29,6 @@ THE SOFTWARE.
 #ifndef NLE_LOG_
 #define NLE_LOG_
 
-#include "stdafx.h"
-
 #ifdef _DEBUG || DEBUG
 #define _NLE_debug(...) NLE_Log::debug(__VA_ARGS__)
 #else
