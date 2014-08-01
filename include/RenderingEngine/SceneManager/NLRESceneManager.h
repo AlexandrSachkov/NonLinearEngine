@@ -29,9 +29,10 @@ THE SOFTWARE.
 #ifndef NLRE_SCENE_MANAGER_
 #define NLRE_SCENE_MANAGER_
 
-#include "RenderingEngine\ResourceLoader\NLRETextureLoader.h"
-#include "RenderingEngine\RenderingDevice\NLREDeviceController.h"
-#include "RenderingEngine\SceneManager\NLRECamera.h"
+#include "RenderingEngine\RenderingDevice\NLRERenderingDevice.h"
+class NLREDeviceController;
+class NLRETextureLoader;
+class NLRECamera;
 
 class NLRESceneManager
 {

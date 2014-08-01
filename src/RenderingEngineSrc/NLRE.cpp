@@ -31,6 +31,7 @@ THE SOFTWARE.
 #include "RenderingEngine\SceneManager\NLRESceneManager.h"
 #include "RenderingEngine\ResourceLoader\NLREAssimpAssetImporter.h"
 #include "RenderingEngine\ResourceLoader\NLREDirectXTexTextureLoader.h"
+#include "RenderingEngine\RenderingDevice\NLREDeviceController.h"
 
 NLRE::NLRE(NLEWindowReference hwndVal, int widthVal, int heightVal){
 	_deviceController.reset(new NLREDeviceController(hwndVal, widthVal, heightVal, NLRE_RENDERING_TECHNIQUE_ID::NLRE_FORWARD_RT));

@@ -28,6 +28,9 @@ THE SOFTWARE.
 
 #include "stdafx.h"
 #include "RenderingEngine\SceneManager\NLRESceneManager.h"
+#include "RenderingEngine\ResourceLoader\NLRETextureLoader.h"
+#include "RenderingEngine\RenderingDevice\NLREDeviceController.h"
+#include "RenderingEngine\SceneManager\NLRECamera.h"
 
 
 NLRESceneManager::NLRESceneManager(
