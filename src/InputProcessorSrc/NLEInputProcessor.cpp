@@ -26,8 +26,8 @@ THE SOFTWARE.
 -----------------------------------------------------------------------------
 */
 #include "stdafx.h"
-#include "NLE.h"
 #include "InputProcessor\NLEInputProcessor.h"
+#include "NLE.h"
 
 NLEInputProcessor::NLEInputProcessor(NLE* nle)
 {
