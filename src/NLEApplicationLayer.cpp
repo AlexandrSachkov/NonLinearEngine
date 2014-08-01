@@ -27,7 +27,7 @@ THE SOFTWARE.
 */
 
 #include "stdafx.h"
-
+#include "SDL.h"
 #include "NLEApplicationLayer.h"
 #include "NLE.h"
 
@@ -149,8 +149,8 @@ int NLEApplicationLayer::runMessageLoop()
 			DispatchMessage(&msg);
 		}
 		//======================= FOR TESTING PURPOSES =================
-		_nle->getRenderingEngine()->render();
 		_nle->getRenderingEngine()->getSceneManager()->cameraUpdate();
+		_nle->getRenderingEngine()->render();
 		//==============================================================
 	}
 	return msg.wParam;

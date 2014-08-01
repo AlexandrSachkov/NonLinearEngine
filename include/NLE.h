@@ -37,13 +37,14 @@ THE SOFTWARE.
 class NLE
 {
 public:
-	NLE(HINSTANCE hInstance);
+	NLE();
 	NLE(const NLE& other);
 	~NLE();
 
 	void run();
 	std::shared_ptr<NLRE> getRenderingEngine();
 	std::shared_ptr<NLEInputProcessor> getInputProcessor();
+	std::shared_ptr<NLEApplicationLayer> getApplicationLayer();
 
 private:
 	bool initialize();

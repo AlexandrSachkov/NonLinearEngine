@@ -29,19 +29,18 @@ THE SOFTWARE.
 #include "stdafx.h"
 #include "NLE.h"
 
-NLE::NLE(HINSTANCE hInstance)
+NLE::NLE()
 {
 	NLRE_Log::registerDebugCallback(NLE::NLREdebugOutputHook);
 	NLRE_Log::registerConsoleCallback(NLE::NLREconsoleOutputHook);
 	NLRE_Log::registerErrorCallback(NLE::NLREerrorOutputHook);
 
-	_applicationLayer.reset(new NLEApplicationLayer(hInstance, this));
+	_applicationLayer.reset(new NLEApplicationLayer(this));
 	_winRef = _applicationLayer->getWindowReference();
-	_width = _applicationLayer->getClientWidth();
-	_height = _applicationLayer->getClientHeight();
+	_applicationLayer->getClientSize(_width, _height);
 
 	_renderingEngine.reset(new NLRE(_winRef, _width, _height));
-	_inputProcessor.reset(new NLEInputProcessor(_winRef, _applicationLayer, _renderingEngine));
+	//_inputProcessor.reset(new NLEInputProcessor(_winRef, _applicationLayer, _renderingEngine));
 
 	//======================= FOR TESTING PURPOSES =================
 	std::wstring path = L"D:\\3DModels\\Altair Model\\altair2.dae";
@@ -108,4 +107,8 @@ std::shared_ptr<NLEInputProcessor> NLE::getInputProcessor()
 	return _inputProcessor;
 }
 
+std::shared_ptr<NLEApplicationLayer> NLE::getApplicationLayer()
+{
+	return _applicationLayer;
+}
 

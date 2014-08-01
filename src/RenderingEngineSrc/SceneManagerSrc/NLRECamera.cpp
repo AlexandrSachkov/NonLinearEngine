@@ -93,7 +93,7 @@ NLRECamera::~NLRECamera()
 void NLRECamera::reset()
 {
 	_movementSensitivity = 1.0f;
-	_rotationSensitivity = 0.01f;
+	_rotationSensitivity = 0.005f;
 
 	_distanceForward = 0.0f;
 	_distanceRight = 0.0f;

@@ -1,48 +1,63 @@
+/*
+-----------------------------------------------------------------------------
+This source file is part of NLE
+(NonLinear Engine)
+For the latest info, see https://github.com/AlexandrSachkov/NonLinearEngine
+
+Copyright (c) 2014 NonLinear Engine Team
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.
+-----------------------------------------------------------------------------
+*/
+
 #ifndef NLE_APPLICATION_LAYER_
 #define NLE_APPLICATION_LAYER_
 
+class SDL_Window;
+class SDL_SysWMinfo;
 class NLE;
 
 class NLEApplicationLayer
 {
 public:
 
-	NLEApplicationLayer(HINSTANCE hInstance, NLE* nle);
-	NLEApplicationLayer(const NLEApplicationLayer& other);
+	NLEApplicationLayer(NLE* nle);
 	~NLEApplicationLayer();
 
-	static LRESULT CALLBACK wndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
 	static void debugCallback(char text[]);
 	static void consoleCallback(char text[]);
 	static void errorCallback(NLE_Log::ErrorFlag flag, char text[]);
-	
-	void displayErrorBox(std::wstring title, std::wstring message);
 
 	NLEWindowReference& getWindowReference();
-	int getScreenWidth();
-	int getScreenHeight();
-	void updateScreenDimensions();
-
-	int getClientWidth();
-	int getClientHeight();
-	void updateClientDimensions();
-
-	void setCursorPosition(float x, float y);
+	void getClientSize(int& width, int& height);
 
 	int runMessageLoop();
 
-private:
+private:	
+	NLEApplicationLayer(const NLEApplicationLayer& other);
 	bool initialize();
-	bool initializeWindow();
+	bool getWindowInfo();
 
-	HINSTANCE _hInstance;
 	NLE* _nle;
-	
-	HWND _hwnd;
-	int _screenWidth;
-	int _screenHeight;
-	int _clientWidth;
-	int _clientHeight;
+	SDL_Window* _window;
+	SDL_SysWMinfo* _sysInfo;
+	NLEWindowReference _windowRef;
 };
 
 #endif

@@ -188,9 +188,6 @@
     <ClInclude Include="..\include\NLEResources.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\InputProcessor\NLEInputProcessor.h">
-      <Filter>Header Files\InputProcessor</Filter>
-    </ClInclude>
     <ClInclude Include="..\include\NLEApplicationLayer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -270,11 +267,8 @@
     <ClCompile Include="..\src\NLELog.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\NLEApplicationLayer.cpp">
+    <ClCompile Include="NLEApplicationLayer.cpp">
       <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\InputProcessorSrc\NLEInputProcessor.cpp">
-      <Filter>Source Files\InputProcessorSrc</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

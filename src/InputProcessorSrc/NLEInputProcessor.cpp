@@ -250,9 +250,10 @@ void NLEInputProcessor::processMouseEvent(PRAWINPUT raw)
 		else if (flag == MOUSE_MOVE_RELATIVE)
 		{
 
-			float distX = (float)raw->data.mouse.lLastX - _clientCenterX;
-			float distY = (float)raw->data.mouse.lLastY - _clientCenterY;
-
+			float distX = (float)raw->data.mouse.lLastX;
+			float distY = (float)raw->data.mouse.lLastY;
+			//printf("X: %f\n", (float)raw->data.mouse.lLastX);
+			//printf("Y: %f\n\n", (float)raw->data.mouse.lLastY);
 			if (pow(distX, 2.0) > _mouseJitter || pow(distY, 2.0) > _mouseJitter)
 			{
 				NLE_VECTOR velocity = NLEMath::NLEVectorSet(distX, distY, 0.0f, 0.0f);

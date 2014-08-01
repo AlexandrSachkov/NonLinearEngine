@@ -32,7 +32,8 @@ THE SOFTWARE.
 class NLREAssetImporterBase
 {
 public:
-
+	virtual ~NLREAssetImporterBase(){};
+	virtual bool importAssets(std::wstring path, std::vector<std::shared_ptr<NLRE_RenderableAsset>>& assets) =0;
 private:
 };
 
