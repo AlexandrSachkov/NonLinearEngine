@@ -29,11 +29,14 @@ THE SOFTWARE.
 
 #include "stdafx.h"
 #include "NLEApplicationLayer.h"
-#include "RenderingEngine\SceneManager\NLRESceneManager.h"
 #include "NLE.h"
 #include "RenderingEngine\NLRE.h"
+#include "RenderingEngine\SceneManager\NLRESceneManager.h"
+#include "InputProcessor\NLEInputProcessor.h"
+
 #include "SDL.h"
 #include "SDL_syswm.h"
+
 
 NLE* nle = nullptr;
 
@@ -149,6 +152,10 @@ int NLEApplicationLayer::runMessageLoop()
 			if (event.type == SDL_QUIT)
 			{
 				quit = true;
+			}
+			else
+			{
+				_nle->getInputProcessor()->processEvent(&event);
 			}
 		}
 

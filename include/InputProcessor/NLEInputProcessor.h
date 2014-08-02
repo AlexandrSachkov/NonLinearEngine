@@ -30,6 +30,7 @@ THE SOFTWARE.
 #define NLE_INPUT_PROCESSOR_
 
 class NLE;
+union SDL_Event;
 
 class NLEInputProcessor
 {
@@ -37,9 +38,20 @@ public:
 	NLEInputProcessor(NLE* nle);
 	~NLEInputProcessor();
 
+	void processEvent(union SDL_Event* event);
+	void enableTextInput(bool condition);
 private:
 	NLEInputProcessor(const NLEInputProcessor& other);
 	bool initialize();
+
+	void onKeyboardEvent(union SDL_Event* event);
+	void onMouseMotionEvent(union SDL_Event* event);
+	void onMouseButtonEvent(union SDL_Event* event);
+	void onMouseWheelEvent(union SDL_Event* event);
+	void onTextEditEvent(union SDL_Event* event);
+	void onTextEntryEvent(union SDL_Event* event);
+	std::wstring pasteClipboard();
+	void copyClipboard(std::wstring text);
 
 	NLE* _nle;
 };

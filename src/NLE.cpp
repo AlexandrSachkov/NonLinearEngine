@@ -30,6 +30,7 @@ THE SOFTWARE.
 #include "NLE.h"
 #include "NLEApplicationLayer.h"
 #include "RenderingEngine\NLRE.h"
+#include "InputProcessor\NLEInputProcessor.h"
 
 NLE::NLE()
 {
@@ -42,7 +43,7 @@ NLE::NLE()
 	_applicationLayer->getClientSize(_width, _height);
 
 	_renderingEngine.reset(new NLRE(_winRef, _width, _height));
-	//_inputProcessor.reset(new NLEInputProcessor(_winRef, _applicationLayer, _renderingEngine));
+	_inputProcessor.reset(new NLEInputProcessor(this));
 
 	//======================= FOR TESTING PURPOSES =================
 	std::wstring path = L"D:\\3DModels\\Altair Model\\altair2.dae";
@@ -104,11 +105,11 @@ std::shared_ptr<NLRE> NLE::getRenderingEngine()
 	return _renderingEngine;
 }
 
-/*std::shared_ptr<NLEInputProcessor> NLE::getInputProcessor()
+std::shared_ptr<NLEInputProcessor> NLE::getInputProcessor()
 {
 	return _inputProcessor;
 }
-*/
+
 std::shared_ptr<NLEApplicationLayer> NLE::getApplicationLayer()
 {
 	return _applicationLayer;

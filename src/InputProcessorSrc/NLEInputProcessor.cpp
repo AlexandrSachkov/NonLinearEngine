@@ -28,6 +28,7 @@ THE SOFTWARE.
 #include "stdafx.h"
 #include "InputProcessor\NLEInputProcessor.h"
 #include "NLE.h"
+#include "SDL.h"
 
 NLEInputProcessor::NLEInputProcessor(NLE* nle)
 {
@@ -41,7 +42,98 @@ NLEInputProcessor::NLEInputProcessor(NLE* nle)
 	NLE_Log::console("======> NLEInputProcessor successfully initialized.");
 }
 
+
 bool NLEInputProcessor::initialize()
 {
-	return false;
+	enableTextInput(false);
+
+	return true;
+}
+
+NLEInputProcessor::~NLEInputProcessor()
+{
+
+}
+
+void NLEInputProcessor::processEvent(union SDL_Event* event)
+{
+	switch (event->type)
+	{
+	case SDL_MOUSEMOTION:
+		onMouseMotionEvent(event);
+		break;
+	case SDL_MOUSEBUTTONDOWN:
+	case SDL_MOUSEBUTTONUP:
+		onMouseButtonEvent(event);
+		break;
+	case SDL_MOUSEWHEEL:
+		onMouseWheelEvent(event);
+		break;
+	case SDL_KEYDOWN:
+	case SDL_KEYUP:
+		onKeyboardEvent(event);
+		break;
+	case SDL_TEXTEDITING:
+		onTextEditEvent(event);
+		break;
+	case SDL_TEXTINPUT:
+		onTextEntryEvent(event);
+		break;
+
+	}
+}
+
+void NLEInputProcessor::onKeyboardEvent(union SDL_Event* event)
+{
+	printf("keyboard event\n");
+}
+
+void NLEInputProcessor::onMouseMotionEvent(union SDL_Event* event)
+{
+	
+}
+
+void NLEInputProcessor::onMouseButtonEvent(union SDL_Event* event)
+{
+	printf("mouse button pressed: %i\n", event->button.button);
+}
+
+void NLEInputProcessor::onMouseWheelEvent(union SDL_Event* event)
+{
+
+}
+
+void NLEInputProcessor::onTextEditEvent(union SDL_Event* event)
+{
+	printf("Text Edit =>> text: %s, start: %i, length %i\n", event->edit.text, event->edit.start, event->edit.length);
+}
+
+void NLEInputProcessor::onTextEntryEvent(union SDL_Event* event)
+{
+	printf("Text Entry =>>>> text: %s\n", event->text.text);
+}
+
+std::wstring NLEInputProcessor::pasteClipboard()
+{
+	std::string text(SDL_GetClipboardText());
+	std::wstring textOutput(text.begin(), text.end());
+	return textOutput;
+}
+
+void NLEInputProcessor::copyClipboard(std::wstring text)
+{
+	std::string textInput(text.begin(), text.end());
+	SDL_SetClipboardText(textInput.c_str());
+}
+
+void NLEInputProcessor::enableTextInput(bool condition)
+{
+	if (condition)
+	{
+		SDL_StartTextInput();
+	}
+	else
+	{
+		SDL_StopTextInput();
+	}
 }
