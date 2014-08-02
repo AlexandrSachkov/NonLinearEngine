@@ -147,6 +147,7 @@ public:
 	void display();
 
 	ID3D11Device* getAPIDevice();
+	ID3D11DeviceContext* getAPIPrimaryContext();
 private:
 	bool initialize();
 	void release();

@@ -27,43 +27,47 @@ THE SOFTWARE.
 */
 
 
-#ifndef NLE_
-#define NLE_
+#include "stdafx.h"
+#include "GUI\NLEGuiManager.h"
+#include "NLE.h"
+#include "RenderingEngine\NLRE.h"
+#include "CEGUI\CEGUI.h"
+#include "CEGUI\RendererModules\Direct3D11\Renderer.h"
 
-class NLEApplicationLayer;
-class NLEInputProcessor;
-class NLRE;
-class NLEGuiManager;
-
-class NLE
+NLEGuiManager::NLEGuiManager(NLE* nle)
 {
-public:
-	NLE();
-	NLE(const NLE& other);
-	~NLE();
+	_nle = nle;
+	_guiRenderer = NULL;
 
-	void run();
-	std::shared_ptr<NLRE> getRenderingEngine();
-	std::shared_ptr<NLEInputProcessor> getInputProcessor();
-	std::shared_ptr<NLEApplicationLayer> getApplicationLayer();
-	std::shared_ptr<NLEGuiManager> getGuiManager();
+	if (!initialize())
+	{
+		NLE_Log::err(NLE_Log::CRITICAL, "GUI failed to initialize.");
+		throw std::exception("GUI failed to initialize.");
+	}
 
-private:
-	bool initialize();
-	bool initializeWindow();
+	NLE_Log::console("======> GUI Manager successfully initialized.");
+}
 
-	static void NLREdebugOutputHook(char text[]);
-	static void NLREconsoleOutputHook(char text[]);
-	static void NLREerrorOutputHook(NLRE_Log::ErrorFlag flag, char text[]);
+bool NLEGuiManager::initialize()
+{
+	std::shared_ptr<NLRERenderingDevice> renderingDevice = _nle->getRenderingEngine()->getRenderingDevice();
+	_guiRenderer = new CEGUI::Direct3D11Renderer(CEGUI::Direct3D11Renderer::create(renderingDevice->getAPIDevice(), renderingDevice->getAPIPrimaryContext()));
 
-	NLEWindowReference _winRef;
-	int _width;
-	int _height;
+	CEGUI::System::create(*_guiRenderer);
+	return true;
+}
 
-	std::shared_ptr<NLEApplicationLayer> _applicationLayer;
-	std::shared_ptr<NLEInputProcessor> _inputProcessor;
-	std::shared_ptr<NLRE> _renderingEngine;
-	std::shared_ptr<NLEGuiManager> _guiManager;
-};
+NLEGuiManager::~NLEGuiManager()
+{
+	CEGUI::System::destroy();
+	CEGUI::Direct3D11Renderer::destroy(*_guiRenderer);
+}
 
-#endif
+NLEGuiManager::NLEGuiManager(const NLEGuiManager& other)
+{
+}
+
+void NLEGuiManager::renderGUI()
+{
+	CEGUI::System::getSingleton().renderAllGUIContexts();
+}

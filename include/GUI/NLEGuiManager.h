@@ -27,43 +27,29 @@ THE SOFTWARE.
 */
 
 
-#ifndef NLE_
-#define NLE_
 
-class NLEApplicationLayer;
-class NLEInputProcessor;
-class NLRE;
-class NLEGuiManager;
+#ifndef NLE_GUI_MANAGER_
+#define NLE_GUI_MANAGER_
 
-class NLE
+class NLE;
+namespace CEGUI
+{
+	class Direct3D11Renderer;
+};
+
+class NLEGuiManager
 {
 public:
-	NLE();
-	NLE(const NLE& other);
-	~NLE();
+	NLEGuiManager(NLE* nle);
+	~NLEGuiManager();
 
-	void run();
-	std::shared_ptr<NLRE> getRenderingEngine();
-	std::shared_ptr<NLEInputProcessor> getInputProcessor();
-	std::shared_ptr<NLEApplicationLayer> getApplicationLayer();
-	std::shared_ptr<NLEGuiManager> getGuiManager();
-
+	void renderGUI();
 private:
+	NLEGuiManager(const NLEGuiManager& other);
 	bool initialize();
-	bool initializeWindow();
 
-	static void NLREdebugOutputHook(char text[]);
-	static void NLREconsoleOutputHook(char text[]);
-	static void NLREerrorOutputHook(NLRE_Log::ErrorFlag flag, char text[]);
-
-	NLEWindowReference _winRef;
-	int _width;
-	int _height;
-
-	std::shared_ptr<NLEApplicationLayer> _applicationLayer;
-	std::shared_ptr<NLEInputProcessor> _inputProcessor;
-	std::shared_ptr<NLRE> _renderingEngine;
-	std::shared_ptr<NLEGuiManager> _guiManager;
+	NLE* _nle;
+	CEGUI::Direct3D11Renderer* _guiRenderer;
 };
 
 #endif

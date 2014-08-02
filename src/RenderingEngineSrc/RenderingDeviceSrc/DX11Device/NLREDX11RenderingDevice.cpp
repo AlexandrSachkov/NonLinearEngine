@@ -495,3 +495,8 @@ ID3D11Device* NLREDX11RenderingDevice::getAPIDevice()
 	return _d3d11Device;
 }
 
+ID3D11DeviceContext* NLREDX11RenderingDevice::getAPIPrimaryContext()
+{
+	return _d3d11DevCon;
+}
+

@@ -31,6 +31,7 @@ THE SOFTWARE.
 #include "NLEApplicationLayer.h"
 #include "RenderingEngine\NLRE.h"
 #include "InputProcessor\NLEInputProcessor.h"
+#include "GUI\NLEGuiManager.h"
 
 NLE::NLE()
 {
@@ -44,7 +45,7 @@ NLE::NLE()
 
 	_renderingEngine.reset(new NLRE(_winRef, _width, _height));
 	_inputProcessor.reset(new NLEInputProcessor(this));
-
+	_guiManager.reset(new NLEGuiManager(this));
 	//======================= FOR TESTING PURPOSES =================
 	std::wstring path = L"D:\\3DModels\\Altair Model\\altair2.dae";
 	_renderingEngine->importAsset(path);
@@ -113,5 +114,10 @@ std::shared_ptr<NLEInputProcessor> NLE::getInputProcessor()
 std::shared_ptr<NLEApplicationLayer> NLE::getApplicationLayer()
 {
 	return _applicationLayer;
+}
+
+std::shared_ptr<NLEGuiManager> NLE::getGuiManager()
+{
+	return _guiManager;
 }
 

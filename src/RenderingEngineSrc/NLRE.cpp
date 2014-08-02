@@ -73,3 +73,8 @@ std::shared_ptr<NLRESceneManager> NLRE::getSceneManager()
 {
 	return _sceneManager;
 }
+
+std::shared_ptr<NLRERenderingDevice> NLRE::getRenderingDevice()
+{
+	return _renderingDevice;
+}
