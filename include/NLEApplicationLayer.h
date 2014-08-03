@@ -42,6 +42,16 @@ public:
 
 	NLEWindowReference& getWindowReference();
 	void getClientSize(int& width, int& height);
+	void setClientSize(int width, int height);
+	void setResizableHint(bool option);
+	void setDecoratedHint(bool option);
+	void setTitle(std::wstring title);
+	void setPosition(int x, int y);
+	void getPosition(int& x, int& y);
+	void iconify();
+	void restore();
+	void show();
+	void hide();
 
 	int runMessageLoop();
 	void endMessageLoop();

@@ -139,6 +139,72 @@ void NLEApplicationLayer::getClientSize(int& width, int& height)
 	glfwGetWindowSize(_window, &width, &height);
 }
 
+void NLEApplicationLayer::setClientSize(int width, int height)
+{
+	glfwSetWindowSize(_window, width, height);
+}
+
+void NLEApplicationLayer::setResizableHint(bool option)
+{
+	if (option)
+	{
+		glfwWindowHint(GLFW_RESIZABLE, GL_TRUE);
+	}
+	else
+	{
+		glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
+	}
+	
+}
+
+void NLEApplicationLayer::setDecoratedHint(bool option)
+{
+	if (option)
+	{
+		glfwWindowHint(GLFW_DECORATED, GL_TRUE);
+	}
+	else
+	{
+		glfwWindowHint(GLFW_DECORATED, GL_FALSE);
+	}
+}
+
+void NLEApplicationLayer::setTitle(std::wstring title)
+{
+	std::string textOut(title.begin(), title.end());
+	glfwSetWindowTitle(_window, textOut.c_str());
+}
+
+void NLEApplicationLayer::setPosition(int x, int y)
+{
+	glfwSetWindowPos(_window, x, y);
+}
+
+void NLEApplicationLayer::getPosition(int& x, int& y)
+{
+	glfwGetWindowPos(_window, &x, &y);
+}
+
+void NLEApplicationLayer::iconify()
+{
+	glfwIconifyWindow(_window);
+}
+
+void NLEApplicationLayer::restore()
+{
+	glfwRestoreWindow(_window);
+}
+
+void NLEApplicationLayer::show()
+{
+	glfwShowWindow(_window);
+}
+
+void NLEApplicationLayer::hide()
+{
+	glfwHideWindow(_window);
+}
+
 
 void NLEApplicationLayer::errorCallback(NLE_Log::ErrorFlag flag, char text[])
 {
