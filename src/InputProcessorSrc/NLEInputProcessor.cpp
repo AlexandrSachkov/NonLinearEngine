@@ -27,12 +27,15 @@ THE SOFTWARE.
 */
 #include "stdafx.h"
 #include "InputProcessor\NLEInputProcessor.h"
+#include "NLEApplicationLayer.h"
 #include "NLE.h"
-#include "SDL.h"
+#include "GLFW\glfw3.h"
 
-NLEInputProcessor::NLEInputProcessor(NLE* nle)
+NLEInputProcessor::NLEInputProcessor(NLE* nle, std::shared_ptr<NLEApplicationLayer> appLayer)
 {
 	_nle = nle;
+	_appLayer = appLayer;
+	_window = NULL;
 
 	if (!initialize())
 	{
@@ -45,7 +48,22 @@ NLEInputProcessor::NLEInputProcessor(NLE* nle)
 
 bool NLEInputProcessor::initialize()
 {
-	enableTextInput(false);
+	_window = _appLayer->getGLFWwindow();
+
+	glfwSetKeyCallback(_window,onKeyEvent);
+	glfwSetCharCallback(_window, onCharEvent);
+	glfwSetMouseButtonCallback(_window, onMouseButtonEvent);
+	glfwSetCursorPosCallback(_window, onCursorPositionEvent);
+	glfwSetCursorEnterCallback(_window, onCursorEnterEvent);
+	glfwSetScrollCallback(_window, onScrollEvent);
+
+	glfwSetWindowPosCallback(_window, onWindowPositionEvent);
+	glfwSetWindowSizeCallback(_window, onWindowSizeEvent);
+	glfwSetWindowCloseCallback(_window, onWindowCloseEvent);
+	glfwSetWindowRefreshCallback(_window, onWindowRefreshEvent);
+	glfwSetWindowFocusCallback(_window, onWindowFocusEvent);
+	glfwSetWindowIconifyCallback(_window, onWindowIconifyEvent);
+
 
 	return true;
 }
@@ -55,85 +73,64 @@ NLEInputProcessor::~NLEInputProcessor()
 
 }
 
-void NLEInputProcessor::processEvent(union SDL_Event* event)
-{
-	switch (event->type)
-	{
-	case SDL_MOUSEMOTION:
-		onMouseMotionEvent(event);
-		break;
-	case SDL_MOUSEBUTTONDOWN:
-	case SDL_MOUSEBUTTONUP:
-		onMouseButtonEvent(event);
-		break;
-	case SDL_MOUSEWHEEL:
-		onMouseWheelEvent(event);
-		break;
-	case SDL_KEYDOWN:
-	case SDL_KEYUP:
-		onKeyboardEvent(event);
-		break;
-	case SDL_TEXTEDITING:
-		onTextEditEvent(event);
-		break;
-	case SDL_TEXTINPUT:
-		onTextEntryEvent(event);
-		break;
-
-	}
-}
-
-void NLEInputProcessor::onKeyboardEvent(union SDL_Event* event)
-{
-	printf("keyboard event\n");
-}
-
-void NLEInputProcessor::onMouseMotionEvent(union SDL_Event* event)
-{
-	
-}
-
-void NLEInputProcessor::onMouseButtonEvent(union SDL_Event* event)
-{
-	printf("mouse button pressed: %i\n", event->button.button);
-}
-
-void NLEInputProcessor::onMouseWheelEvent(union SDL_Event* event)
+void NLEInputProcessor::onKeyEvent(GLFWwindow *window, int key, int scancode, int action, int mods)
 {
 
 }
 
-void NLEInputProcessor::onTextEditEvent(union SDL_Event* event)
+void NLEInputProcessor::onCharEvent(GLFWwindow *window, unsigned int codepoint)
 {
-	printf("Text Edit =>> text: %s, start: %i, length %i\n", event->edit.text, event->edit.start, event->edit.length);
+
 }
 
-void NLEInputProcessor::onTextEntryEvent(union SDL_Event* event)
+void NLEInputProcessor::onMouseButtonEvent(GLFWwindow *window, int button, int action, int mods)
 {
-	printf("Text Entry =>>>> text: %s\n", event->text.text);
+	printf("mouse btn press.\n");
 }
 
-std::wstring NLEInputProcessor::pasteClipboard()
+void NLEInputProcessor::onCursorPositionEvent(GLFWwindow *window, double xPos, double yPos)
 {
-	std::string text(SDL_GetClipboardText());
-	std::wstring textOutput(text.begin(), text.end());
-	return textOutput;
+
 }
 
-void NLEInputProcessor::copyClipboard(std::wstring text)
+void NLEInputProcessor::onCursorEnterEvent(GLFWwindow *window, int entered)
 {
-	std::string textInput(text.begin(), text.end());
-	SDL_SetClipboardText(textInput.c_str());
+
 }
 
-void NLEInputProcessor::enableTextInput(bool condition)
+void NLEInputProcessor::onScrollEvent(GLFWwindow *window, double xOffset, double yOffset)
 {
-	if (condition)
-	{
-		SDL_StartTextInput();
-	}
-	else
-	{
-		SDL_StopTextInput();
-	}
+
 }
+
+void NLEInputProcessor::onWindowPositionEvent(GLFWwindow *window, int xPos, int yPos)
+{
+
+}
+
+void NLEInputProcessor::onWindowSizeEvent(GLFWwindow *window, int width, int height)
+{
+
+}
+
+void NLEInputProcessor::onWindowCloseEvent(GLFWwindow *window)
+{
+
+}
+
+void NLEInputProcessor::onWindowRefreshEvent(GLFWwindow *window)
+{
+
+}
+
+void NLEInputProcessor::onWindowFocusEvent(GLFWwindow *window, int focused)
+{
+
+}
+
+void NLEInputProcessor::onWindowIconifyEvent(GLFWwindow *window, int iconified)
+{
+
+}
+
+

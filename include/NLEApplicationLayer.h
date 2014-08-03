@@ -29,35 +29,38 @@ THE SOFTWARE.
 #ifndef NLE_APPLICATION_LAYER_
 #define NLE_APPLICATION_LAYER_
 
-class SDL_Window;
-class SDL_SysWMinfo;
 class NLE;
+class GLFWwindow;
 
 class NLEApplicationLayer
 {
+	friend class NLEInputProcessor;
 public:
 
 	NLEApplicationLayer(NLE* nle);
 	~NLEApplicationLayer();
 
-	static void debugCallback(char text[]);
-	static void consoleCallback(char text[]);
-	static void errorCallback(NLE_Log::ErrorFlag flag, char text[]);
-
 	NLEWindowReference& getWindowReference();
 	void getClientSize(int& width, int& height);
 
 	int runMessageLoop();
+	void endMessageLoop();
+
+	void copyClipboard(std::wstring text);
+	std::wstring pasteClipboard();
 
 private:	
 	NLEApplicationLayer(const NLEApplicationLayer& other);
 	bool initialize();
-	bool getWindowInfo();
 
+	static void debugCallback(char text[]);
+	static void consoleCallback(char text[]);
+	static void errorCallback(NLE_Log::ErrorFlag flag, char text[]);
+	static void glfwErrorCallback(int error, const char* description);
+
+	GLFWwindow* getGLFWwindow();
 	NLE* _nle;
-	SDL_Window* _window;
-	SDL_SysWMinfo* _sysInfo;
-	NLEWindowReference _windowRef;
+	GLFWwindow* _window;
 };
 
 #endif

@@ -32,10 +32,11 @@ THE SOFTWARE.
 #include "NLE.h"
 #include "RenderingEngine\NLRE.h"
 #include "RenderingEngine\SceneManager\NLRESceneManager.h"
-#include "InputProcessor\NLEInputProcessor.h"
 
-#include "SDL.h"
-#include "SDL_syswm.h"
+#include "GLFW\glfw3.h"
+#define GLFW_EXPOSE_NATIVE_WIN32
+#define GLFW_EXPOSE_NATIVE_WGL
+#include "GLFW\glfw3native.h"
 
 
 NLE* nle = nullptr;
@@ -43,8 +44,7 @@ NLE* nle = nullptr;
 NLEApplicationLayer::NLEApplicationLayer(NLE* nle)
 {
 	_nle = nle;
-	_window = nullptr;
-	_sysInfo = nullptr;
+
 
 	if (!initialize())
 	{
@@ -59,10 +59,8 @@ NLEApplicationLayer::NLEApplicationLayer(const NLEApplicationLayer& other)
 
 NLEApplicationLayer::~NLEApplicationLayer()
 {
-	if (_sysInfo) delete _sysInfo;
-
-	SDL_DestroyWindow(_window);
-	SDL_Quit();
+	glfwDestroyWindow(_window);
+	glfwTerminate();
 	fclose(stdout);
 	FreeConsole();
 }
@@ -76,104 +74,69 @@ bool NLEApplicationLayer::initialize()
 	NLE_Log::registerConsoleCallback(NLEApplicationLayer::debugCallback);
 	NLE_Log::registerDebugCallback(NLEApplicationLayer::debugCallback);
 
-	if (SDL_Init(SDL_INIT_EVERYTHING) != 0)
+	glfwSetErrorCallback(glfwErrorCallback);
+	if (!glfwInit())
 	{
-		NLE_Log::err(NLE_Log::CRITICAL, "SDL failed to initialize: %s\n", SDL_GetError());
+		NLE_Log::err(NLE_Log::CRITICAL, "GLFW failed to initialize.");
 		return false;
 	}
 
-	_window = SDL_CreateWindow("NonLinear Engine", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 1900, 1000, SDL_WINDOW_SHOWN);
-	if (_window == NULL)
+	_window = glfwCreateWindow(1900, 1000, "NonLinear Engine", NULL, NULL);
+	if (!_window)
 	{
-		NLE_Log::err(NLE_Log::CRITICAL, "Window could not be created! SDL_Error: %s\n", SDL_GetError());
+		glfwTerminate();
+		NLE_Log::err(NLE_Log::CRITICAL, "Window failed to initialize.");
 		return false;
 	}
-
-	if (!getWindowInfo())
-	{
-		NLE_Log::err(NLE_Log::CRITICAL, "Window information could not be retrieved: %s\n", SDL_GetError());
-		return false;
-	}
-
 
 	NLE_Log::console("======> Application Layer successfully initialized.");
 	return true;
 }
 
-bool NLEApplicationLayer::getWindowInfo()
-{
-	_sysInfo = new SDL_SysWMinfo();
-	SDL_VERSION(&_sysInfo->version);
-	if (!SDL_GetWindowWMInfo(_window, _sysInfo))
-	{
-		return false;
-	}
-
-	const char *subsystem = "an unknown system!";
-	switch (_sysInfo->subsystem) {
-	case SDL_SYSWM_UNKNOWN:   break;
-	case SDL_SYSWM_WINDOWS:   
-		subsystem = "Microsoft Windows(TM)";  
-		_windowRef = static_cast<NLEWindowReference>(_sysInfo->info.win.window);
-		break;
-	case SDL_SYSWM_X11:       subsystem = "X Window System";        break;
-#if SDL_VERSION_ATLEAST(2, 0, 3)
-	case SDL_SYSWM_WINRT:     subsystem = "WinRT";                  break;
-#endif
-	case SDL_SYSWM_DIRECTFB:  subsystem = "DirectFB";               break;
-	case SDL_SYSWM_COCOA:     subsystem = "Apple OS X";             break;
-	case SDL_SYSWM_UIKIT:     subsystem = "UIKit";                  break;
-#if SDL_VERSION_ATLEAST(2, 0, 2)
-	case SDL_SYSWM_WAYLAND:   subsystem = "Wayland";                break;
-	case SDL_SYSWM_MIR:       subsystem = "Mir";                    break;
-#endif
-#if SDL_VERSION_ATLEAST(2, 0, 4)
-	case SDL_SYSWM_ANDROID:   subsystem = "Android";                break;
-#endif
-	}
-
-	NLE_Log::console("This program is running SDL version %d.%d.%d on %s\n",
-		(int)_sysInfo->version.major,
-		(int)_sysInfo->version.minor,
-		(int)_sysInfo->version.patch,
-		subsystem);
-	return true;
-}
 
 int NLEApplicationLayer::runMessageLoop()
 {
-	SDL_Event event;
-	bool quit = false;
-
-	while (!quit)
+	
+	while (!glfwWindowShouldClose(_window))
 	{
-		while (SDL_PollEvent(&event) != 0)
-		{
-			if (event.type == SDL_QUIT)
-			{
-				quit = true;
-			}
-			else
-			{
-				_nle->getInputProcessor()->processEvent(&event);
-			}
-		}
+		glfwPollEvents();
 
 		//=========================== for testing only
 		_nle->getRenderingEngine()->getSceneManager()->cameraUpdate();
 		_nle->getRenderingEngine()->render();
 	}
+		
 	return 0;
 }
 
+void NLEApplicationLayer::endMessageLoop()
+{
+	glfwSetWindowShouldClose(_window, GL_TRUE);
+}
+
+void NLEApplicationLayer::copyClipboard(std::wstring text)
+{
+	std::string textOut(text.begin(), text.end());
+	glfwSetClipboardString(_window, textOut.c_str());
+}
+
+std::wstring NLEApplicationLayer::pasteClipboard()
+{
+	std::string text(glfwGetClipboardString(_window));
+	std::wstring textOut(text.begin(), text.end());
+	return textOut;
+}
+
+
 NLEWindowReference& NLEApplicationLayer::getWindowReference()
 {
-	return _windowRef;
+	NLEWindowReference windowRef = glfwGetWin32Window(_window);
+	return windowRef;
 }
 
 void NLEApplicationLayer::getClientSize(int& width, int& height)
 {
-	SDL_GetWindowSize(_window,&width, &height);
+	glfwGetWindowSize(_window, &width, &height);
 }
 
 
@@ -193,6 +156,16 @@ void NLEApplicationLayer::consoleCallback(char text[])
 {
 	printf(text);
 	printf("\n");
+}
+
+void NLEApplicationLayer::glfwErrorCallback(int error, const char* description)
+{
+	NLE_Log::err(NLE_Log::REG, "Application Layer Error: %i, %s", error, description);
+}
+
+GLFWwindow* NLEApplicationLayer::getGLFWwindow()
+{
+	return _window;
 }
 
 

@@ -30,30 +30,39 @@ THE SOFTWARE.
 #define NLE_INPUT_PROCESSOR_
 
 class NLE;
-union SDL_Event;
+class NLEApplicationLayer;
+class GLFWwindow;
 
 class NLEInputProcessor
 {
 public:
-	NLEInputProcessor(NLE* nle);
+	NLEInputProcessor(
+		NLE* nle, 
+		std::shared_ptr<NLEApplicationLayer> appLayer
+		);
 	~NLEInputProcessor();
 
-	void processEvent(union SDL_Event* event);
-	void enableTextInput(bool condition);
 private:
 	NLEInputProcessor(const NLEInputProcessor& other);
 	bool initialize();
 
-	void onKeyboardEvent(union SDL_Event* event);
-	void onMouseMotionEvent(union SDL_Event* event);
-	void onMouseButtonEvent(union SDL_Event* event);
-	void onMouseWheelEvent(union SDL_Event* event);
-	void onTextEditEvent(union SDL_Event* event);
-	void onTextEntryEvent(union SDL_Event* event);
-	std::wstring pasteClipboard();
-	void copyClipboard(std::wstring text);
+	static void onKeyEvent(GLFWwindow *window,int key, int scancode, int action, int mods);
+	static void onCharEvent(GLFWwindow *window, unsigned int codepoint);
+	static void onMouseButtonEvent(GLFWwindow *window, int button, int action, int mods);
+	static void onCursorPositionEvent(GLFWwindow *window, double xPos, double yPos);
+	static void onCursorEnterEvent(GLFWwindow *window, int entered);
+	static void onScrollEvent(GLFWwindow *window, double xOffset, double yOffset);
+	
+	static void onWindowPositionEvent(GLFWwindow *window, int xPos, int yPos);
+	static void onWindowSizeEvent(GLFWwindow *window, int width, int height);
+	static void onWindowCloseEvent(GLFWwindow *window);
+	static void onWindowRefreshEvent(GLFWwindow *window);
+	static void onWindowFocusEvent(GLFWwindow *window, int focused);
+	static void onWindowIconifyEvent(GLFWwindow *window, int iconified);
 
 	NLE* _nle;
+	std::shared_ptr<NLEApplicationLayer> _appLayer;
+	GLFWwindow* _window;
 };
 
 #endif
