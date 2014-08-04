@@ -34,6 +34,8 @@ class NLRERenderingTechnique
 public:
 	virtual ~NLRERenderingTechnique(){};
 	virtual void render(std::vector<std::shared_ptr<NLRE_RenderableAsset>>& assets) = 0;
+private:
+	virtual void applyState() = 0;
 };
 
 #endif

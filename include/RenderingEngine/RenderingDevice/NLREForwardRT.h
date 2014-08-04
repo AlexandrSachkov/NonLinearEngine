@@ -41,9 +41,11 @@ public:
 	~NLREForwardRT();
 
 	void render(std::vector<std::shared_ptr<NLRE_RenderableAsset>>& assets);
+	
 private:
 	bool initialize();
-	
+	void applyState();
+
 	std::shared_ptr<NLRERenderingDevice> _renderingDevice;
 
 	//Resources and States

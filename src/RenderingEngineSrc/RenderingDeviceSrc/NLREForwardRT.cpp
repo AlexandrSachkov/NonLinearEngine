@@ -64,16 +64,9 @@ bool NLREForwardRT::initialize()
 	if (!_renderingDevice->createTextureSamplerState(_textureSamplerState)) return false;
 	if (!_renderingDevice->loadPixelShader(L"Shaders\\Forward_PosNormText_PS.cso", _pixelShader)) return false;
 	
-	_renderingDevice->setRenderTargets(1, _backBufferRenderTargetView, _depthStencilView);
-	_renderingDevice->setVertexShader(_vertexShader);
-	_renderingDevice->setPixelShader(_pixelShader);
-	_renderingDevice->setInputLayout(_inputLayout);
-	_renderingDevice->setPrimitiveTopology(NLRE_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-	_renderingDevice->setViewPort();
-
-	_renderingDevice->PSSetTextureSamplerState(0, 1, _textureSamplerState);
-	_renderingDevice->setRasterizerState(_backFaceCull);
 	
+	applyState();
+
 	return true;
 }
 
@@ -93,8 +86,23 @@ NLREForwardRT::~NLREForwardRT()
 	if (_textureSamplerState) _textureSamplerState->Release();
 }
 
+void NLREForwardRT::applyState()
+{
+	_renderingDevice->setRenderTargets(1, _backBufferRenderTargetView, _depthStencilView);
+	_renderingDevice->setVertexShader(_vertexShader);
+	_renderingDevice->setPixelShader(_pixelShader);
+	_renderingDevice->setInputLayout(_inputLayout);
+	_renderingDevice->setPrimitiveTopology(NLRE_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+	_renderingDevice->setViewPort();
+
+	_renderingDevice->PSSetTextureSamplerState(0, 1, _textureSamplerState);
+	_renderingDevice->setRasterizerState(_backFaceCull);
+}
+
 void NLREForwardRT::render(std::vector<std::shared_ptr<NLRE_RenderableAsset>>& assets)
 {
+	applyState();
+
 	float bgColor[4] = { 0.0f, 0.0f, 0.0f, 0.0f };
 	_renderingDevice->clearRenderTargetView(_backBufferRenderTargetView, bgColor);
 	_renderingDevice->clearDepthStencilView(_depthStencilView);

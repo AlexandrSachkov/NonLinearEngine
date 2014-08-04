@@ -75,7 +75,10 @@ NLEInputProcessor::~NLEInputProcessor()
 
 void NLEInputProcessor::onKeyEvent(GLFWwindow *window, int key, int scancode, int action, int mods)
 {
-
+	if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
+	{
+		
+	}
 }
 
 void NLEInputProcessor::onCharEvent(GLFWwindow *window, unsigned int codepoint)
