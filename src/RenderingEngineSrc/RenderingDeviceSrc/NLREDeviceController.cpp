@@ -33,6 +33,7 @@ THE SOFTWARE.
 NLREDeviceController::NLREDeviceController(NLEWindowReference hwndVal, int widthVal, int heightVal, NLRE_RENDERING_TECHNIQUE_ID techniqueId)
 {
 	_renderingTechniqueId = techniqueId;
+	_guiRenderCallback = NULL;
 	_renderingDevice.reset(new NLRERenderingDevice(hwndVal, widthVal, heightVal));
 	if (!initialize())
 	{
@@ -85,4 +86,14 @@ NLRE_RENDERING_TECHNIQUE_ID NLREDeviceController::getCurrentRenderingTechniqueId
 void NLREDeviceController::render(std::vector<std::shared_ptr<NLRE_RenderableAsset>>& assets)
 {
 	_renderingTechnique->render(assets);
+	if (_guiRenderCallback)
+	{
+		_guiRenderCallback();
+	}
+	_renderingDevice->display();
+}
+
+void NLREDeviceController::setGuiRenderCallback(void(*guiRenderCallback)(void))
+{
+	_guiRenderCallback = guiRenderCallback;
 }

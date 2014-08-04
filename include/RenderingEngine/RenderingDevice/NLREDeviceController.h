@@ -43,12 +43,15 @@ public:
 	bool setRenderingTechnique(NLRE_RENDERING_TECHNIQUE_ID techniqueId);
 	NLRE_RENDERING_TECHNIQUE_ID getCurrentRenderingTechniqueId();
 	void render(std::vector<std::shared_ptr<NLRE_RenderableAsset>>& assets);
+	void setGuiRenderCallback(void(*guiRenderCallback)(void));
 
 	std::shared_ptr<NLRERenderingTechnique> _renderingTechnique;
 private:
 	bool initialize();
 	NLRE_RENDERING_TECHNIQUE_ID _renderingTechniqueId;
 	std::shared_ptr<NLRERenderingDevice> _renderingDevice;
+
+	void(*_guiRenderCallback)(void);
 	
 };
 #endif

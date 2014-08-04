@@ -33,6 +33,7 @@ THE SOFTWARE.
 #include "RenderingEngine\NLRE.h"
 #include "CEGUI\CEGUI.h"
 #include "CEGUI\RendererModules\Direct3D11\Renderer.h"
+#include "RenderingEngine\RenderingDevice\NLREDeviceController.h"
 
 NLEGuiManager::NLEGuiManager(NLE* nle)
 {
@@ -50,10 +51,12 @@ NLEGuiManager::NLEGuiManager(NLE* nle)
 
 bool NLEGuiManager::initialize()
 {
-	std::shared_ptr<NLRERenderingDevice> renderingDevice = _nle->getRenderingEngine()->getRenderingDevice();
+	std::shared_ptr<NLRERenderingDevice> renderingDevice = _nle->getRenderingEngine()->getDeviceController()->getRenderingDevice();
 	_guiRenderer = new CEGUI::Direct3D11Renderer(CEGUI::Direct3D11Renderer::create(renderingDevice->getAPIDevice(), renderingDevice->getAPIPrimaryContext()));
 
 	CEGUI::System::create(*_guiRenderer);
+	_nle->getRenderingEngine()->getDeviceController()->setGuiRenderCallback(NLEGuiManager::renderGUI);
+
 	return true;
 }
 

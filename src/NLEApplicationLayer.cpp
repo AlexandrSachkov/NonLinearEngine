@@ -32,6 +32,7 @@ THE SOFTWARE.
 #include "NLE.h"
 #include "RenderingEngine\NLRE.h"
 #include "RenderingEngine\SceneManager\NLRESceneManager.h"
+#include "GUI\NLEGuiManager.h"
 
 #include "GLFW\glfw3.h"
 #define GLFW_EXPOSE_NATIVE_WIN32

@@ -47,11 +47,12 @@ public:
 
 	std::shared_ptr<NLREAssetImporter> getAssetImporter();
 	std::shared_ptr<NLRESceneManager> getSceneManager();
-	std::shared_ptr<NLRERenderingDevice> getRenderingDevice();
+	std::shared_ptr<NLREDeviceController> getDeviceController();
+	std::shared_ptr<NLRETextureLoader> getTextureLoader();
+
 private:
 	std::shared_ptr<NLREAssetImporter> _assetImporter;
 	std::shared_ptr<NLREDeviceController> _deviceController;
-	std::shared_ptr<NLRERenderingDevice> _renderingDevice;
 	std::shared_ptr<NLRESceneManager> _sceneManager;
 	std::shared_ptr<NLRETextureLoader> _textureLoader;
 	

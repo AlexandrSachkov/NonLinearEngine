@@ -43,7 +43,7 @@ public:
 	NLEGuiManager(NLE* nle);
 	~NLEGuiManager();
 
-	void renderGUI();
+	static void renderGUI();
 private:
 	NLEGuiManager(const NLEGuiManager& other);
 	bool initialize();

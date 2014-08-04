@@ -127,6 +127,5 @@ void NLREForwardRT::render(std::vector<std::shared_ptr<NLRE_RenderableAsset>>& a
 		_renderingDevice->drawIndexed(asset->mesh->indexBuffer);
 		counter++;
 	}
-	_renderingDevice->display();
 }
 
