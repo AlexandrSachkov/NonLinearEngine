@@ -60,6 +60,7 @@ std::shared_ptr<NLRERenderingDevice> NLREDeviceController::getRenderingDevice()
 
 bool NLREDeviceController::setRenderingTechnique(NLRE_RENDERING_TECHNIQUE_ID techniqueId)
 {
+	_renderingTechniqueId = techniqueId;
 	try
 	{
 		switch (techniqueId)
