@@ -32,7 +32,7 @@ THE SOFTWARE.
 #include <d3dcompiler.h>
 
 template<class DataType>
-inline bool NLREDX11RenderingDevice::createBuffer(
+bool NLREDX11RenderingDevice::createBuffer(
 	NLRE_BIND_FLAG bindFlag,
 	NLRE_USAGE usage,
 	DataType dataArr[],
