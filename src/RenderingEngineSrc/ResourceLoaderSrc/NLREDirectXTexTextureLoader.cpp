@@ -28,6 +28,7 @@ THE SOFTWARE.
 
 #include "stdafx.h"
 
+#include "RenderingEngine\RenderingDevice\NLRERenderingDevice.h"
 #include "RenderingEngine\ResourceLoader\NLREDirectXTexTextureLoader.h"
 #include "RenderingEngine\ResourceLoader\DDSTextureLoader.h"
 #include "RenderingEngine\ResourceLoader\WICTextureLoader.h"

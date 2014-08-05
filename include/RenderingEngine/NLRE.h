@@ -30,7 +30,6 @@ THE SOFTWARE.
 #ifndef NLRE_
 #define NLRE_
 
-#include "RenderingDevice\NLRERenderingDevice.h"
 class NLREAssetImporter;
 class NLRESceneManager;
 class NLREDeviceController;

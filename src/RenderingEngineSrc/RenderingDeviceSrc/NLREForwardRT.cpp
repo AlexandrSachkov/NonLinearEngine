@@ -28,6 +28,7 @@ THE SOFTWARE.
 
 #include "stdafx.h"
 #include "RenderingEngine\RenderingDevice\NLREForwardRT.h"
+#include "RenderingEngine\RenderingDevice\NLRERenderingDevice.h"
 
 NLREForwardRT::NLREForwardRT(std::shared_ptr<NLRERenderingDevice> renderingDevice)
 {

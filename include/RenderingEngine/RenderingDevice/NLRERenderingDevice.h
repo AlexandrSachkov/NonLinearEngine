@@ -30,8 +30,12 @@ THE SOFTWARE.
 #define NLRE_RENDERING_DEVICE_
 
 #ifdef _DX11_
-	#include "RenderingEngine\RenderingDevice\DX11Device\NLREDX11RenderingDevice.h"
-	typedef NLREDX11RenderingDevice NLRERenderingDevice;
+#include "RenderingEngine\RenderingDevice\DX11Device\NLREDX11RenderingDevice.h"
+class NLRERenderingDevice : public NLREDX11RenderingDevice
+{
+public:
+	NLRERenderingDevice(NLEWindowReference hwndVal, int widthVal, int heightVal) :NLREDX11RenderingDevice(hwndVal, widthVal, heightVal){}
+};
 #endif
 
 

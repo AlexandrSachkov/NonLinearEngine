@@ -29,8 +29,10 @@ THE SOFTWARE.
 #ifndef NLRE_FORWARD_RT_
 #define NLRE_FORWARD_RT_
 
-#include "RenderingEngine\RenderingDevice\NLRERenderingDevice.h"
+
 #include "RenderingEngine\RenderingDevice\NLRERenderingTechnique.h"
+
+class NLRERenderingDevice;
 
 class NLREForwardRT : public virtual NLRERenderingTechnique
 {

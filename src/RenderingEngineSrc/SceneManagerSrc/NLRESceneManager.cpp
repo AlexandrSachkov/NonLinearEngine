@@ -30,6 +30,7 @@ THE SOFTWARE.
 #include "RenderingEngine\SceneManager\NLRESceneManager.h"
 #include "RenderingEngine\ResourceLoader\NLRETextureLoader.h"
 #include "RenderingEngine\RenderingDevice\NLREDeviceController.h"
+#include "RenderingEngine\RenderingDevice\NLRERenderingDevice.h"
 #include "RenderingEngine\SceneManager\NLRECamera.h"
 
 

@@ -29,7 +29,6 @@ THE SOFTWARE.
 #ifndef NLRE_DIRECTXTEX_TEXTURE_LOADER_
 #define NLRE_DIRECTXTEX_TEXTURE_LOADER_
 
-#include "RenderingEngine\RenderingDevice\NLRERenderingDevice.h"
 #include "RenderingEngine\ResourceLoader\NLRETextureLoader.h"
 
 class NLREDirectXTexTextureLoader : public virtual NLRETextureLoader

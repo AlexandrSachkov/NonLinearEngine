@@ -28,6 +28,7 @@ THE SOFTWARE.
 
 #include "stdafx.h"
 #include "RenderingEngine\NLRE.h"
+#include "RenderingEngine\RenderingDevice\NLRERenderingDevice.h"
 #include "RenderingEngine\SceneManager\NLRESceneManager.h"
 #include "RenderingEngine\ResourceLoader\NLREAssimpAssetImporter.h"
 #include "RenderingEngine\ResourceLoader\NLREDirectXTexTextureLoader.h"
