@@ -29,7 +29,9 @@ THE SOFTWARE.
 #ifndef NLRE_TEXTURE_LOADER_
 #define NLRE_TEXTURE_LOADER_
 
-class NLRETextureLoader
+#include "NLESingleInstance.h"
+
+class NLRETextureLoader : private NLESingleInstance<NLRETextureLoader>
 {
 public:
 	virtual ~NLRETextureLoader(){};

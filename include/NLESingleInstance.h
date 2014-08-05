@@ -1,8 +1,8 @@
 /*
 -----------------------------------------------------------------------------
-This source file is part of NLRE
-(NonLinear Rendering Engine)
-For the latest info, see https://github.com/AlexandrSachkov/NonLinearRenderingEngine
+This source file is part of NLE
+(NonLinear Engine)
+For the latest info, see https://github.com/AlexandrSachkov/NonLinearEngine
 
 Copyright (c) 2014 Alexandr Sachkov & NonLinear Engine Team
 
@@ -26,34 +26,33 @@ THE SOFTWARE.
 -----------------------------------------------------------------------------
 */
 
-#ifndef NLRE_DEVICE_CONTROLLER_
-#define NLRE_DEVICE_CONTROLLER_
+#ifndef NLE_SINGLE_INSTANCE_
+#define NLE_SINGLE_INSTANCE_
 
-#include "NLESingleInstance.h"
+#include <stdexcept>
 
-class NLRERenderingDevice;
-class NLRERenderingTechnique;
-
-class NLREDeviceController : private NLESingleInstance<NLREDeviceController>
+template<typename T>
+class NLESingleInstance
 {
-public:
-	NLREDeviceController(NLEWindowReference hwndVal, int widthVal, int heightVal, NLRE_RENDERING_TECHNIQUE_ID techniqueId);
-	NLREDeviceController(const NLREDeviceController&);
-	~NLREDeviceController();
+protected:
+	NLESingleInstance()
+	{
+		if (_constructed) throw std::runtime_error("Object already created");
+		_constructed = true;
+	}
+	~NLESingleInstance()
+	{
+		_constructed = false;
+	}
 
-	std::shared_ptr<NLRERenderingDevice> getRenderingDevice();
-	bool setRenderingTechnique(NLRE_RENDERING_TECHNIQUE_ID techniqueId);
-	NLRE_RENDERING_TECHNIQUE_ID getCurrentRenderingTechniqueId();
-	void render(std::vector<std::shared_ptr<NLRE_RenderableAsset>>& assets);
-	void setGuiRenderCallback(void(*guiRenderCallback)(void));
-
-	std::shared_ptr<NLRERenderingTechnique> _renderingTechnique;
 private:
-	bool initialize();
-	NLRE_RENDERING_TECHNIQUE_ID _renderingTechniqueId;
-	std::shared_ptr<NLRERenderingDevice> _renderingDevice;
+	NLESingleInstance(const NLESingleInstance&);
+	NLESingleInstance& operator=(const NLESingleInstance&);
 
-	void(*_guiRenderCallback)(void);
-	
+	static bool _constructed;
 };
+
+template<typename T>
+bool NLESingleInstance<T>::_constructed = false;
+
 #endif

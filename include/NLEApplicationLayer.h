@@ -29,10 +29,12 @@ THE SOFTWARE.
 #ifndef NLE_APPLICATION_LAYER_
 #define NLE_APPLICATION_LAYER_
 
+#include "NLESingleInstance.h"
+
 class NLE;
 class GLFWwindow;
 
-class NLEApplicationLayer
+class NLEApplicationLayer : private NLESingleInstance<NLEApplicationLayer>
 {
 	friend class NLEInputProcessor;
 public:

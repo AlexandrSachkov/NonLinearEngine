@@ -31,13 +31,15 @@ THE SOFTWARE.
 #ifndef NLE_GUI_MANAGER_
 #define NLE_GUI_MANAGER_
 
+#include "NLESingleInstance.h"
+
 class NLE;
 namespace CEGUI
 {
 	class Direct3D11Renderer;
 };
 
-class NLEGuiManager
+class NLEGuiManager : private NLESingleInstance<NLEGuiManager>
 {
 public:
 	NLEGuiManager(NLE* nle);

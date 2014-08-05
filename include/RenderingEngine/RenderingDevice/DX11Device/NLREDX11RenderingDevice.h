@@ -29,7 +29,9 @@ THE SOFTWARE.
 #ifndef NLRE_DX11_RENDERING_DEVICE_
 #define NLRE_DX11_RENDERING_DEVICE_
 
-class NLREDX11RenderingDevice
+#include "NLESingleInstance.h"
+
+class NLREDX11RenderingDevice : private NLESingleInstance<NLREDX11RenderingDevice>
 {
 public:
 	NLREDX11RenderingDevice(NLEWindowReference hwndVal, int widthVal, int heightVal);

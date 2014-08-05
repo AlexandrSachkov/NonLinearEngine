@@ -29,11 +29,13 @@ THE SOFTWARE.
 #ifndef NLE_INPUT_PROCESSOR_
 #define NLE_INPUT_PROCESSOR_
 
+#include "NLESingleInstance.h"
+
 class NLE;
 class NLEApplicationLayer;
 class GLFWwindow;
 
-class NLEInputProcessor
+class NLEInputProcessor : private NLESingleInstance<NLEInputProcessor>
 {
 public:
 	NLEInputProcessor(

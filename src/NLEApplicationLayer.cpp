@@ -248,7 +248,11 @@ int WINAPI WinMain(
 	}
 	catch (std::exception& e)
 	{
-		MessageBox(nullptr, L"NonLinear Engine failed to start.", L"ERROR", MB_OK);
+		std::wstring errTxt = L"NonLinear Engine failed to start: ";
+		std::string errMsgStr(e.what());
+		std::wstring errMsg(errMsgStr.begin(), errMsgStr.end());
+		errTxt.append(errMsg);
+		MessageBox(nullptr, errTxt.c_str(), L"ERROR", MB_OK);
 		delete nle;
 		return 0;
 	}

@@ -30,12 +30,14 @@ THE SOFTWARE.
 #ifndef NLE_
 #define NLE_
 
+#include "NLESingleInstance.h"
+
 class NLEApplicationLayer;
 class NLEInputProcessor;
 class NLRE;
 class NLEGuiManager;
 
-class NLE
+class NLE : private NLESingleInstance<NLE>
 {
 public:
 	NLE();

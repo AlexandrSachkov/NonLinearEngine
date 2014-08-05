@@ -29,7 +29,9 @@ THE SOFTWARE.
 #ifndef NLRE_ASSET_IMPORTER_
 #define NLRE_ASSET_IMPORTER_
 
-class NLREAssetImporter
+#include "NLESingleInstance.h"
+
+class NLREAssetImporter : private NLESingleInstance<NLREAssetImporter>
 {
 public:
 	virtual ~NLREAssetImporter(){};

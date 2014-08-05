@@ -30,12 +30,14 @@ THE SOFTWARE.
 #ifndef NLRE_
 #define NLRE_
 
+#include "NLESingleInstance.h"
+
 class NLREAssetImporter;
 class NLRESceneManager;
 class NLREDeviceController;
 class NLRETextureLoader;
 
-class NLRE
+class NLRE : private NLESingleInstance<NLRE>
 {
 public:
 	NLRE(NLEWindowReference hwndVal, int widthVal, int heightVal);

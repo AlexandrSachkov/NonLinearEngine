@@ -317,6 +317,7 @@
     <ClInclude Include="..\include\NLEConfigurator.h" />
     <ClInclude Include="..\include\NLELog.h" />
     <ClInclude Include="..\include\NLEResources.h" />
+    <ClInclude Include="..\include\NLESingleInstance.h" />
     <ClInclude Include="..\include\RenderingEngine\NLRE.h" />
     <ClInclude Include="..\include\RenderingEngine\NLREMain\NLREAlignedAllocator.h" />
     <ClInclude Include="..\include\RenderingEngine\NLREMain\NLRECommon.h" />
