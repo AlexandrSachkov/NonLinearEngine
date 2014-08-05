@@ -4,7 +4,7 @@ This source file is part of NLE
 (NonLinear Engine)
 For the latest info, see https://github.com/AlexandrSachkov/NonLinearEngine
 
-Copyright (c) 2014 NonLinear Engine Team
+Copyright (c) 2014 Alexandr Sachkov & NonLinear Engine Team
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
