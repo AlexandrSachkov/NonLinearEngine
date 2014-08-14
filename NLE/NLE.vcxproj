@@ -323,7 +323,6 @@
     <ClInclude Include="..\include\RenderingEngine\NLREMain\NLRECommon.h" />
     <ClInclude Include="..\include\RenderingEngine\NLREMain\NLREConfigurator.h" />
     <ClInclude Include="..\include\RenderingEngine\NLREMain\NLRELog.h" />
-    <ClInclude Include="..\include\RenderingEngine\NLREMain\NLREStatic.h" />
     <ClInclude Include="..\include\RenderingEngine\NLREResources.h" />
     <ClInclude Include="..\include\RenderingEngine\RenderingDevice\DX11Device\NLREDX11InputLayoutDescriptions.h" />
     <ClInclude Include="..\include\RenderingEngine\RenderingDevice\DX11Device\NLREDX11RenderingDevice.h" />
@@ -404,14 +403,6 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Use</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="..\src\RenderingEngineSrc\NLREMainSrc\NLRELog.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Profile|Win32'">Use</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Use</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Use</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Profile|x64'">Use</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Use</PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="..\src\RenderingEngineSrc\NLREMainSrc\NLREStatic.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Profile|Win32'">Use</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Use</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Use</PrecompiledHeader>

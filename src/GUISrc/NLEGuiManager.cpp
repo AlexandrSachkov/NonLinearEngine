@@ -31,10 +31,13 @@ THE SOFTWARE.
 #include "GUI\NLEGuiManager.h"
 #include "NLE.h"
 #include "RenderingEngine\NLRE.h"
-#include "CEGUI\CEGUI.h"
-#include "CEGUI\RendererModules\Direct3D11\Renderer.h"
 #include "RenderingEngine\RenderingDevice\NLREDeviceController.h"
 #include "RenderingEngine\RenderingDevice\NLRERenderingDevice.h"
+
+#include "CEGUI\CEGUI.h"
+#include "CEGUI\RendererModules\Direct3D11\Renderer.h"
+#include "CEGUI\DefaultResourceProvider.h"
+
 
 NLEGuiManager::NLEGuiManager(NLE* nle)
 {
@@ -58,43 +61,40 @@ bool NLEGuiManager::initialize()
 	CEGUI::System::create(*_guiRenderer);
 	_nle->getRenderingEngine()->getDeviceController()->setGuiRenderCallback(NLEGuiManager::renderGUI);
 
+
+	// initialise the required dirs for the DefaultResourceProvider
+	CEGUI::DefaultResourceProvider* rp = static_cast<CEGUI::DefaultResourceProvider*>
+		(CEGUI::System::getSingleton().getResourceProvider());
+	rp->setResourceGroupDirectory("schemes", "../datafiles/schemes/");
+	rp->setResourceGroupDirectory("imagesets", "../datafiles/imagesets/");
+	rp->setResourceGroupDirectory("fonts", "data/gui/fonts/");
+	rp->setResourceGroupDirectory("layouts", "../datafiles/layouts/");
+	rp->setResourceGroupDirectory("looknfeels", "../datafiles/looknfeel/");
+	rp->setResourceGroupDirectory("scripts", "../datafiles/scripts/");
+	// This is only really needed if you are using Xerces and need to
+	// specify the schemas location
+	rp->setResourceGroupDirectory("schemas", "../datafiles/xml_schemas/");
+	
+	// set the default resource groups to be used
+	CEGUI::ImageManager::setImagesetDefaultResourceGroup("imagesets");
+	CEGUI::Font::setDefaultResourceGroup("fonts");
+	CEGUI::Scheme::setDefaultResourceGroup("schemes");
+	CEGUI::WidgetLookManager::setDefaultResourceGroup("looknfeels");
+	CEGUI::WindowManager::setDefaultResourceGroup("layouts");
+	CEGUI::ScriptModule::setDefaultResourceGroup("lua_scripts");
+	// setup default group for validation schemas
+	CEGUI::XMLParser* parser = CEGUI::System::getSingleton().getXMLParser();
+	if (parser->isPropertyPresent("SchemaDefaultResourceGroup"))
+		parser->setProperty("SchemaDefaultResourceGroup", "schemas");
+	
+	CEGUI::ScriptModule::setDefaultResourceGroup("scripts");
+
 	CEGUI::WindowManager& windowManager = CEGUI::WindowManager::getSingleton();
 	CEGUI::Window* rootWindow = windowManager.createWindow("DefaultWindow", "root");
 	CEGUI::System::getSingleton().getDefaultGUIContext().setRootWindow(rootWindow);
 
 
-	/*
-	CEGUI::ScriptModule::setDefaultResourceGroup("lua_scripts");
-
-
-	// create (load) the TaharezLook scheme file
-	// (this auto-loads the TaharezLook looknfeel and imageset files)
-	CEGUI::SchemeManager::getSingleton().createFromFile("TaharezLook.scheme");
-	// create (load) a font.
-	// The first font loaded automatically becomes the default font, but note
-	// that the scheme might have already loaded a font, so there may already
-	// be a default set - if we want the "DejaVuSans-10" font to definitely
-	// be the default, we should set the default explicitly afterwards.
-	CEGUI::FontManager::getSingleton().createFromFile("DejaVuSans-10.font");
-
-
-	//CEGUI::SchemeManager::getSingleton().create("TaharezLook.scheme");
-	//CEGUI::System::getSingleton().setDefaultMouseCursor("TaharezLook", "MouseArrow");
-	//CEGUI::MouseCursor::getSingleton().setImage(CEGUI::System::getSingleton().getDefaultMouseCursor());
-
-
-
-
-	CEGUI::FrameWindow* frameWindow = static_cast<CEGUI::FrameWindow*>(windowManager.createWindow("TaharezLook/FrameWindow", "testWindow"));
-	rootWindow->addChild(frameWindow);
-
-	// position a quarter of the way in from the top-left of parent.
-	frameWindow->setPosition(CEGUI::UVector2(CEGUI::UDim(0.25f, 0.0f), CEGUI::UDim(0.25f, 0.0f)));
-	// set size to be half the size of the parent
-	frameWindow->setSize(CEGUI::USize(CEGUI::UDim(0.5f, 0.0f), CEGUI::UDim(0.5f, 0.0f)));
-	frameWindow->setText("Hello World!");
-
-	*/
+	CEGUI::FontManager::getSingleton().createFromFile("arial.font");
 	return true;
 }
 

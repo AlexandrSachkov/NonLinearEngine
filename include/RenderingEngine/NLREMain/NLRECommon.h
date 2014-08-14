@@ -30,25 +30,6 @@ THE SOFTWARE.
 #define NLRE_COMMON_
 
 #include "RenderingEngine\NLREMain\NLREConfigurator.h"	//must be the first line in this file
-
-#if defined(_WINDOWS_VISTA_)
-	#define WINVER 0x0600
-	#define _WIN32_WINNT 0x0600
-
-#elif defined(_WINDOWS_7_)
-	#define WINVER 0x0601
-	#define _WIN32_WINNT 0x0601
-
-#elif defined(_WINDOWS_8_)
-	#define WINVER 0x0602
-	#define _WIN32_WINNT 0x0602
-
-#elif defined(_WINDOWS_8_1_)
-	#define WINVER 0x0603
-	#define _WIN32_WINNT 0x0603
-
-#endif
-
 #include "RenderingEngine\NLREMain\NLREAlignedAllocator.h"
 #include "Math\NLEMath.h"
 #include "RenderingEngine\NLREResources.h"

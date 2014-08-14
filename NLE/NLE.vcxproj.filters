@@ -113,9 +113,6 @@
     <ClInclude Include="..\include\RenderingEngine\NLREMain\NLRELog.h">
       <Filter>Header Files\RenderingEngine\NLREMain</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\RenderingEngine\NLREMain\NLREStatic.h">
-      <Filter>Header Files\RenderingEngine\NLREMain</Filter>
-    </ClInclude>
     <ClInclude Include="..\include\Math\NLEMath.h">
       <Filter>Header Files\RenderingEngine</Filter>
     </ClInclude>
@@ -232,9 +229,6 @@
       <Filter>Source Files\RenderingEngineSrc</Filter>
     </ClCompile>
     <ClCompile Include="..\src\RenderingEngineSrc\NLREMainSrc\NLRELog.cpp">
-      <Filter>Source Files\RenderingEngineSrc\NLREMainSrc</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\RenderingEngineSrc\NLREMainSrc\NLREStatic.cpp">
       <Filter>Source Files\RenderingEngineSrc\NLREMainSrc</Filter>
     </ClCompile>
     <ClCompile Include="..\src\RenderingEngineSrc\RenderingDeviceSrc\NLREDeviceController.cpp">

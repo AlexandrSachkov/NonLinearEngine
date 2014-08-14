@@ -28,21 +28,30 @@ THE SOFTWARE.
 
 #ifndef NLE_CONFIGURATOR_
 #define NLE_CONFIGURATOR_
-
-
+/*
+=============================================================================
+============================	USER	=====================================
+============================  CONTROLS  =====================================
+=============================================================================
+*/
 
 /*
 Platform
-1. Windows Vista:				_WINDOWS_VISTA_
-2. Windows 7:					_WINDOWS_7_
-3. Windows 8:					_WINDOWS_8_
-4. Windows 8.1:					_WINDOWS_8_1_
+1. Windows Vista SP1:			_WINDOWS_VISTA_SP_1_
+2. Windows Server 2008			_WINDOWS_SERVER_2008_
+3. Windows 7:					_WINDOWS_7_
+4. Windows 8:					_WINDOWS_8_
+5. Windows 8.1:					_WINDOWS_8_1_
+6. Linux						_LINUX_
+7. Mac OSX 10.9					_MAC_OS_X_10_9_
 */
 #define _WINDOWS_7_
 
 /*
 Graphics API
 1. DirectX 11:					_DX11_
+2. OpenGL 4.1					_OPENGL_4_1_
+3. OpenGL 4.3					_OPENGL_4_3_
 */
 #define _DX11_	
 
@@ -70,5 +79,31 @@ SIMD Collision Library:
 Log message character max size
 */
 #define _LOG_MSG_MAX_SIZE	256
+
+
+
+
+/*
+=============================================================================
+============================	SYSTEM	=====================================
+============================   CONTROLS  ====================================
+=============================================================================
+*/
+
+
+//Windows header macros 
+#if defined(_WINDOWS_VISTA_) || defined(_WINDOWS_SERVER_2008_)
+#define _WIN32_WINNT 0x0600
+
+#elif defined(_WINDOWS_7_)
+#define _WIN32_WINNT 0x0601
+
+#elif defined(_WINDOWS_8_)
+#define _WIN32_WINNT 0x0602
+
+#elif defined(_WINDOWS_8_1_)
+#define _WIN32_WINNT 0x0603
+#endif
+
 
 #endif
