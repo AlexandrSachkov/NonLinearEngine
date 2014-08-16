@@ -34,6 +34,7 @@ THE SOFTWARE.
 class NLE;
 class NLEApplicationLayer;
 class GLFWwindow;
+class NLEInputListener;
 
 class NLEInputProcessor : private NLESingleInstance<NLEInputProcessor>
 {
@@ -44,6 +45,8 @@ public:
 		);
 	~NLEInputProcessor();
 
+	static bool registerInputListener(NLEInputListener* listener);
+	static bool unregisterInputListener(NLEInputListener* listener);
 private:
 	NLEInputProcessor(const NLEInputProcessor& other);
 	bool initialize();
@@ -65,6 +68,8 @@ private:
 	NLE* _nle;
 	std::shared_ptr<NLEApplicationLayer> _appLayer;
 	GLFWwindow* _window;
+
+	static std::vector<NLEInputListener*> _inputListeners;
 };
 
 #endif

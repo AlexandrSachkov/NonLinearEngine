@@ -27,11 +27,17 @@ THE SOFTWARE.
 */
 #include "stdafx.h"
 #include "InputProcessor\NLEInputProcessor.h"
+#include "InputProcessor\NLEInputListener.h"
 #include "NLEApplicationLayer.h"
 #include "NLE.h"
 #include "GLFW\glfw3.h"
 
-NLEInputProcessor::NLEInputProcessor(NLE* nle, std::shared_ptr<NLEApplicationLayer> appLayer)
+std::vector<NLEInputListener*> NLEInputProcessor::_inputListeners;
+
+NLEInputProcessor::NLEInputProcessor(
+	NLE* nle, 
+	std::shared_ptr<NLEApplicationLayer> appLayer
+	)
 {
 	_nle = nle;
 	_appLayer = appLayer;
@@ -73,12 +79,35 @@ NLEInputProcessor::~NLEInputProcessor()
 
 }
 
+bool NLEInputProcessor::registerInputListener(NLEInputListener* listener)
+{
+	if (listener)
+	{
+		_inputListeners.push_back(listener);
+		return true;
+	}
+	return false;
+}
+
+bool NLEInputProcessor::unregisterInputListener(NLEInputListener* listener)
+{
+	if (listener)
+	{
+		for (unsigned i = 0; i < _inputListeners.size(); i++)
+		{
+			if (_inputListeners.at(i) == listener)
+			{
+				_inputListeners.erase(_inputListeners.begin() + i);
+				return true;
+			}
+		}
+	}
+	return false;
+}
+
 void NLEInputProcessor::onKeyEvent(GLFWwindow *window, int key, int scancode, int action, int mods)
 {
-	if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
-	{
-		
-	}
+	
 }
 
 void NLEInputProcessor::onCharEvent(GLFWwindow *window, unsigned int codepoint)
@@ -93,7 +122,10 @@ void NLEInputProcessor::onMouseButtonEvent(GLFWwindow *window, int button, int a
 
 void NLEInputProcessor::onCursorPositionEvent(GLFWwindow *window, double xPos, double yPos)
 {
-
+	for (unsigned int i = 0; i < _inputListeners.size(); i++)
+	{
+		_inputListeners.at(i)->onMousePosition(xPos, yPos);
+	}
 }
 
 void NLEInputProcessor::onCursorEnterEvent(GLFWwindow *window, int entered)

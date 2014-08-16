@@ -44,8 +44,9 @@ NLE::NLE()
 	_applicationLayer->getClientSize(_width, _height);
 
 	_renderingEngine.reset(new NLRE(_winRef, _width, _height));
+	_guiManager = NLEGuiManager::instance(this);
 	_inputProcessor.reset(new NLEInputProcessor(this, _applicationLayer));
-	_guiManager.reset(new NLEGuiManager(this));
+	
 
 	//======================= FOR TESTING PURPOSES =================
 	std::wstring path = L"D:\\3DModels\\Altair Model\\altair2.dae";

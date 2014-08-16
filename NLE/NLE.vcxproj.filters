@@ -197,6 +197,9 @@
     <ClInclude Include="..\include\NLESingleInstance.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\include\InputProcessor\NLEInputListener.h">
+      <Filter>Header Files\InputProcessor</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\include\math\DXMath\DXMathMatrixFunctions.inl">

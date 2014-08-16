@@ -1,0 +1,53 @@
+/*
+-----------------------------------------------------------------------------
+This source file is part of NLE
+(NonLinear Engine)
+For the latest info, see https://github.com/AlexandrSachkov/NonLinearEngine
+
+Copyright (c) 2014 Alexandr Sachkov & NonLinear Engine Team
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.
+-----------------------------------------------------------------------------
+*/
+
+
+#ifndef NLE_INPUT_LISTENER_
+#define NLE_INPUT_LISTENER_
+
+class NLEInputListener
+{
+public:
+	virtual ~NLEInputListener(){}
+	virtual void onMouseMove(float deltaX, float deltaY)=0;
+	virtual void onMousePosition(float xPos, float yPos)=0;
+	virtual void onMouseLeaves(void)=0;
+	//void onMouseButtonDown(MouseButton button);
+	//void onMouseButtonUp(MouseButton button);
+	//void onKeyDown(Key::Scan scan_code);
+	//void onKeyUp(Key::Scan scan_code);
+	//void onCharEntry(utf32 code_point);
+	virtual void onMouseWheelChange(float delta)=0;
+	virtual void onTimePulse(float timeElapsed)=0;
+
+	//void onMouseButtonClick(MouseButton button);
+	//void onMouseButtonDoubleClick(MouseButton button);
+	//void onMouseButtonTripleClick(MouseButton button);
+};
+
+#endif

@@ -31,7 +31,7 @@ THE SOFTWARE.
 #ifndef NLE_GUI_MANAGER_
 #define NLE_GUI_MANAGER_
 
-#include "NLESingleInstance.h"
+#include "InputProcessor/NLEInputListener.h"
 
 class NLE;
 namespace CEGUI
@@ -39,17 +39,37 @@ namespace CEGUI
 	class Direct3D11Renderer;
 };
 
-class NLEGuiManager : private NLESingleInstance<NLEGuiManager>
+class NLEGuiManager : public NLEInputListener
 {
 public:
-	NLEGuiManager(NLE* nle);
+	static std::shared_ptr<NLEGuiManager> instance(NLE* nle);
+	static std::shared_ptr<NLEGuiManager> instance();
 	~NLEGuiManager();
 
 	static void renderGUI();
+
 private:
-	NLEGuiManager(const NLEGuiManager& other);
+	NLEGuiManager(NLE* nle);
+	NLEGuiManager(const NLEGuiManager&);
+	NLEGuiManager& operator=(const NLEGuiManager&){};
 	bool initialize();
 
+	void onMouseMove(float deltaX, float deltaY);
+	void onMousePosition(float xPos, float yPos);
+	void onMouseLeaves(void);
+	//void onMouseButtonDown(MouseButton button);
+	//void onMouseButtonUp(MouseButton button);
+	//void onKeyDown(Key::Scan scan_code);
+	//void onKeyUp(Key::Scan scan_code);
+	//void onCharEntry(utf32 code_point);
+	void onMouseWheelChange(float delta);
+	void onTimePulse(float timeElapsed);
+
+	//void onMouseButtonClick(MouseButton button);
+	//void onMouseButtonDoubleClick(MouseButton button);
+	//void onMouseButtonTripleClick(MouseButton button);
+
+	static std::shared_ptr<NLEGuiManager> _guiManager;
 	NLE* _nle;
 	CEGUI::Direct3D11Renderer* _guiRenderer;
 };

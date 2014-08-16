@@ -33,10 +33,34 @@ THE SOFTWARE.
 #include "RenderingEngine\NLRE.h"
 #include "RenderingEngine\RenderingDevice\NLREDeviceController.h"
 #include "RenderingEngine\RenderingDevice\NLRERenderingDevice.h"
+#include "InputProcessor\NLEInputProcessor.h"
 
 #include "CEGUI\CEGUI.h"
 #include "CEGUI\RendererModules\Direct3D11\Renderer.h"
 #include "CEGUI\DefaultResourceProvider.h"
+
+std::shared_ptr<NLEGuiManager> NLEGuiManager::_guiManager = NULL;
+
+std::shared_ptr<NLEGuiManager> NLEGuiManager::instance(NLE* nle)
+{
+	if (!_guiManager)
+	{
+		_guiManager.reset(new NLEGuiManager(nle));
+	}
+	return _guiManager;
+}
+
+std::shared_ptr<NLEGuiManager> NLEGuiManager::instance()
+{
+	if (!_guiManager)
+	{
+		throw std::runtime_error("GUI Manager is not initialized, use instance(NLE* nle)");
+	}
+	else
+	{
+		return _guiManager;
+	}
+}
 
 
 NLEGuiManager::NLEGuiManager(NLE* nle)
@@ -67,10 +91,11 @@ bool NLEGuiManager::initialize()
 		(CEGUI::System::getSingleton().getResourceProvider());
 	rp->setResourceGroupDirectory("schemes", "../datafiles/schemes/");
 	rp->setResourceGroupDirectory("imagesets", "../datafiles/imagesets/");
-	rp->setResourceGroupDirectory("fonts", "data/gui/fonts/");
+	rp->setResourceGroupDirectory("fonts", "../datafiles/fonts/");
 	rp->setResourceGroupDirectory("layouts", "../datafiles/layouts/");
 	rp->setResourceGroupDirectory("looknfeels", "../datafiles/looknfeel/");
 	rp->setResourceGroupDirectory("scripts", "../datafiles/scripts/");
+
 	// This is only really needed if you are using Xerces and need to
 	// specify the schemas location
 	rp->setResourceGroupDirectory("schemas", "../datafiles/xml_schemas/");
@@ -89,12 +114,36 @@ bool NLEGuiManager::initialize()
 	
 	CEGUI::ScriptModule::setDefaultResourceGroup("scripts");
 
+	// create (load) the TaharezLook scheme file
+	// (this auto-loads the TaharezLook looknfeel and imageset files)
+	CEGUI::SchemeManager::getSingleton().createFromFile("TaharezLook.scheme");
+	// create (load) a font.
+	// The first font loaded automatically becomes the default font, but note
+	// that the scheme might have already loaded a font, so there may already
+	// be a default set - if we want the "DejaVuSans-10" font to definitely
+	// be the default, we should set the default explicitly afterwards.
+	CEGUI::FontManager::getSingleton().createFromFile("DejaVuSans-10.font");
+
+	CEGUI::System::getSingleton().getDefaultGUIContext().setDefaultFont("DejaVuSans-10");
+	CEGUI::System::getSingleton().getDefaultGUIContext().
+		getMouseCursor().setDefaultImage("TaharezLook/MouseArrow");
+	CEGUI::System::getSingleton().getDefaultGUIContext().
+		setDefaultTooltipType("TaharezLook/Tooltip");
+
 	CEGUI::WindowManager& windowManager = CEGUI::WindowManager::getSingleton();
 	CEGUI::Window* rootWindow = windowManager.createWindow("DefaultWindow", "root");
 	CEGUI::System::getSingleton().getDefaultGUIContext().setRootWindow(rootWindow);
-
-
-	CEGUI::FontManager::getSingleton().createFromFile("arial.font");
+	
+	CEGUI::FrameWindow* fWnd = static_cast<CEGUI::FrameWindow*>(
+		windowManager.createWindow("TaharezLook/FrameWindow", "testWindow"));
+	rootWindow->addChild(fWnd);
+	// position a quarter of the way in from the top-left of parent.
+	fWnd->setPosition(CEGUI::UVector2(CEGUI::UDim(0.25f, 0.0f), CEGUI::UDim(0.25f, 0.0f)));
+	// set size to be half the size of the parent
+	fWnd->setSize(CEGUI::USize(CEGUI::UDim(0.5f, 0.0f), CEGUI::UDim(0.5f, 0.0f)));
+	fWnd->setText("Hello World!");
+	
+	NLEInputProcessor::registerInputListener(this);
 	return true;
 }
 
@@ -102,13 +151,44 @@ NLEGuiManager::~NLEGuiManager()
 {
 	CEGUI::System::destroy();
 	CEGUI::Direct3D11Renderer::destroy(*_guiRenderer);
+	_guiManager = NULL;
 }
 
-NLEGuiManager::NLEGuiManager(const NLEGuiManager& other)
-{
-}
 
 void NLEGuiManager::renderGUI()
 {
 	CEGUI::System::getSingleton().renderAllGUIContexts();
 }
+
+void NLEGuiManager::onMouseMove(float deltaX, float deltaY)
+{
+	
+}
+
+void NLEGuiManager::onMousePosition(float xPos, float yPos)
+{
+	printf("GUI MANAGER: mouse moved\n");
+}
+
+void NLEGuiManager::onMouseLeaves(void)
+{
+	
+}
+//void onMouseButtonDown(MouseButton button);
+//void onMouseButtonUp(MouseButton button);
+//void onKeyDown(Key::Scan scan_code);
+//void onKeyUp(Key::Scan scan_code);
+//void onCharEntry(utf32 code_point);
+void NLEGuiManager::onMouseWheelChange(float delta)
+{
+	
+}
+
+void NLEGuiManager::onTimePulse(float timeElapsed)
+{
+	
+}
+
+//void onMouseButtonClick(MouseButton button);
+//void onMouseButtonDoubleClick(MouseButton button);
+//void onMouseButtonTripleClick(MouseButton button);
