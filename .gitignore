@@ -157,7 +157,10 @@ $RECYCLE.BIN/
 
 # Mac desktop service store files
 .DS_Store
+
+# NonLinear Engine 
 boost_1_55_0/
 lib/
+[Dd]atafiles/
 *.cso
 
