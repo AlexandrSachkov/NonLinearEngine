@@ -35,6 +35,7 @@ THE SOFTWARE.
 #include "RenderingEngine\RenderingDevice\NLRERenderingDevice.h"
 #include "InputProcessor\NLEInputProcessor.h"
 #include "InputProcessor\NLECeguiInputMap.h"
+#include "InputProcessor\NLECeguiInputMap.h"
 
 #include "CEGUI\CEGUI.h"
 #include "CEGUI\RendererModules\Direct3D11\Renderer.h"
@@ -163,30 +164,48 @@ void NLEGuiManager::renderGUI()
 
 void NLEGuiManager::onKeyEvent(NLE_INPUT::KEY key, int scancode, NLE_INPUT::ACTION action, NLE_INPUT::MOD mods)
 {
-
+	
+	if (action == NLE_INPUT::ACTION::PRESS)
+	{
+		CEGUI::System::getSingleton().getDefaultGUIContext().injectKeyDown(static_cast<CEGUI::Key::Scan>(NLE_INPUT::NLEtoCEGUIKey(key)));
+	}
+	else
+	{
+		CEGUI::System::getSingleton().getDefaultGUIContext().injectKeyUp(static_cast<CEGUI::Key::Scan>(NLE_INPUT::NLEtoCEGUIKey(key)));
+	}
 }
 
 void NLEGuiManager::onCharEvent(unsigned int codepoint)
 {
-
+	CEGUI::System::getSingleton().getDefaultGUIContext().injectChar(codepoint);
 }
 
 void NLEGuiManager::onMouseButtonEvent(NLE_INPUT::MOUSE button, NLE_INPUT::ACTION action, NLE_INPUT::MOD mods)
 {
-
+	if (action == NLE_INPUT::ACTION::PRESS)
+	{
+		CEGUI::System::getSingleton().getDefaultGUIContext().injectMouseButtonDown(static_cast<CEGUI::MouseButton>(NLE_INPUT::NLEtoCEGUIMouse(button)));
+	}
+	else
+	{
+		CEGUI::System::getSingleton().getDefaultGUIContext().injectMouseButtonUp(static_cast<CEGUI::MouseButton>(NLE_INPUT::NLEtoCEGUIMouse(button)));
+	}
 }
 
 void NLEGuiManager::onCursorPositionEvent(double xPos, double yPos)
 {
-	printf("GUI MANAGER: moouse moved\n");
+	CEGUI::System::getSingleton().getDefaultGUIContext().injectMousePosition(xPos, yPos);
 }
 
 void NLEGuiManager::onCursorEnterEvent(bool entered)
 {
-
+	if (!entered)
+	{
+		CEGUI::System::getSingleton().getDefaultGUIContext().injectMouseLeaves();
+	}
 }
 
 void NLEGuiManager::onScrollEvent(double xOffset, double yOffset)
 {
-
+	CEGUI::System::getSingleton().getDefaultGUIContext().injectMouseWheelChange(yOffset);
 }

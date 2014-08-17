@@ -136,7 +136,6 @@ void NLEInputProcessor::onMouseButtonEvent(GLFWwindow *window, int button, int a
 			static_cast<NLE_INPUT::MOD>(mods)
 			);
 	}
-	printf("mouse btn press.\n");
 }
 
 void NLEInputProcessor::onCursorPositionEvent(GLFWwindow *window, double xPos, double yPos)
