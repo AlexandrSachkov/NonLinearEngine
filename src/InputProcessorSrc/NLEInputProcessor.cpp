@@ -29,12 +29,14 @@ THE SOFTWARE.
 #include "InputProcessor\NLEInputProcessor.h"
 #include "InputProcessor\NLEInputListener.h"
 #include "InputProcessor\NLEClipboardListener.h"
+#include "InputProcessor\NLEWindowListener.h"
 #include "NLEApplicationLayer.h"
 #include "NLE.h"
 #include "GLFW\glfw3.h"
 
 std::vector<NLEInputListener*> NLEInputProcessor::_inputListeners;
 std::vector<NLEClipboardListener*> NLEInputProcessor::_clipboardListeners;
+std::vector<NLEWindowListener*> NLEInputProcessor::_windowListeners;
 
 NLEInputProcessor::NLEInputProcessor(
 	NLE* nle, 
@@ -133,6 +135,32 @@ bool NLEInputProcessor::unregisterClipboardListener(NLEClipboardListener* listen
 	return false;
 }
 
+bool NLEInputProcessor::registerWindowListener(NLEWindowListener* listener)
+{
+	if (listener)
+	{
+		_windowListeners.push_back(listener);
+		return true;
+	}
+	return false;
+}
+
+bool NLEInputProcessor::unregisterWindowListener(NLEWindowListener* listener)
+{
+	if (listener)
+	{
+		for (unsigned i = 0; i < _windowListeners.size(); i++)
+		{
+			if (_windowListeners.at(i) == listener)
+			{
+				_windowListeners.erase(_windowListeners.begin() + i);
+				return true;
+			}
+		}
+	}
+	return false;
+}
+
 void NLEInputProcessor::onKeyEvent(GLFWwindow *window, int key, int scancode, int action, int mods)
 {
 	for (unsigned int i = 0; i < _inputListeners.size(); i++)
@@ -192,32 +220,50 @@ void NLEInputProcessor::onScrollEvent(GLFWwindow *window, double xOffset, double
 
 void NLEInputProcessor::onWindowPositionEvent(GLFWwindow *window, int xPos, int yPos)
 {
-
+	for (unsigned int i = 0; i < _windowListeners.size(); i++)
+	{
+		_windowListeners.at(i)->onWindowPositionEvent(xPos, yPos);
+	}
 }
 
 void NLEInputProcessor::onWindowSizeEvent(GLFWwindow *window, int width, int height)
 {
-
+	for (unsigned int i = 0; i < _windowListeners.size(); i++)
+	{
+		_windowListeners.at(i)->onWindowSizeEvent(width, height);
+	}
 }
 
 void NLEInputProcessor::onWindowCloseEvent(GLFWwindow *window)
 {
-
+	for (unsigned int i = 0; i < _windowListeners.size(); i++)
+	{
+		_windowListeners.at(i)->onWindowCloseEvent();
+	}
 }
 
 void NLEInputProcessor::onWindowRefreshEvent(GLFWwindow *window)
 {
-
+	for (unsigned int i = 0; i < _windowListeners.size(); i++)
+	{
+		_windowListeners.at(i)->onWindowRefreshEvent();
+	}
 }
 
 void NLEInputProcessor::onWindowFocusEvent(GLFWwindow *window, int focused)
 {
-
+	for (unsigned int i = 0; i < _windowListeners.size(); i++)
+	{
+		_windowListeners.at(i)->onWindowFocusEvent(focused == GL_TRUE ? true : false);
+	}
 }
 
 void NLEInputProcessor::onWindowIconifyEvent(GLFWwindow *window, int iconified)
 {
-
+	for (unsigned int i = 0; i < _windowListeners.size(); i++)
+	{
+		_windowListeners.at(i)->onWindowIconifyEvent(iconified == GL_TRUE ? true : false);
+	}
 }
 
 void NLEInputProcessor::onClipboardCopy()
