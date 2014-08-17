@@ -153,12 +153,15 @@ bool NLEGuiManager::initialize()
 	NLEInputProcessor::registerInputListener(this);
 	delete CEGUI::System::getSingleton().getClipboard()->getNativeProvider();
 	CEGUI::System::getSingleton().getClipboard()->setNativeProvider(this);
-	
+	NLEInputProcessor::registerClipboardListener(this);
+
 	return true;
 }
 
 NLEGuiManager::~NLEGuiManager()
 {
+	NLEInputProcessor::unregisterInputListener(this);
+	NLEInputProcessor::unregisterClipboardListener(this);
 	CEGUI::System::destroy();
 	CEGUI::Direct3D11Renderer::destroy(*_guiRenderer);
 	_guiManager = NULL;
