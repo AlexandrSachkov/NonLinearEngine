@@ -34,6 +34,7 @@ THE SOFTWARE.
 #include "RenderingEngine\RenderingDevice\NLREDeviceController.h"
 #include "RenderingEngine\RenderingDevice\NLRERenderingDevice.h"
 #include "InputProcessor\NLEInputProcessor.h"
+#include "InputProcessor\NLECeguiInputMap.h"
 
 #include "CEGUI\CEGUI.h"
 #include "CEGUI\RendererModules\Direct3D11\Renderer.h"

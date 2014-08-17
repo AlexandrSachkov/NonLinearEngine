@@ -300,6 +300,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="..\include\GUI\NLEGuiManager.h" />
+    <ClInclude Include="..\include\InputProcessor\NLECeguiInputMap.h" />
     <ClInclude Include="..\include\InputProcessor\NLEInputListener.h" />
     <ClInclude Include="..\include\InputProcessor\NLEGlfwInputMap.h" />
     <ClInclude Include="..\include\InputProcessor\NLEInputMap.h" />
