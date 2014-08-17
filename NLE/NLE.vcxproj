@@ -306,6 +306,7 @@
     <ClInclude Include="..\include\InputProcessor\NLEGlfwInputMap.h" />
     <ClInclude Include="..\include\InputProcessor\NLEInputMap.h" />
     <ClInclude Include="..\include\InputProcessor\NLEInputProcessor.h" />
+    <ClInclude Include="..\include\InputProcessor\NLEWindowListener.h" />
     <ClInclude Include="..\include\math\DXMath\DXMathMatrixFunctions.h" />
     <ClInclude Include="..\include\math\DXMath\DXMathStructures.h" />
     <ClInclude Include="..\include\math\DXMath\DXMathVector3DFunctions.h" />

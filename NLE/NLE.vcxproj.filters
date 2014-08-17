@@ -212,6 +212,9 @@
     <ClInclude Include="..\include\InputProcessor\NLEClipboardListener.h">
       <Filter>Header Files\InputProcessor</Filter>
     </ClInclude>
+    <ClInclude Include="..\include\InputProcessor\NLEWindowListener.h">
+      <Filter>Header Files\InputProcessor</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\include\math\DXMath\DXMathMatrixFunctions.inl">
