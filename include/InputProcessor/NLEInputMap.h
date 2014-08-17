@@ -29,6 +29,7 @@ THE SOFTWARE.
 #ifndef NLE_INPUT_MAP_
 #define NLE_INPUT_MAP_
 
-#include "InputProcessor\NLEGlfwInputMap.h"
+//in case of an input map replacement, use the same NLE_INPUT namespace
+#include "InputProcessor\NLEGlfwInputMap.h" 
 
 #endif

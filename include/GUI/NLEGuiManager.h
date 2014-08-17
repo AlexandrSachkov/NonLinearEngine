@@ -31,7 +31,7 @@ THE SOFTWARE.
 #ifndef NLE_GUI_MANAGER_
 #define NLE_GUI_MANAGER_
 
-#include "InputProcessor/NLEInputListener.h"
+#include "InputProcessor\NLEInputListener.h"
 #include "InputProcessor\NLEInputMap.h"
 
 class NLE;
