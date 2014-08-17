@@ -107,16 +107,35 @@ bool NLEInputProcessor::unregisterInputListener(NLEInputListener* listener)
 
 void NLEInputProcessor::onKeyEvent(GLFWwindow *window, int key, int scancode, int action, int mods)
 {
-	
+	for (unsigned int i = 0; i < _inputListeners.size(); i++)
+	{
+		_inputListeners.at(i)->onKeyEvent(
+			static_cast<NLE_INPUT::KEY>(key),
+			scancode,
+			static_cast<NLE_INPUT::ACTION>(action),
+			static_cast<NLE_INPUT::MOD>(mods)
+			);
+	}
 }
 
 void NLEInputProcessor::onCharEvent(GLFWwindow *window, unsigned int codepoint)
 {
-
+	for (unsigned int i = 0; i < _inputListeners.size(); i++)
+	{
+		_inputListeners.at(i)->onCharEvent(codepoint);
+	}
 }
 
 void NLEInputProcessor::onMouseButtonEvent(GLFWwindow *window, int button, int action, int mods)
 {
+	for (unsigned int i = 0; i < _inputListeners.size(); i++)
+	{
+		_inputListeners.at(i)->onMouseButtonEvent(
+			static_cast<NLE_INPUT::MOUSE>(button),
+			static_cast<NLE_INPUT::ACTION>(action),
+			static_cast<NLE_INPUT::MOD>(mods)
+			);
+	}
 	printf("mouse btn press.\n");
 }
 
@@ -130,12 +149,18 @@ void NLEInputProcessor::onCursorPositionEvent(GLFWwindow *window, double xPos, d
 
 void NLEInputProcessor::onCursorEnterEvent(GLFWwindow *window, int entered)
 {
-
+	for (unsigned int i = 0; i < _inputListeners.size(); i++)
+	{
+		_inputListeners.at(i)->onCursorEnterEvent(entered == GL_TRUE ? true : false);
+	}
 }
 
 void NLEInputProcessor::onScrollEvent(GLFWwindow *window, double xOffset, double yOffset)
 {
-
+	for (unsigned int i = 0; i < _inputListeners.size(); i++)
+	{
+		_inputListeners.at(i)->onScrollEvent(xOffset, yOffset);
+	}
 }
 
 void NLEInputProcessor::onWindowPositionEvent(GLFWwindow *window, int xPos, int yPos)
