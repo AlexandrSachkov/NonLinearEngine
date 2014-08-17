@@ -31,7 +31,7 @@ THE SOFTWARE.
 
 #include "GLFW\glfw3.h"
 
-namespace NLE
+namespace NLE_INPUT
 {
 	enum KEY
 	{
@@ -182,10 +182,16 @@ namespace NLE
 
 	enum MOD
 	{
-		MOD_ALT		= GLFW_MOD_ALT,
-		MOD_CONTROL = GLFW_MOD_CONTROL,
-		MOD_SHIFT	= GLFW_MOD_SHIFT,
-		MOD_SUPER	= GLFW_MOD_SUPER
+		KEY_MOD_ALT		= GLFW_MOD_ALT,
+		KEY_MOD_CONTROL = GLFW_MOD_CONTROL,
+		KEY_MOD_SHIFT	= GLFW_MOD_SHIFT,
+		MOD_SUPER		= GLFW_MOD_SUPER
+	};
+
+	enum ACTION
+	{
+		PRESS	= GLFW_PRESS,
+		RELEASE = GLFW_RELEASE
 	};
 };
 #endif

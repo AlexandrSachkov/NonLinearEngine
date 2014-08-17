@@ -30,24 +30,18 @@ THE SOFTWARE.
 #ifndef NLE_INPUT_LISTENER_
 #define NLE_INPUT_LISTENER_
 
+#include "InputProcessor/NLEInputMap.h"
+
 class NLEInputListener
 {
 public:
 	virtual ~NLEInputListener(){}
-	virtual void onMouseMove(float deltaX, float deltaY)=0;
-	virtual void onMousePosition(float xPos, float yPos)=0;
-	virtual void onMouseLeaves(void)=0;
-	//void onMouseButtonDown(MouseButton button);
-	//void onMouseButtonUp(MouseButton button);
-	//void onKeyDown(Key::Scan scan_code);
-	//void onKeyUp(Key::Scan scan_code);
-	//void onCharEntry(utf32 code_point);
-	virtual void onMouseWheelChange(float delta)=0;
-	virtual void onTimePulse(float timeElapsed)=0;
-
-	//void onMouseButtonClick(MouseButton button);
-	//void onMouseButtonDoubleClick(MouseButton button);
-	//void onMouseButtonTripleClick(MouseButton button);
+	virtual void onKeyEvent(NLE_INPUT::KEY key, int scancode, NLE_INPUT::ACTION action, NLE_INPUT::MOD mods) =0;
+	virtual void onCharEvent(unsigned int codepoint)=0;
+	virtual void onMouseButtonEvent(NLE_INPUT::MOUSE button, NLE_INPUT::ACTION action, NLE_INPUT::MOD mods) = 0;
+	virtual void onCursorPositionEvent(double xPos, double yPos)=0;
+	virtual void onCursorEnterEvent(bool entered)=0;
+	virtual void onScrollEvent(double xOffset, double yOffset)=0;
 };
 
 #endif

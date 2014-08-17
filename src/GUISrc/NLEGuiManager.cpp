@@ -160,35 +160,32 @@ void NLEGuiManager::renderGUI()
 	CEGUI::System::getSingleton().renderAllGUIContexts();
 }
 
-void NLEGuiManager::onMouseMove(float deltaX, float deltaY)
+void NLEGuiManager::onKeyEvent(NLE_INPUT::KEY key, int scancode, NLE_INPUT::ACTION action, NLE_INPUT::MOD mods)
 {
-	
+
 }
 
-void NLEGuiManager::onMousePosition(float xPos, float yPos)
+void NLEGuiManager::onCharEvent(unsigned int codepoint)
 {
-	printf("GUI MANAGER: mouse moved\n");
+
 }
 
-void NLEGuiManager::onMouseLeaves(void)
+void NLEGuiManager::onMouseButtonEvent(NLE_INPUT::MOUSE button, NLE_INPUT::ACTION action, NLE_INPUT::MOD mods)
 {
-	
-}
-//void onMouseButtonDown(MouseButton button);
-//void onMouseButtonUp(MouseButton button);
-//void onKeyDown(Key::Scan scan_code);
-//void onKeyUp(Key::Scan scan_code);
-//void onCharEntry(utf32 code_point);
-void NLEGuiManager::onMouseWheelChange(float delta)
-{
-	
+
 }
 
-void NLEGuiManager::onTimePulse(float timeElapsed)
+void NLEGuiManager::onCursorPositionEvent(double xPos, double yPos)
 {
-	
+	printf("GUI MANAGER: moouse moved\n");
 }
 
-//void onMouseButtonClick(MouseButton button);
-//void onMouseButtonDoubleClick(MouseButton button);
-//void onMouseButtonTripleClick(MouseButton button);
+void NLEGuiManager::onCursorEnterEvent(bool entered)
+{
+
+}
+
+void NLEGuiManager::onScrollEvent(double xOffset, double yOffset)
+{
+
+}

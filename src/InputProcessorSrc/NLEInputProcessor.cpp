@@ -124,7 +124,7 @@ void NLEInputProcessor::onCursorPositionEvent(GLFWwindow *window, double xPos, d
 {
 	for (unsigned int i = 0; i < _inputListeners.size(); i++)
 	{
-		_inputListeners.at(i)->onMousePosition(xPos, yPos);
+		_inputListeners.at(i)->onCursorPositionEvent(xPos, yPos);
 	}
 }
 

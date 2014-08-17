@@ -32,6 +32,7 @@ THE SOFTWARE.
 #define NLE_GUI_MANAGER_
 
 #include "InputProcessor/NLEInputListener.h"
+#include "InputProcessor\NLEInputMap.h"
 
 class NLE;
 namespace CEGUI
@@ -54,20 +55,12 @@ private:
 	NLEGuiManager& operator=(const NLEGuiManager&){};
 	bool initialize();
 
-	void onMouseMove(float deltaX, float deltaY);
-	void onMousePosition(float xPos, float yPos);
-	void onMouseLeaves(void);
-	//void onMouseButtonDown(MouseButton button);
-	//void onMouseButtonUp(MouseButton button);
-	//void onKeyDown(Key::Scan scan_code);
-	//void onKeyUp(Key::Scan scan_code);
-	//void onCharEntry(utf32 code_point);
-	void onMouseWheelChange(float delta);
-	void onTimePulse(float timeElapsed);
-
-	//void onMouseButtonClick(MouseButton button);
-	//void onMouseButtonDoubleClick(MouseButton button);
-	//void onMouseButtonTripleClick(MouseButton button);
+	void onKeyEvent(NLE_INPUT::KEY key, int scancode, NLE_INPUT::ACTION action, NLE_INPUT::MOD mods);
+	void onCharEvent(unsigned int codepoint);
+	void onMouseButtonEvent(NLE_INPUT::MOUSE button, NLE_INPUT::ACTION action, NLE_INPUT::MOD mods);
+	void onCursorPositionEvent(double xPos, double yPos);
+	void onCursorEnterEvent(bool entered);
+	void onScrollEvent(double xOffset, double yOffset);
 
 	static std::shared_ptr<NLEGuiManager> _guiManager;
 	NLE* _nle;
