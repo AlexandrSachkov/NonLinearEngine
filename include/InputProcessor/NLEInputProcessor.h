@@ -35,6 +35,7 @@ class NLE;
 class NLEApplicationLayer;
 class GLFWwindow;
 class NLEInputListener;
+class NLEClipboardListener;
 
 class NLEInputProcessor : private NLESingleInstance<NLEInputProcessor>
 {
@@ -47,6 +48,9 @@ public:
 
 	static bool registerInputListener(NLEInputListener* listener);
 	static bool unregisterInputListener(NLEInputListener* listener);
+	static bool registerClipboardListener(NLEClipboardListener* listener);
+	static bool unregisterClipboardListener(NLEClipboardListener* listener);
+
 private:
 	NLEInputProcessor(const NLEInputProcessor& other);
 	bool initialize();
@@ -74,6 +78,7 @@ private:
 	GLFWwindow* _window;
 
 	static std::vector<NLEInputListener*> _inputListeners;
+	static std::vector<NLEClipboardListener*> _clipboardListeners;
 };
 
 #endif

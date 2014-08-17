@@ -28,11 +28,13 @@ THE SOFTWARE.
 #include "stdafx.h"
 #include "InputProcessor\NLEInputProcessor.h"
 #include "InputProcessor\NLEInputListener.h"
+#include "InputProcessor\NLEClipboardListener.h"
 #include "NLEApplicationLayer.h"
 #include "NLE.h"
 #include "GLFW\glfw3.h"
 
 std::vector<NLEInputListener*> NLEInputProcessor::_inputListeners;
+std::vector<NLEClipboardListener*> NLEInputProcessor::_clipboardListeners;
 
 NLEInputProcessor::NLEInputProcessor(
 	NLE* nle, 
@@ -98,6 +100,32 @@ bool NLEInputProcessor::unregisterInputListener(NLEInputListener* listener)
 			if (_inputListeners.at(i) == listener)
 			{
 				_inputListeners.erase(_inputListeners.begin() + i);
+				return true;
+			}
+		}
+	}
+	return false;
+}
+
+bool NLEInputProcessor::registerClipboardListener(NLEClipboardListener* listener)
+{
+	if (listener)
+	{
+		_clipboardListeners.push_back(listener);
+		return true;
+	}
+	return false;
+}
+
+bool NLEInputProcessor::unregisterClipboardListener(NLEClipboardListener* listener)
+{
+	if (listener)
+	{
+		for (unsigned i = 0; i < _clipboardListeners.size(); i++)
+		{
+			if (_clipboardListeners.at(i) == listener)
+			{
+				_clipboardListeners.erase(_clipboardListeners.begin() + i);
 				return true;
 			}
 		}
@@ -194,17 +222,26 @@ void NLEInputProcessor::onWindowIconifyEvent(GLFWwindow *window, int iconified)
 
 void NLEInputProcessor::onClipboardCopy()
 {
-
+	for (unsigned int i = 0; i < _clipboardListeners.size(); i++)
+	{
+		_clipboardListeners.at(i)->onClipboardCopy();
+	}
 }
 
 void NLEInputProcessor::onClipboardCut()
 {
-
+	for (unsigned int i = 0; i < _clipboardListeners.size(); i++)
+	{
+		_clipboardListeners.at(i)->onClipboardCut();
+	}
 }
 
 void NLEInputProcessor::onClipboardPaste()
 {
-
+	for (unsigned int i = 0; i < _clipboardListeners.size(); i++)
+	{
+		_clipboardListeners.at(i)->onClipboardPaste();
+	}
 }
 
 
