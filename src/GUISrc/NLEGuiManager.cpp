@@ -167,11 +167,11 @@ void NLEGuiManager::onKeyEvent(NLE_INPUT::KEY key, int scancode, NLE_INPUT::ACTI
 	
 	if (action == NLE_INPUT::ACTION::PRESS)
 	{
-		CEGUI::System::getSingleton().getDefaultGUIContext().injectKeyDown(static_cast<CEGUI::Key::Scan>(NLE_INPUT::NLEtoCEGUIKey(key)));
+		CEGUI::System::getSingleton().getDefaultGUIContext().injectKeyDown(NLE_INPUT::NLEtoCEGUIKey(key));
 	}
 	else
 	{
-		CEGUI::System::getSingleton().getDefaultGUIContext().injectKeyUp(static_cast<CEGUI::Key::Scan>(NLE_INPUT::NLEtoCEGUIKey(key)));
+		CEGUI::System::getSingleton().getDefaultGUIContext().injectKeyUp(NLE_INPUT::NLEtoCEGUIKey(key));
 	}
 }
 
@@ -184,11 +184,11 @@ void NLEGuiManager::onMouseButtonEvent(NLE_INPUT::MOUSE button, NLE_INPUT::ACTIO
 {
 	if (action == NLE_INPUT::ACTION::PRESS)
 	{
-		CEGUI::System::getSingleton().getDefaultGUIContext().injectMouseButtonDown(static_cast<CEGUI::MouseButton>(NLE_INPUT::NLEtoCEGUIMouse(button)));
+		CEGUI::System::getSingleton().getDefaultGUIContext().injectMouseButtonDown(NLE_INPUT::NLEtoCEGUIMouse(button));
 	}
 	else
 	{
-		CEGUI::System::getSingleton().getDefaultGUIContext().injectMouseButtonUp(static_cast<CEGUI::MouseButton>(NLE_INPUT::NLEtoCEGUIMouse(button)));
+		CEGUI::System::getSingleton().getDefaultGUIContext().injectMouseButtonUp(NLE_INPUT::NLEtoCEGUIMouse(button));
 	}
 }
 

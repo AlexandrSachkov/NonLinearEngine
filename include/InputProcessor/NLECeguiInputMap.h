@@ -34,11 +34,11 @@ THE SOFTWARE.
 
 namespace NLE_INPUT
 {
-	static unsigned int NLEtoCEGUIKey(NLE_INPUT::KEY key)
+	static CEGUI::Key::Scan NLEtoCEGUIKey(NLE_INPUT::KEY key)
 	{
 		switch (key)
 		{
-		case NLE_INPUT::KEY_UNKNOWN:	return 0;
+		case NLE_INPUT::KEY_UNKNOWN:	return CEGUI::Key::Unknown;
 		case NLE_INPUT::KEY_ESCAPE:		return CEGUI::Key::Escape;
 
 		case NLE_INPUT::KEY_0:			return CEGUI::Key::Zero;
@@ -146,11 +146,11 @@ namespace NLE_INPUT
 		case NLE_INPUT::KEY_HOME:			return CEGUI::Key::Home;
 		case NLE_INPUT::KEY_END:			return CEGUI::Key::End;
 
-		default: return 0;
+		default:							return CEGUI::Key::Unknown;
 		}
 	}
 
-	static unsigned int NLEtoCEGUIMouse(NLE_INPUT::MOUSE mouse)
+	static CEGUI::MouseButton NLEtoCEGUIMouse(NLE_INPUT::MOUSE mouse)
 	{
 		switch (mouse)
 		{
