@@ -152,27 +152,12 @@ void NLEApplicationLayer::setClientSize(int width, int height)
 
 void NLEApplicationLayer::setResizableHint(bool option)
 {
-	if (option)
-	{
-		glfwWindowHint(GLFW_RESIZABLE, GL_TRUE);
-	}
-	else
-	{
-		glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
-	}
-	
+	glfwWindowHint(GLFW_RESIZABLE, option == true ? GL_TRUE : GL_FALSE);
 }
 
 void NLEApplicationLayer::setDecoratedHint(bool option)
 {
-	if (option)
-	{
-		glfwWindowHint(GLFW_DECORATED, GL_TRUE);
-	}
-	else
-	{
-		glfwWindowHint(GLFW_DECORATED, GL_FALSE);
-	}
+	glfwWindowHint(GLFW_DECORATED, option == true ? GL_TRUE : GL_FALSE);
 }
 
 void NLEApplicationLayer::setTitle(std::wstring title)

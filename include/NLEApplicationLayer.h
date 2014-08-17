@@ -62,6 +62,8 @@ public:
 	void cutClipboard(std::wstring text);
 	std::wstring pasteClipboard();
 
+	//static void setCopyClipboardCallback()
+
 private:	
 	NLEApplicationLayer(const NLEApplicationLayer& other);
 	bool initialize();
