@@ -121,11 +121,6 @@ void NLEApplicationLayer::copyClipboard(std::wstring text)
 	glfwSetClipboardString(_window, textOut.c_str());
 }
 
-void NLEApplicationLayer::cutClipboard(std::wstring text)
-{
-	copyClipboard(text);
-}
-
 std::wstring NLEApplicationLayer::pasteClipboard()
 {
 	std::string text(glfwGetClipboardString(_window));

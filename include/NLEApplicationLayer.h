@@ -59,7 +59,6 @@ public:
 	void endMessageLoop();
 
 	void copyClipboard(std::wstring text);
-	void cutClipboard(std::wstring text);
 	std::wstring pasteClipboard();
 
 	//static void setCopyClipboardCallback()
