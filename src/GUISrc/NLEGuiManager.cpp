@@ -36,6 +36,7 @@ THE SOFTWARE.
 #include "InputProcessor\NLEInputProcessor.h"
 #include "InputProcessor\NLECeguiInputMap.h"
 #include "InputProcessor\NLECeguiInputMap.h"
+#include "NLEApplicationLayer.h"
 
 #include "CEGUI\CEGUI.h"
 #include "CEGUI\RendererModules\Direct3D11\Renderer.h"
@@ -43,11 +44,14 @@ THE SOFTWARE.
 
 std::shared_ptr<NLEGuiManager> NLEGuiManager::_guiManager = NULL;
 
-std::shared_ptr<NLEGuiManager> NLEGuiManager::instance(NLE* nle)
+std::shared_ptr<NLEGuiManager> NLEGuiManager::instance(
+	NLE* nle, 
+	std::shared_ptr<NLEApplicationLayer> appLayer
+	)
 {
 	if (!_guiManager)
 	{
-		_guiManager.reset(new NLEGuiManager(nle));
+		_guiManager.reset(new NLEGuiManager(nle, appLayer));
 	}
 	return _guiManager;
 }
@@ -65,9 +69,10 @@ std::shared_ptr<NLEGuiManager> NLEGuiManager::instance()
 }
 
 
-NLEGuiManager::NLEGuiManager(NLE* nle)
+NLEGuiManager::NLEGuiManager(NLE* nle, std::shared_ptr<NLEApplicationLayer> appLayer)
 {
 	_nle = nle;
+	_appLayer = appLayer;
 	_guiRenderer = NULL;
 
 	if (!initialize())
@@ -146,6 +151,9 @@ bool NLEGuiManager::initialize()
 	fWnd->setText("Hello World!");
 	
 	NLEInputProcessor::registerInputListener(this);
+	delete CEGUI::System::getSingleton().getClipboard()->getNativeProvider();
+	CEGUI::System::getSingleton().getClipboard()->setNativeProvider(this);
+	
 	return true;
 }
 
@@ -160,6 +168,21 @@ NLEGuiManager::~NLEGuiManager()
 void NLEGuiManager::renderGUI()
 {
 	CEGUI::System::getSingleton().renderAllGUIContexts();
+}
+
+void NLEGuiManager::sendToClipboard(const CEGUI::String &mimeType, void *buffer, size_t size)
+{
+	//temporary implementation
+	_appLayer->copyClipboard(static_cast<const wchar_t*>(buffer));
+}
+
+void NLEGuiManager::retrieveFromClipboard(CEGUI::String &mimeType, void *&buffer, size_t &size)
+{
+	//temporary implementation
+	mimeType = "text/utf-8";
+	std::wstring text = _appLayer->pasteClipboard();
+	buffer = (void*)text.c_str();
+	size = text.size();
 }
 
 void NLEGuiManager::onKeyEvent(NLE_INPUT::KEY key, int scancode, NLE_INPUT::ACTION action, NLE_INPUT::MOD mods)
