@@ -192,4 +192,19 @@ void NLEInputProcessor::onWindowIconifyEvent(GLFWwindow *window, int iconified)
 
 }
 
+void NLEInputProcessor::onClipboardCopy()
+{
+
+}
+
+void NLEInputProcessor::onClipboardCut()
+{
+
+}
+
+void NLEInputProcessor::onClipboardPaste()
+{
+
+}
+
 

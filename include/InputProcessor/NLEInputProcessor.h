@@ -65,6 +65,10 @@ private:
 	static void onWindowFocusEvent(GLFWwindow *window, int focused);
 	static void onWindowIconifyEvent(GLFWwindow *window, int iconified);
 
+	static void onClipboardCopy();
+	static void onClipboardCut();
+	static void onClipboardPaste();
+
 	NLE* _nle;
 	std::shared_ptr<NLEApplicationLayer> _appLayer;
 	GLFWwindow* _window;
