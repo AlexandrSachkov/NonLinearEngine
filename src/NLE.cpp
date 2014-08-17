@@ -45,7 +45,7 @@ NLE::NLE()
 
 	_renderingEngine.reset(new NLRE(_winRef, _width, _height));
 	_guiManager = NLEGuiManager::instance(this, _applicationLayer);
-	_inputProcessor.reset(new NLEInputProcessor(this, _applicationLayer));
+	_inputProcessor = NLEInputProcessor::instance(this, _applicationLayer);
 	
 
 	//======================= FOR TESTING PURPOSES =================

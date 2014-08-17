@@ -41,10 +41,13 @@ class NLEWindowListener;
 class NLEInputProcessor : private NLESingleInstance<NLEInputProcessor>
 {
 public:
-	NLEInputProcessor(
-		NLE* nle, 
+	static std::shared_ptr<NLEInputProcessor> instance(
+		NLE* nle,
 		std::shared_ptr<NLEApplicationLayer> appLayer
 		);
+
+	static std::shared_ptr<NLEInputProcessor> instance();
+	
 	~NLEInputProcessor();
 
 	static bool registerInputListener(NLEInputListener* listener);
@@ -55,6 +58,11 @@ public:
 	static bool unregisterWindowListener(NLEWindowListener* listener);
 
 private:
+	NLEInputProcessor(
+		NLE* nle, 
+		std::shared_ptr<NLEApplicationLayer> appLayer
+		);
+	NLEInputProcessor& operator=(const NLEInputProcessor&){};
 	NLEInputProcessor(const NLEInputProcessor& other);
 	bool initialize();
 
@@ -76,6 +84,7 @@ private:
 	static void onClipboardCutEvent();
 	static void onClipboardPasteEvent();
 
+	static std::shared_ptr<NLEInputProcessor> _inputProcessor;
 	NLE* _nle;
 	std::shared_ptr<NLEApplicationLayer> _appLayer;
 	GLFWwindow* _window;

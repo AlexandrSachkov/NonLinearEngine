@@ -38,6 +38,32 @@ std::vector<NLEInputListener*> NLEInputProcessor::_inputListeners;
 std::vector<NLEClipboardListener*> NLEInputProcessor::_clipboardListeners;
 std::vector<NLEWindowListener*> NLEInputProcessor::_windowListeners;
 
+std::shared_ptr<NLEInputProcessor> NLEInputProcessor::_inputProcessor = NULL;
+
+std::shared_ptr<NLEInputProcessor> NLEInputProcessor::instance(
+	NLE* nle,
+	std::shared_ptr<NLEApplicationLayer> appLayer
+	)
+{
+	if (!_inputProcessor)
+	{
+		_inputProcessor.reset(new NLEInputProcessor(nle, appLayer));
+	}
+	return _inputProcessor;
+}
+
+std::shared_ptr<NLEInputProcessor> NLEInputProcessor::instance()
+{
+	if (!_inputProcessor)
+	{
+		throw std::runtime_error("GUI Manager is not initialized, use instance(NLE* nle)");
+	}
+	else
+	{
+		return _inputProcessor;
+	}
+}
+
 NLEInputProcessor::NLEInputProcessor(
 	NLE* nle, 
 	std::shared_ptr<NLEApplicationLayer> appLayer

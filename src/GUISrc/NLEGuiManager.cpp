@@ -44,6 +44,7 @@ THE SOFTWARE.
 
 std::shared_ptr<NLEGuiManager> NLEGuiManager::_guiManager = NULL;
 
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 std::shared_ptr<NLEGuiManager> NLEGuiManager::instance(
 	NLE* nle, 
 	std::shared_ptr<NLEApplicationLayer> appLayer
@@ -56,6 +57,7 @@ std::shared_ptr<NLEGuiManager> NLEGuiManager::instance(
 	return _guiManager;
 }
 
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 std::shared_ptr<NLEGuiManager> NLEGuiManager::instance()
 {
 	if (!_guiManager)
@@ -68,7 +70,7 @@ std::shared_ptr<NLEGuiManager> NLEGuiManager::instance()
 	}
 }
 
-
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 NLEGuiManager::NLEGuiManager(NLE* nle, std::shared_ptr<NLEApplicationLayer> appLayer)
 {
 	_nle = nle;
@@ -84,6 +86,7 @@ NLEGuiManager::NLEGuiManager(NLE* nle, std::shared_ptr<NLEApplicationLayer> appL
 	NLE_Log::console("======> GUI Manager successfully initialized.");
 }
 
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 bool NLEGuiManager::initialize()
 {
 	std::shared_ptr<NLRERenderingDevice> renderingDevice = _nle->getRenderingEngine()->getDeviceController()->getRenderingDevice();
@@ -117,7 +120,10 @@ bool NLEGuiManager::initialize()
 	// setup default group for validation schemas
 	CEGUI::XMLParser* parser = CEGUI::System::getSingleton().getXMLParser();
 	if (parser->isPropertyPresent("SchemaDefaultResourceGroup"))
+	{
 		parser->setProperty("SchemaDefaultResourceGroup", "schemas");
+	}
+		
 	
 	CEGUI::ScriptModule::setDefaultResourceGroup("scripts");
 
@@ -158,6 +164,7 @@ bool NLEGuiManager::initialize()
 	return true;
 }
 
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 NLEGuiManager::~NLEGuiManager()
 {
 	NLEInputProcessor::unregisterInputListener(this);
@@ -167,18 +174,20 @@ NLEGuiManager::~NLEGuiManager()
 	_guiManager = NULL;
 }
 
-
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void NLEGuiManager::renderGUI()
 {
 	CEGUI::System::getSingleton().renderAllGUIContexts();
 }
 
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void NLEGuiManager::sendToClipboard(const CEGUI::String &mimeType, void *buffer, size_t size)
 {
 	//temporary implementation
 	_appLayer->copyClipboard(static_cast<const wchar_t*>(buffer));
 }
 
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void NLEGuiManager::retrieveFromClipboard(CEGUI::String &mimeType, void *&buffer, size_t &size)
 {
 	//temporary implementation
@@ -188,6 +197,7 @@ void NLEGuiManager::retrieveFromClipboard(CEGUI::String &mimeType, void *&buffer
 	size = text.size();
 }
 
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void NLEGuiManager::onKeyEvent(NLE_INPUT::KEY key, int scancode, NLE_INPUT::ACTION action, NLE_INPUT::MOD mods)
 {
 	
@@ -201,11 +211,13 @@ void NLEGuiManager::onKeyEvent(NLE_INPUT::KEY key, int scancode, NLE_INPUT::ACTI
 	}
 }
 
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void NLEGuiManager::onCharEvent(unsigned int codepoint)
 {
 	CEGUI::System::getSingleton().getDefaultGUIContext().injectChar(codepoint);
 }
 
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void NLEGuiManager::onMouseButtonEvent(NLE_INPUT::MOUSE button, NLE_INPUT::ACTION action, NLE_INPUT::MOD mods)
 {
 	if (action == NLE_INPUT::ACTION::PRESS)
@@ -218,11 +230,13 @@ void NLEGuiManager::onMouseButtonEvent(NLE_INPUT::MOUSE button, NLE_INPUT::ACTIO
 	}
 }
 
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void NLEGuiManager::onCursorPositionEvent(double xPos, double yPos)
 {
 	CEGUI::System::getSingleton().getDefaultGUIContext().injectMousePosition(xPos, yPos);
 }
 
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void NLEGuiManager::onCursorEnterEvent(bool entered)
 {
 	if (!entered)
@@ -231,21 +245,25 @@ void NLEGuiManager::onCursorEnterEvent(bool entered)
 	}
 }
 
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void NLEGuiManager::onScrollEvent(double xOffset, double yOffset)
 {
 	CEGUI::System::getSingleton().getDefaultGUIContext().injectMouseWheelChange(yOffset);
 }
 
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void NLEGuiManager::onClipboardCopyEvent()
 {
 	CEGUI::System::getSingleton().getDefaultGUIContext().injectCopyRequest();
 }
 
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void NLEGuiManager::onClipboardCutEvent()
 {
 	CEGUI::System::getSingleton().getDefaultGUIContext().injectCutRequest();
 }
 
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void NLEGuiManager::onClipboardPasteEvent()
 {
 	CEGUI::System::getSingleton().getDefaultGUIContext().injectPasteRequest();
