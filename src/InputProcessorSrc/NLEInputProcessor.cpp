@@ -266,27 +266,27 @@ void NLEInputProcessor::onWindowIconifyEvent(GLFWwindow *window, int iconified)
 	}
 }
 
-void NLEInputProcessor::onClipboardCopy()
+void NLEInputProcessor::onClipboardCopyEvent()
 {
 	for (unsigned int i = 0; i < _clipboardListeners.size(); i++)
 	{
-		_clipboardListeners.at(i)->onClipboardCopy();
+		_clipboardListeners.at(i)->onClipboardCopyEvent();
 	}
 }
 
-void NLEInputProcessor::onClipboardCut()
+void NLEInputProcessor::onClipboardCutEvent()
 {
 	for (unsigned int i = 0; i < _clipboardListeners.size(); i++)
 	{
-		_clipboardListeners.at(i)->onClipboardCut();
+		_clipboardListeners.at(i)->onClipboardCutEvent();
 	}
 }
 
-void NLEInputProcessor::onClipboardPaste()
+void NLEInputProcessor::onClipboardPasteEvent()
 {
 	for (unsigned int i = 0; i < _clipboardListeners.size(); i++)
 	{
-		_clipboardListeners.at(i)->onClipboardPaste();
+		_clipboardListeners.at(i)->onClipboardPasteEvent();
 	}
 }
 

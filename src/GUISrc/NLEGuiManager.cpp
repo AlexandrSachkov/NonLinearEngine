@@ -236,17 +236,17 @@ void NLEGuiManager::onScrollEvent(double xOffset, double yOffset)
 	CEGUI::System::getSingleton().getDefaultGUIContext().injectMouseWheelChange(yOffset);
 }
 
-void NLEGuiManager::onClipboardCopy()
+void NLEGuiManager::onClipboardCopyEvent()
 {
 	CEGUI::System::getSingleton().getDefaultGUIContext().injectCopyRequest();
 }
 
-void NLEGuiManager::onClipboardCut()
+void NLEGuiManager::onClipboardCutEvent()
 {
 	CEGUI::System::getSingleton().getDefaultGUIContext().injectCutRequest();
 }
 
-void NLEGuiManager::onClipboardPaste()
+void NLEGuiManager::onClipboardPasteEvent()
 {
 	CEGUI::System::getSingleton().getDefaultGUIContext().injectPasteRequest();
 }

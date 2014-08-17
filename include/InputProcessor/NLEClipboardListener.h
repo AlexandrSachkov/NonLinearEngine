@@ -33,9 +33,9 @@ class NLEClipboardListener
 {
 public:
 	~NLEClipboardListener(){}
-	virtual void onClipboardCopy()=0;
-	virtual void onClipboardCut()=0;
-	virtual void onClipboardPaste()=0;
+	virtual void onClipboardCopyEvent()=0;
+	virtual void onClipboardCutEvent()=0;
+	virtual void onClipboardPasteEvent()=0;
 };
 
 #endif

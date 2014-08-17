@@ -72,9 +72,9 @@ private:
 	void onCursorEnterEvent(bool entered);
 	void onScrollEvent(double xOffset, double yOffset);
 
-	void onClipboardCopy();
-	void onClipboardCut();
-	void onClipboardPaste();
+	void onClipboardCopyEvent();
+	void onClipboardCutEvent();
+	void onClipboardPasteEvent();
 
 	static std::shared_ptr<NLEGuiManager> _guiManager;
 	NLE* _nle;
