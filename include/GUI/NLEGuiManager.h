@@ -32,6 +32,7 @@ THE SOFTWARE.
 #define NLE_GUI_MANAGER_
 
 #include "InputProcessor\NLEInputListener.h"
+#include "InputProcessor\NLEClipboardListener.h"
 #include "InputProcessor\NLEInputMap.h"
 #include "CEGUI\Clipboard.h"
 
@@ -43,7 +44,7 @@ namespace CEGUI
 	class String;
 };
 
-class NLEGuiManager : public NLEInputListener, public CEGUI::NativeClipboardProvider
+class NLEGuiManager : public NLEInputListener, public NLEClipboardListener, public CEGUI::NativeClipboardProvider
 {
 public:
 	static std::shared_ptr<NLEGuiManager> instance(
@@ -70,6 +71,10 @@ private:
 	void onCursorPositionEvent(double xPos, double yPos);
 	void onCursorEnterEvent(bool entered);
 	void onScrollEvent(double xOffset, double yOffset);
+
+	void onClipboardCopy();
+	void onClipboardCut();
+	void onClipboardPaste();
 
 	static std::shared_ptr<NLEGuiManager> _guiManager;
 	NLE* _nle;

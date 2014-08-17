@@ -232,3 +232,18 @@ void NLEGuiManager::onScrollEvent(double xOffset, double yOffset)
 {
 	CEGUI::System::getSingleton().getDefaultGUIContext().injectMouseWheelChange(yOffset);
 }
+
+void NLEGuiManager::onClipboardCopy()
+{
+	CEGUI::System::getSingleton().getDefaultGUIContext().injectCopyRequest();
+}
+
+void NLEGuiManager::onClipboardCut()
+{
+	CEGUI::System::getSingleton().getDefaultGUIContext().injectCutRequest();
+}
+
+void NLEGuiManager::onClipboardPaste()
+{
+	CEGUI::System::getSingleton().getDefaultGUIContext().injectPasteRequest();
+}
