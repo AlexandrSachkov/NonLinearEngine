@@ -62,15 +62,10 @@ NLEApplicationLayer::~NLEApplicationLayer()
 {
 	glfwDestroyWindow(_window);
 	glfwTerminate();
-	fclose(stdout);
-	FreeConsole();
 }
 
 bool NLEApplicationLayer::initialize()
 {
-	AllocConsole();
-	freopen("CONOUT$", "wb", stdout);
-
 	NLE_Log::registerErrorCallback(NLEApplicationLayer::errorCallback);
 	NLE_Log::registerConsoleCallback(NLEApplicationLayer::debugCallback);
 	NLE_Log::registerDebugCallback(NLEApplicationLayer::debugCallback);
@@ -221,11 +216,7 @@ GLFWwindow* NLEApplicationLayer::getGLFWwindow()
 }
 
 
-int WINAPI WinMain(
-	HINSTANCE hInstance,
-	HINSTANCE hPrevInstance,
-	LPSTR lpCmdLine,
-	int nShowCmd)
+int main(int argc, const char* argv[])
 {
 	try
 	{
@@ -237,7 +228,7 @@ int WINAPI WinMain(
 		std::string errMsgStr(e.what());
 		std::wstring errMsg(errMsgStr.begin(), errMsgStr.end());
 		errTxt.append(errMsg);
-		MessageBox(nullptr, errTxt.c_str(), L"ERROR", MB_OK);
+		//MessageBox(nullptr, errTxt.c_str(), L"ERROR", MB_OK);
 		delete nle;
 		return 0;
 	}
