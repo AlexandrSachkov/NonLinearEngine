@@ -29,14 +29,15 @@ THE SOFTWARE.
 
 #include "stdafx.h"
 #include "GUI\NLEGuiManager.h"
+#include "GUI\NLECeguiInputMap.h"
+
 #include "NLE.h"
 #include "RenderingEngine\NLRE.h"
 #include "RenderingEngine\RenderingDevice\NLREDeviceController.h"
 #include "RenderingEngine\RenderingDevice\NLRERenderingDevice.h"
-#include "InputProcessor\NLEInputProcessor.h"
-#include "InputProcessor\NLECeguiInputMap.h"
-#include "InputProcessor\NLECeguiInputMap.h"
-#include "NLEApplicationLayer.h"
+
+#include "Input\NLEInputProcessor.h"
+#include "Application\NLEApplicationLayer.h"
 
 #include "CEGUI\CEGUI.h"
 #include "CEGUI\RendererModules\Direct3D11\Renderer.h"
@@ -145,7 +146,9 @@ bool NLEGuiManager::initialize()
 
 	CEGUI::WindowManager& windowManager = CEGUI::WindowManager::getSingleton();
 	CEGUI::Window* rootWindow = windowManager.createWindow("DefaultWindow", "root");
-	CEGUI::System::getSingleton().getDefaultGUIContext().setRootWindow(rootWindow);
+
+	_guiContext = &CEGUI::System::getSingleton().getDefaultGUIContext();
+	_guiContext->setRootWindow(rootWindow);
 	
 	CEGUI::FrameWindow* fWnd = static_cast<CEGUI::FrameWindow*>(
 		windowManager.createWindow("TaharezLook/FrameWindow", "testWindow"));
@@ -156,10 +159,9 @@ bool NLEGuiManager::initialize()
 	fWnd->setSize(CEGUI::USize(CEGUI::UDim(0.5f, 0.0f), CEGUI::UDim(0.5f, 0.0f)));
 	fWnd->setText("Hello World!");
 	
-	NLEInputProcessor::registerInputListener(this);
+	NLEInputProcessor::registerInputEventListener(this);
 	delete CEGUI::System::getSingleton().getClipboard()->getNativeProvider();
 	CEGUI::System::getSingleton().getClipboard()->setNativeProvider(this);
-	NLEInputProcessor::registerClipboardListener(this);
 
 	return true;
 }
@@ -167,8 +169,7 @@ bool NLEGuiManager::initialize()
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 NLEGuiManager::~NLEGuiManager()
 {
-	NLEInputProcessor::unregisterInputListener(this);
-	NLEInputProcessor::unregisterClipboardListener(this);
+	NLEInputProcessor::unregisterInputEventListener(this);
 	CEGUI::System::destroy();
 	CEGUI::Direct3D11Renderer::destroy(*_guiRenderer);
 	_guiManager = NULL;
@@ -181,10 +182,70 @@ void NLEGuiManager::renderGUI()
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void NLEGuiManager::processInputEvent(NLE_INPUT::Event event)
+{
+	switch (event.eventType)
+	{
+	case NLE_INPUT::EVENT_TYPE::EVENT_KEY:
+		if (event.eventData.keyEvent.action == NLE_INPUT::ACTION::ACTION_PRESS)
+		{
+			_guiContext->injectKeyDown(NLE_INPUT::NLEtoCEGUIKey(event.eventData.keyEvent.key));
+		}
+		else if (event.eventData.keyEvent.action == NLE_INPUT::ACTION::ACTION_RELEASE)
+		{
+			_guiContext->injectKeyUp(NLE_INPUT::NLEtoCEGUIKey(event.eventData.keyEvent.key));
+		}
+		break;
+
+	case NLE_INPUT::EVENT_TYPE::EVENT_CHAR:
+		_guiContext->injectChar(event.eventData.charEvent.code);
+		break;
+
+	case NLE_INPUT::EVENT_TYPE::EVENT_MOUSE_BUTTON:
+		if (event.eventData.mouseButtonEvent.action == NLE_INPUT::ACTION::ACTION_PRESS)
+		{
+			_guiContext->injectMouseButtonDown(NLE_INPUT::NLEtoCEGUIMouse(event.eventData.mouseButtonEvent.button));
+		}
+		else if (event.eventData.mouseButtonEvent.action == NLE_INPUT::ACTION::ACTION_RELEASE)
+		{
+			_guiContext->injectMouseButtonUp(NLE_INPUT::NLEtoCEGUIMouse(event.eventData.mouseButtonEvent.button));
+		}
+		break;
+
+	case NLE_INPUT::EVENT_TYPE::EVENT_CURSOR_POSITION:
+		_guiContext->injectMousePosition(event.eventData.cursorPositionEvent.xPos, event.eventData.cursorPositionEvent.yPos);
+		break;
+
+	case NLE_INPUT::EVENT_TYPE::EVENT_CURSOR_ENTER:
+		if (event.eventData.cursorEnterEvent.entered == false)
+		{
+			_guiContext->injectMouseLeaves();
+		}
+		break;
+
+	case NLE_INPUT::EVENT_TYPE::EVENT_SCROLL:
+		_guiContext->injectMouseWheelChange(event.eventData.scrollEvent.yOffset);
+		break;
+
+	case NLE_INPUT::EVENT_TYPE::EVENT_CLIPBOARD_COPY:
+		_guiContext->injectCopyRequest();
+		break;
+
+	case NLE_INPUT::EVENT_TYPE::EVENT_CLIPBOARD_CUT:
+		_guiContext->injectCutRequest();
+		break;
+
+	case NLE_INPUT::EVENT_TYPE::EVENT_CLIPBOARD_PASTE:
+		_guiContext->injectPasteRequest();
+		break;
+	}
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void NLEGuiManager::sendToClipboard(const CEGUI::String &mimeType, void *buffer, size_t size)
 {
 	//temporary implementation
-	_appLayer->copyClipboard(static_cast<const wchar_t*>(buffer));
+	_appLayer->copyText(static_cast<const wchar_t*>(buffer));
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -192,79 +253,7 @@ void NLEGuiManager::retrieveFromClipboard(CEGUI::String &mimeType, void *&buffer
 {
 	//temporary implementation
 	mimeType = "text/utf-8";
-	std::wstring text = _appLayer->pasteClipboard();
+	std::wstring text = _appLayer->pasteText();
 	buffer = (void*)text.c_str();
 	size = text.size();
-}
-
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void NLEGuiManager::onKeyEvent(NLE_INPUT::KEY key, int scancode, NLE_INPUT::ACTION action, NLE_INPUT::MOD mods)
-{
-	
-	if (action == NLE_INPUT::ACTION::PRESS)
-	{
-		CEGUI::System::getSingleton().getDefaultGUIContext().injectKeyDown(NLE_INPUT::NLEtoCEGUIKey(key));
-	}
-	else
-	{
-		CEGUI::System::getSingleton().getDefaultGUIContext().injectKeyUp(NLE_INPUT::NLEtoCEGUIKey(key));
-	}
-}
-
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void NLEGuiManager::onCharEvent(unsigned int codepoint)
-{
-	CEGUI::System::getSingleton().getDefaultGUIContext().injectChar(codepoint);
-}
-
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void NLEGuiManager::onMouseButtonEvent(NLE_INPUT::MOUSE button, NLE_INPUT::ACTION action, NLE_INPUT::MOD mods)
-{
-	if (action == NLE_INPUT::ACTION::PRESS)
-	{
-		CEGUI::System::getSingleton().getDefaultGUIContext().injectMouseButtonDown(NLE_INPUT::NLEtoCEGUIMouse(button));
-	}
-	else
-	{
-		CEGUI::System::getSingleton().getDefaultGUIContext().injectMouseButtonUp(NLE_INPUT::NLEtoCEGUIMouse(button));
-	}
-}
-
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void NLEGuiManager::onCursorPositionEvent(double xPos, double yPos)
-{
-	CEGUI::System::getSingleton().getDefaultGUIContext().injectMousePosition(xPos, yPos);
-}
-
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void NLEGuiManager::onCursorEnterEvent(bool entered)
-{
-	if (!entered)
-	{
-		CEGUI::System::getSingleton().getDefaultGUIContext().injectMouseLeaves();
-	}
-}
-
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void NLEGuiManager::onScrollEvent(double xOffset, double yOffset)
-{
-	CEGUI::System::getSingleton().getDefaultGUIContext().injectMouseWheelChange(yOffset);
-}
-
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void NLEGuiManager::onClipboardCopyEvent()
-{
-	CEGUI::System::getSingleton().getDefaultGUIContext().injectCopyRequest();
-}
-
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void NLEGuiManager::onClipboardCutEvent()
-{
-	CEGUI::System::getSingleton().getDefaultGUIContext().injectCutRequest();
-}
-
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void NLEGuiManager::onClipboardPasteEvent()
-{
-	CEGUI::System::getSingleton().getDefaultGUIContext().injectPasteRequest();
 }

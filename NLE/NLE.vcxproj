@@ -299,14 +299,15 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="..\include\Application\NLEApplicationLayer.h" />
+    <ClInclude Include="..\include\Application\NLEGlfwApplicationLayer.h" />
+    <ClInclude Include="..\include\Application\NLEGlfwInputMap.h" />
+    <ClInclude Include="..\include\GUI\NLECeguiInputMap.h" />
     <ClInclude Include="..\include\GUI\NLEGuiManager.h" />
-    <ClInclude Include="..\include\InputProcessor\NLECeguiInputMap.h" />
-    <ClInclude Include="..\include\InputProcessor\NLEClipboardListener.h" />
-    <ClInclude Include="..\include\InputProcessor\NLEInputListener.h" />
-    <ClInclude Include="..\include\InputProcessor\NLEGlfwInputMap.h" />
-    <ClInclude Include="..\include\InputProcessor\NLEInputMap.h" />
-    <ClInclude Include="..\include\InputProcessor\NLEInputProcessor.h" />
-    <ClInclude Include="..\include\InputProcessor\NLEWindowListener.h" />
+    <ClInclude Include="..\include\Input\NLEInputEventListener.h" />
+    <ClInclude Include="..\include\Input\NLEInputEvents.h" />
+    <ClInclude Include="..\include\Input\NLEInputProcessor.h" />
+    <ClInclude Include="..\include\Input\NLEInputSupply.h" />
     <ClInclude Include="..\include\math\DXMath\DXMathMatrixFunctions.h" />
     <ClInclude Include="..\include\math\DXMath\DXMathStructures.h" />
     <ClInclude Include="..\include\math\DXMath\DXMathVector3DFunctions.h" />
@@ -318,7 +319,6 @@
     <ClInclude Include="..\include\math\DXMath\DXMathWrap.h" />
     <ClInclude Include="..\include\Math\NLEMath.h" />
     <ClInclude Include="..\include\NLE.h" />
-    <ClInclude Include="..\include\NLEApplicationLayer.h" />
     <ClInclude Include="..\include\NLECommon.h" />
     <ClInclude Include="..\include\NLEConfigurator.h" />
     <ClInclude Include="..\include\NLELog.h" />
@@ -360,6 +360,7 @@
     <None Include="..\include\RenderingEngine\RenderingDevice\DX11Device\NLREDX11RenderingDevice.inl" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\src\ApplicationSrc\NLEGlfwApplicationLayer.cpp" />
     <ClCompile Include="..\src\GUISrc\NLEGuiManager.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Profile|Win32'">Use</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Use</PrecompiledHeader>
@@ -368,23 +369,8 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Use</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="..\src\InputProcessorSrc\NLEInputProcessor.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Profile|Win32'">Use</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Use</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Use</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Profile|x64'">Use</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Use</PrecompiledHeader>
-    </ClCompile>
+    <ClCompile Include="..\src\InputSrc\NLEInputProcessor.cpp" />
     <ClCompile Include="..\src\NLE.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Profile|Win32'">Use</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Use</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Use</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Profile|x64'">Use</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Use</PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="..\src\NLEApplicationLayer.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Profile|Win32'">Use</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Use</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Use</PrecompiledHeader>

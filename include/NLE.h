@@ -34,6 +34,7 @@ THE SOFTWARE.
 
 class NLEApplicationLayer;
 class NLEInputProcessor;
+class NLEInputSupply;
 class NLRE;
 class NLEGuiManager;
 
@@ -45,6 +46,9 @@ public:
 	~NLE();
 
 	void run();
+	bool bindApplicationLayer(std::shared_ptr<NLEApplicationLayer> appLayer);
+	bool bindInputSupply(std::shared_ptr<NLEInputSupply> inputSupply);
+	
 	std::shared_ptr<NLRE> getRenderingEngine();
 	std::shared_ptr<NLEInputProcessor> getInputProcessor();
 	std::shared_ptr<NLEApplicationLayer> getApplicationLayer();
@@ -64,6 +68,7 @@ private:
 
 	std::shared_ptr<NLEApplicationLayer> _applicationLayer;
 	std::shared_ptr<NLEInputProcessor> _inputProcessor;
+	std::shared_ptr<NLEInputSupply> _inputSupply;
 	std::shared_ptr<NLRE> _renderingEngine;
 	std::shared_ptr<NLEGuiManager> _guiManager;
 };

@@ -26,10 +26,15 @@ THE SOFTWARE.
 -----------------------------------------------------------------------------
 */
 
-#ifndef NLE_INPUT_MAP_
-#define NLE_INPUT_MAP_
+#ifndef NLE_INPUT_SUPPLY_
+#define NLE_INPUT_SUPPLY_
 
-//in case of an input map replacement, use the same NLE_INPUT namespace
-#include "InputProcessor\NLEGlfwInputMap.h" 
+#include "Input\NLEInputEvents.h"
 
+class NLEInputSupply
+{
+public:
+	~NLEInputSupply(){}
+	virtual bool bindInputEventCallback	(void(*)(NLE_INPUT::Event event)) =0;
+};
 #endif

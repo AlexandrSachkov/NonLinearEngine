@@ -28,9 +28,10 @@ THE SOFTWARE.
 
 #include "stdafx.h"
 #include "NLE.h"
-#include "NLEApplicationLayer.h"
+#include "Application\NLEGlfwApplicationLayer.h"
 #include "RenderingEngine\NLRE.h"
-#include "InputProcessor\NLEInputProcessor.h"
+#include "Input\NLEInputProcessor.h"
+#include "Input\NLEInputSupply.h"
 #include "GUI\NLEGuiManager.h"
 
 NLE::NLE()
@@ -39,13 +40,15 @@ NLE::NLE()
 	NLRE_Log::registerConsoleCallback(NLE::NLREconsoleOutputHook);
 	NLRE_Log::registerErrorCallback(NLE::NLREerrorOutputHook);
 
-	_applicationLayer.reset(new NLEApplicationLayer(this));
+	_applicationLayer = std::dynamic_pointer_cast<NLEApplicationLayer>(NLEGlfwApplicationLayer::instance(this));
+	_inputSupply = std::dynamic_pointer_cast<NLEInputSupply>(NLEGlfwApplicationLayer::instance(this));
+
 	_winRef = _applicationLayer->getWindowReference();
 	_applicationLayer->getClientSize(_width, _height);
 
 	_renderingEngine.reset(new NLRE(_winRef, _width, _height));
 	_guiManager = NLEGuiManager::instance(this, _applicationLayer);
-	_inputProcessor = NLEInputProcessor::instance(this, _applicationLayer);
+	_inputProcessor = NLEInputProcessor::instance(this, _applicationLayer, _inputSupply);
 	
 
 	//======================= FOR TESTING PURPOSES =================
@@ -101,6 +104,19 @@ void NLE::run()
 	//======================= FOR TESTING PURPOSES =================
 	_applicationLayer->runMessageLoop();
 	//==============================================================
+}
+
+bool NLE::bindApplicationLayer(std::shared_ptr<NLEApplicationLayer> appLayer)
+{
+	if (!appLayer) return false;
+	_applicationLayer = appLayer;
+	return true;
+}
+
+bool NLE::bindInputSupply(std::shared_ptr<NLEInputSupply> inputSupply)
+{
+
+	return false;
 }
 
 std::shared_ptr<NLRE> NLE::getRenderingEngine()

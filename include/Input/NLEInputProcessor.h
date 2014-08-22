@@ -26,19 +26,51 @@ THE SOFTWARE.
 -----------------------------------------------------------------------------
 */
 
-#ifndef NLE_WINDOW_LISTENER_
-#define NLE_WINDOW_LISTENER_
+#ifndef NLE_INPUT_PROCESSOR_
+#define NLE_INPUT_PROCESSOR_
 
-class NLEWindowListener
+#include "Input\NLEInputEvents.h"
+
+class NLE;
+class NLEApplicationLayer;
+class NLEInputEventListener;
+class NLEInputSupply;
+
+class NLEInputProcessor
 {
 public:
-	~NLEWindowListener(){}
-	virtual void onWindowPositionEvent(int xPos, int yPos)=0;
-	virtual void onWindowSizeEvent(int width, int height)=0;
-	virtual void onWindowCloseEvent()=0;
-	virtual void onWindowRefreshEvent()=0;
-	virtual void onWindowFocusEvent(int focused)=0;
-	virtual void onWindowIconifyEvent(int iconified)=0;
+	static std::shared_ptr<NLEInputProcessor> instance(
+		NLE* nle,
+		std::shared_ptr<NLEApplicationLayer> appLayer,
+		std::shared_ptr<NLEInputSupply> inputSupply
+		);
+
+	static std::shared_ptr<NLEInputProcessor> instance();
+	
+	~NLEInputProcessor();
+
+	static void processInputEvent(NLE_INPUT::Event event);
+
+	static bool registerInputEventListener(NLEInputEventListener* listener);
+	static bool unregisterInputEventListener(NLEInputEventListener* listener);
+
+private:
+	NLEInputProcessor(
+		NLE* nle, 
+		std::shared_ptr<NLEApplicationLayer> appLayer,
+		std::shared_ptr<NLEInputSupply> inputSupply
+		);
+	NLEInputProcessor& operator=(const NLEInputProcessor&){};
+	NLEInputProcessor(const NLEInputProcessor& other);
+	bool initialize();
+
+	static std::shared_ptr<NLEInputProcessor> _inputProcessor;
+
+	NLE* _nle;
+	std::shared_ptr<NLEApplicationLayer> _appLayer;
+	std::shared_ptr<NLEInputSupply> _inputSupply;
+
+	static std::vector<NLEInputEventListener*> _inputEventListeners;
 };
 
 #endif

@@ -228,7 +228,7 @@ int main(int argc, const char* argv[])
 		std::string errMsgStr(e.what());
 		std::wstring errMsg(errMsgStr.begin(), errMsgStr.end());
 		errTxt.append(errMsg);
-		//MessageBox(nullptr, errTxt.c_str(), L"ERROR", MB_OK);
+		printf("NonLinear engine ERROR: ",errTxt.c_str());
 		delete nle;
 		return 0;
 	}

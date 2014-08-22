@@ -26,22 +26,32 @@ THE SOFTWARE.
 -----------------------------------------------------------------------------
 */
 
+#ifndef NLE_APPLICATION_LAYER_
+#define NLE_APPLICATION_LAYER_
 
-#ifndef NLE_INPUT_LISTENER_
-#define NLE_INPUT_LISTENER_
-
-#include "InputProcessor/NLEInputMap.h"
-
-class NLEInputListener
+class NLEApplicationLayer
 {
 public:
-	virtual ~NLEInputListener(){}
-	virtual void onKeyEvent(NLE_INPUT::KEY key, int scancode, NLE_INPUT::ACTION action, NLE_INPUT::MOD mods) =0;
-	virtual void onCharEvent(unsigned int codepoint)=0;
-	virtual void onMouseButtonEvent(NLE_INPUT::MOUSE button, NLE_INPUT::ACTION action, NLE_INPUT::MOD mods) = 0;
-	virtual void onCursorPositionEvent(double xPos, double yPos)=0;
-	virtual void onCursorEnterEvent(bool entered)=0;
-	virtual void onScrollEvent(double xOffset, double yOffset)=0;
+	~NLEApplicationLayer(){};
+
+	virtual NLEWindowReference& getWindowReference() =0;
+	virtual void getClientSize(int& width, int& height) = 0;
+	virtual void setClientSize(int width, int height) = 0;
+	virtual void setResizable(bool option) = 0;
+	virtual void setDecorated(bool option) = 0;
+	virtual void setTitle(std::wstring title) = 0;
+	virtual void setPosition(int x, int y) = 0;
+	virtual void getPosition(int& x, int& y) = 0;
+	virtual void iconify() = 0;
+	virtual void restore() = 0;
+	virtual void show() = 0;
+	virtual void hide() = 0;
+
+	virtual int runMessageLoop() = 0;
+	virtual void endMessageLoop() = 0;
+
+	virtual void copyText(std::wstring text) = 0;
+	virtual std::wstring pasteText() = 0;
 };
 
 #endif

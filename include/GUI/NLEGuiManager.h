@@ -31,9 +31,7 @@ THE SOFTWARE.
 #ifndef NLE_GUI_MANAGER_
 #define NLE_GUI_MANAGER_
 
-#include "InputProcessor\NLEInputListener.h"
-#include "InputProcessor\NLEClipboardListener.h"
-#include "InputProcessor\NLEInputMap.h"
+#include "Input\NLEInputEventListener.h"
 #include "CEGUI\Clipboard.h"
 
 class NLE;
@@ -44,7 +42,7 @@ namespace CEGUI
 	class String;
 };
 
-class NLEGuiManager : public NLEInputListener, public NLEClipboardListener, public CEGUI::NativeClipboardProvider
+class NLEGuiManager : public NLEInputEventListener, public CEGUI::NativeClipboardProvider
 {
 public:
 	static std::shared_ptr<NLEGuiManager> instance(
@@ -56,7 +54,7 @@ public:
 
 	void sendToClipboard(const CEGUI::String &mimeType, void *buffer, size_t size);
 	void retrieveFromClipboard(CEGUI::String &mimeType, void *&buffer, size_t &size);
-
+	void processInputEvent(NLE_INPUT::Event event);
 	static void renderGUI();
 
 private:
@@ -65,21 +63,11 @@ private:
 	NLEGuiManager& operator=(const NLEGuiManager&){};
 	bool initialize();
 
-	void onKeyEvent(NLE_INPUT::KEY key, int scancode, NLE_INPUT::ACTION action, NLE_INPUT::MOD mods);
-	void onCharEvent(unsigned int codepoint);
-	void onMouseButtonEvent(NLE_INPUT::MOUSE button, NLE_INPUT::ACTION action, NLE_INPUT::MOD mods);
-	void onCursorPositionEvent(double xPos, double yPos);
-	void onCursorEnterEvent(bool entered);
-	void onScrollEvent(double xOffset, double yOffset);
-
-	void onClipboardCopyEvent();
-	void onClipboardCutEvent();
-	void onClipboardPasteEvent();
-
 	static std::shared_ptr<NLEGuiManager> _guiManager;
 	NLE* _nle;
 	std::shared_ptr<NLEApplicationLayer> _appLayer;
 	CEGUI::Direct3D11Renderer* _guiRenderer;
+	CEGUI::GUIContext* _guiContext;
 };
 
 #endif

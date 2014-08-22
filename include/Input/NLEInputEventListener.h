@@ -26,16 +26,15 @@ THE SOFTWARE.
 -----------------------------------------------------------------------------
 */
 
-#ifndef NLE_CLIPBOARD_LISTENER_
-#define NLE_CLIPBOARD_LISTENER_
+#ifndef NLE_INPUT_EVENT_LISTENER_
+#define NLE_INPUT_EVENT_LISTENER_
 
-class NLEClipboardListener
+#include "Input\NLEInputEvents.h"
+
+class NLEInputEventListener
 {
 public:
-	~NLEClipboardListener(){}
-	virtual void onClipboardCopyEvent()=0;
-	virtual void onClipboardCutEvent()=0;
-	virtual void onClipboardPasteEvent()=0;
+	~NLEInputEventListener(){}
+	virtual void processInputEvent(NLE_INPUT::Event event) = 0;
 };
-
 #endif

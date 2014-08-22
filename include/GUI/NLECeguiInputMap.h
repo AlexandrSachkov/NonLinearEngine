@@ -30,7 +30,7 @@ THE SOFTWARE.
 #define NLE_CEGUI_INPUT_MAP_
 
 #include "CEGUI\CEGUI.h"
-#include "InputProcessor\NLEInputMap.h"
+#include "Input\NLEInputEvents.h"
 
 namespace NLE_INPUT
 {

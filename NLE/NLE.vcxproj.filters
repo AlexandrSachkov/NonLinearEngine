@@ -54,17 +54,23 @@
     <Filter Include="Header Files\Math\DXMath">
       <UniqueIdentifier>{5dbb3d82-ecdc-4450-810d-180b138f5ea1}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\InputProcessor">
-      <UniqueIdentifier>{1fddf3f0-56be-499f-9419-4cbcc4089700}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\InputProcessorSrc">
-      <UniqueIdentifier>{7fbc4ac6-1547-4424-8383-bb53c2c4a476}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\GUI">
       <UniqueIdentifier>{84087646-0f42-409a-9d6d-0a2441496082}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files\GUISrc">
       <UniqueIdentifier>{25de6083-1834-4e8b-84d5-35746c8490d0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Application">
+      <UniqueIdentifier>{549429d8-032f-4266-91d9-8f0f1c7b6df3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\ApplicationSrc">
+      <UniqueIdentifier>{52994c1a-846c-4ee6-8677-1f19eb83021f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Input">
+      <UniqueIdentifier>{1fddf3f0-56be-499f-9419-4cbcc4089700}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\InputSrc">
+      <UniqueIdentifier>{7fbc4ac6-1547-4424-8383-bb53c2c4a476}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -185,35 +191,35 @@
     <ClInclude Include="..\include\NLEResources.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\NLEApplicationLayer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\InputProcessor\NLEInputProcessor.h">
-      <Filter>Header Files\InputProcessor</Filter>
-    </ClInclude>
     <ClInclude Include="..\include\GUI\NLEGuiManager.h">
       <Filter>Header Files\GUI</Filter>
     </ClInclude>
     <ClInclude Include="..\include\NLESingleInstance.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\InputProcessor\NLEInputListener.h">
-      <Filter>Header Files\InputProcessor</Filter>
+    <ClInclude Include="..\include\Application\NLEApplicationLayer.h">
+      <Filter>Header Files\Application</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\InputProcessor\NLEGlfwInputMap.h">
-      <Filter>Header Files\InputProcessor</Filter>
+    <ClInclude Include="..\include\Application\NLEGlfwApplicationLayer.h">
+      <Filter>Header Files\Application</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\InputProcessor\NLEInputMap.h">
-      <Filter>Header Files\InputProcessor</Filter>
+    <ClInclude Include="..\include\Input\NLEInputEventListener.h">
+      <Filter>Header Files\Input</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\InputProcessor\NLECeguiInputMap.h">
-      <Filter>Header Files\InputProcessor</Filter>
+    <ClInclude Include="..\include\Input\NLEInputEvents.h">
+      <Filter>Header Files\Input</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\InputProcessor\NLEClipboardListener.h">
-      <Filter>Header Files\InputProcessor</Filter>
+    <ClInclude Include="..\include\Input\NLEInputProcessor.h">
+      <Filter>Header Files\Input</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\InputProcessor\NLEWindowListener.h">
-      <Filter>Header Files\InputProcessor</Filter>
+    <ClInclude Include="..\include\Input\NLEInputSupply.h">
+      <Filter>Header Files\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\GUI\NLECeguiInputMap.h">
+      <Filter>Header Files\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\Application\NLEGlfwInputMap.h">
+      <Filter>Header Files\Application</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -288,14 +294,14 @@
     <ClCompile Include="..\src\NLELog.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\NLEApplicationLayer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\InputProcessorSrc\NLEInputProcessor.cpp">
-      <Filter>Source Files\InputProcessorSrc</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\GUISrc\NLEGuiManager.cpp">
       <Filter>Source Files\GUISrc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\ApplicationSrc\NLEGlfwApplicationLayer.cpp">
+      <Filter>Source Files\ApplicationSrc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\InputSrc\NLEInputProcessor.cpp">
+      <Filter>Source Files\InputSrc</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

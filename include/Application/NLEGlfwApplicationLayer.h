@@ -26,27 +26,27 @@ THE SOFTWARE.
 -----------------------------------------------------------------------------
 */
 
-#ifndef NLE_APPLICATION_LAYER_
-#define NLE_APPLICATION_LAYER_
+#ifndef NLE_GLFW_APPLICATION_LAYER_
+#define NLE_GLFW_APPLICATION_LAYER_
 
-#include "NLESingleInstance.h"
+#include "Application\NLEApplicationLayer.h"
+#include "Input\NLEInputSupply.h"
 
 class NLE;
 class GLFWwindow;
 
-class NLEApplicationLayer : private NLESingleInstance<NLEApplicationLayer>
+class NLEGlfwApplicationLayer : public NLEApplicationLayer, public NLEInputSupply
 {
-	friend class NLEInputProcessor;
 public:
-
-	NLEApplicationLayer(NLE* nle);
-	~NLEApplicationLayer();
+	static std::shared_ptr<NLEGlfwApplicationLayer> instance(NLE* nle);
+	static std::shared_ptr<NLEGlfwApplicationLayer> instance();
+	~NLEGlfwApplicationLayer();
 
 	NLEWindowReference& getWindowReference();
 	void getClientSize(int& width, int& height);
 	void setClientSize(int width, int height);
-	void setResizableHint(bool option);
-	void setDecoratedHint(bool option);
+	void setResizable(bool option);
+	void setDecorated(bool option);
 	void setTitle(std::wstring title);
 	void setPosition(int x, int y);
 	void getPosition(int& x, int& y);
@@ -58,11 +58,15 @@ public:
 	int runMessageLoop();
 	void endMessageLoop();
 
-	void copyClipboard(std::wstring text);
-	std::wstring pasteClipboard();
+	void copyText(std::wstring text);
+	std::wstring pasteText();
+
+	bool bindInputEventCallback(void(*processEvent)(NLE_INPUT::Event event));
 
 private:	
-	NLEApplicationLayer(const NLEApplicationLayer& other);
+	NLEGlfwApplicationLayer(NLE* nle);
+	NLEGlfwApplicationLayer(const NLEGlfwApplicationLayer& other){}
+	NLEGlfwApplicationLayer& operator=(const NLEGlfwApplicationLayer&){};
 	bool initialize();
 
 	static void debugCallback(char text[]);
@@ -70,9 +74,28 @@ private:
 	static void errorCallback(NLE_Log::ErrorFlag flag, char text[]);
 	static void glfwErrorCallback(int error, const char* description);
 
-	GLFWwindow* getGLFWwindow();
+	static void onKeyEvent(GLFWwindow *window, int key, int scancode, int action, int mods);
+	static void onCharEvent(GLFWwindow *window, unsigned int codepoint);
+	static void onMouseButtonEvent(GLFWwindow *window, int button, int action, int mods);
+	static void onCursorPositionEvent(GLFWwindow *window, double xPos, double yPos);
+	static void onCursorEnterEvent(GLFWwindow *window, int entered);
+	static void onScrollEvent(GLFWwindow *window, double xOffset, double yOffset);
+
+	static void onWindowPositionEvent(GLFWwindow *window, int xPos, int yPos);
+	static void onWindowSizeEvent(GLFWwindow *window, int width, int height);
+	static void onWindowCloseEvent(GLFWwindow *window);
+	static void onWindowRefreshEvent(GLFWwindow *window);
+	static void onWindowFocusEvent(GLFWwindow *window, int focused);
+	static void onWindowIconifyEvent(GLFWwindow *window, int iconified);
+
+	static void onClipboardCopyEvent();
+	static void onClipboardCutEvent();
+	static void onClipboardPasteEvent();
+
+	static std::shared_ptr<NLEGlfwApplicationLayer> _glfwAppLayer;
 	NLE* _nle;
 	GLFWwindow* _window;
+	void(*_processEvent)(NLE_INPUT::Event event);
 };
 
 #endif
