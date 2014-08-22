@@ -158,12 +158,12 @@ void NLEGlfwApplicationLayer::setTitle(std::wstring title)
 	glfwSetWindowTitle(_window, textOut.c_str());
 }
 
-void NLEGlfwApplicationLayer::setPosition(int x, int y)
+void NLEGlfwApplicationLayer::setWindowPosition(int x, int y)
 {
 	glfwSetWindowPos(_window, x, y);
 }
 
-void NLEGlfwApplicationLayer::getPosition(int& x, int& y)
+void NLEGlfwApplicationLayer::getWindowPosition(int& x, int& y)
 {
 	glfwGetWindowPos(_window, &x, &y);
 }

@@ -48,8 +48,8 @@ public:
 	void setResizable(bool option);
 	void setDecorated(bool option);
 	void setTitle(std::wstring title);
-	void setPosition(int x, int y);
-	void getPosition(int& x, int& y);
+	void setWindowPosition(int x, int y);
+	void getWindowPosition(int& x, int& y);
 	void iconify();
 	void restore();
 	void show();

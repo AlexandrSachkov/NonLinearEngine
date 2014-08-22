@@ -40,8 +40,8 @@ public:
 	virtual void setResizable(bool option) = 0;
 	virtual void setDecorated(bool option) = 0;
 	virtual void setTitle(std::wstring title) = 0;
-	virtual void setPosition(int x, int y) = 0;
-	virtual void getPosition(int& x, int& y) = 0;
+	virtual void setWindowPosition(int x, int y) = 0;
+	virtual void getWindowPosition(int& x, int& y) = 0;
 	virtual void iconify() = 0;
 	virtual void restore() = 0;
 	virtual void show() = 0;
