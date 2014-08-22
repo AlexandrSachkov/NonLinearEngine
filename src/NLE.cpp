@@ -34,6 +34,17 @@ THE SOFTWARE.
 #include "Input\NLEInputSupply.h"
 #include "GUI\NLEGuiManager.h"
 
+std::shared_ptr<NLE> NLE::_nle = NULL;
+
+std::shared_ptr<NLE> NLE::instance()
+{
+	if (!_nle)
+	{
+		_nle.reset(new NLE());
+	}
+	return _nle;
+}
+
 NLE::NLE()
 {
 	NLRE_Log::registerDebugCallback(NLE::NLREdebugOutputHook);
@@ -43,10 +54,9 @@ NLE::NLE()
 	_applicationLayer = std::dynamic_pointer_cast<NLEApplicationLayer>(NLEGlfwApplicationLayer::instance(this));
 	_inputSupply = std::dynamic_pointer_cast<NLEInputSupply>(NLEGlfwApplicationLayer::instance(this));
 
-	_winRef = _applicationLayer->getWindowReference();
 	_applicationLayer->getClientSize(_width, _height);
 
-	_renderingEngine.reset(new NLRE(_winRef, _width, _height));
+	_renderingEngine.reset(new NLRE(_applicationLayer->getWindowReference(), _width, _height));
 	_guiManager = NLEGuiManager::instance(this, _applicationLayer);
 	_inputProcessor = NLEInputProcessor::instance(this, _applicationLayer, _inputSupply);
 	
@@ -56,17 +66,13 @@ NLE::NLE()
 	_renderingEngine->importAsset(path);
 	//==============================================================
 
-	NLE_Log::console("======> NLE successfully initialized.");
-}
-
-NLE::NLE(const NLE& other)
-{
-
 	if (!initialize())
 	{
 		NLE_Log::err(NLE_Log::CRITICAL, "NonLinear Engine failed to initialize");
 		throw std::exception("NonLinear Engine failed to initialize");
 	}
+
+	NLE_Log::console("======> NLE successfully initialized.");
 }
 
 NLE::~NLE()
@@ -76,11 +82,7 @@ NLE::~NLE()
 
 bool NLE::initialize()
 {
-	if (!_winRef)
-	{
-		NLE_Log::err(NLE_Log::CRITICAL, "Window Reference is uninitialized");
-		return false;
-	}
+	
 	return true;
 }
 

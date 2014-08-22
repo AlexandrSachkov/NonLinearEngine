@@ -60,8 +60,8 @@ private:
 		std::shared_ptr<NLEApplicationLayer> appLayer,
 		std::shared_ptr<NLEInputSupply> inputSupply
 		);
-	NLEInputProcessor& operator=(const NLEInputProcessor&){};
-	NLEInputProcessor(const NLEInputProcessor& other);
+	NLEInputProcessor& operator=(const NLEInputProcessor&){}
+	NLEInputProcessor(const NLEInputProcessor& other){}
 	bool initialize();
 
 	static std::shared_ptr<NLEInputProcessor> _inputProcessor;

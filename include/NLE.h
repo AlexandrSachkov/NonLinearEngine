@@ -41,8 +41,7 @@ class NLEGuiManager;
 class NLE : private NLESingleInstance<NLE>
 {
 public:
-	NLE();
-	NLE(const NLE& other);
+	static std::shared_ptr<NLE> instance();
 	~NLE();
 
 	void run();
@@ -55,6 +54,10 @@ public:
 	std::shared_ptr<NLEGuiManager> getGuiManager();
 
 private:
+	NLE();
+	NLE(const NLE& other){}
+	NLEInputProcessor& operator=(const NLEInputProcessor&){}
+
 	bool initialize();
 	bool initializeWindow();
 
@@ -62,7 +65,8 @@ private:
 	static void NLREconsoleOutputHook(char text[]);
 	static void NLREerrorOutputHook(NLRE_Log::ErrorFlag flag, char text[]);
 
-	NLEWindowReference _winRef;
+	static std::shared_ptr<NLE> _nle;
+
 	int _width;
 	int _height;
 

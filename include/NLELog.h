@@ -49,12 +49,14 @@ public:
 	static void debug(const char* format, ...);
 	static void console(const char* format, ...);
 	static void err(ErrorFlag flag, const char* format, ...);
+
 	static void registerDebugCallback(void(*callback)(char msg[]));
 	static void registerConsoleCallback(void(*callback)(char msg[]));
 	static void registerErrorCallback(void(*callback)(NLE_Log::ErrorFlag, char msg[]));
 	static void unregisterDebugCallback(void(*callback)(char msg[]));
 	static void unregisterConsoleCallback(void(*callback)(char msg[]));
 	static void unregisterErrorCallback(void(*callback)(NLE_Log::ErrorFlag, char msg[]));
+
 	static void unregisterDebugCallbackAll();
 	static void unregisterConsoleCallbackAll();
 	static void unregisterErrorCallbackAll();

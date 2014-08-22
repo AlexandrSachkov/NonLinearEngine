@@ -407,13 +407,13 @@ void NLEGlfwApplicationLayer::onClipboardPasteEvent()
 }
 
 
-NLE* nle = NULL;
+std::shared_ptr<NLE> nle = NULL;
 
 int main(int argc, const char* argv[])
 {
 	try
 	{
-		nle = new NLE();
+		nle = NLE::instance();
 	}
 	catch (std::exception& e)
 	{
@@ -422,11 +422,9 @@ int main(int argc, const char* argv[])
 		std::wstring errMsg(errMsgStr.begin(), errMsgStr.end());
 		errTxt.append(errMsg);
 		printf("NonLinear engine ERROR: ", errTxt.c_str());
-		delete nle;
 		return 0;
 	}
 	nle->run();
-	delete nle;
 
 	return 0;
 }
