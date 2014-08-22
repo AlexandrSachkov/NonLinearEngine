@@ -117,8 +117,9 @@ bool NLE::bindApplicationLayer(std::shared_ptr<NLEApplicationLayer> appLayer)
 
 bool NLE::bindInputSupply(std::shared_ptr<NLEInputSupply> inputSupply)
 {
-
-	return false;
+	if (!inputSupply) return false;
+	_inputSupply = inputSupply;
+	return true;
 }
 
 std::shared_ptr<NLRE> NLE::getRenderingEngine()
