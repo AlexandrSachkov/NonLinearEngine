@@ -62,6 +62,8 @@ public:
 	void copyText(std::wstring text);
 	std::wstring pasteText();
 
+	std::shared_ptr<NLE> getNLE();
+
 	bool bindInputEventCallback(void(*processEvent)(NLE_INPUT::Event event));
 
 private:	

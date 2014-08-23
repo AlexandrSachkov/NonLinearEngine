@@ -231,7 +231,10 @@ std::wstring NLEGlfwApplicationLayer::pasteText()
 	return textOut;
 }
 
-
+std::shared_ptr<NLE> NLEGlfwApplicationLayer::getNLE()
+{
+	return _nle;
+}
 
 bool NLEGlfwApplicationLayer::bindInputEventCallback(void(*processEvent)(NLE_INPUT::Event event))
 {

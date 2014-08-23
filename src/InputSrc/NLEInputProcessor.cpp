@@ -132,7 +132,7 @@ bool NLEInputProcessor::unregisterInputEventListener(NLEInputEventListener* list
 
 void NLEInputProcessor::processInputEvent(NLE_INPUT::Event event)
 {
-	if (_inputProcessor->isRunning())
+	if (NLEInputProcessor::instance()->isRunning())
 	{
 		for (unsigned i = 0; i < _inputEventListeners.size(); i++)
 		{
