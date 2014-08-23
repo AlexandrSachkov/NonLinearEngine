@@ -38,15 +38,16 @@ class GLFWwindow;
 class NLEGlfwApplicationLayer : public NLEApplicationLayer, public NLEInputSupply
 {
 public:
-	static std::shared_ptr<NLEGlfwApplicationLayer> instance(NLE* nle);
 	static std::shared_ptr<NLEGlfwApplicationLayer> instance();
 	~NLEGlfwApplicationLayer();
+	void initNLE();
 
 	NLEWindowReference& getWindowReference();
 	void getClientSize(int& width, int& height);
 	void setClientSize(int width, int height);
-	void setResizable(bool option);
-	void setDecorated(bool option);
+	void setFullscreen(bool option);
+	void setResizableHint(bool option);
+	void setDecoratedHint(bool option);
 	void setTitle(std::wstring title);
 	void setWindowPosition(int x, int y);
 	void getWindowPosition(int& x, int& y);
@@ -56,7 +57,7 @@ public:
 	void hide();
 
 	int runMessageLoop();
-	void endMessageLoop();
+	void closeWindow();
 
 	void copyText(std::wstring text);
 	std::wstring pasteText();
@@ -64,7 +65,7 @@ public:
 	bool bindInputEventCallback(void(*processEvent)(NLE_INPUT::Event event));
 
 private:	
-	NLEGlfwApplicationLayer(NLE* nle);
+	NLEGlfwApplicationLayer();
 	NLEGlfwApplicationLayer(const NLEGlfwApplicationLayer& other){}
 	NLEGlfwApplicationLayer& operator=(const NLEGlfwApplicationLayer&){};
 	bool initialize();
@@ -93,7 +94,12 @@ private:
 	static void onClipboardPasteEvent();
 
 	static std::shared_ptr<NLEGlfwApplicationLayer> _glfwAppLayer;
-	NLE* _nle;
+
+	std::shared_ptr<NLE> _nle;
+	std::string _title;
+	int _width;
+	int _height;
+
 	GLFWwindow* _window;
 	void(*_processEvent)(NLE_INPUT::Event event);
 };

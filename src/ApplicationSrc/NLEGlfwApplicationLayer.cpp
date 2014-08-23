@@ -43,34 +43,23 @@ THE SOFTWARE.
 
 std::shared_ptr<NLEGlfwApplicationLayer> NLEGlfwApplicationLayer::_glfwAppLayer = NULL;
 
-std::shared_ptr<NLEGlfwApplicationLayer> NLEGlfwApplicationLayer::instance(NLE* nle)
-{
-	if (!_glfwAppLayer)
-	{
-		_glfwAppLayer.reset(new NLEGlfwApplicationLayer(nle));
-	}
-	return _glfwAppLayer;
-}
-
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 std::shared_ptr<NLEGlfwApplicationLayer> NLEGlfwApplicationLayer::instance()
 {
 	if (!_glfwAppLayer)
 	{
-		throw std::runtime_error("GUI Manager is not initialized, use instance(NLE* nle)");
+		_glfwAppLayer.reset(new NLEGlfwApplicationLayer());
 	}
-	else
-	{
-		return _glfwAppLayer;
-	}
+	return _glfwAppLayer;
 }
 
 
-
-NLEGlfwApplicationLayer::NLEGlfwApplicationLayer(NLE* nle)
+NLEGlfwApplicationLayer::NLEGlfwApplicationLayer()
 {
-	_nle = nle;
+	_nle = NULL;
+	_title = "NonLinear Engine";
 
+	_width = 0;
+	_height = 0;
 
 	if (!initialize())
 	{
@@ -98,7 +87,11 @@ bool NLEGlfwApplicationLayer::initialize()
 		return false;
 	}
 
-	_window = glfwCreateWindow(1900, 1000, "NonLinear Engine", NULL, NULL);
+	const GLFWvidmode * mode = glfwGetVideoMode(glfwGetPrimaryMonitor());
+	_width = mode->width;
+	_height = mode->height;
+
+	_window = glfwCreateWindow(_width, _height, _title.c_str(), NULL, NULL);
 	if (!_window)
 	{
 		glfwTerminate();
@@ -124,6 +117,14 @@ bool NLEGlfwApplicationLayer::initialize()
 	return true;
 }
 
+void NLEGlfwApplicationLayer::initNLE()
+{
+	_nle = NLE::instance(
+		std::dynamic_pointer_cast<NLEApplicationLayer>(NLEGlfwApplicationLayer::instance()), 
+		std::dynamic_pointer_cast<NLEInputSupply>(NLEGlfwApplicationLayer::instance())
+		);
+}
+
 
 
 NLEWindowReference& NLEGlfwApplicationLayer::getWindowReference()
@@ -142,12 +143,17 @@ void NLEGlfwApplicationLayer::setClientSize(int width, int height)
 	glfwSetWindowSize(_window, width, height);
 }
 
-void NLEGlfwApplicationLayer::setResizable(bool option)
+void NLEGlfwApplicationLayer::setFullscreen(bool option)
+{
+	
+}
+
+void NLEGlfwApplicationLayer::setResizableHint(bool option)
 {
 	glfwWindowHint(GLFW_RESIZABLE, option == true ? GL_TRUE : GL_FALSE);
 }
 
-void NLEGlfwApplicationLayer::setDecorated(bool option)
+void NLEGlfwApplicationLayer::setDecoratedHint(bool option)
 {
 	glfwWindowHint(GLFW_DECORATED, option == true ? GL_TRUE : GL_FALSE);
 }
@@ -188,30 +194,26 @@ void NLEGlfwApplicationLayer::hide()
 	glfwHideWindow(_window);
 }
 
-
-
-
 int NLEGlfwApplicationLayer::runMessageLoop()
 {
+	if (!_nle) throw std::runtime_error("Unable to run, engine must be initialized");
 
+	_nle->run();
 	while (!glfwWindowShouldClose(_window))
 	{
 		glfwPollEvents();
 
-		//=========================== for testing only
-		_nle->getRenderingEngine()->getSceneManager()->cameraUpdate();
-		_nle->getRenderingEngine()->render();
+		_nle->onTick();
 	}
+	_nle->stop();
 
 	return 0;
 }
 
-void NLEGlfwApplicationLayer::endMessageLoop()
+void NLEGlfwApplicationLayer::closeWindow()
 {
 	glfwSetWindowShouldClose(_window, GL_TRUE);
 }
-
-
 
 
 
@@ -240,7 +242,6 @@ bool NLEGlfwApplicationLayer::bindInputEventCallback(void(*processEvent)(NLE_INP
 	}
 	return false;
 }
-
 
 void NLEGlfwApplicationLayer::errorCallback(NLE_Log::ErrorFlag flag, char text[])
 {
@@ -407,13 +408,16 @@ void NLEGlfwApplicationLayer::onClipboardPasteEvent()
 }
 
 
-std::shared_ptr<NLE> nle = NULL;
+
 
 int main(int argc, const char* argv[])
 {
+	std::shared_ptr<NLEGlfwApplicationLayer> appLayer = NULL;
+	std::shared_ptr<NLE> nle = NULL;
 	try
 	{
-		nle = NLE::instance();
+		appLayer = NLEGlfwApplicationLayer::instance();
+		appLayer->initNLE();
 	}
 	catch (std::exception& e)
 	{
@@ -424,7 +428,6 @@ int main(int argc, const char* argv[])
 		printf("NonLinear engine ERROR: ", errTxt.c_str());
 		return 0;
 	}
-	nle->run();
-
+	appLayer->runMessageLoop();
 	return 0;
 }

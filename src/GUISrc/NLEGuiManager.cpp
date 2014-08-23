@@ -29,16 +29,16 @@ THE SOFTWARE.
 
 #include "stdafx.h"
 #include "GUI\NLEGuiManager.h"
-#include "GUI\NLECeguiInputMap.h"
 
-#include "NLE.h"
 #include "RenderingEngine\NLRE.h"
+#include "Application\NLEApplicationLayer.h"
+
 #include "RenderingEngine\RenderingDevice\NLREDeviceController.h"
 #include "RenderingEngine\RenderingDevice\NLRERenderingDevice.h"
 
 #include "Input\NLEInputProcessor.h"
-#include "Application\NLEApplicationLayer.h"
 
+#include "GUI\NLECeguiInputMap.h"
 #include "CEGUI\CEGUI.h"
 #include "CEGUI\RendererModules\Direct3D11\Renderer.h"
 #include "CEGUI\DefaultResourceProvider.h"
@@ -47,13 +47,13 @@ std::shared_ptr<NLEGuiManager> NLEGuiManager::_guiManager = NULL;
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 std::shared_ptr<NLEGuiManager> NLEGuiManager::instance(
-	NLE* nle, 
+	std::shared_ptr<NLRE> renderingEngine,
 	std::shared_ptr<NLEApplicationLayer> appLayer
 	)
 {
 	if (!_guiManager)
 	{
-		_guiManager.reset(new NLEGuiManager(nle, appLayer));
+		_guiManager.reset(new NLEGuiManager(renderingEngine, appLayer));
 	}
 	return _guiManager;
 }
@@ -72,9 +72,12 @@ std::shared_ptr<NLEGuiManager> NLEGuiManager::instance()
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-NLEGuiManager::NLEGuiManager(NLE* nle, std::shared_ptr<NLEApplicationLayer> appLayer)
+NLEGuiManager::NLEGuiManager(
+	std::shared_ptr<NLRE> renderingEngine,
+	std::shared_ptr<NLEApplicationLayer> appLayer
+	)
 {
-	_nle = nle;
+	_renderingEngine = renderingEngine;
 	_appLayer = appLayer;
 	_guiRenderer = NULL;
 
@@ -90,11 +93,11 @@ NLEGuiManager::NLEGuiManager(NLE* nle, std::shared_ptr<NLEApplicationLayer> appL
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 bool NLEGuiManager::initialize()
 {
-	std::shared_ptr<NLRERenderingDevice> renderingDevice = _nle->getRenderingEngine()->getDeviceController()->getRenderingDevice();
+	std::shared_ptr<NLRERenderingDevice> renderingDevice = _renderingEngine->getDeviceController()->getRenderingDevice();
 	_guiRenderer = new CEGUI::Direct3D11Renderer(CEGUI::Direct3D11Renderer::create(renderingDevice->getAPIDevice(), renderingDevice->getAPIPrimaryContext()));
 
 	CEGUI::System::create(*_guiRenderer);
-	_nle->getRenderingEngine()->getDeviceController()->setGuiRenderCallback(NLEGuiManager::renderGUI);
+	_renderingEngine->getDeviceController()->setGuiRenderCallback(NLEGuiManager::renderGUI);
 
 
 	// initialise the required dirs for the DefaultResourceProvider

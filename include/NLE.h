@@ -41,38 +41,44 @@ class NLEGuiManager;
 class NLE : private NLESingleInstance<NLE>
 {
 public:
-	static std::shared_ptr<NLE> instance();
+	static std::shared_ptr<NLE> instance(
+		std::shared_ptr<NLEApplicationLayer> appLayer,
+		std::shared_ptr<NLEInputSupply> inputSupply
+		);
 	~NLE();
 
 	void run();
-	bool bindApplicationLayer(std::shared_ptr<NLEApplicationLayer> appLayer);
-	bool bindInputSupply(std::shared_ptr<NLEInputSupply> inputSupply);
-	
+	void stop();
+	void onTick();
+	bool isRunning();
+
 	std::shared_ptr<NLRE> getRenderingEngine();
 	std::shared_ptr<NLEInputProcessor> getInputProcessor();
-	std::shared_ptr<NLEApplicationLayer> getApplicationLayer();
 	std::shared_ptr<NLEGuiManager> getGuiManager();
 
 private:
-	NLE();
+	NLE(
+		std::shared_ptr<NLEApplicationLayer> appLayer,
+		std::shared_ptr<NLEInputSupply> inputSupply
+		);
 	NLE(const NLE& other){}
 	NLEInputProcessor& operator=(const NLEInputProcessor&){}
 
 	bool initialize();
 	bool initializeWindow();
+	void setupLogCallbacks();
+
 
 	static void NLREdebugOutputHook(char text[]);
 	static void NLREconsoleOutputHook(char text[]);
 	static void NLREerrorOutputHook(NLRE_Log::ErrorFlag flag, char text[]);
 
 	static std::shared_ptr<NLE> _nle;
-
-	int _width;
-	int _height;
+	bool _running;
 
 	std::shared_ptr<NLEApplicationLayer> _applicationLayer;
-	std::shared_ptr<NLEInputProcessor> _inputProcessor;
 	std::shared_ptr<NLEInputSupply> _inputSupply;
+	std::shared_ptr<NLEInputProcessor> _inputProcessor;
 	std::shared_ptr<NLRE> _renderingEngine;
 	std::shared_ptr<NLEGuiManager> _guiManager;
 };

@@ -31,7 +31,6 @@ THE SOFTWARE.
 
 #include "Input\NLEInputEvents.h"
 
-class NLE;
 class NLEApplicationLayer;
 class NLEInputEventListener;
 class NLEInputSupply;
@@ -40,7 +39,6 @@ class NLEInputProcessor
 {
 public:
 	static std::shared_ptr<NLEInputProcessor> instance(
-		NLE* nle,
 		std::shared_ptr<NLEApplicationLayer> appLayer,
 		std::shared_ptr<NLEInputSupply> inputSupply
 		);
@@ -48,6 +46,9 @@ public:
 	static std::shared_ptr<NLEInputProcessor> instance();
 	
 	~NLEInputProcessor();
+	void run();
+	void stop();
+	bool isRunning();
 
 	static void processInputEvent(NLE_INPUT::Event event);
 
@@ -56,7 +57,6 @@ public:
 
 private:
 	NLEInputProcessor(
-		NLE* nle, 
 		std::shared_ptr<NLEApplicationLayer> appLayer,
 		std::shared_ptr<NLEInputSupply> inputSupply
 		);
@@ -65,8 +65,8 @@ private:
 	bool initialize();
 
 	static std::shared_ptr<NLEInputProcessor> _inputProcessor;
+	bool _running;
 
-	NLE* _nle;
 	std::shared_ptr<NLEApplicationLayer> _appLayer;
 	std::shared_ptr<NLEInputSupply> _inputSupply;
 

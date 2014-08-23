@@ -30,21 +30,19 @@ THE SOFTWARE.
 #include "Input\NLEInputEventListener.h"
 #include "Input\NLEInputSupply.h"
 #include "Application\NLEApplicationLayer.h"
-#include "NLE.h"
 
 
 std::vector<NLEInputEventListener*> NLEInputProcessor::_inputEventListeners;
 std::shared_ptr<NLEInputProcessor> NLEInputProcessor::_inputProcessor = NULL;
 
 std::shared_ptr<NLEInputProcessor> NLEInputProcessor::instance(
-	NLE* nle,
 	std::shared_ptr<NLEApplicationLayer> appLayer,
 	std::shared_ptr<NLEInputSupply> inputSupply
 	)
 {
 	if (!_inputProcessor)
 	{
-		_inputProcessor.reset(new NLEInputProcessor(nle, appLayer, inputSupply));
+		_inputProcessor.reset(new NLEInputProcessor(appLayer, inputSupply));
 	}
 	return _inputProcessor;
 }
@@ -62,12 +60,10 @@ std::shared_ptr<NLEInputProcessor> NLEInputProcessor::instance()
 }
 
 NLEInputProcessor::NLEInputProcessor(
-	NLE* nle, 
 	std::shared_ptr<NLEApplicationLayer> appLayer,
 	std::shared_ptr<NLEInputSupply> inputSupply
 	)
 {
-	_nle = nle;
 	_appLayer = appLayer;
 	_inputSupply = inputSupply;
 
@@ -82,6 +78,7 @@ NLEInputProcessor::NLEInputProcessor(
 
 bool NLEInputProcessor::initialize()
 {
+	_running = false;
 	_inputSupply->bindInputEventCallback(&NLEInputProcessor::processInputEvent);
 
 	return true;
@@ -90,6 +87,21 @@ bool NLEInputProcessor::initialize()
 NLEInputProcessor::~NLEInputProcessor()
 {
 
+}
+
+void NLEInputProcessor::run()
+{
+	_running = true;
+}
+
+void NLEInputProcessor::stop()
+{
+	_running = false;
+}
+
+bool NLEInputProcessor::isRunning()
+{
+	return _running;
 }
 
 bool NLEInputProcessor::registerInputEventListener(NLEInputEventListener* listener)
@@ -120,8 +132,11 @@ bool NLEInputProcessor::unregisterInputEventListener(NLEInputEventListener* list
 
 void NLEInputProcessor::processInputEvent(NLE_INPUT::Event event)
 {
-	for (unsigned i = 0; i < _inputEventListeners.size(); i++)
+	if (_inputProcessor->isRunning())
 	{
-		_inputEventListeners.at(i)->processInputEvent(event);
+		for (unsigned i = 0; i < _inputEventListeners.size(); i++)
+		{
+			_inputEventListeners.at(i)->processInputEvent(event);
+		}
 	}
 }

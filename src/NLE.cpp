@@ -28,43 +28,36 @@ THE SOFTWARE.
 
 #include "stdafx.h"
 #include "NLE.h"
-#include "Application\NLEGlfwApplicationLayer.h"
+#include "Application\NLEApplicationLayer.h"
 #include "RenderingEngine\NLRE.h"
+#include "RenderingEngine\SceneManager\NLRESceneManager.h"
 #include "Input\NLEInputProcessor.h"
 #include "Input\NLEInputSupply.h"
 #include "GUI\NLEGuiManager.h"
 
 std::shared_ptr<NLE> NLE::_nle = NULL;
 
-std::shared_ptr<NLE> NLE::instance()
+std::shared_ptr<NLE> NLE::instance(
+	std::shared_ptr<NLEApplicationLayer> appLayer,
+	std::shared_ptr<NLEInputSupply> inputSupply
+	)
 {
 	if (!_nle)
 	{
-		_nle.reset(new NLE());
+		_nle.reset(new NLE(appLayer, inputSupply));
 	}
 	return _nle;
 }
 
-NLE::NLE()
+NLE::NLE(
+	std::shared_ptr<NLEApplicationLayer> appLayer,
+	std::shared_ptr<NLEInputSupply> inputSupply
+	)
 {
-	NLRE_Log::registerDebugCallback(NLE::NLREdebugOutputHook);
-	NLRE_Log::registerConsoleCallback(NLE::NLREconsoleOutputHook);
-	NLRE_Log::registerErrorCallback(NLE::NLREerrorOutputHook);
+	setupLogCallbacks();
 
-	_applicationLayer = std::dynamic_pointer_cast<NLEApplicationLayer>(NLEGlfwApplicationLayer::instance(this));
-	_inputSupply = std::dynamic_pointer_cast<NLEInputSupply>(NLEGlfwApplicationLayer::instance(this));
-
-	_applicationLayer->getClientSize(_width, _height);
-
-	_renderingEngine.reset(new NLRE(_applicationLayer->getWindowReference(), _width, _height));
-	_guiManager = NLEGuiManager::instance(this, _applicationLayer);
-	_inputProcessor = NLEInputProcessor::instance(this, _applicationLayer, _inputSupply);
-	
-
-	//======================= FOR TESTING PURPOSES =================
-	std::wstring path = L"D:\\3DModels\\Altair Model\\altair2.dae";
-	_renderingEngine->importAsset(path);
-	//==============================================================
+	_applicationLayer = appLayer;
+	_inputSupply = inputSupply;
 
 	if (!initialize())
 	{
@@ -77,13 +70,32 @@ NLE::NLE()
 
 NLE::~NLE()
 {
-
+	stop();
 }
 
 bool NLE::initialize()
 {
-	
+	int width = 0;
+	int height = 0;
+	_applicationLayer->getClientSize(width, height);
+
+	_renderingEngine.reset(new NLRE(_applicationLayer->getWindowReference(), width, height));
+	_guiManager = NLEGuiManager::instance(_renderingEngine, _applicationLayer);
+	_inputProcessor = NLEInputProcessor::instance(_applicationLayer, _inputSupply);
+
+
+	//======================= FOR TESTING PURPOSES =================
+	std::wstring path = L"D:\\3DModels\\Altair Model\\altair2.dae";
+	_renderingEngine->importAsset(path);
+	//==============================================================
 	return true;
+}
+
+void NLE::setupLogCallbacks()
+{
+	NLRE_Log::registerDebugCallback(NLE::NLREdebugOutputHook);
+	NLRE_Log::registerConsoleCallback(NLE::NLREconsoleOutputHook);
+	NLRE_Log::registerErrorCallback(NLE::NLREerrorOutputHook);
 }
 
 void NLE::NLREdebugOutputHook(char text[])
@@ -103,23 +115,30 @@ void NLE::NLREerrorOutputHook(NLRE_Log::ErrorFlag flag, char text[])
 
 void NLE::run()
 {
-	//======================= FOR TESTING PURPOSES =================
-	_applicationLayer->runMessageLoop();
-	//==============================================================
+	_inputProcessor->run();
+	_running = true;
 }
 
-bool NLE::bindApplicationLayer(std::shared_ptr<NLEApplicationLayer> appLayer)
+void NLE::stop()
 {
-	if (!appLayer) return false;
-	_applicationLayer = appLayer;
-	return true;
+	_inputProcessor->stop();
+	_running = false;
 }
 
-bool NLE::bindInputSupply(std::shared_ptr<NLEInputSupply> inputSupply)
+void NLE::onTick()
 {
-	if (!inputSupply) return false;
-	_inputSupply = inputSupply;
-	return true;
+	if (isRunning())
+	{
+		//======================= FOR TESTING PURPOSES =================
+		_renderingEngine->getSceneManager()->cameraUpdate();
+		_renderingEngine->render();
+		//==============================================================
+	}
+}
+
+bool NLE::isRunning()
+{
+	return _running;
 }
 
 std::shared_ptr<NLRE> NLE::getRenderingEngine()
@@ -130,11 +149,6 @@ std::shared_ptr<NLRE> NLE::getRenderingEngine()
 std::shared_ptr<NLEInputProcessor> NLE::getInputProcessor()
 {
 	return _inputProcessor;
-}
-
-std::shared_ptr<NLEApplicationLayer> NLE::getApplicationLayer()
-{
-	return _applicationLayer;
 }
 
 std::shared_ptr<NLEGuiManager> NLE::getGuiManager()

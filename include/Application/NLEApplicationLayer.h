@@ -36,20 +36,9 @@ public:
 
 	virtual NLEWindowReference& getWindowReference() =0;
 	virtual void getClientSize(int& width, int& height) = 0;
-	virtual void setClientSize(int width, int height) = 0;
-	virtual void setResizable(bool option) = 0;
-	virtual void setDecorated(bool option) = 0;
-	virtual void setTitle(std::wstring title) = 0;
-	virtual void setWindowPosition(int x, int y) = 0;
-	virtual void getWindowPosition(int& x, int& y) = 0;
-	virtual void iconify() = 0;
-	virtual void restore() = 0;
-	virtual void show() = 0;
-	virtual void hide() = 0;
 
-	virtual int runMessageLoop() = 0;
-	virtual void endMessageLoop() = 0;
-
+	virtual void setFullscreen(bool option) =0;
+	virtual void closeWindow() = 0;
 	virtual void copyText(std::wstring text) = 0;
 	virtual std::wstring pasteText() = 0;
 };
