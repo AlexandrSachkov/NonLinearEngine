@@ -29,17 +29,20 @@ THE SOFTWARE.
 #ifndef NLRE_
 #define NLRE_
 
-#include "NLESingleInstance.h"
-
 class NLREAssetImporter;
 class NLRESceneManager;
 class NLREDeviceController;
 class NLRETextureLoader;
 
-class NLRE : private NLESingleInstance<NLRE>
+class NLRE
 {
 public:
-	NLRE(NLEWindowReference hwndVal, int widthVal, int heightVal);
+	static std::shared_ptr<NLRE> instance(
+		NLEWindowReference hwnd, 
+		int width, 
+		int height
+		);
+	static std::shared_ptr<NLRE> instance();
 	~NLRE();
 
 	void render();
@@ -51,6 +54,12 @@ public:
 	std::shared_ptr<NLRETextureLoader> getTextureLoader();
 
 private:
+	NLRE(NLEWindowReference hwnd, int width, int height);
+	NLRE(const NLRE& ){}
+	NLRE& operator=(const NLRE&){}
+
+	static std::shared_ptr<NLRE> _nlre;
+
 	std::shared_ptr<NLREAssetImporter> _assetImporter;
 	std::shared_ptr<NLREDeviceController> _deviceController;
 	std::shared_ptr<NLRESceneManager> _sceneManager;

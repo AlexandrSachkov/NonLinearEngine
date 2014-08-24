@@ -45,7 +45,7 @@ THE SOFTWARE.
 
 std::shared_ptr<NLEGuiManager> NLEGuiManager::_guiManager = NULL;
 
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//===========================================================================================================================
 std::shared_ptr<NLEGuiManager> NLEGuiManager::instance(
 	std::shared_ptr<NLRE> renderingEngine,
 	std::shared_ptr<NLEApplicationLayer> appLayer
@@ -58,20 +58,14 @@ std::shared_ptr<NLEGuiManager> NLEGuiManager::instance(
 	return _guiManager;
 }
 
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//===========================================================================================================================
 std::shared_ptr<NLEGuiManager> NLEGuiManager::instance()
 {
-	if (!_guiManager)
-	{
-		throw std::runtime_error("GUI Manager is not initialized, use instance(NLE* nle)");
-	}
-	else
-	{
-		return _guiManager;
-	}
+	if (!_guiManager) throw std::runtime_error("GUI Manager is not initialized, use instance(NLE* nle)");
+	return _guiManager;
 }
 
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//===========================================================================================================================
 NLEGuiManager::NLEGuiManager(
 	std::shared_ptr<NLRE> renderingEngine,
 	std::shared_ptr<NLEApplicationLayer> appLayer
@@ -90,7 +84,7 @@ NLEGuiManager::NLEGuiManager(
 	NLE_Log::console("======> GUI Manager successfully initialized.");
 }
 
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//===========================================================================================================================
 bool NLEGuiManager::initialize()
 {
 	std::shared_ptr<NLRERenderingDevice> renderingDevice = _renderingEngine->getDeviceController()->getRenderingDevice();
@@ -169,7 +163,7 @@ bool NLEGuiManager::initialize()
 	return true;
 }
 
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//===========================================================================================================================
 NLEGuiManager::~NLEGuiManager()
 {
 	NLEInputProcessor::unregisterInputEventListener(this);
@@ -178,13 +172,13 @@ NLEGuiManager::~NLEGuiManager()
 	_guiManager = NULL;
 }
 
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//===========================================================================================================================
 void NLEGuiManager::renderGUI()
 {
 	CEGUI::System::getSingleton().renderAllGUIContexts();
 }
 
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//===========================================================================================================================
 void NLEGuiManager::processInputEvent(NLE_INPUT::Event event)
 {
 	switch (event.eventType)
@@ -244,14 +238,14 @@ void NLEGuiManager::processInputEvent(NLE_INPUT::Event event)
 	}
 }
 
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//===========================================================================================================================
 void NLEGuiManager::sendToClipboard(const CEGUI::String &mimeType, void *buffer, size_t size)
 {
 	//temporary implementation
 	_appLayer->copyText(static_cast<const wchar_t*>(buffer));
 }
 
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//===========================================================================================================================
 void NLEGuiManager::retrieveFromClipboard(CEGUI::String &mimeType, void *&buffer, size_t &size)
 {
 	//temporary implementation

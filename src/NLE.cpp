@@ -37,6 +37,8 @@ THE SOFTWARE.
 
 std::shared_ptr<NLE> NLE::_nle = NULL;
 
+
+//===========================================================================================================================
 std::shared_ptr<NLE> NLE::instance(
 	std::shared_ptr<NLEApplicationLayer> appLayer,
 	std::shared_ptr<NLEInputSupply> inputSupply
@@ -49,6 +51,7 @@ std::shared_ptr<NLE> NLE::instance(
 	return _nle;
 }
 
+//===========================================================================================================================
 NLE::NLE(
 	std::shared_ptr<NLEApplicationLayer> appLayer,
 	std::shared_ptr<NLEInputSupply> inputSupply
@@ -68,18 +71,20 @@ NLE::NLE(
 	NLE_Log::console("======> NLE successfully initialized.");
 }
 
+//===========================================================================================================================
 NLE::~NLE()
 {
 	stop();
 }
 
+//===========================================================================================================================
 bool NLE::initialize()
 {
 	int width = 0;
 	int height = 0;
 	_applicationLayer->getClientSize(width, height);
 
-	_renderingEngine.reset(new NLRE(_applicationLayer->getWindowReference(), width, height));
+	_renderingEngine = NLRE::instance(_applicationLayer->getWindowReference(), width, height);
 	_guiManager = NLEGuiManager::instance(_renderingEngine, _applicationLayer);
 	_inputProcessor = NLEInputProcessor::instance(_applicationLayer, _inputSupply);
 
@@ -91,6 +96,7 @@ bool NLE::initialize()
 	return true;
 }
 
+//===========================================================================================================================
 void NLE::setupLogCallbacks()
 {
 	NLRE_Log::registerDebugCallback(NLE::NLREdebugOutputHook);
@@ -98,33 +104,39 @@ void NLE::setupLogCallbacks()
 	NLRE_Log::registerErrorCallback(NLE::NLREerrorOutputHook);
 }
 
+//===========================================================================================================================
 void NLE::NLREdebugOutputHook(char text[])
 {
 	NLE_Log::debug(text);
 }
 
+//===========================================================================================================================
 void NLE::NLREconsoleOutputHook(char text[])
 {
 	NLE_Log::console(text);
 }
 
+//===========================================================================================================================
 void NLE::NLREerrorOutputHook(NLRE_Log::ErrorFlag flag, char text[])
 {
 	NLE_Log::err((NLE_Log::ErrorFlag)flag, text);
 }
 
+//===========================================================================================================================
 void NLE::run()
 {
 	_inputProcessor->run();
 	_running = true;
 }
 
+//===========================================================================================================================
 void NLE::stop()
 {
 	_inputProcessor->stop();
 	_running = false;
 }
 
+//===========================================================================================================================
 void NLE::onTick()
 {
 	if (isRunning())
@@ -136,21 +148,25 @@ void NLE::onTick()
 	}
 }
 
+//===========================================================================================================================
 bool NLE::isRunning()
 {
 	return _running;
 }
 
+//===========================================================================================================================
 std::shared_ptr<NLRE> NLE::getRenderingEngine()
 {
 	return _renderingEngine;
 }
 
+//===========================================================================================================================
 std::shared_ptr<NLEInputProcessor> NLE::getInputProcessor()
 {
 	return _inputProcessor;
 }
 
+//===========================================================================================================================
 std::shared_ptr<NLEGuiManager> NLE::getGuiManager()
 {
 	return _guiManager;

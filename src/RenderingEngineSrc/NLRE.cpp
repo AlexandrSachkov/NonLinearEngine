@@ -34,25 +34,55 @@ THE SOFTWARE.
 #include "RenderingEngine\ResourceLoader\NLREDirectXTexTextureLoader.h"
 #include "RenderingEngine\RenderingDevice\NLREDeviceController.h"
 
-NLRE::NLRE(NLEWindowReference hwndVal, int widthVal, int heightVal){
-	_deviceController.reset(new NLREDeviceController(hwndVal, widthVal, heightVal, NLRE_RENDERING_TECHNIQUE_ID::NLRE_FORWARD_RT));
+std::shared_ptr<NLRE> NLRE::_nlre = NULL;
+
+//===========================================================================================================================
+std::shared_ptr<NLRE> NLRE::instance(
+	NLEWindowReference hwnd,
+	int width,
+	int height
+	)
+{
+	if (!_nlre)
+	{
+		_nlre.reset(new NLRE(hwnd, width, height));
+	}
+	return _nlre;
+}
+
+//===========================================================================================================================
+std::shared_ptr<NLRE> NLRE::instance()
+{
+	if (!_nlre) throw std::runtime_error("NLRE is not initialized, use the alternative instance()");
+	return _nlre;
+}
+
+//===========================================================================================================================
+NLRE::NLRE(
+	NLEWindowReference hwnd, 
+	int width, 
+	int height){
+	_deviceController.reset(new NLREDeviceController(hwnd, width, height, NLRE_RENDERING_TECHNIQUE_ID::NLRE_FORWARD_RT));
 	std::shared_ptr<NLRERenderingDevice> renderingDevice = _deviceController->getRenderingDevice();
 	_textureLoader.reset(new NLREDirectXTexTextureLoader(renderingDevice));
-	_sceneManager.reset(new NLRESceneManager(_deviceController, renderingDevice, _textureLoader, widthVal, heightVal));
+	_sceneManager.reset(new NLRESceneManager(_deviceController, renderingDevice, _textureLoader, width, height));
 	_assetImporter.reset(new NLREAssimpAssetImporter(renderingDevice, _textureLoader));
 
 	NLRE_Log::console("======> NLRE successfully initialized.");
 }
 
+//===========================================================================================================================
 NLRE::~NLRE(){
 
 }
 
+//===========================================================================================================================
 void NLRE::render()
 {
 	_sceneManager->render();
 }
 
+//===========================================================================================================================
 void NLRE::importAsset(std::wstring path)
 {
 	std::vector<std::shared_ptr<NLRE_RenderableAsset>> assets;
@@ -65,21 +95,25 @@ void NLRE::importAsset(std::wstring path)
 	}
 }
 
+//===========================================================================================================================
 std::shared_ptr<NLREAssetImporter> NLRE::getAssetImporter()
 {
 	return _assetImporter;
 }
 
+//===========================================================================================================================
 std::shared_ptr<NLRESceneManager> NLRE::getSceneManager()
 {
 	return _sceneManager;
 }
 
+//===========================================================================================================================
 std::shared_ptr<NLREDeviceController> NLRE::getDeviceController()
 {
 	return _deviceController;
 }
 
+//===========================================================================================================================
 std::shared_ptr<NLRETextureLoader> NLRE::getTextureLoader()
 {
 	return _textureLoader;

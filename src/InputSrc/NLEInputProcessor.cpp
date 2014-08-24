@@ -35,6 +35,7 @@ THE SOFTWARE.
 std::vector<NLEInputEventListener*> NLEInputProcessor::_inputEventListeners;
 std::shared_ptr<NLEInputProcessor> NLEInputProcessor::_inputProcessor = NULL;
 
+//===========================================================================================================================
 std::shared_ptr<NLEInputProcessor> NLEInputProcessor::instance(
 	std::shared_ptr<NLEApplicationLayer> appLayer,
 	std::shared_ptr<NLEInputSupply> inputSupply
@@ -47,18 +48,14 @@ std::shared_ptr<NLEInputProcessor> NLEInputProcessor::instance(
 	return _inputProcessor;
 }
 
+//===========================================================================================================================
 std::shared_ptr<NLEInputProcessor> NLEInputProcessor::instance()
 {
-	if (!_inputProcessor)
-	{
-		throw std::runtime_error("GUI Manager is not initialized, use instance(NLE* nle)");
-	}
-	else
-	{
-		return _inputProcessor;
-	}
+	if (!_inputProcessor) throw std::runtime_error("GUI Manager is not initialized, use instance(NLE* nle)");
+	return _inputProcessor;
 }
 
+//===========================================================================================================================
 NLEInputProcessor::NLEInputProcessor(
 	std::shared_ptr<NLEApplicationLayer> appLayer,
 	std::shared_ptr<NLEInputSupply> inputSupply
@@ -75,7 +72,7 @@ NLEInputProcessor::NLEInputProcessor(
 	NLE_Log::console("======> NLEInputProcessor successfully initialized.");
 }
 
-
+//===========================================================================================================================
 bool NLEInputProcessor::initialize()
 {
 	_running = false;
@@ -84,26 +81,31 @@ bool NLEInputProcessor::initialize()
 	return true;
 }
 
+//===========================================================================================================================
 NLEInputProcessor::~NLEInputProcessor()
 {
 
 }
 
+//===========================================================================================================================
 void NLEInputProcessor::run()
 {
 	_running = true;
 }
 
+//===========================================================================================================================
 void NLEInputProcessor::stop()
 {
 	_running = false;
 }
 
+//===========================================================================================================================
 bool NLEInputProcessor::isRunning()
 {
 	return _running;
 }
 
+//===========================================================================================================================
 bool NLEInputProcessor::registerInputEventListener(NLEInputEventListener* listener)
 {
 	if (listener)
@@ -114,6 +116,7 @@ bool NLEInputProcessor::registerInputEventListener(NLEInputEventListener* listen
 	return false;
 }
 
+//===========================================================================================================================
 bool NLEInputProcessor::unregisterInputEventListener(NLEInputEventListener* listener)
 {
 	if (listener)
@@ -130,6 +133,7 @@ bool NLEInputProcessor::unregisterInputEventListener(NLEInputEventListener* list
 	return false;
 }
 
+//===========================================================================================================================
 void NLEInputProcessor::processInputEvent(NLE_INPUT::Event event)
 {
 	if (NLEInputProcessor::instance()->isRunning())
