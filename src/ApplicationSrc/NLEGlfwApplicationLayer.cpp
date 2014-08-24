@@ -60,12 +60,8 @@ NLEGlfwApplicationLayer::NLEGlfwApplicationLayer()
 
 	_width = 0;
 	_height = 0;
-
-	if (!initialize())
-	{
-		NLE_Log::err(NLE_Log::CRITICAL, "Application Layer failed to initialize");
-		throw std::exception("Application Layer failed to initialize");
-	}
+	_window = NULL;
+	_fullscreen = true;
 }
 
 NLEGlfwApplicationLayer::~NLEGlfwApplicationLayer()
@@ -79,7 +75,7 @@ bool NLEGlfwApplicationLayer::initialize()
 	NLE_Log::registerErrorCallback(NLEGlfwApplicationLayer::errorCallback);
 	NLE_Log::registerConsoleCallback(NLEGlfwApplicationLayer::debugCallback);
 	NLE_Log::registerDebugCallback(NLEGlfwApplicationLayer::debugCallback);
-	
+
 	glfwSetErrorCallback(glfwErrorCallback);
 	if (!glfwInit())
 	{
@@ -91,41 +87,56 @@ bool NLEGlfwApplicationLayer::initialize()
 	_width = mode->width;
 	_height = mode->height;
 
-	_window = glfwCreateWindow(_width, _height, _title.c_str(), NULL, NULL);
+	if (_fullscreen)
+	{
+		_window = glfwCreateWindow(_width, _height, _title.c_str(), glfwGetPrimaryMonitor(), NULL);
+	}
+	else
+	{
+		_window = glfwCreateWindow(_width, _height, _title.c_str(), NULL, NULL);
+	}
+
 	if (!_window)
 	{
 		glfwTerminate();
 		NLE_Log::err(NLE_Log::CRITICAL, "Window failed to initialize.");
 		return false;
 	}
+	setWindowCallbacks(_window);
 
-	glfwSetKeyCallback(_window, onKeyEvent);
-	glfwSetCharCallback(_window, onCharEvent);
-	glfwSetMouseButtonCallback(_window, onMouseButtonEvent);
-	glfwSetCursorPosCallback(_window, onCursorPositionEvent);
-	glfwSetCursorEnterCallback(_window, onCursorEnterEvent);
-	glfwSetScrollCallback(_window, onScrollEvent);
+	try{
+		_nle = NLE::instance(
+			std::dynamic_pointer_cast<NLEApplicationLayer>(NLEGlfwApplicationLayer::instance()),
+			std::dynamic_pointer_cast<NLEInputSupply>(NLEGlfwApplicationLayer::instance())
+			);
+	}
+	catch (std::exception& e)
+	{
+		NLE_Log::err(NLE_Log::CRITICAL, "NLE failed to initialize: %s", e.what());
+		return false;
+	}
 
-	glfwSetWindowPosCallback(_window, onWindowPositionEvent);
-	glfwSetWindowSizeCallback(_window, onWindowSizeEvent);
-	glfwSetWindowCloseCallback(_window, onWindowCloseEvent);
-	glfwSetWindowRefreshCallback(_window, onWindowRefreshEvent);
-	glfwSetWindowFocusCallback(_window, onWindowFocusEvent);
-	glfwSetWindowIconifyCallback(_window, onWindowIconifyEvent);
 
 	NLE_Log::console("======> Application Layer successfully initialized.");
 	return true;
 }
 
-void NLEGlfwApplicationLayer::initNLE()
+void NLEGlfwApplicationLayer::setWindowCallbacks(GLFWwindow* window)
 {
-	_nle = NLE::instance(
-		std::dynamic_pointer_cast<NLEApplicationLayer>(NLEGlfwApplicationLayer::instance()), 
-		std::dynamic_pointer_cast<NLEInputSupply>(NLEGlfwApplicationLayer::instance())
-		);
+	glfwSetKeyCallback(window, onKeyEvent);
+	glfwSetCharCallback(window, onCharEvent);
+	glfwSetMouseButtonCallback(window, onMouseButtonEvent);
+	glfwSetCursorPosCallback(window, onCursorPositionEvent);
+	glfwSetCursorEnterCallback(window, onCursorEnterEvent);
+	glfwSetScrollCallback(window, onScrollEvent);
+
+	glfwSetWindowPosCallback(window, onWindowPositionEvent);
+	glfwSetWindowSizeCallback(window, onWindowSizeEvent);
+	glfwSetWindowCloseCallback(window, onWindowCloseEvent);
+	glfwSetWindowRefreshCallback(window, onWindowRefreshEvent);
+	glfwSetWindowFocusCallback(window, onWindowFocusEvent);
+	glfwSetWindowIconifyCallback(window, onWindowIconifyEvent);
 }
-
-
 
 NLEWindowReference& NLEGlfwApplicationLayer::getWindowReference()
 {
@@ -143,9 +154,9 @@ void NLEGlfwApplicationLayer::setClientSize(int width, int height)
 	glfwSetWindowSize(_window, width, height);
 }
 
-void NLEGlfwApplicationLayer::setFullscreen(bool option)
+void NLEGlfwApplicationLayer::setFullscreenHint(bool option)
 {
-	
+	_fullscreen = option;
 }
 
 void NLEGlfwApplicationLayer::setResizableHint(bool option)
@@ -356,7 +367,7 @@ void NLEGlfwApplicationLayer::onWindowCloseEvent(GLFWwindow *window)
 {
 	NLE_INPUT::Event event;
 	event.eventType = NLE_INPUT::EVENT_TYPE::EVENT_WINDOW_CLOSE;
-	
+
 	_glfwAppLayer->_processEvent(event);
 }
 
@@ -417,20 +428,11 @@ int main(int argc, const char* argv[])
 {
 	std::shared_ptr<NLEGlfwApplicationLayer> appLayer = NULL;
 	std::shared_ptr<NLE> nle = NULL;
-	try
-	{
-		appLayer = NLEGlfwApplicationLayer::instance();
-		appLayer->initNLE();
-	}
-	catch (std::exception& e)
-	{
-		std::wstring errTxt = L"NonLinear Engine failed to start: ";
-		std::string errMsgStr(e.what());
-		std::wstring errMsg(errMsgStr.begin(), errMsgStr.end());
-		errTxt.append(errMsg);
-		printf("NonLinear engine ERROR: ", errTxt.c_str());
-		return 0;
-	}
+
+	appLayer = NLEGlfwApplicationLayer::instance();
+	appLayer->setFullscreenHint(false);
+	if (!appLayer->initialize()) return 0;
+
 	appLayer->runMessageLoop();
 	return 0;
 }

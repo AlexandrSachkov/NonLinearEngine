@@ -39,13 +39,13 @@ class NLEGlfwApplicationLayer : public NLEApplicationLayer, public NLEInputSuppl
 {
 public:
 	static std::shared_ptr<NLEGlfwApplicationLayer> instance();
-	~NLEGlfwApplicationLayer();
-	void initNLE();
+	~NLEGlfwApplicationLayer();	
+	bool initialize();
 
 	NLEWindowReference& getWindowReference();
 	void getClientSize(int& width, int& height);
 	void setClientSize(int width, int height);
-	void setFullscreen(bool option);
+	void setFullscreenHint(bool option);
 	void setResizableHint(bool option);
 	void setDecoratedHint(bool option);
 	void setTitle(std::wstring title);
@@ -70,7 +70,8 @@ private:
 	NLEGlfwApplicationLayer();
 	NLEGlfwApplicationLayer(const NLEGlfwApplicationLayer& other){}
 	NLEGlfwApplicationLayer& operator=(const NLEGlfwApplicationLayer&){};
-	bool initialize();
+
+	void setWindowCallbacks(GLFWwindow* window);
 
 	static void debugCallback(char text[]);
 	static void consoleCallback(char text[]);
@@ -101,6 +102,7 @@ private:
 	std::string _title;
 	int _width;
 	int _height;
+	bool _fullscreen;
 
 	GLFWwindow* _window;
 	void(*_processEvent)(NLE_INPUT::Event event);
