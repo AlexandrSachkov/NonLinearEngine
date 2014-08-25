@@ -48,10 +48,10 @@ public:
 	void render();
 	void importAsset(std::wstring path);
 
-	std::shared_ptr<NLREAssetImporter> getAssetImporter();
+	std::shared_ptr<NLREAssetImporter> getAssetImporter();	
+	std::shared_ptr<NLRETextureLoader> getTextureLoader();
 	std::shared_ptr<NLRESceneManager> getSceneManager();
 	std::shared_ptr<NLREDeviceController> getDeviceController();
-	std::shared_ptr<NLRETextureLoader> getTextureLoader();
 
 private:
 	NLRE(NLEWindowReference hwnd, int width, int height);

@@ -27,9 +27,6 @@
     <Filter Include="Source Files\RenderingEngineSrc\RenderingDeviceSrc\DX11Device\Shaders">
       <UniqueIdentifier>{713249b8-4cf3-4ba0-8369-2b734fa123d9}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\RenderingEngineSrc\ResourceLoaderSrc">
-      <UniqueIdentifier>{afd4480c-f316-47b4-a50a-744be13159c7}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\RenderingEngineSrc\SceneManagerSrc">
       <UniqueIdentifier>{8bfde228-a0ca-489b-96a8-3a876bff9555}</UniqueIdentifier>
     </Filter>
@@ -41,9 +38,6 @@
     </Filter>
     <Filter Include="Header Files\RenderingEngine\RenderingDevice\DX11Device">
       <UniqueIdentifier>{d1d5c9ed-c501-42db-8b4b-900eef235a12}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\RenderingEngine\ResourceLoader">
-      <UniqueIdentifier>{ba3cada5-c953-4ff8-8a6f-fa0fcde1f47a}</UniqueIdentifier>
     </Filter>
     <Filter Include="Header Files\RenderingEngine\SceneManager">
       <UniqueIdentifier>{1eba17ed-d164-4495-9ed6-976c0932ee64}</UniqueIdentifier>
@@ -60,17 +54,23 @@
     <Filter Include="Source Files\GUISrc">
       <UniqueIdentifier>{25de6083-1834-4e8b-84d5-35746c8490d0}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Application">
-      <UniqueIdentifier>{549429d8-032f-4266-91d9-8f0f1c7b6df3}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\ApplicationSrc">
-      <UniqueIdentifier>{52994c1a-846c-4ee6-8677-1f19eb83021f}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\Input">
       <UniqueIdentifier>{1fddf3f0-56be-499f-9419-4cbcc4089700}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files\InputSrc">
       <UniqueIdentifier>{7fbc4ac6-1547-4424-8383-bb53c2c4a476}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\RenderingEngine\ResourceLoader">
+      <UniqueIdentifier>{ba3cada5-c953-4ff8-8a6f-fa0fcde1f47a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\RenderingEngineSrc\ResourceLoaderSrc">
+      <UniqueIdentifier>{afd4480c-f316-47b4-a50a-744be13159c7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Application">
+      <UniqueIdentifier>{9c332b71-a8c1-48f5-ba39-5c3324a71623}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\ApplicationSrc">
+      <UniqueIdentifier>{8d475282-9c05-483a-b505-d7ca4eb99026}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -119,9 +119,6 @@
     <ClInclude Include="..\include\RenderingEngine\NLREMain\NLRELog.h">
       <Filter>Header Files\RenderingEngine\NLREMain</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\Math\NLEMath.h">
-      <Filter>Header Files\RenderingEngine</Filter>
-    </ClInclude>
     <ClInclude Include="..\include\RenderingEngine\RenderingDevice\NLREDeviceController.h">
       <Filter>Header Files\RenderingEngine\RenderingDevice</Filter>
     </ClInclude>
@@ -148,24 +145,6 @@
     </ClInclude>
     <ClInclude Include="..\include\RenderingEngine\RenderingDevice\DX11Device\NLREDX11ResourceWrap.h">
       <Filter>Header Files\RenderingEngine\RenderingDevice\DX11Device</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\RenderingEngine\ResourceLoader\DDSTextureLoader.h">
-      <Filter>Header Files\RenderingEngine\ResourceLoader</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\RenderingEngine\ResourceLoader\NLREAssetImporter.h">
-      <Filter>Header Files\RenderingEngine\ResourceLoader</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\RenderingEngine\ResourceLoader\NLREAssimpAssetImporter.h">
-      <Filter>Header Files\RenderingEngine\ResourceLoader</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\RenderingEngine\ResourceLoader\NLREDirectXTexTextureLoader.h">
-      <Filter>Header Files\RenderingEngine\ResourceLoader</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\RenderingEngine\ResourceLoader\NLRETextureLoader.h">
-      <Filter>Header Files\RenderingEngine\ResourceLoader</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\RenderingEngine\ResourceLoader\WICTextureLoader.h">
-      <Filter>Header Files\RenderingEngine\ResourceLoader</Filter>
     </ClInclude>
     <ClInclude Include="..\include\RenderingEngine\SceneManager\NLRECamera.h">
       <Filter>Header Files\RenderingEngine\SceneManager</Filter>
@@ -197,12 +176,6 @@
     <ClInclude Include="..\include\NLESingleInstance.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\Application\NLEApplicationLayer.h">
-      <Filter>Header Files\Application</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\Application\NLEGlfwApplicationLayer.h">
-      <Filter>Header Files\Application</Filter>
-    </ClInclude>
     <ClInclude Include="..\include\Input\NLEInputEventListener.h">
       <Filter>Header Files\Input</Filter>
     </ClInclude>
@@ -218,8 +191,38 @@
     <ClInclude Include="..\include\GUI\NLECeguiInputMap.h">
       <Filter>Header Files\GUI</Filter>
     </ClInclude>
+    <ClInclude Include="..\include\RenderingEngine\ResourceLoader\DDSTextureLoader.h">
+      <Filter>Header Files\RenderingEngine\ResourceLoader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\RenderingEngine\ResourceLoader\NLREAssetImporter.h">
+      <Filter>Header Files\RenderingEngine\ResourceLoader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\RenderingEngine\ResourceLoader\NLREAssimpAssetImporter.h">
+      <Filter>Header Files\RenderingEngine\ResourceLoader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\RenderingEngine\ResourceLoader\NLREDirectXTexTextureLoader.h">
+      <Filter>Header Files\RenderingEngine\ResourceLoader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\RenderingEngine\ResourceLoader\NLRETextureLoader.h">
+      <Filter>Header Files\RenderingEngine\ResourceLoader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\RenderingEngine\ResourceLoader\WICTextureLoader.h">
+      <Filter>Header Files\RenderingEngine\ResourceLoader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\NLEInterface.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\Application\NLEGlfwApplicationLayer.h">
+      <Filter>Header Files\Application</Filter>
+    </ClInclude>
     <ClInclude Include="..\include\Application\NLEGlfwInputMap.h">
       <Filter>Header Files\Application</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\Application\NLEApplicationLayer.h">
+      <Filter>Header Files\Application</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\Math\NLEMath.h">
+      <Filter>Header Files\Math</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -267,18 +270,6 @@
     <ClCompile Include="..\src\RenderingEngineSrc\RenderingDeviceSrc\DX11Device\NLREDX11RenderingDevice.cpp">
       <Filter>Source Files\RenderingEngineSrc\RenderingDeviceSrc\DX11Device</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\RenderingEngineSrc\ResourceLoaderSrc\DDSTextureLoader.cpp">
-      <Filter>Source Files\RenderingEngineSrc\ResourceLoaderSrc</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\RenderingEngineSrc\ResourceLoaderSrc\NLREAssimpAssetImporter.cpp">
-      <Filter>Source Files\RenderingEngineSrc\ResourceLoaderSrc</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\RenderingEngineSrc\ResourceLoaderSrc\NLREDirectXTexTextureLoader.cpp">
-      <Filter>Source Files\RenderingEngineSrc\ResourceLoaderSrc</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\RenderingEngineSrc\ResourceLoaderSrc\WICTextureLoader.cpp">
-      <Filter>Source Files\RenderingEngineSrc\ResourceLoaderSrc</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\RenderingEngineSrc\SceneManagerSrc\NLRECamera.cpp">
       <Filter>Source Files\RenderingEngineSrc\SceneManagerSrc</Filter>
     </ClCompile>
@@ -297,11 +288,29 @@
     <ClCompile Include="..\src\GUISrc\NLEGuiManager.cpp">
       <Filter>Source Files\GUISrc</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\InputSrc\NLEInputProcessor.cpp">
+      <Filter>Source Files\InputSrc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\RenderingEngineSrc\ResourceLoaderSrc\DDSTextureLoader.cpp">
+      <Filter>Source Files\RenderingEngineSrc\ResourceLoaderSrc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\RenderingEngineSrc\ResourceLoaderSrc\NLREAssimpAssetImporter.cpp">
+      <Filter>Source Files\RenderingEngineSrc\ResourceLoaderSrc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\RenderingEngineSrc\ResourceLoaderSrc\NLREDirectXTexTextureLoader.cpp">
+      <Filter>Source Files\RenderingEngineSrc\ResourceLoaderSrc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\RenderingEngineSrc\ResourceLoaderSrc\WICTextureLoader.cpp">
+      <Filter>Source Files\RenderingEngineSrc\ResourceLoaderSrc</Filter>
+    </ClCompile>
     <ClCompile Include="..\src\ApplicationSrc\NLEGlfwApplicationLayer.cpp">
       <Filter>Source Files\ApplicationSrc</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\InputSrc\NLEInputProcessor.cpp">
-      <Filter>Source Files\InputSrc</Filter>
+    <ClCompile Include="..\src\GUISrc\NLECeguiInputMap.cpp">
+      <Filter>Source Files\GUISrc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\ApplicationSrc\NLEGlfwInputMap.cpp">
+      <Filter>Source Files\ApplicationSrc</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

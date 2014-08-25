@@ -186,11 +186,11 @@ void NLEGuiManager::processInputEvent(NLE_INPUT::Event event)
 	case NLE_INPUT::EVENT_TYPE::EVENT_KEY:
 		if (event.eventData.keyEvent.action == NLE_INPUT::ACTION::ACTION_PRESS)
 		{
-			_guiContext->injectKeyDown(NLE_INPUT::NLEtoCEGUIKey(event.eventData.keyEvent.key));
+			_guiContext->injectKeyDown(static_cast<CEGUI::Key::Scan>(NLE_INPUT::NLEtoCEGUIKey(event.eventData.keyEvent.key)));
 		}
 		else if (event.eventData.keyEvent.action == NLE_INPUT::ACTION::ACTION_RELEASE)
 		{
-			_guiContext->injectKeyUp(NLE_INPUT::NLEtoCEGUIKey(event.eventData.keyEvent.key));
+			_guiContext->injectKeyUp(static_cast<CEGUI::Key::Scan>(NLE_INPUT::NLEtoCEGUIKey(event.eventData.keyEvent.key)));
 		}
 		break;
 
@@ -201,11 +201,11 @@ void NLEGuiManager::processInputEvent(NLE_INPUT::Event event)
 	case NLE_INPUT::EVENT_TYPE::EVENT_MOUSE_BUTTON:
 		if (event.eventData.mouseButtonEvent.action == NLE_INPUT::ACTION::ACTION_PRESS)
 		{
-			_guiContext->injectMouseButtonDown(NLE_INPUT::NLEtoCEGUIMouse(event.eventData.mouseButtonEvent.button));
+			_guiContext->injectMouseButtonDown(static_cast<CEGUI::MouseButton>(NLE_INPUT::NLEtoCEGUIMouse(event.eventData.mouseButtonEvent.button)));
 		}
 		else if (event.eventData.mouseButtonEvent.action == NLE_INPUT::ACTION::ACTION_RELEASE)
 		{
-			_guiContext->injectMouseButtonUp(NLE_INPUT::NLEtoCEGUIMouse(event.eventData.mouseButtonEvent.button));
+			_guiContext->injectMouseButtonUp(static_cast<CEGUI::MouseButton>(NLE_INPUT::NLEtoCEGUIMouse(event.eventData.mouseButtonEvent.button)));
 		}
 		break;
 

@@ -26,15 +26,39 @@ THE SOFTWARE.
 -----------------------------------------------------------------------------
 */
 
-#ifndef NLE_CEGUI_INPUT_MAP_
-#define NLE_CEGUI_INPUT_MAP_
+#ifndef NLE_INTERFACE_
+#define NLE_INTERFACE_
 
-#include "Input\NLEInputEvents.h"
+#if defined(_NLE_DLL_EXPORT_)
+#define _NLE_API __declspec(dllexport)
+#else
+#define _NLE_API __declspec(dllimport)
+#endif
 
-namespace NLE_INPUT
+#include <memory>
+
+class NLEApplicationLayer;
+class NLEInputProcessor;
+class NLEInputSupply;
+class NLRE;
+class NLEGuiManager;
+
+class NLEInterface
 {
-	unsigned int NLEtoCEGUIKey(NLE_INPUT::KEY key);
-	unsigned int NLEtoCEGUIMouse(NLE_INPUT::MOUSE mouse);
+public:
+	virtual void run() =0;
+	virtual void stop() =0;
+	virtual void onTick()=0;
+	virtual bool isRunning()=0;
+
+	virtual std::shared_ptr<NLRE> getRenderingEngine() =0;
+	virtual std::shared_ptr<NLEInputProcessor> getInputProcessor()=0;
+	virtual std::shared_ptr<NLEGuiManager> getGuiManager()=0;
 };
-	
+
+extern "C" _NLE_API NLEInterface* GetNLE(
+	NLEApplicationLayer* appLayer,
+	NLEInputSupply* inputSupply
+	);
+
 #endif

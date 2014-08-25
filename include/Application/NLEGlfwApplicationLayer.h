@@ -32,7 +32,7 @@ THE SOFTWARE.
 #include "Application\NLEApplicationLayer.h"
 #include "Input\NLEInputSupply.h"
 
-class NLE;
+class NLEInterface;
 class GLFWwindow;
 
 class NLEGlfwApplicationLayer : public NLEApplicationLayer, public NLEInputSupply
@@ -62,7 +62,7 @@ public:
 	void copyText(std::wstring text);
 	std::wstring pasteText();
 
-	std::shared_ptr<NLE> getNLE();
+	std::shared_ptr<NLEInterface> getNLE();
 
 	bool bindInputEventCallback(void(*processEvent)(NLE_INPUT::Event event));
 
@@ -98,7 +98,7 @@ private:
 
 	static std::shared_ptr<NLEGlfwApplicationLayer> _glfwAppLayer;
 
-	std::shared_ptr<NLE> _nle;
+	std::shared_ptr<NLEInterface> _nle;
 	std::string _title;
 	int _width;
 	int _height;

@@ -28,7 +28,7 @@ THE SOFTWARE.
 
 #include "stdafx.h"
 #include "Application\NLEGlfwApplicationLayer.h"
-#include "NLE.h"
+#include "NLEInterface.h"
 #include "RenderingEngine\NLRE.h"
 #include "RenderingEngine\SceneManager\NLRESceneManager.h"
 #include "GUI\NLEGuiManager.h"
@@ -108,10 +108,7 @@ bool NLEGlfwApplicationLayer::initialize()
 	setWindowCallbacks(_window);
 
 	try{
-		_nle = NLE::instance(
-			std::dynamic_pointer_cast<NLEApplicationLayer>(NLEGlfwApplicationLayer::instance()),
-			std::dynamic_pointer_cast<NLEInputSupply>(NLEGlfwApplicationLayer::instance())
-			);
+		_nle.reset(::GetNLE(this,this));
 	}
 	catch (std::exception& e)
 	{
@@ -261,7 +258,7 @@ std::wstring NLEGlfwApplicationLayer::pasteText()
 }
 
 //===========================================================================================================================
-std::shared_ptr<NLE> NLEGlfwApplicationLayer::getNLE()
+std::shared_ptr<NLEInterface> NLEGlfwApplicationLayer::getNLE()
 {
 	return _nle;
 }
@@ -462,7 +459,7 @@ void NLEGlfwApplicationLayer::onClipboardPasteEvent()
 int main(int argc, const char* argv[])
 {
 	std::shared_ptr<NLEGlfwApplicationLayer> appLayer = NULL;
-	std::shared_ptr<NLE> nle = NULL;
+	std::shared_ptr<NLEInterface> nle = NULL;
 
 	appLayer = NLEGlfwApplicationLayer::instance();
 	appLayer->setFullscreenHint(false);

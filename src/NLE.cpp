@@ -35,32 +35,32 @@ THE SOFTWARE.
 #include "Input\NLEInputSupply.h"
 #include "GUI\NLEGuiManager.h"
 
-std::shared_ptr<NLE> NLE::_nle = NULL;
+NLE* NLE::_nle = NULL;
 
 
 //===========================================================================================================================
-std::shared_ptr<NLE> NLE::instance(
-	std::shared_ptr<NLEApplicationLayer> appLayer,
-	std::shared_ptr<NLEInputSupply> inputSupply
+NLE* NLE::instance(
+	NLEApplicationLayer* appLayer,
+	NLEInputSupply* inputSupply
 	)
 {
 	if (!_nle)
 	{
-		_nle.reset(new NLE(appLayer, inputSupply));
+		_nle = new NLE(appLayer, inputSupply);
 	}
 	return _nle;
 }
 
 //===========================================================================================================================
 NLE::NLE(
-	std::shared_ptr<NLEApplicationLayer> appLayer,
-	std::shared_ptr<NLEInputSupply> inputSupply
+	NLEApplicationLayer* appLayer,
+	NLEInputSupply* inputSupply
 	)
 {
 	setupLogCallbacks();
 
-	_applicationLayer = appLayer;
-	_inputSupply = inputSupply;
+	_applicationLayer.reset(appLayer);
+	_inputSupply.reset(inputSupply);
 
 	if (!initialize())
 	{

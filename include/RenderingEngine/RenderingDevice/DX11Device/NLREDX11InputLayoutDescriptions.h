@@ -29,7 +29,7 @@ THE SOFTWARE.
 #ifndef NLRE_DX11_INPUT_LAYOUT_DESCRIPTIONS_
 #define NLRE_DX11_INPUT_LAYOUT_DESCRIPTIONS_
 
-#include "stdafx.h"
+#include "RenderingEngine\NLREResources.h"
 
 class NLREDX11InputLayoutDescriptions
 {

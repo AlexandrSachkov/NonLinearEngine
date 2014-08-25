@@ -30,7 +30,7 @@ THE SOFTWARE.
 #ifndef NLE_
 #define NLE_
 
-#include "NLESingleInstance.h"
+#include "NLEInterface.h"
 
 class NLEApplicationLayer;
 class NLEInputProcessor;
@@ -38,12 +38,12 @@ class NLEInputSupply;
 class NLRE;
 class NLEGuiManager;
 
-class NLE : private NLESingleInstance<NLE>
+class NLE : public NLEInterface
 {
 public:
-	static std::shared_ptr<NLE> instance(
-		std::shared_ptr<NLEApplicationLayer> appLayer,
-		std::shared_ptr<NLEInputSupply> inputSupply
+	static NLE* instance(
+		NLEApplicationLayer* appLayer,
+		NLEInputSupply* inputSupply
 		);
 	~NLE();
 
@@ -58,8 +58,8 @@ public:
 
 private:
 	NLE(
-		std::shared_ptr<NLEApplicationLayer> appLayer,
-		std::shared_ptr<NLEInputSupply> inputSupply
+		NLEApplicationLayer* appLayer,
+		NLEInputSupply* inputSupply
 		);
 	NLE(const NLE& other){}
 	NLEInputProcessor& operator=(const NLEInputProcessor&){}
@@ -73,7 +73,7 @@ private:
 	static void NLREconsoleOutputHook(char text[]);
 	static void NLREerrorOutputHook(NLRE_Log::ErrorFlag flag, char text[]);
 
-	static std::shared_ptr<NLE> _nle;
+	static NLE* _nle;
 	bool _running;
 
 	std::shared_ptr<NLEApplicationLayer> _applicationLayer;
@@ -82,5 +82,13 @@ private:
 	std::shared_ptr<NLRE> _renderingEngine;
 	std::shared_ptr<NLEGuiManager> _guiManager;
 };
+
+NLEInterface* GetNLE(
+	NLEApplicationLayer* appLayer,
+	NLEInputSupply* inputSupply
+	)
+{
+	return NLE::instance(appLayer, inputSupply);
+}
 
 #endif
