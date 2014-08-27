@@ -73,7 +73,7 @@ private:
 	NLEGlfwApplicationLayer& operator=(const NLEGlfwApplicationLayer&){}
 
 	void setWindowCallbacks(GLFWwindow* window);
-	NLEInterface* getNLE();
+	std::shared_ptr<NLEInterface> getNLE();
 
 	static void debugCallback(char text[]);
 	static void consoleCallback(char text[]);
@@ -100,7 +100,7 @@ private:
 
 	static std::shared_ptr<NLEGlfwApplicationLayer> _glfwAppLayer;
 
-	NLEInterface* _nle;
+	std::shared_ptr<NLEInterface> _nle;
 	std::string _title;
 	int _width;
 	int _height;

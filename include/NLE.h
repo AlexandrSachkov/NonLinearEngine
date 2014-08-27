@@ -44,7 +44,7 @@ class NLEGuiManager;
 
 class NLE : public NLEInterface, public NLESingleInstance<NLE>
 {
-public:	
+public:		
 	NLE(
 		NLEWindowReference winRef,
 		int width,
@@ -54,18 +54,19 @@ public:
 	bool initialize();
 	void release();
 
+	bool isInitialized();
+	bool isRunning();
+
 	void run();
 	void stop();
 	void onTick();
-	bool isRunning();
-
+	
 	std::shared_ptr<NLELogInterface> getLog();
 	std::shared_ptr<NLRE> getRenderingEngine();
 	std::shared_ptr<NLEInputProcessor> getInputProcessor();
 	std::shared_ptr<NLEGuiManager> getGuiManager();
 
 private:
-
 	NLE(const NLE& other){}
 	NLEInputProcessor& operator=(const NLEInputProcessor&){}
 

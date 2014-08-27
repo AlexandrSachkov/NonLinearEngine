@@ -70,7 +70,6 @@ NLEGlfwApplicationLayer::NLEGlfwApplicationLayer()
 //===========================================================================================================================
 NLEGlfwApplicationLayer::~NLEGlfwApplicationLayer()
 {
-	_nle->release();
 	glfwDestroyWindow(_window);
 	glfwTerminate();
 }
@@ -106,7 +105,7 @@ bool NLEGlfwApplicationLayer::initialize()
 	}
 	setWindowCallbacks(_window);
 
-	_nle = new NLE(getWindowReference(), _width, _height);
+	_nle = std::shared_ptr<NLEInterface>(new NLE(getWindowReference(), _width, _height));
 	std::shared_ptr<NLELogInterface> log = _nle->getLog();
 	if (log)
 	{
@@ -141,7 +140,7 @@ void NLEGlfwApplicationLayer::setWindowCallbacks(GLFWwindow* window)
 }
 
 //===========================================================================================================================
-NLEInterface* NLEGlfwApplicationLayer::getNLE()
+std::shared_ptr<NLEInterface> NLEGlfwApplicationLayer::getNLE()
 {
 	return _nle;
 }

@@ -53,7 +53,7 @@ NLE::NLE(
 	setupLogCallbacks();
 	_log = NLE_Log::instance();
 
-	NLE_Log::console("======> NLE successfully initialized.");
+	NLE_Log::console("======> NLE successfully created.");
 }
 
 //===========================================================================================================================
@@ -61,13 +61,6 @@ NLE::~NLE()
 {
 	stop();
 	_initialized = false;
-}
-
-//===========================================================================================================================
-void NLE::release()
-{
-	
-	delete this;
 }
 
 //===========================================================================================================================
@@ -85,13 +78,25 @@ bool NLE::initialize()
 	}
 	catch (std::exception& e)
 	{
-		NLE_Log::err(NLE_Log::CRITICAL, "NonLinear Engine failed to initialize: ", e.what());
+		NLE_Log::err(NLE_Log::CRITICAL, "NonLinear Engine failed to initialize: %s", e.what());
 		return false;
 	}
 
 	_initialized = true;
 	NLE_Log::console("======> NLE successfully initialized.");
 	return true;
+}
+
+//===========================================================================================================================
+void NLE::release()
+{
+	delete this;
+}
+
+//===========================================================================================================================
+bool NLE::isInitialized()
+{
+	return _initialized;
 }
 
 //===========================================================================================================================
@@ -123,15 +128,21 @@ void NLE::NLREerrorOutputHook(NLRE_Log::ErrorFlag flag, char text[])
 //===========================================================================================================================
 void NLE::run()
 {
-	_inputProcessor->run();
-	_running = true;
+	if (isInitialized())
+	{
+		_inputProcessor->run();
+		_running = true;
+	}
 }
 
 //===========================================================================================================================
 void NLE::stop()
 {
-	_inputProcessor->stop();
-	_running = false;
+	if (isInitialized())
+	{
+		_inputProcessor->stop();
+		_running = false;
+	}
 }
 
 //===========================================================================================================================

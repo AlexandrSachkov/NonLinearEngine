@@ -392,7 +392,7 @@ bool NLREDX11RenderingDevice::loadVertexShader(std::wstring path, NLRE_VertexSha
 	//Load vertex shader from file
 	if (!loadBlobFromFile(path, vertexShader.blob))
 	{
-		NLRE_Log::err(NLRE_Log::ErrorFlag::CRITICAL, "Failed to load Vertex Shader: ", path);
+		NLRE_Log::err(NLRE_Log::ErrorFlag::CRITICAL, "Failed to load Vertex Shader: %s", path);
 		return false;
 	}
 
@@ -414,7 +414,7 @@ bool NLREDX11RenderingDevice::loadPixelShader(std::wstring path, NLRE_PixelShade
 	//Load pixel shader from file
 	if (!loadBlobFromFile(path, pixelShader.blob))
 	{
-		NLRE_Log::err(NLRE_Log::ErrorFlag::CRITICAL, "Failed to load Pixel Shader: ", path);
+		NLRE_Log::err(NLRE_Log::ErrorFlag::CRITICAL, "Failed to load Pixel Shader: %s", path);
 		return false;
 	}
 

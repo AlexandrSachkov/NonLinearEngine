@@ -43,10 +43,13 @@ public:
 	virtual ~NLEInterface(){}
 	virtual bool initialize() = 0;
 	virtual void release() = 0;
+
+	virtual bool isInitialized() = 0;
+	virtual bool isRunning()=0;
+
 	virtual void run() =0;
 	virtual void stop() =0;
 	virtual void onTick()=0;
-	virtual bool isRunning()=0;
 
 	virtual std::shared_ptr<NLELogInterface> getLog()=0;
 	virtual std::shared_ptr<NLRE> getRenderingEngine() =0;
