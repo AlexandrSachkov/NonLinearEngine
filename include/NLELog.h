@@ -29,6 +29,11 @@ THE SOFTWARE.
 #ifndef NLE_LOG_
 #define NLE_LOG_
 
+#include "NLELogInterface.h"
+#include "NLEDllApi.h"
+#include <memory>
+#include <vector>
+
 #ifdef _DEBUG || DEBUG
 #define _NLE_debug(...) NLE_Log::debug(__VA_ARGS__)
 #else
@@ -37,35 +42,38 @@ THE SOFTWARE.
 
 
 
-class NLE_Log
+class NLE_Log : public NLELogInterface
 {
 
 public:
+	static std::shared_ptr<NLE_Log> instance();
+	~NLE_Log();
 
-	enum ErrorFlag {
-		CRITICAL,
-		REG
-	};
 	static void debug(const char* format, ...);
 	static void console(const char* format, ...);
 	static void err(ErrorFlag flag, const char* format, ...);
 
-	static void registerDebugCallback(void(*callback)(char msg[]));
-	static void registerConsoleCallback(void(*callback)(char msg[]));
-	static void registerErrorCallback(void(*callback)(NLE_Log::ErrorFlag, char msg[]));
-	static void unregisterDebugCallback(void(*callback)(char msg[]));
-	static void unregisterConsoleCallback(void(*callback)(char msg[]));
-	static void unregisterErrorCallback(void(*callback)(NLE_Log::ErrorFlag, char msg[]));
+	void registerDebugCallback(void(*callback)(char msg[]));
+	void registerConsoleCallback(void(*callback)(char msg[]));
+	void registerErrorCallback(void(*callback)(NLE_Log::ErrorFlag, char msg[]));
+	void unregisterDebugCallback(void(*callback)(char msg[]));
+	void unregisterConsoleCallback(void(*callback)(char msg[]));
+	void unregisterErrorCallback(void(*callback)(NLE_Log::ErrorFlag, char msg[]));
 
 	static void unregisterDebugCallbackAll();
 	static void unregisterConsoleCallbackAll();
 	static void unregisterErrorCallbackAll();
 
 private:
+	NLE_Log();
+	NLE_Log(const NLE_Log& other){}
+	NLE_Log& operator=(const NLE_Log&){}
+
+	static std::shared_ptr<NLE_Log> _nleLog;
+
 	static std::vector <void(*)(char[])> debugCallbackList;
 	static std::vector <void(*)(char[])> consoleCallbackList;
 	static std::vector <void(*)(NLE_Log::ErrorFlag, char[])> errCallbackList;
 };
-
 
 #endif

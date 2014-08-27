@@ -29,6 +29,11 @@ THE SOFTWARE.
 #ifndef NLRE_RENDERING_TECHNIQUE_
 #define NLRE_RENDERING_TECHNIQUE_
 
+#include <vector>
+#include <memory>
+
+struct NLRE_RenderableAsset;
+
 class NLRERenderingTechnique
 {
 public:

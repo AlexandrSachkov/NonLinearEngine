@@ -30,6 +30,11 @@ THE SOFTWARE.
 #define NLRE_ASSET_IMPORTER_
 
 #include "NLESingleInstance.h"
+#include <string>
+#include <vector>
+#include <memory>
+
+struct NLRE_RenderableAsset;
 
 class NLREAssetImporter : private NLESingleInstance<NLREAssetImporter>
 {

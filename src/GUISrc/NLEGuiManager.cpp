@@ -31,12 +31,12 @@ THE SOFTWARE.
 #include "GUI\NLEGuiManager.h"
 
 #include "RenderingEngine\NLRE.h"
-#include "Application\NLEApplicationLayer.h"
 
 #include "RenderingEngine\RenderingDevice\NLREDeviceController.h"
 #include "RenderingEngine\RenderingDevice\NLRERenderingDevice.h"
 
 #include "Input\NLEInputProcessor.h"
+#include "NLELog.h"
 
 #include "GUI\NLECeguiInputMap.h"
 #include "CEGUI\CEGUI.h"
@@ -47,13 +47,12 @@ std::shared_ptr<NLEGuiManager> NLEGuiManager::_guiManager = NULL;
 
 //===========================================================================================================================
 std::shared_ptr<NLEGuiManager> NLEGuiManager::instance(
-	std::shared_ptr<NLRE> renderingEngine,
-	std::shared_ptr<NLEApplicationLayer> appLayer
+	std::shared_ptr<NLRE> renderingEngine
 	)
 {
 	if (!_guiManager)
 	{
-		_guiManager.reset(new NLEGuiManager(renderingEngine, appLayer));
+		_guiManager.reset(new NLEGuiManager(renderingEngine));
 	}
 	return _guiManager;
 }
@@ -67,12 +66,10 @@ std::shared_ptr<NLEGuiManager> NLEGuiManager::instance()
 
 //===========================================================================================================================
 NLEGuiManager::NLEGuiManager(
-	std::shared_ptr<NLRE> renderingEngine,
-	std::shared_ptr<NLEApplicationLayer> appLayer
+	std::shared_ptr<NLRE> renderingEngine
 	)
 {
 	_renderingEngine = renderingEngine;
-	_appLayer = appLayer;
 	_guiRenderer = NULL;
 
 	if (!initialize())
@@ -241,16 +238,20 @@ void NLEGuiManager::processInputEvent(NLE_INPUT::Event event)
 //===========================================================================================================================
 void NLEGuiManager::sendToClipboard(const CEGUI::String &mimeType, void *buffer, size_t size)
 {
+	/*
 	//temporary implementation
 	_appLayer->copyText(static_cast<const wchar_t*>(buffer));
+	*/
 }
 
 //===========================================================================================================================
 void NLEGuiManager::retrieveFromClipboard(CEGUI::String &mimeType, void *&buffer, size_t &size)
 {
+	/*
 	//temporary implementation
 	mimeType = "text/utf-8";
 	std::wstring text = _appLayer->pasteText();
 	buffer = (void*)text.c_str();
 	size = text.size();
+	*/
 }

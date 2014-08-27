@@ -29,6 +29,8 @@ THE SOFTWARE.
 #ifndef NLE_MATH_
 #define NLE_MATH_
 
+#include "NLEConfigurator.h"
+
 #ifdef _DXMATH_
 	#include "Math/DXMath/DXMathWrap.h"
 #endif

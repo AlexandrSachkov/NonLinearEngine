@@ -29,6 +29,9 @@ THE SOFTWARE.
 #ifndef NLRE_
 #define NLRE_
 
+#include "NLEWindowReference.h"
+#include <memory>
+
 class NLREAssetImporter;
 class NLRESceneManager;
 class NLREDeviceController;

@@ -29,36 +29,29 @@ THE SOFTWARE.
 #ifndef NLE_INTERFACE_
 #define NLE_INTERFACE_
 
-#if defined(_NLE_DLL_EXPORT_)
-#define _NLE_API __declspec(dllexport)
-#else
-#define _NLE_API __declspec(dllimport)
-#endif
-
+#include "NLEWindowReference.h"
 #include <memory>
 
-class NLEApplicationLayer;
+class NLELogInterface;
 class NLEInputProcessor;
-class NLEInputSupply;
 class NLRE;
 class NLEGuiManager;
 
 class NLEInterface
 {
 public:
+	virtual ~NLEInterface(){}
+	virtual bool initialize() = 0;
+	virtual void release() = 0;
 	virtual void run() =0;
 	virtual void stop() =0;
 	virtual void onTick()=0;
 	virtual bool isRunning()=0;
 
+	virtual std::shared_ptr<NLELogInterface> getLog()=0;
 	virtual std::shared_ptr<NLRE> getRenderingEngine() =0;
 	virtual std::shared_ptr<NLEInputProcessor> getInputProcessor()=0;
 	virtual std::shared_ptr<NLEGuiManager> getGuiManager()=0;
 };
-
-extern "C" _NLE_API NLEInterface* GetNLE(
-	NLEApplicationLayer* appLayer,
-	NLEInputSupply* inputSupply
-	);
 
 #endif

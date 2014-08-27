@@ -43,6 +43,10 @@ THE SOFTWARE.
 #include "RenderingEngine\RenderingDevice\NLRERenderingDevice.h"
 #include "RenderingEngine\ResourceLoader\NLRETextureLoader.h"
 
+#include <string>
+#include <vector>
+#include <memory>
+
 class NLREAssimpLogStream : public Assimp::LogStream
 {
 public:

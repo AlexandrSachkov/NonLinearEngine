@@ -26,12 +26,23 @@ THE SOFTWARE.
 -----------------------------------------------------------------------------
 */
 
-#ifndef NLE_RESOURCES_
-#define NLE_RESOURCES_
+#ifndef NLE_LOG_INTERFACE_
+#define NLE_LOG_INTERFACE_
 
-#if defined(_WINDOWS_VISTA_) || defined (_WINDOWS_7_) || defined(_WINDOWS_8_) || defined(_WINDOWS_8_1_)
-#include <Windows.h>
-	typedef HWND NLEWindowReference;
-#endif
+class NLELogInterface
+{
+public:
+	enum ErrorFlag {
+		CRITICAL,
+		REG
+	};
+	virtual ~NLELogInterface(){}
+	virtual void registerDebugCallback(void(*callback)(char msg[])) =0;
+	virtual void registerConsoleCallback(void(*callback)(char msg[])) =0;
+	virtual void registerErrorCallback(void(*callback)(ErrorFlag flag, char msg[])) =0;
+	virtual void unregisterDebugCallback(void(*callback)(char msg[])) =0;
+	virtual void unregisterConsoleCallback(void(*callback)(char msg[])) =0;
+	virtual void unregisterErrorCallback(void(*callback)(ErrorFlag flag, char msg[])) =0;
+};
 
 #endif

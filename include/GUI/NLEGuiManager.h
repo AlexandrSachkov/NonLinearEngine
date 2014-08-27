@@ -33,9 +33,10 @@ THE SOFTWARE.
 
 #include "Input\NLEInputEventListener.h"
 #include "CEGUI\Clipboard.h"
+#include <memory>
+#include <cstdio>
 
 class NLRE;
-class NLEApplicationLayer;
 namespace CEGUI
 {
 	class Direct3D11Renderer;
@@ -46,8 +47,7 @@ class NLEGuiManager : public NLEInputEventListener, public CEGUI::NativeClipboar
 {
 public:
 	static std::shared_ptr<NLEGuiManager> instance(
-		std::shared_ptr<NLRE> renderingEngine,
-		std::shared_ptr<NLEApplicationLayer> appLayer
+		std::shared_ptr<NLRE> renderingEngine
 		);
 	static std::shared_ptr<NLEGuiManager> instance();
 	~NLEGuiManager();
@@ -59,8 +59,7 @@ public:
 
 private:
 	NLEGuiManager(
-		std::shared_ptr<NLRE> renderingEngine,
-		std::shared_ptr<NLEApplicationLayer> appLayer
+		std::shared_ptr<NLRE> renderingEngine
 		);
 	NLEGuiManager(const NLEGuiManager&);
 	NLEGuiManager& operator=(const NLEGuiManager&){};
@@ -68,7 +67,7 @@ private:
 
 	static std::shared_ptr<NLEGuiManager> _guiManager;
 	std::shared_ptr<NLRE> _renderingEngine;
-	std::shared_ptr<NLEApplicationLayer> _appLayer;
+
 	CEGUI::Direct3D11Renderer* _guiRenderer;
 	CEGUI::GUIContext* _guiContext;
 };

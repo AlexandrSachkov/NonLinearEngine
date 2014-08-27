@@ -28,41 +28,24 @@ THE SOFTWARE.
 #include "stdafx.h"
 #include "Input\NLEInputProcessor.h"
 #include "Input\NLEInputEventListener.h"
-#include "Input\NLEInputSupply.h"
-#include "Application\NLEApplicationLayer.h"
-
+#include "NLELog.h"
 
 std::vector<NLEInputEventListener*> NLEInputProcessor::_inputEventListeners;
 std::shared_ptr<NLEInputProcessor> NLEInputProcessor::_inputProcessor = NULL;
 
 //===========================================================================================================================
-std::shared_ptr<NLEInputProcessor> NLEInputProcessor::instance(
-	std::shared_ptr<NLEApplicationLayer> appLayer,
-	std::shared_ptr<NLEInputSupply> inputSupply
-	)
+std::shared_ptr<NLEInputProcessor> NLEInputProcessor::instance()
 {
 	if (!_inputProcessor)
 	{
-		_inputProcessor.reset(new NLEInputProcessor(appLayer, inputSupply));
+		_inputProcessor.reset(new NLEInputProcessor());
 	}
 	return _inputProcessor;
 }
 
 //===========================================================================================================================
-std::shared_ptr<NLEInputProcessor> NLEInputProcessor::instance()
+NLEInputProcessor::NLEInputProcessor()
 {
-	if (!_inputProcessor) throw std::runtime_error("GUI Manager is not initialized, use instance(NLE* nle)");
-	return _inputProcessor;
-}
-
-//===========================================================================================================================
-NLEInputProcessor::NLEInputProcessor(
-	std::shared_ptr<NLEApplicationLayer> appLayer,
-	std::shared_ptr<NLEInputSupply> inputSupply
-	)
-{
-	_appLayer = appLayer;
-	_inputSupply = inputSupply;
 
 	if (!initialize())
 	{
@@ -76,7 +59,6 @@ NLEInputProcessor::NLEInputProcessor(
 bool NLEInputProcessor::initialize()
 {
 	_running = false;
-	_inputSupply->bindInputEventCallback(&NLEInputProcessor::processInputEvent);
 
 	return true;
 }

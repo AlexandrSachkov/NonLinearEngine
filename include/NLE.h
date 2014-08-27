@@ -30,65 +30,79 @@ THE SOFTWARE.
 #ifndef NLE_
 #define NLE_
 
+#include "RenderingEngine\NLREMain\NLRELog.h"
+#include "NLEWindowReference.h"
 #include "NLEInterface.h"
+#include "NLESingleInstance.h"
+#include "NLEDllApi.h"
 
-class NLEApplicationLayer;
+class NLE_Log;
+class NLELogInterface;
 class NLEInputProcessor;
-class NLEInputSupply;
 class NLRE;
 class NLEGuiManager;
 
-class NLE : public NLEInterface
+class NLE : public NLEInterface, public NLESingleInstance<NLE>
 {
-public:
-	static NLE* instance(
-		NLEApplicationLayer* appLayer,
-		NLEInputSupply* inputSupply
+public:	
+	NLE(
+		NLEWindowReference winRef,
+		int width,
+		int height
 		);
 	~NLE();
+	bool initialize();
+	void release();
 
 	void run();
 	void stop();
 	void onTick();
 	bool isRunning();
 
+	std::shared_ptr<NLELogInterface> getLog();
 	std::shared_ptr<NLRE> getRenderingEngine();
 	std::shared_ptr<NLEInputProcessor> getInputProcessor();
 	std::shared_ptr<NLEGuiManager> getGuiManager();
 
 private:
-	NLE(
-		NLEApplicationLayer* appLayer,
-		NLEInputSupply* inputSupply
-		);
+
 	NLE(const NLE& other){}
 	NLEInputProcessor& operator=(const NLEInputProcessor&){}
 
-	bool initialize();
 	bool initializeWindow();
 	void setupLogCallbacks();
-
 
 	static void NLREdebugOutputHook(char text[]);
 	static void NLREconsoleOutputHook(char text[]);
 	static void NLREerrorOutputHook(NLRE_Log::ErrorFlag flag, char text[]);
 
-	static NLE* _nle;
-	bool _running;
+	NLEWindowReference _winRef;
+	int _width;
+	int _height;
 
-	std::shared_ptr<NLEApplicationLayer> _applicationLayer;
-	std::shared_ptr<NLEInputSupply> _inputSupply;
+	bool _running;
+	bool _initialized;
+
+	std::shared_ptr<NLE_Log> _log;
 	std::shared_ptr<NLEInputProcessor> _inputProcessor;
 	std::shared_ptr<NLRE> _renderingEngine;
 	std::shared_ptr<NLEGuiManager> _guiManager;
 };
 
-NLEInterface* GetNLE(
-	NLEApplicationLayer* appLayer,
-	NLEInputSupply* inputSupply
+#if defined (_NLE_DLL_) && defined(_NLE_DLL_EXPORT_)
+extern "C" _NLE_API_ NLEInterface* APIENTRY GetNLE(
+	NLEWindowReference winRef,
+	int width,
+	int height
 	)
 {
-	return NLE::instance(appLayer, inputSupply);
+	return new NLE(winRef, width, height);
 }
-
+#elif defined(_NLE_DLL_)
+extern "C" _NLE_API_ NLEInterface* APIENTRY GetNLE(
+	NLEWindowReference winRef,
+	int width,
+	int height
+	);
+#endif
 #endif

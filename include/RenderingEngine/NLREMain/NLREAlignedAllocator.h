@@ -29,6 +29,8 @@ THE SOFTWARE.
 #ifndef NLRE_ALIGNED_ALLOCATOR_
 #define NLRE_ALIGNED_ALLOCATOR_
 
+#include <malloc.h>
+
 class NLREAA
 {
 public:

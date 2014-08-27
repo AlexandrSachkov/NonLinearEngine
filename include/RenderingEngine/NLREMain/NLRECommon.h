@@ -29,12 +29,10 @@ THE SOFTWARE.
 #ifndef NLRE_COMMON_
 #define NLRE_COMMON_
 
-#include "RenderingEngine\NLREMain\NLREConfigurator.h"	//must be the first line in this file
 #include "RenderingEngine\NLREMain\NLREAlignedAllocator.h"
 #include "Math\NLEMath.h"
 #include "RenderingEngine\NLREResources.h"
 #include "RenderingEngine\NLREMain\NLRELog.h"
-#include "RenderingEngine\RenderingDevice\NLREInputLayoutDescriptions.h"
 
 #endif
 

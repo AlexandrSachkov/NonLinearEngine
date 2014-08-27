@@ -30,6 +30,8 @@ THE SOFTWARE.
 #define NLRE_DEVICE_CONTROLLER_
 
 #include "NLESingleInstance.h"
+#include "NLEWindowReference.h"
+#include <memory>
 
 class NLRERenderingDevice;
 class NLRERenderingTechnique;

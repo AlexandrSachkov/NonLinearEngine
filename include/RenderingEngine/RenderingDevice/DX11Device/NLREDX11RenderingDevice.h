@@ -30,6 +30,7 @@ THE SOFTWARE.
 #define NLRE_DX11_RENDERING_DEVICE_
 
 #include "NLESingleInstance.h"
+#include "NLEWindowReference.h"
 
 class NLREDX11RenderingDevice : private NLESingleInstance<NLREDX11RenderingDevice>
 {

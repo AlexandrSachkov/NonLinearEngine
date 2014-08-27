@@ -29,6 +29,8 @@ THE SOFTWARE.
 #ifndef NLRE_INPUT_LAYOUT_DESCRIPTIONS_
 #define NLRE_INPUT_LAYOUT_DESCRIPTIONS_
 
+#include "NLEConfigurator.h"
+
 #ifdef _DX11_
 	#include "RenderingEngine\RenderingDevice\DX11Device\NLREDX11InputLayoutDescriptions.h"
 typedef NLREDX11InputLayoutDescriptions NLREInputLayoutDescriptions;

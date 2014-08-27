@@ -28,9 +28,13 @@ THE SOFTWARE.
 #ifndef NLRE_RESOURCES_
 #define NLRE_RESOURCES_
 
+#include "NLEConfigurator.h"
+#include "Math\NLEMath.h"
+
 #ifdef _DX11_
 	#include "RenderingEngine\RenderingDevice\DX11Device\NLREDX11ResourceWrap.h"
 #endif
+#include <memory>
 
 enum NLRE_RENDERING_TECHNIQUE_ID
 {

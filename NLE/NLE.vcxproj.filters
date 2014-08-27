@@ -113,9 +113,6 @@
     <ClInclude Include="..\include\RenderingEngine\NLREMain\NLRECommon.h">
       <Filter>Header Files\RenderingEngine\NLREMain</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\RenderingEngine\NLREMain\NLREConfigurator.h">
-      <Filter>Header Files\RenderingEngine\NLREMain</Filter>
-    </ClInclude>
     <ClInclude Include="..\include\RenderingEngine\NLREMain\NLRELog.h">
       <Filter>Header Files\RenderingEngine\NLREMain</Filter>
     </ClInclude>
@@ -161,13 +158,7 @@
     <ClInclude Include="..\include\NLELog.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\NLECommon.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\include\NLEConfigurator.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\NLEResources.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\include\GUI\NLEGuiManager.h">
@@ -209,9 +200,6 @@
     <ClInclude Include="..\include\RenderingEngine\ResourceLoader\WICTextureLoader.h">
       <Filter>Header Files\RenderingEngine\ResourceLoader</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\NLEInterface.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\include\Application\NLEGlfwApplicationLayer.h">
       <Filter>Header Files\Application</Filter>
     </ClInclude>
@@ -223,6 +211,18 @@
     </ClInclude>
     <ClInclude Include="..\include\Math\NLEMath.h">
       <Filter>Header Files\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\NLEInterface.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\NLELogInterface.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\NLEDllApi.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\NLEWindowReference.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

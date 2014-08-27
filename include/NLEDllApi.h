@@ -26,11 +26,15 @@ THE SOFTWARE.
 -----------------------------------------------------------------------------
 */
 
-#ifndef NLE_COMMON_
-#define NLE_COMMON_
+#ifndef NLE_DLL_API_
+#define NLE_DLL_API_
 
-#include "NLEConfigurator.h"
-#include "NLELog.h"
-#include "NLEResources.h"
+#if defined(_NLE_DLL_)
+#if defined(_NLE_DLL_EXPORT_)
+#define _NLE_API_ __declspec(dllexport)
+#else
+#define _NLE_API_ __declspec(dllimport)
+#endif
+#endif
 
 #endif

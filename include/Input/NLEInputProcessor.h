@@ -30,19 +30,14 @@ THE SOFTWARE.
 #define NLE_INPUT_PROCESSOR_
 
 #include "Input\NLEInputEvents.h"
+#include <memory>
+#include <vector>
 
-class NLEApplicationLayer;
 class NLEInputEventListener;
-class NLEInputSupply;
 
 class NLEInputProcessor
 {
 public:
-	static std::shared_ptr<NLEInputProcessor> instance(
-		std::shared_ptr<NLEApplicationLayer> appLayer,
-		std::shared_ptr<NLEInputSupply> inputSupply
-		);
-
 	static std::shared_ptr<NLEInputProcessor> instance();
 	
 	~NLEInputProcessor();
@@ -56,19 +51,13 @@ public:
 	static bool unregisterInputEventListener(NLEInputEventListener* listener);
 
 private:
-	NLEInputProcessor(
-		std::shared_ptr<NLEApplicationLayer> appLayer,
-		std::shared_ptr<NLEInputSupply> inputSupply
-		);
+	NLEInputProcessor();
 	NLEInputProcessor& operator=(const NLEInputProcessor&){}
 	NLEInputProcessor(const NLEInputProcessor& other){}
 	bool initialize();
 
 	static std::shared_ptr<NLEInputProcessor> _inputProcessor;
 	bool _running;
-
-	std::shared_ptr<NLEApplicationLayer> _appLayer;
-	std::shared_ptr<NLEInputSupply> _inputSupply;
 
 	static std::vector<NLEInputEventListener*> _inputEventListeners;
 };

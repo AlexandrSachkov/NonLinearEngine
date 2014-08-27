@@ -29,6 +29,8 @@ THE SOFTWARE.
 #ifndef NLRE_LOG_
 #define NLRE_LOG_
 
+#include <vector>
+
 #ifdef _DEBUG || DEBUG
 #define _NLRE_debug(...) NLRE_Log::debug(__VA_ARGS__)
 #else

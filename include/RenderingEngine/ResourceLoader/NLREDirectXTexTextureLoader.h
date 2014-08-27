@@ -30,6 +30,8 @@ THE SOFTWARE.
 #define NLRE_DIRECTXTEX_TEXTURE_LOADER_
 
 #include "RenderingEngine\ResourceLoader\NLRETextureLoader.h"
+#include <string>
+#include <memory>
 
 class NLREDirectXTexTextureLoader : public virtual NLRETextureLoader
 {

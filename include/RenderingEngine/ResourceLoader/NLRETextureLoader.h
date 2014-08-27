@@ -31,6 +31,7 @@ THE SOFTWARE.
 
 #include "NLESingleInstance.h"
 
+#include <string>
 class NLRETextureLoader : private NLESingleInstance<NLRETextureLoader>
 {
 public:

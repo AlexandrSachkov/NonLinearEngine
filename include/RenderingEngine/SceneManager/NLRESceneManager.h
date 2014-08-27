@@ -29,6 +29,9 @@ THE SOFTWARE.
 #ifndef NLRE_SCENE_MANAGER_
 #define NLRE_SCENE_MANAGER_
 
+#include <vector>
+#include <memory>
+
 class NLRERenderingDevice;
 class NLREDeviceController;
 class NLRETextureLoader;

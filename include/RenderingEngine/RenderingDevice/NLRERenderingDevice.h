@@ -29,8 +29,12 @@ THE SOFTWARE.
 #ifndef NLRE_RENDERING_DEVICE_
 #define NLRE_RENDERING_DEVICE_
 
+#include "NLEConfigurator.h"
+
 #ifdef _DX11_
 #include "RenderingEngine\RenderingDevice\DX11Device\NLREDX11RenderingDevice.h"
+#include "NLEWindowReference.h"
+
 class NLRERenderingDevice : public NLREDX11RenderingDevice
 {
 public:

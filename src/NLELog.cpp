@@ -29,9 +29,32 @@ THE SOFTWARE.
 #include "stdafx.h"
 #include "NLELog.h"
 
+std::shared_ptr<NLE_Log> NLE_Log::_nleLog = NULL;
+
 std::vector <void(*)(char[])> NLE_Log::debugCallbackList;
 std::vector <void(*)(char[])> NLE_Log::consoleCallbackList;
 std::vector <void(*)(NLE_Log::ErrorFlag, char[])> NLE_Log::errCallbackList;
+
+std::shared_ptr<NLE_Log> NLE_Log::instance()
+{
+	if (!_nleLog)
+	{
+		_nleLog.reset(new NLE_Log());
+	}
+	return _nleLog;
+}
+
+NLE_Log::NLE_Log()
+{
+
+}
+
+NLE_Log::~NLE_Log()
+{
+	unregisterDebugCallbackAll();
+	unregisterConsoleCallbackAll();
+	unregisterErrorCallbackAll();
+}
 
 void NLE_Log::debug(const char* format, ...)
 {

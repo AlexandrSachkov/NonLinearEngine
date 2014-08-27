@@ -29,6 +29,8 @@ THE SOFTWARE.
 #ifndef STDAFX_
 #define STDAFX_
 
+#include "RenderingEngine\NLREMain\NLRECommon.h"
+
 #include <vector>
 #include <cstdarg>
 #include <unordered_map>
@@ -38,6 +40,4 @@ THE SOFTWARE.
 #include "boost\filesystem.hpp"
 namespace fs = boost::filesystem;
 
-#include "NLECommon.h"
-#include "RenderingEngine\NLREMain\NLRECommon.h" //Must be the last statement in this file
 #endif

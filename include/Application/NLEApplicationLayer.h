@@ -29,12 +29,15 @@ THE SOFTWARE.
 #ifndef NLE_APPLICATION_LAYER_
 #define NLE_APPLICATION_LAYER_
 
+#include "NLEWindowReference.h"
+#include <string>
+
 class NLEApplicationLayer
 {
 public:
 	~NLEApplicationLayer(){};
 
-	virtual NLEWindowReference& getWindowReference() =0;
+	virtual NLEWindowReference getWindowReference() =0;
 	virtual void getClientSize(int& width, int& height) = 0;
 
 	virtual void closeWindow() = 0;

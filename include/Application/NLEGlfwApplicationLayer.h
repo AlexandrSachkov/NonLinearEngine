@@ -29,20 +29,23 @@ THE SOFTWARE.
 #ifndef NLE_GLFW_APPLICATION_LAYER_
 #define NLE_GLFW_APPLICATION_LAYER_
 
-#include "Application\NLEApplicationLayer.h"
-#include "Input\NLEInputSupply.h"
+#include "NLEWindowReference.h"
+#include "Input\NLEInputEvents.h"
+#include "NLELog.h"
+#include <string>
+#include <memory>
 
-class NLEInterface;
 class GLFWwindow;
+class NLEInterface;
 
-class NLEGlfwApplicationLayer : public NLEApplicationLayer, public NLEInputSupply
+class NLEGlfwApplicationLayer
 {
 public:
 	static std::shared_ptr<NLEGlfwApplicationLayer> instance();
 	~NLEGlfwApplicationLayer();	
 	bool initialize();
 
-	NLEWindowReference& getWindowReference();
+	NLEWindowReference getWindowReference();
 	void getClientSize(int& width, int& height);
 	void setClientSize(int width, int height);
 	void setFullscreenHint(bool option);
@@ -62,16 +65,15 @@ public:
 	void copyText(std::wstring text);
 	std::wstring pasteText();
 
-	std::shared_ptr<NLEInterface> getNLE();
-
 	bool bindInputEventCallback(void(*processEvent)(NLE_INPUT::Event event));
 
 private:	
 	NLEGlfwApplicationLayer();
 	NLEGlfwApplicationLayer(const NLEGlfwApplicationLayer& other){}
-	NLEGlfwApplicationLayer& operator=(const NLEGlfwApplicationLayer&){};
+	NLEGlfwApplicationLayer& operator=(const NLEGlfwApplicationLayer&){}
 
 	void setWindowCallbacks(GLFWwindow* window);
+	NLEInterface* getNLE();
 
 	static void debugCallback(char text[]);
 	static void consoleCallback(char text[]);
@@ -98,7 +100,7 @@ private:
 
 	static std::shared_ptr<NLEGlfwApplicationLayer> _glfwAppLayer;
 
-	std::shared_ptr<NLEInterface> _nle;
+	NLEInterface* _nle;
 	std::string _title;
 	int _width;
 	int _height;

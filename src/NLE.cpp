@@ -27,6 +27,7 @@ THE SOFTWARE.
 */
 
 #include "stdafx.h"
+#include "NLELog.h"
 #include "NLE.h"
 #include "Application\NLEApplicationLayer.h"
 #include "RenderingEngine\NLRE.h"
@@ -35,38 +36,22 @@ THE SOFTWARE.
 #include "Input\NLEInputSupply.h"
 #include "GUI\NLEGuiManager.h"
 
-NLE* NLE::_nle = NULL;
-
-
-//===========================================================================================================================
-NLE* NLE::instance(
-	NLEApplicationLayer* appLayer,
-	NLEInputSupply* inputSupply
-	)
-{
-	if (!_nle)
-	{
-		_nle = new NLE(appLayer, inputSupply);
-	}
-	return _nle;
-}
 
 //===========================================================================================================================
 NLE::NLE(
-	NLEApplicationLayer* appLayer,
-	NLEInputSupply* inputSupply
+	NLEWindowReference winRef,
+	int width,
+	int height
 	)
 {
+	_initialized = false;
+
+	_winRef = winRef;
+	_width = width;
+	_height = height;
+
 	setupLogCallbacks();
-
-	_applicationLayer.reset(appLayer);
-	_inputSupply.reset(inputSupply);
-
-	if (!initialize())
-	{
-		NLE_Log::err(NLE_Log::CRITICAL, "NonLinear Engine failed to initialize");
-		throw std::exception("NonLinear Engine failed to initialize");
-	}
+	_log = NLE_Log::instance();
 
 	NLE_Log::console("======> NLE successfully initialized.");
 }
@@ -75,24 +60,37 @@ NLE::NLE(
 NLE::~NLE()
 {
 	stop();
+	_initialized = false;
+}
+
+//===========================================================================================================================
+void NLE::release()
+{
+	
+	delete this;
 }
 
 //===========================================================================================================================
 bool NLE::initialize()
 {
-	int width = 0;
-	int height = 0;
-	_applicationLayer->getClientSize(width, height);
+	try
+	{
+		_renderingEngine = NLRE::instance(_winRef, _width, _height);
+		_guiManager = NLEGuiManager::instance(_renderingEngine);
+		_inputProcessor = NLEInputProcessor::instance();
+		//======================= FOR TESTING PURPOSES =================
+		std::wstring path = L"D:\\3DModels\\Altair Model\\altair2.dae";
+		_renderingEngine->importAsset(path);
+		//==============================================================
+	}
+	catch (std::exception& e)
+	{
+		NLE_Log::err(NLE_Log::CRITICAL, "NonLinear Engine failed to initialize: ", e.what());
+		return false;
+	}
 
-	_renderingEngine = NLRE::instance(_applicationLayer->getWindowReference(), width, height);
-	_guiManager = NLEGuiManager::instance(_renderingEngine, _applicationLayer);
-	_inputProcessor = NLEInputProcessor::instance(_applicationLayer, _inputSupply);
-
-
-	//======================= FOR TESTING PURPOSES =================
-	std::wstring path = L"D:\\3DModels\\Altair Model\\altair2.dae";
-	_renderingEngine->importAsset(path);
-	//==============================================================
+	_initialized = true;
+	NLE_Log::console("======> NLE successfully initialized.");
 	return true;
 }
 
@@ -152,6 +150,12 @@ void NLE::onTick()
 bool NLE::isRunning()
 {
 	return _running;
+}
+
+//===========================================================================================================================
+std::shared_ptr<NLELogInterface> NLE::getLog()
+{
+	return std::dynamic_pointer_cast<NLELogInterface>(_log);
 }
 
 //===========================================================================================================================

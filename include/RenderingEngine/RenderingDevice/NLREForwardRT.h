@@ -31,6 +31,7 @@ THE SOFTWARE.
 
 
 #include "RenderingEngine\RenderingDevice\NLRERenderingTechnique.h"
+#include <memory>
 
 class NLRERenderingDevice;
 

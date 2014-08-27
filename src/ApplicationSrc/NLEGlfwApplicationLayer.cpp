@@ -28,6 +28,8 @@ THE SOFTWARE.
 
 #include "stdafx.h"
 #include "Application\NLEGlfwApplicationLayer.h"
+#include "NLE.h"
+#include "NLELog.h"
 #include "NLEInterface.h"
 #include "RenderingEngine\NLRE.h"
 #include "RenderingEngine\SceneManager\NLRESceneManager.h"
@@ -68,6 +70,7 @@ NLEGlfwApplicationLayer::NLEGlfwApplicationLayer()
 //===========================================================================================================================
 NLEGlfwApplicationLayer::~NLEGlfwApplicationLayer()
 {
+	_nle->release();
 	glfwDestroyWindow(_window);
 	glfwTerminate();
 }
@@ -75,10 +78,6 @@ NLEGlfwApplicationLayer::~NLEGlfwApplicationLayer()
 //===========================================================================================================================
 bool NLEGlfwApplicationLayer::initialize()
 {
-	NLE_Log::registerErrorCallback(NLEGlfwApplicationLayer::errorCallback);
-	NLE_Log::registerConsoleCallback(NLEGlfwApplicationLayer::debugCallback);
-	NLE_Log::registerDebugCallback(NLEGlfwApplicationLayer::debugCallback);
-
 	glfwSetErrorCallback(glfwErrorCallback);
 	if (!glfwInit())
 	{
@@ -107,15 +106,17 @@ bool NLEGlfwApplicationLayer::initialize()
 	}
 	setWindowCallbacks(_window);
 
-	try{
-		_nle.reset(::GetNLE(this,this));
-	}
-	catch (std::exception& e)
+	_nle = new NLE(getWindowReference(), _width, _height);
+	std::shared_ptr<NLELogInterface> log = _nle->getLog();
+	if (log)
 	{
-		NLE_Log::err(NLE_Log::CRITICAL, "NLE failed to initialize: %s", e.what());
-		return false;
+		log->registerConsoleCallback(consoleCallback);
+		log->registerDebugCallback(debugCallback);
+		log->registerErrorCallback(errorCallback);
 	}
 
+
+	if (!_nle->initialize()) return false;
 
 	NLE_Log::console("======> Application Layer successfully initialized.");
 	return true;
@@ -140,7 +141,13 @@ void NLEGlfwApplicationLayer::setWindowCallbacks(GLFWwindow* window)
 }
 
 //===========================================================================================================================
-NLEWindowReference& NLEGlfwApplicationLayer::getWindowReference()
+NLEInterface* NLEGlfwApplicationLayer::getNLE()
+{
+	return _nle;
+}
+
+//===========================================================================================================================
+NLEWindowReference NLEGlfwApplicationLayer::getWindowReference()
 {
 	NLEWindowReference windowRef = glfwGetWin32Window(_window);
 	return windowRef;
@@ -258,12 +265,6 @@ std::wstring NLEGlfwApplicationLayer::pasteText()
 }
 
 //===========================================================================================================================
-std::shared_ptr<NLEInterface> NLEGlfwApplicationLayer::getNLE()
-{
-	return _nle;
-}
-
-//===========================================================================================================================
 bool NLEGlfwApplicationLayer::bindInputEventCallback(void(*processEvent)(NLE_INPUT::Event event))
 {
 	if (processEvent)
@@ -311,7 +312,7 @@ void NLEGlfwApplicationLayer::onKeyEvent(GLFWwindow *window, int key, int scanco
 	event.eventData.keyEvent.mods = NLE_INPUT::GLFWtoNLEMod(mods);
 	event.eventData.keyEvent.scancode = scancode;
 
-	_glfwAppLayer->_processEvent(event);
+	_glfwAppLayer->getNLE()->getInputProcessor()->processInputEvent(event);
 }
 
 //===========================================================================================================================
@@ -321,7 +322,7 @@ void NLEGlfwApplicationLayer::onCharEvent(GLFWwindow *window, unsigned int codep
 	event.eventType = NLE_INPUT::EVENT_TYPE::EVENT_CHAR;
 	event.eventData.charEvent.code = codepoint;
 
-	_glfwAppLayer->_processEvent(event);
+	_glfwAppLayer->getNLE()->getInputProcessor()->processInputEvent(event);
 }
 
 //===========================================================================================================================
@@ -333,7 +334,7 @@ void NLEGlfwApplicationLayer::onMouseButtonEvent(GLFWwindow *window, int button,
 	event.eventData.mouseButtonEvent.button = NLE_INPUT::GLFWtoNLEMouse(button);
 	event.eventData.mouseButtonEvent.mods = NLE_INPUT::GLFWtoNLEMod(mods);
 
-	_glfwAppLayer->_processEvent(event);
+	_glfwAppLayer->getNLE()->getInputProcessor()->processInputEvent(event);
 }
 
 //===========================================================================================================================
@@ -344,7 +345,7 @@ void NLEGlfwApplicationLayer::onCursorPositionEvent(GLFWwindow *window, double x
 	event.eventData.cursorPositionEvent.xPos = xPos;
 	event.eventData.cursorPositionEvent.yPos = yPos;
 
-	_glfwAppLayer->_processEvent(event);
+	_glfwAppLayer->getNLE()->getInputProcessor()->processInputEvent(event);
 }
 
 //===========================================================================================================================
@@ -354,7 +355,7 @@ void NLEGlfwApplicationLayer::onCursorEnterEvent(GLFWwindow *window, int entered
 	event.eventType = NLE_INPUT::EVENT_TYPE::EVENT_CURSOR_ENTER;
 	event.eventData.cursorEnterEvent.entered = entered == GL_TRUE ? true : false;
 
-	_glfwAppLayer->_processEvent(event);
+	_glfwAppLayer->getNLE()->getInputProcessor()->processInputEvent(event);
 }
 
 //===========================================================================================================================
@@ -365,7 +366,7 @@ void NLEGlfwApplicationLayer::onScrollEvent(GLFWwindow *window, double xOffset, 
 	event.eventData.scrollEvent.xOffset = xOffset;
 	event.eventData.scrollEvent.yOffset = yOffset;
 
-	_glfwAppLayer->_processEvent(event);
+	_glfwAppLayer->getNLE()->getInputProcessor()->processInputEvent(event);
 }
 
 //===========================================================================================================================
@@ -376,7 +377,7 @@ void NLEGlfwApplicationLayer::onWindowPositionEvent(GLFWwindow *window, int xPos
 	event.eventData.windowPositionEvent.xPos = xPos;
 	event.eventData.windowPositionEvent.yPos = yPos;
 
-	_glfwAppLayer->_processEvent(event);
+	_glfwAppLayer->getNLE()->getInputProcessor()->processInputEvent(event);
 }
 
 //===========================================================================================================================
@@ -387,7 +388,7 @@ void NLEGlfwApplicationLayer::onWindowSizeEvent(GLFWwindow *window, int width, i
 	event.eventData.windowSizeEvent.width = width;
 	event.eventData.windowSizeEvent.height = height;
 
-	_glfwAppLayer->_processEvent(event);
+	_glfwAppLayer->getNLE()->getInputProcessor()->processInputEvent(event);
 }
 
 //===========================================================================================================================
@@ -396,7 +397,7 @@ void NLEGlfwApplicationLayer::onWindowCloseEvent(GLFWwindow *window)
 	NLE_INPUT::Event event;
 	event.eventType = NLE_INPUT::EVENT_TYPE::EVENT_WINDOW_CLOSE;
 
-	_glfwAppLayer->_processEvent(event);
+	_glfwAppLayer->getNLE()->getInputProcessor()->processInputEvent(event);
 }
 
 //===========================================================================================================================
@@ -405,7 +406,7 @@ void NLEGlfwApplicationLayer::onWindowRefreshEvent(GLFWwindow *window)
 	NLE_INPUT::Event event;
 	event.eventType = NLE_INPUT::EVENT_TYPE::EVENT_WINDOW_REFRESH;
 
-	_glfwAppLayer->_processEvent(event);
+	_glfwAppLayer->getNLE()->getInputProcessor()->processInputEvent(event);
 }
 
 //===========================================================================================================================
@@ -415,7 +416,7 @@ void NLEGlfwApplicationLayer::onWindowFocusEvent(GLFWwindow *window, int focused
 	event.eventType = NLE_INPUT::EVENT_TYPE::EVENT_WINDOW_FOCUS;
 	event.eventData.windowFocusEvent.focused = focused == GL_TRUE ? true : false;
 
-	_glfwAppLayer->_processEvent(event);
+	_glfwAppLayer->getNLE()->getInputProcessor()->processInputEvent(event);
 }
 
 //===========================================================================================================================
@@ -425,7 +426,7 @@ void NLEGlfwApplicationLayer::onWindowIconifyEvent(GLFWwindow *window, int iconi
 	event.eventType = NLE_INPUT::EVENT_TYPE::EVENT_WINDOW_ICONIFY;
 	event.eventData.windowIconifyEvent.iconified = iconified == GL_TRUE ? true : false;
 
-	_glfwAppLayer->_processEvent(event);
+	_glfwAppLayer->getNLE()->getInputProcessor()->processInputEvent(event);
 }
 
 //===========================================================================================================================
@@ -434,7 +435,7 @@ void NLEGlfwApplicationLayer::onClipboardCopyEvent()
 	NLE_INPUT::Event event;
 	event.eventType = NLE_INPUT::EVENT_TYPE::EVENT_CLIPBOARD_COPY;
 
-	_glfwAppLayer->_processEvent(event);
+	_glfwAppLayer->getNLE()->getInputProcessor()->processInputEvent(event);
 }
 
 //===========================================================================================================================
@@ -443,7 +444,7 @@ void NLEGlfwApplicationLayer::onClipboardCutEvent()
 	NLE_INPUT::Event event;
 	event.eventType = NLE_INPUT::EVENT_TYPE::EVENT_CLIPBOARD_CUT;
 
-	_glfwAppLayer->_processEvent(event);
+	_glfwAppLayer->getNLE()->getInputProcessor()->processInputEvent(event);
 }
 
 //===========================================================================================================================
@@ -452,14 +453,13 @@ void NLEGlfwApplicationLayer::onClipboardPasteEvent()
 	NLE_INPUT::Event event;
 	event.eventType = NLE_INPUT::EVENT_TYPE::EVENT_CLIPBOARD_PASTE;
 
-	_glfwAppLayer->_processEvent(event);
+	_glfwAppLayer->getNLE()->getInputProcessor()->processInputEvent(event);
 }
 
 //===========================================================================================================================
 int main(int argc, const char* argv[])
 {
 	std::shared_ptr<NLEGlfwApplicationLayer> appLayer = NULL;
-	std::shared_ptr<NLEInterface> nle = NULL;
 
 	appLayer = NLEGlfwApplicationLayer::instance();
 	appLayer->setFullscreenHint(false);
