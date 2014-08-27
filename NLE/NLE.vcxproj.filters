@@ -176,9 +176,6 @@
     <ClInclude Include="..\include\Input\NLEInputProcessor.h">
       <Filter>Header Files\Input</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\Input\NLEInputSupply.h">
-      <Filter>Header Files\Input</Filter>
-    </ClInclude>
     <ClInclude Include="..\include\GUI\NLECeguiInputMap.h">
       <Filter>Header Files\GUI</Filter>
     </ClInclude>
@@ -206,9 +203,6 @@
     <ClInclude Include="..\include\Application\NLEGlfwInputMap.h">
       <Filter>Header Files\Application</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\Application\NLEApplicationLayer.h">
-      <Filter>Header Files\Application</Filter>
-    </ClInclude>
     <ClInclude Include="..\include\Math\NLEMath.h">
       <Filter>Header Files\Math</Filter>
     </ClInclude>
@@ -223,6 +217,9 @@
     </ClInclude>
     <ClInclude Include="..\include\NLEWindowReference.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\Input\NLEInputProcessorInterface.h">
+      <Filter>Header Files\Input</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

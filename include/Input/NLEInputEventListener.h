@@ -34,7 +34,7 @@ THE SOFTWARE.
 class NLEInputEventListener
 {
 public:
-	~NLEInputEventListener(){}
+	virtual ~NLEInputEventListener(){}
 	virtual void processInputEvent(NLE_INPUT::Event event) = 0;
 };
 #endif

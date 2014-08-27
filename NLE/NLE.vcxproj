@@ -581,16 +581,6 @@
     </ProjectReference>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="..\include\Application\NLEApplicationLayer.h">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='noApplication_Debug_DLL|Win32'">false</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='noApplication_Debug_Lib|Win32'">false</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='noApplication_Release_DLL|Win32'">false</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='noApplication_Release_Lib|Win32'">false</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='noApplication_Debug_DLL|x64'">false</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='noApplication_Debug_Lib|x64'">false</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='noApplication_Release_DLL|x64'">false</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='noApplication_Release_Lib|x64'">false</ExcludedFromBuild>
-    </ClInclude>
     <ClInclude Include="..\include\Application\NLEGlfwApplicationLayer.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='noApplication_Debug_DLL|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='noApplication_Debug_Lib|Win32'">true</ExcludedFromBuild>
@@ -616,7 +606,7 @@
     <ClInclude Include="..\include\Input\NLEInputEventListener.h" />
     <ClInclude Include="..\include\Input\NLEInputEvents.h" />
     <ClInclude Include="..\include\Input\NLEInputProcessor.h" />
-    <ClInclude Include="..\include\Input\NLEInputSupply.h" />
+    <ClInclude Include="..\include\Input\NLEInputProcessorInterface.h" />
     <ClInclude Include="..\include\math\DXMath\DXMathMatrixFunctions.h" />
     <ClInclude Include="..\include\math\DXMath\DXMathStructures.h" />
     <ClInclude Include="..\include\math\DXMath\DXMathVector3DFunctions.h" />

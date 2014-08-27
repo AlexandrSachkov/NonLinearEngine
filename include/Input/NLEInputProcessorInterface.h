@@ -26,15 +26,15 @@ THE SOFTWARE.
 -----------------------------------------------------------------------------
 */
 
-#ifndef NLE_INPUT_SUPPLY_
-#define NLE_INPUT_SUPPLY_
+#ifndef NLE_INPUT_PROCESSOR_INTERFACE_
+#define NLE_INPUT_PROCESSOR_INTERFACE_
 
-#include "Input\NLEInputEvents.h"
+#include "Input\NLEInputEventListener.h"
 
-class NLEInputSupply
+class NLEInputProcessorInterface : public virtual NLEInputEventListener
 {
 public:
-	~NLEInputSupply(){}
-	virtual bool bindInputEventCallback	(void(*)(NLE_INPUT::Event event)) =0;
+	virtual ~NLEInputProcessorInterface(){}
 };
+
 #endif

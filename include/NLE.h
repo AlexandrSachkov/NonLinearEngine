@@ -38,6 +38,7 @@ THE SOFTWARE.
 class NLE_Log;
 class NLELogInterface;
 class NLEInputProcessor;
+class NLEInputProcessorInterface;
 class NLRE;
 class NLEGuiManager;
 
@@ -62,7 +63,7 @@ public:
 	
 	std::shared_ptr<NLELogInterface> getLog();
 	std::shared_ptr<NLRE> getRenderingEngine();
-	std::shared_ptr<NLEInputProcessor> getInputProcessor();
+	std::shared_ptr<NLEInputProcessorInterface> getInputProcessor();
 	std::shared_ptr<NLEGuiManager> getGuiManager();
 
 private:

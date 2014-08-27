@@ -30,12 +30,13 @@ THE SOFTWARE.
 #define NLE_INPUT_PROCESSOR_
 
 #include "Input\NLEInputEvents.h"
+#include "Input\NLEInputProcessorInterface.h"
 #include <memory>
 #include <vector>
 
 class NLEInputEventListener;
 
-class NLEInputProcessor
+class NLEInputProcessor : public NLEInputProcessorInterface
 {
 public:
 	static std::shared_ptr<NLEInputProcessor> instance();
@@ -45,7 +46,7 @@ public:
 	void stop();
 	bool isRunning();
 
-	static void processInputEvent(NLE_INPUT::Event event);
+	void processInputEvent(NLE_INPUT::Event event);
 
 	static bool registerInputEventListener(NLEInputEventListener* listener);
 	static bool unregisterInputEventListener(NLEInputEventListener* listener);

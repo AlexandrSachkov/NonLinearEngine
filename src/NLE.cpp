@@ -29,11 +29,9 @@ THE SOFTWARE.
 #include "stdafx.h"
 #include "NLELog.h"
 #include "NLE.h"
-#include "Application\NLEApplicationLayer.h"
 #include "RenderingEngine\NLRE.h"
 #include "RenderingEngine\SceneManager\NLRESceneManager.h"
 #include "Input\NLEInputProcessor.h"
-#include "Input\NLEInputSupply.h"
 #include "GUI\NLEGuiManager.h"
 
 
@@ -192,9 +190,9 @@ std::shared_ptr<NLRE> NLE::getRenderingEngine()
 }
 
 //===========================================================================================================================
-std::shared_ptr<NLEInputProcessor> NLE::getInputProcessor()
+std::shared_ptr<NLEInputProcessorInterface> NLE::getInputProcessor()
 {
-	return _inputProcessor;
+	return std::dynamic_pointer_cast<NLEInputProcessorInterface>(_inputProcessor);
 }
 
 //===========================================================================================================================

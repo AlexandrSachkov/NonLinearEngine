@@ -33,7 +33,7 @@ THE SOFTWARE.
 #include <memory>
 
 class NLELogInterface;
-class NLEInputProcessor;
+class NLEInputProcessorInterface;
 class NLRE;
 class NLEGuiManager;
 
@@ -53,7 +53,7 @@ public:
 
 	virtual std::shared_ptr<NLELogInterface> getLog()=0;
 	virtual std::shared_ptr<NLRE> getRenderingEngine() =0;
-	virtual std::shared_ptr<NLEInputProcessor> getInputProcessor()=0;
+	virtual std::shared_ptr<NLEInputProcessorInterface> getInputProcessor()=0;
 	virtual std::shared_ptr<NLEGuiManager> getGuiManager()=0;
 };
 
