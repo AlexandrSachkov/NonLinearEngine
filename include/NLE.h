@@ -99,7 +99,7 @@ extern "C" _NLE_API_ NLEInterface* APIENTRY GetNLE(
 	return new NLE(winRef, width, height);
 }
 #elif defined(_NLE_DLL_)
-extern "C" _NLE_API_ NLEInterface* APIENTRY GetNLE(
+extern "C" _NLE_API_ NLEInterface* GetNLE(
 	NLEWindowReference winRef,
 	int width,
 	int height
