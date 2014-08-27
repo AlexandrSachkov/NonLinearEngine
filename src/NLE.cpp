@@ -37,6 +37,22 @@ THE SOFTWARE.
 #include "GUI\NLEGuiManager.h"
 
 
+NLE* NLE::_nle = NULL;
+
+//===========================================================================================================================
+NLEInterface* NLE::instance(
+	NLEWindowReference winRef,
+	int width,
+	int height
+	)
+{
+	if (!_nle)
+	{
+		_nle = new NLE(winRef, width, height);
+	}
+	return _nle;
+}
+
 //===========================================================================================================================
 NLE::NLE(
 	NLEWindowReference winRef,

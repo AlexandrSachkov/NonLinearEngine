@@ -105,18 +105,16 @@ bool NLEGlfwApplicationLayer::initialize()
 	}
 	setWindowCallbacks(_window);
 
-	_nle = std::shared_ptr<NLEInterface>(new NLE(getWindowReference(), _width, _height));
+	_nle = std::shared_ptr<NLEInterface>(NLE::instance(getWindowReference(), _width, _height));
+	
 	std::shared_ptr<NLELogInterface> log = _nle->getLog();
-	if (log)
-	{
-		log->registerConsoleCallback(consoleCallback);
-		log->registerDebugCallback(debugCallback);
-		log->registerErrorCallback(errorCallback);
-	}
+	if (!log) return false;
 
+	log->registerConsoleCallback(consoleCallback);
+	log->registerDebugCallback(debugCallback);
+	log->registerErrorCallback(errorCallback);
 
 	if (!_nle->initialize()) return false;
-
 	NLE_Log::console("======> Application Layer successfully initialized.");
 	return true;
 }

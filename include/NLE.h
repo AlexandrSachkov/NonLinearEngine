@@ -33,7 +33,6 @@ THE SOFTWARE.
 #include "RenderingEngine\NLREMain\NLRELog.h"
 #include "NLEWindowReference.h"
 #include "NLEInterface.h"
-#include "NLESingleInstance.h"
 #include "NLEDllApi.h"
 
 class NLE_Log;
@@ -42,10 +41,10 @@ class NLEInputProcessor;
 class NLRE;
 class NLEGuiManager;
 
-class NLE : public NLEInterface, public NLESingleInstance<NLE>
+class NLE : public NLEInterface
 {
 public:		
-	NLE(
+	static NLEInterface* instance(
 		NLEWindowReference winRef,
 		int width,
 		int height
@@ -67,6 +66,11 @@ public:
 	std::shared_ptr<NLEGuiManager> getGuiManager();
 
 private:
+	NLE(
+		NLEWindowReference winRef,
+		int width,
+		int height
+		);
 	NLE(const NLE& other){}
 	NLEInputProcessor& operator=(const NLEInputProcessor&){}
 
@@ -84,6 +88,8 @@ private:
 	bool _running;
 	bool _initialized;
 
+	static NLE* _nle;
+
 	std::shared_ptr<NLE_Log> _log;
 	std::shared_ptr<NLEInputProcessor> _inputProcessor;
 	std::shared_ptr<NLRE> _renderingEngine;
@@ -97,7 +103,7 @@ extern "C" _NLE_API_ NLEInterface* APIENTRY GetNLE(
 	int height
 	)
 {
-	return new NLE(winRef, width, height);
+	return NLE::instance(winRef, width, height);
 }
 #elif defined(_NLE_DLL_)
 extern "C" _NLE_API_ NLEInterface* GetNLE(
