@@ -95,9 +95,9 @@ void NLRE::importAsset(std::wstring path)
 	}
 }
 
-void NLRE::clearAssets()
+void NLRE::disposeAssets()
 {
-	_sceneManager->clearAssets();
+	_sceneManager->disposeAssets();
 }
 
 //===========================================================================================================================
