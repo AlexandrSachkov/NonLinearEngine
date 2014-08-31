@@ -465,6 +465,13 @@ int main(int argc, const char* argv[])
 		Sleep(10000);
 		return 0;
 	}
+	std::shared_ptr<NLEInterface> nle = appLayer->getNLE();
+
+	std::wstring modelPath = L"D:\\3DModels\\Altair Model\\altair2.dae";
+	if (nle)
+	{
+		nle->getRenderingEngine()->importAsset(modelPath);
+	}
 
 	appLayer->runMessageLoop();
 	return 0;

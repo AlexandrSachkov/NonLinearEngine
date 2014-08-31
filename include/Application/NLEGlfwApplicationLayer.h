@@ -66,6 +66,7 @@ public:
 	std::wstring pasteText();
 
 	bool bindInputEventCallback(void(*processEvent)(NLE_INPUT::Event event));
+	std::shared_ptr<NLEInterface> getNLE();
 
 private:	
 	NLEGlfwApplicationLayer();
@@ -73,7 +74,6 @@ private:
 	NLEGlfwApplicationLayer& operator=(const NLEGlfwApplicationLayer&){}
 
 	void setWindowCallbacks(GLFWwindow* window);
-	std::shared_ptr<NLEInterface> getNLE();
 
 	static void debugCallback(char text[]);
 	static void consoleCallback(char text[]);

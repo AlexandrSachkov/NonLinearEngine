@@ -85,10 +85,6 @@ bool NLE::initialize()
 		_renderingEngine = NLRE::instance(_winRef, _width, _height);
 		_guiManager = NLEGuiManager::instance(_renderingEngine);
 		_inputProcessor = NLEInputProcessor::instance();
-		//======================= FOR TESTING PURPOSES =================
-		std::wstring path = L"D:\\3DModels\\Altair Model\\altair2.dae";
-		_renderingEngine->importAsset(path);
-		//==============================================================
 	}
 	catch (std::exception& e)
 	{

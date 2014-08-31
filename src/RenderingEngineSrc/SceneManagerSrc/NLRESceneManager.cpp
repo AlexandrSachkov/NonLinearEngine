@@ -54,7 +54,7 @@ NLRESceneManager::NLRESceneManager(
 
 NLRESceneManager::~NLRESceneManager()
 {
-	_assets.clear();
+	disposeAssets();
 }
 
 void NLRESceneManager::addAssets(std::vector<std::shared_ptr<NLRE_RenderableAsset>>& assets)
