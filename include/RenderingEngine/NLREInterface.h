@@ -29,8 +29,6 @@ THE SOFTWARE.
 #ifndef NLRE_INTERFACE_
 #define NLRE_INTERFACE_
 
-#include <string>
-
 class NLREInterface
 {
 public:
