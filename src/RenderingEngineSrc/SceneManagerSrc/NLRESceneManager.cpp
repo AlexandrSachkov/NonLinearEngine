@@ -35,10 +35,10 @@ THE SOFTWARE.
 
 
 NLRESceneManager::NLRESceneManager(
-	std::shared_ptr<NLREDeviceController> deviceController, 
+	std::shared_ptr<NLREDeviceController> deviceController,
 	std::shared_ptr<NLRERenderingDevice> renderingDevice,
 	std::shared_ptr<NLRETextureLoader> textureLoader,
-	int width, 
+	int width,
 	int height)
 {
 	if (!deviceController || !renderingDevice || !textureLoader)
@@ -67,21 +67,25 @@ void NLRESceneManager::addAssets(std::vector<std::shared_ptr<NLRE_RenderableAsse
 
 void NLRESceneManager::render()
 {
-	for (std::vector<std::shared_ptr<NLRE_RenderableAsset>>::iterator it = _assets.begin(); it != _assets.end(); ++it)
+	if (!_assets.empty())
 	{
-		std::shared_ptr<NLRE_RenderableAsset> asset = *it;
-		NLE_MATRIX objWorld = NLEMath::NLELoadFloat4x4(&(asset->transformStruct.transformation));
-		//objWorld = NLEMath::NLEMatrixTranspose(objWorld);
-		//printFloat4x4(asset->transformStruct.transformation);
+		for (std::vector<std::shared_ptr<NLRE_RenderableAsset>>::iterator it = _assets.begin(); it != _assets.end(); ++it)
+		{
+			std::shared_ptr<NLRE_RenderableAsset> asset = *it;
+			NLE_MATRIX objWorld = NLEMath::NLELoadFloat4x4(&(asset->transformStruct.transformation));
+			//objWorld = NLEMath::NLEMatrixTranspose(objWorld);
+			//printFloat4x4(asset->transformStruct.transformation);
 
-		NLE_MATRIX WVP = objWorld * _activeCamera->getViewProjection();
-		NLRE_Transformation objTransform;
-		NLEMath::NLEStoreFloat4x4(&(objTransform.transformation), NLEMath::NLEMatrixTranspose(WVP));
-		
+			NLE_MATRIX WVP = objWorld * _activeCamera->getViewProjection();
+			NLRE_Transformation objTransform;
+			NLEMath::NLEStoreFloat4x4(&(objTransform.transformation), NLEMath::NLEMatrixTranspose(WVP));
 
-		_renderingDevice->updateBuffer(asset->transformationBuffer, &objTransform, sizeof(objTransform));
+
+			_renderingDevice->updateBuffer(asset->transformationBuffer, &objTransform, sizeof(objTransform));
+		}
+		_deviceController->render(_assets);
 	}
-	_deviceController->render(_assets);
+
 }
 
 void NLRESceneManager::printFloat4x4(NLE_FLOAT4X4& matrix)
