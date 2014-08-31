@@ -65,6 +65,11 @@ void NLRESceneManager::addAssets(std::vector<std::shared_ptr<NLRE_RenderableAsse
 	}
 }
 
+void NLRESceneManager::clearAssets()
+{
+	_assets.clear();
+}
+
 void NLRESceneManager::render()
 {
 	if (!_assets.empty())
@@ -85,7 +90,6 @@ void NLRESceneManager::render()
 		}
 		_deviceController->render(_assets);
 	}
-
 }
 
 void NLRESceneManager::printFloat4x4(NLE_FLOAT4X4& matrix)

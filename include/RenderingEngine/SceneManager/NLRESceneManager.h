@@ -52,6 +52,7 @@ public:
 
 	void render();
 	void addAssets(std::vector<std::shared_ptr<NLRE_RenderableAsset>>& assets);
+	void clearAssets();
 
 	void cameraReset();
 	void cameraUpdate();
