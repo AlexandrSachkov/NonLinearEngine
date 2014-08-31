@@ -29,6 +29,7 @@ THE SOFTWARE.
 #ifndef NLRE_
 #define NLRE_
 
+#include "RenderingEngine\NLREInterface.h"
 #include "NLEWindowReference.h"
 #include <memory>
 
@@ -37,7 +38,7 @@ class NLRESceneManager;
 class NLREDeviceController;
 class NLRETextureLoader;
 
-class NLRE
+class NLRE : public NLREInterface
 {
 public:
 	static std::shared_ptr<NLRE> instance(

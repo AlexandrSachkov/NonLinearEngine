@@ -1,8 +1,8 @@
 /*
 -----------------------------------------------------------------------------
-This source file is part of NLE
-(NonLinear Engine)
-For the latest info, see https://github.com/AlexandrSachkov/NonLinearEngine
+This source file is part of NLRE
+(NonLinear Rendering Engine)
+For the latest info, see https://github.com/AlexandrSachkov/NonLinearRenderingEngine
 
 Copyright (c) 2014 Alexandr Sachkov & NonLinear Engine Team
 
@@ -26,35 +26,16 @@ THE SOFTWARE.
 -----------------------------------------------------------------------------
 */
 
-#ifndef NLE_INTERFACE_
-#define NLE_INTERFACE_
+#ifndef NLRE_INTERFACE_
+#define NLRE_INTERFACE_
 
-#include "NLEWindowReference.h"
-#include <memory>
+#include <string>
 
-class NLELogInterface;
-class NLEInputProcessorInterface;
-class NLREInterface;
-class NLEGuiManager;
-
-class NLEInterface
+class NLREInterface
 {
 public:
-	virtual ~NLEInterface(){}
-	virtual bool initialize() = 0;
-	virtual void release() = 0;
-
-	virtual bool isInitialized() = 0;
-	virtual bool isRunning()=0;
-
-	virtual void run() =0;
-	virtual void stop() =0;
-	virtual void onTick()=0;
-
-	virtual std::shared_ptr<NLELogInterface> getLog()=0;
-	virtual std::shared_ptr<NLREInterface> getRenderingEngine() =0;
-	virtual std::shared_ptr<NLEInputProcessorInterface> getInputProcessor()=0;
-	virtual std::shared_ptr<NLEGuiManager> getGuiManager()=0;
+	virtual ~NLREInterface(){}
+	virtual void importAsset(std::wstring path) =0;
 };
 
 #endif

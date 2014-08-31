@@ -35,7 +35,7 @@ THE SOFTWARE.
 #include "GUI\NLEGuiManager.h"
 
 
-NLE* NLE::_nle = NULL;
+NLE* NLE::_nle = nullptr;
 
 //===========================================================================================================================
 NLEInterface* NLE::instance(
@@ -184,9 +184,9 @@ std::shared_ptr<NLELogInterface> NLE::getLog()
 }
 
 //===========================================================================================================================
-std::shared_ptr<NLRE> NLE::getRenderingEngine()
+std::shared_ptr<NLREInterface> NLE::getRenderingEngine()
 {
-	return _renderingEngine;
+	return std::dynamic_pointer_cast<NLREInterface>(_renderingEngine);
 }
 
 //===========================================================================================================================

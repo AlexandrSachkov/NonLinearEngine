@@ -40,6 +40,7 @@ class NLELogInterface;
 class NLEInputProcessor;
 class NLEInputProcessorInterface;
 class NLRE;
+class NLREInterface;
 class NLEGuiManager;
 
 class NLE : public NLEInterface
@@ -62,7 +63,7 @@ public:
 	void onTick();
 	
 	std::shared_ptr<NLELogInterface> getLog();
-	std::shared_ptr<NLRE> getRenderingEngine();
+	std::shared_ptr<NLREInterface> getRenderingEngine();
 	std::shared_ptr<NLEInputProcessorInterface> getInputProcessor();
 	std::shared_ptr<NLEGuiManager> getGuiManager();
 

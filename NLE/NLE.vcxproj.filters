@@ -221,6 +221,9 @@
     <ClInclude Include="..\include\Input\NLEInputProcessorInterface.h">
       <Filter>Header Files\Input</Filter>
     </ClInclude>
+    <ClInclude Include="..\include\RenderingEngine\NLREInterface.h">
+      <Filter>Header Files\RenderingEngine</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\include\math\DXMath\DXMathMatrixFunctions.inl">
