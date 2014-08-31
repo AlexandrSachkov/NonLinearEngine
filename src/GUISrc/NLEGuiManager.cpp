@@ -90,6 +90,10 @@ bool NLEGuiManager::initialize()
 	CEGUI::System::create(*_guiRenderer);
 	_renderingEngine->getDeviceController()->setGuiRenderCallback(NLEGuiManager::renderGUI);
 
+	NLEInputProcessor::registerInputEventListener(this);
+	delete CEGUI::System::getSingleton().getClipboard()->getNativeProvider();
+	CEGUI::System::getSingleton().getClipboard()->setNativeProvider(this);
+
 
 	// initialise the required dirs for the DefaultResourceProvider
 	CEGUI::DefaultResourceProvider* rp = static_cast<CEGUI::DefaultResourceProvider*>
@@ -152,10 +156,6 @@ bool NLEGuiManager::initialize()
 	// set size to be half the size of the parent
 	fWnd->setSize(CEGUI::USize(CEGUI::UDim(0.5f, 0.0f), CEGUI::UDim(0.5f, 0.0f)));
 	fWnd->setText("Hello World!");
-	
-	NLEInputProcessor::registerInputEventListener(this);
-	delete CEGUI::System::getSingleton().getClipboard()->getNativeProvider();
-	CEGUI::System::getSingleton().getClipboard()->setNativeProvider(this);
 
 	return true;
 }

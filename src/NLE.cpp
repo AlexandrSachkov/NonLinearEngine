@@ -160,10 +160,7 @@ void NLE::onTick()
 {
 	if (isRunning())
 	{
-		//======================= FOR TESTING PURPOSES =================
-		_renderingEngine->getSceneManager()->cameraUpdate();
 		_renderingEngine->render();
-		//==============================================================
 	}
 }
 
