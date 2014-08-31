@@ -51,6 +51,7 @@ public:
 
 	void render();
 	void importAsset(std::wstring path);
+	void clearAssets();
 
 	std::shared_ptr<NLREAssetImporter> getAssetImporter();	
 	std::shared_ptr<NLRETextureLoader> getTextureLoader();

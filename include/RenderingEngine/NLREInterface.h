@@ -36,6 +36,7 @@ class NLREInterface
 public:
 	virtual ~NLREInterface(){}
 	virtual void importAsset(std::wstring path) =0;
+	virtual void clearAssets()=0;
 };
 
 #endif

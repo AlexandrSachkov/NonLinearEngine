@@ -95,6 +95,11 @@ void NLRE::importAsset(std::wstring path)
 	}
 }
 
+void NLRE::clearAssets()
+{
+	_sceneManager->clearAssets();
+}
+
 //===========================================================================================================================
 std::shared_ptr<NLREAssetImporter> NLRE::getAssetImporter()
 {
