@@ -88,8 +88,9 @@ void NLRESceneManager::render()
 
 			_renderingDevice->updateBuffer(asset->transformationBuffer, &objTransform, sizeof(objTransform));
 		}
-		_deviceController->render(_assets);
 	}
+	_deviceController->render(_assets);
+	
 }
 
 void NLRESceneManager::printFloat4x4(NLE_FLOAT4X4& matrix)

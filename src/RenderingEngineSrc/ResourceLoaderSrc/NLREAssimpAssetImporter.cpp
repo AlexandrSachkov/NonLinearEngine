@@ -149,37 +149,7 @@ void NLREAssimpAssetImporter::nextNode(
 		nextNode(scene, node->mChildren[i], transform, meshArr, materialArr, assetArr, level + 1);
 	}
 }
-/*
-void NLREAssimpAssetImporter::nextNode(
-	const aiScene* scene,
-	aiNode* node,
-	aiMatrix4x4 accTransform,
-	std::shared_ptr<NLRE_Mesh>* meshArr,
-	std::shared_ptr<NLRE_Material>* materialArr,
-	std::vector<std::shared_ptr<NLRE_RenderableAsset>>& assetArr,
-	int level)
-{
-	aiMatrix4x4 transform;
-	if (level == 1)
-	{
-		accTransform = transform;
-	}
-	printFloat4x4(transform);
-	if (node->mNumMeshes > 0)
-	{
-		for (int i = 0; i < node->mNumMeshes; i++)
-		{
-			assembleAsset(scene, node->mMeshes[i], accTransform, meshArr, materialArr, assetArr, level);
-		}
-	}
 
-	for (int i = 0; i < node->mNumChildren; i++)
-	{
-		transform = node->mChildren[i]->mTransformation * accTransform;
-		nextNode(scene, node->mChildren[i], transform, meshArr, materialArr, assetArr, level+1);
-	}
-}
-*/
 void NLREAssimpAssetImporter::assembleAsset(
 	const aiScene* scene,
 	unsigned int meshIndex,

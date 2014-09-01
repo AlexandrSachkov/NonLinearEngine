@@ -42,6 +42,7 @@ class NLEInputProcessorInterface;
 class NLRE;
 class NLREInterface;
 class NLEGuiManager;
+class NLEGuiManagerInterface;
 
 class NLE : public NLEInterface
 {
@@ -65,7 +66,7 @@ public:
 	std::shared_ptr<NLELogInterface> getLog();
 	std::shared_ptr<NLREInterface> getRenderingEngine();
 	std::shared_ptr<NLEInputProcessorInterface> getInputProcessor();
-	std::shared_ptr<NLEGuiManager> getGuiManager();
+	std::shared_ptr<NLEGuiManagerInterface> getGuiManager();
 
 private:
 	NLE(

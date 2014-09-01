@@ -459,7 +459,6 @@ int main(int argc, const char* argv[])
 	std::shared_ptr<NLEGlfwApplicationLayer> appLayer = NULL;
 	appLayer = NLEGlfwApplicationLayer::instance();
 	appLayer->setFullscreenHint(false);
-
 	if (!appLayer->initialize())
 	{
 		Sleep(10000);
@@ -468,6 +467,7 @@ int main(int argc, const char* argv[])
 	std::shared_ptr<NLEInterface> nle = appLayer->getNLE();
 
 	std::wstring modelPath = L"D:\\3DModels\\Altair Model\\altair2.dae";
+	//modelPath = L"C:\\Users\\Alex\\Desktop\\teapot.dae";
 	if (nle)
 	{
 		nle->getRenderingEngine()->importAsset(modelPath);

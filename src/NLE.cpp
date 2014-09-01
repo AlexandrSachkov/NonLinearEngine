@@ -190,8 +190,8 @@ std::shared_ptr<NLEInputProcessorInterface> NLE::getInputProcessor()
 }
 
 //===========================================================================================================================
-std::shared_ptr<NLEGuiManager> NLE::getGuiManager()
+std::shared_ptr<NLEGuiManagerInterface> NLE::getGuiManager()
 {
-	return _guiManager;
+	return std::dynamic_pointer_cast<NLEGuiManagerInterface>(_guiManager);
 }
 

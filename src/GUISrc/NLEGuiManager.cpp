@@ -92,32 +92,23 @@ bool NLEGuiManager::initialize()
 	_renderingEngine->getDeviceController()->setGuiRenderCallback(NLEGuiManager::renderGUI);
 
 	NLEInputProcessor::registerInputEventListener(this);
-	delete CEGUI::System::getSingleton().getClipboard()->getNativeProvider();
-	CEGUI::System::getSingleton().getClipboard()->setNativeProvider(this);
 
-
-	// initialise the required dirs for the DefaultResourceProvider
 	CEGUI::DefaultResourceProvider* rp = static_cast<CEGUI::DefaultResourceProvider*>
 		(CEGUI::System::getSingleton().getResourceProvider());
-	rp->setResourceGroupDirectory("schemes", "../datafiles/schemes/");
-	rp->setResourceGroupDirectory("imagesets", "../datafiles/imagesets/");
-	rp->setResourceGroupDirectory("fonts", "../datafiles/fonts/");
-	rp->setResourceGroupDirectory("layouts", "../datafiles/layouts/");
-	rp->setResourceGroupDirectory("looknfeels", "../datafiles/looknfeel/");
-	rp->setResourceGroupDirectory("scripts", "../datafiles/scripts/");
-
-	// This is only really needed if you are using Xerces and need to
-	// specify the schemas location
-	rp->setResourceGroupDirectory("schemas", "../datafiles/xml_schemas/");
+	rp->setResourceGroupDirectory("schemes", "./datafiles/schemes/");
+	rp->setResourceGroupDirectory("imagesets", "./datafiles/imagesets/");
+	rp->setResourceGroupDirectory("fonts", "./datafiles/fonts/");
+	rp->setResourceGroupDirectory("layouts", "./datafiles/layouts/");
+	rp->setResourceGroupDirectory("looknfeels", "./datafiles/looknfeel/");
+	rp->setResourceGroupDirectory("scripts", "./datafiles/scripts/");
+	rp->setResourceGroupDirectory("schemas", "./datafiles/xml_schemas/");
 	
-	// set the default resource groups to be used
 	CEGUI::ImageManager::setImagesetDefaultResourceGroup("imagesets");
 	CEGUI::Font::setDefaultResourceGroup("fonts");
 	CEGUI::Scheme::setDefaultResourceGroup("schemes");
 	CEGUI::WidgetLookManager::setDefaultResourceGroup("looknfeels");
 	CEGUI::WindowManager::setDefaultResourceGroup("layouts");
 	CEGUI::ScriptModule::setDefaultResourceGroup("lua_scripts");
-	// setup default group for validation schemas
 	CEGUI::XMLParser* parser = CEGUI::System::getSingleton().getXMLParser();
 	if (parser->isPropertyPresent("SchemaDefaultResourceGroup"))
 	{
@@ -126,22 +117,12 @@ bool NLEGuiManager::initialize()
 		
 	
 	CEGUI::ScriptModule::setDefaultResourceGroup("scripts");
-
-	// create (load) the TaharezLook scheme file
-	// (this auto-loads the TaharezLook looknfeel and imageset files)
 	CEGUI::SchemeManager::getSingleton().createFromFile("TaharezLook.scheme");
-	// create (load) a font.
-	// The first font loaded automatically becomes the default font, but note
-	// that the scheme might have already loaded a font, so there may already
-	// be a default set - if we want the "DejaVuSans-10" font to definitely
-	// be the default, we should set the default explicitly afterwards.
 	CEGUI::FontManager::getSingleton().createFromFile("DejaVuSans-10.font");
 
 	CEGUI::System::getSingleton().getDefaultGUIContext().setDefaultFont("DejaVuSans-10");
-	CEGUI::System::getSingleton().getDefaultGUIContext().
-		getMouseCursor().setDefaultImage("TaharezLook/MouseArrow");
-	CEGUI::System::getSingleton().getDefaultGUIContext().
-		setDefaultTooltipType("TaharezLook/Tooltip");
+	CEGUI::System::getSingleton().getDefaultGUIContext().getMouseCursor().setDefaultImage("TaharezLook/MouseArrow");
+	CEGUI::System::getSingleton().getDefaultGUIContext().setDefaultTooltipType("TaharezLook/Tooltip");
 
 	CEGUI::WindowManager& windowManager = CEGUI::WindowManager::getSingleton();
 	_rootWindow = windowManager.createWindow("DefaultWindow", "root");
@@ -150,21 +131,18 @@ bool NLEGuiManager::initialize()
 	_guiContext->setRootWindow(_rootWindow);
 	
 	CEGUI::FrameWindow* fWnd = static_cast<CEGUI::FrameWindow*>(
-		windowManager.createWindow("TaharezLook/FrameWindow", "testWindow"));
-
-	// position a quarter of the way in from the top-left of parent.
+		windowManager.createWindow("TaharezLook/FrameWindow", "testWindow")
+		);
 	fWnd->setPosition(CEGUI::UVector2(CEGUI::UDim(0.25f, 0.0f), CEGUI::UDim(0.25f, 0.0f)));
-	// set size to be half the size of the parent
 	fWnd->setSize(CEGUI::USize(CEGUI::UDim(0.5f, 0.0f), CEGUI::UDim(0.5f, 0.0f)));
-	fWnd->setText("My frame window");
+	fWnd->setText("Hello World!");
 	_rootWindow->addChild(fWnd);
-	
-	_fpsCount = windowManager.createWindow("TaharezLook/Label", "fpsCount");
-	_fpsCount->setPosition(CEGUI::UVector2(CEGUI::UDim(0.0f, 0.0f), CEGUI::UDim(0.0f, 0.0f)));
-	_fpsCount->setSize(CEGUI::USize(CEGUI::UDim(0.1f, 0.0f), CEGUI::UDim(0.1f, 0.0f)));
-	_fpsCount->setText("FPS: ");
-	_rootWindow->addChild(_fpsCount);
-	//_fpsCount->hide();
+
+	_fpsCountLabel = windowManager.createWindow("TaharezLook/Label", "fpsCount");
+	_fpsCountLabel->setPosition(CEGUI::UVector2(CEGUI::UDim(0.0f, 0.0f), CEGUI::UDim(0.0f, 0.0f)));
+	_fpsCountLabel->setSize(CEGUI::USize(CEGUI::UDim(0.1f, 0.0f), CEGUI::UDim(0.1f, 0.0f)));
+	_fpsCountLabel->setText("FPS: ");
+	_rootWindow->addChild(_fpsCountLabel);
 
 	return true;
 }
@@ -181,16 +159,25 @@ NLEGuiManager::~NLEGuiManager()
 //===========================================================================================================================
 void NLEGuiManager::updateUI()
 {
-	CEGUI::String message = "FPS: ";
-	message.append(std::to_string(_renderingEngine->getFPS()));
-	_fpsCount->setText(message);
+	if (_renderingEngine->fpsChanged())
+	{
+		CEGUI::String message = "FPS: ";
+		message.append(std::to_string(_renderingEngine->getFPS()));
+		_fpsCountLabel->setText(message);
+	}
 }
 
 //===========================================================================================================================
-void NLEGuiManager::showFPSCount(bool option)
+void NLEGuiManager::showFPS(bool option)
 {
-	if (option) _fpsCount->show();
-	else _fpsCount->hide();
+	if (option) _fpsCountLabel->show();
+	else _fpsCountLabel->hide();
+}
+
+//===========================================================================================================================
+void NLEGuiManager::setDataFilesRootPath(std::wstring path)
+{
+
 }
 
 //===========================================================================================================================
@@ -257,25 +244,4 @@ void NLEGuiManager::processInputEvent(NLE_INPUT::Event event)
 		_guiContext->injectPasteRequest();
 		break;
 	}
-}
-
-//===========================================================================================================================
-void NLEGuiManager::sendToClipboard(const CEGUI::String &mimeType, void *buffer, size_t size)
-{
-	/*
-	//temporary implementation
-	_appLayer->copyText(static_cast<const wchar_t*>(buffer));
-	*/
-}
-
-//===========================================================================================================================
-void NLEGuiManager::retrieveFromClipboard(CEGUI::String &mimeType, void *&buffer, size_t &size)
-{
-	/*
-	//temporary implementation
-	mimeType = "text/utf-8";
-	std::wstring text = _appLayer->pasteText();
-	buffer = (void*)text.c_str();
-	size = text.size();
-	*/
 }

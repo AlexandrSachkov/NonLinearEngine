@@ -398,6 +398,7 @@
     </ClInclude>
     <ClInclude Include="..\include\GUI\NLECeguiInputMap.h" />
     <ClInclude Include="..\include\GUI\NLEGuiManager.h" />
+    <ClInclude Include="..\include\GUI\NLEGuiManagerInterface.h" />
     <ClInclude Include="..\include\Input\NLEInputEventListener.h" />
     <ClInclude Include="..\include\Input\NLEInputEvents.h" />
     <ClInclude Include="..\include\Input\NLEInputProcessor.h" />

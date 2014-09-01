@@ -41,8 +41,8 @@ Global
 		{5A947143-45B4-408A-9A2C-F0BD9D5FD2F6}.noApplication_Release_Lib|Win32.Build.0 = noApplication_Release_DLL|Win32
 		{5A947143-45B4-408A-9A2C-F0BD9D5FD2F6}.noApplication_Release_Lib|x64.ActiveCfg = noApplication_Release_DLL|x64
 		{5A947143-45B4-408A-9A2C-F0BD9D5FD2F6}.noApplication_Release_Lib|x64.Build.0 = noApplication_Release_DLL|x64
-		{5A947143-45B4-408A-9A2C-F0BD9D5FD2F6}.Release|Win32.ActiveCfg = Debug|Win32
-		{5A947143-45B4-408A-9A2C-F0BD9D5FD2F6}.Release|Win32.Build.0 = Debug|Win32
+		{5A947143-45B4-408A-9A2C-F0BD9D5FD2F6}.Release|Win32.ActiveCfg = Release|Win32
+		{5A947143-45B4-408A-9A2C-F0BD9D5FD2F6}.Release|Win32.Build.0 = Release|Win32
 		{5A947143-45B4-408A-9A2C-F0BD9D5FD2F6}.Release|x64.ActiveCfg = Release|x64
 		{5A947143-45B4-408A-9A2C-F0BD9D5FD2F6}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection

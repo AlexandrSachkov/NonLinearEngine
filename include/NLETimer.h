@@ -38,7 +38,6 @@ public:
 	~NLETimer();
 
 	long double now();
-	long double getFPS();
 
 private:
 	NLETimer(const NLETimer&){}

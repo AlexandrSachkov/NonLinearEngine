@@ -55,6 +55,8 @@ public:
 	void disposeAssets();
 
 	long double getFPS();
+	void setNumberFramesToAvrg(unsigned int count);
+	bool fpsChanged();
 
 	std::shared_ptr<NLREAssetImporter> getAssetImporter();	
 	std::shared_ptr<NLRETextureLoader> getTextureLoader();
@@ -75,6 +77,9 @@ private:
 
 	NLETimer* _fpsTimer;
 	long double _fps;
+	bool _fpsChanged;
+	long double _numFramesToAvrg;
 	
+	int _numFrames;
 };
 #endif

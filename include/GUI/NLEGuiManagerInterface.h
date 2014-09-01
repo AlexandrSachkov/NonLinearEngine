@@ -1,8 +1,8 @@
 /*
 -----------------------------------------------------------------------------
-This source file is part of NLRE
-(NonLinear Rendering Engine)
-For the latest info, see https://github.com/AlexandrSachkov/NonLinearRenderingEngine
+This source file is part of NLE
+(NonLinear Engine)
+For the latest info, see https://github.com/AlexandrSachkov/NonLinearEngine
 
 Copyright (c) 2014 Alexandr Sachkov & NonLinear Engine Team
 
@@ -26,18 +26,14 @@ THE SOFTWARE.
 -----------------------------------------------------------------------------
 */
 
-#ifndef NLRE_INTERFACE_
-#define NLRE_INTERFACE_
+#ifndef NLE_GUI_MANAGER_INTERFACE_
+#define NLE_GUI_MANAGER_INTERFACE_
 
-class NLREInterface
+class NLEGuiManagerInterface
 {
 public:
-	virtual ~NLREInterface(){}
-	virtual bool importAsset(std::wstring path) =0;
-	virtual void disposeAssets()=0;
-	virtual long double getFPS()=0;
-	virtual void setNumberFramesToAvrg(unsigned int count)=0;
-	virtual bool fpsChanged()=0;
+	virtual ~NLEGuiManagerInterface(){}
+	virtual void showFPS(bool option)=0;
 };
 
 #endif

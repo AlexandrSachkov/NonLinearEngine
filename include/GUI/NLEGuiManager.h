@@ -31,8 +31,8 @@ THE SOFTWARE.
 #ifndef NLE_GUI_MANAGER_
 #define NLE_GUI_MANAGER_
 
+#include "GUI\NLEGuiManagerInterface.h"
 #include "Input\NLEInputEventListener.h"
-#include "CEGUI\Clipboard.h"
 #include <memory>
 #include <cstdio>
 
@@ -40,11 +40,12 @@ class NLRE;
 namespace CEGUI
 {
 	class Direct3D11Renderer;
+	class GUIContext;
 	class String;
 	class Window;
 };
 
-class NLEGuiManager : public NLEInputEventListener, public CEGUI::NativeClipboardProvider
+class NLEGuiManager : public NLEGuiManagerInterface, public NLEInputEventListener
 {
 public:
 	static std::shared_ptr<NLEGuiManager> instance(
@@ -54,10 +55,9 @@ public:
 	~NLEGuiManager();
 
 	void updateUI();
-	void showFPSCount(bool option);
+	void showFPS(bool option);
+	void setDataFilesRootPath(std::wstring path);
 
-	void sendToClipboard(const CEGUI::String &mimeType, void *buffer, size_t size);
-	void retrieveFromClipboard(CEGUI::String &mimeType, void *&buffer, size_t &size);
 	void processInputEvent(NLE_INPUT::Event event);
 	static void renderGUI();
 
@@ -76,7 +76,7 @@ private:
 	CEGUI::GUIContext* _guiContext;
 
 	CEGUI::Window* _rootWindow;
-	CEGUI::Window* _fpsCount;
+	CEGUI::Window* _fpsCountLabel;
 };
 
 #endif

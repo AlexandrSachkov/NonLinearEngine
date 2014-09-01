@@ -45,9 +45,3 @@ long double NLETimer::now()
 	_timePoint = tp;
 	return duration.count();
 }
-
-long double NLETimer::getFPS()
-{
-	long double one = 1.0;
-	return one / now();
-}
