@@ -74,6 +74,7 @@ private:
 	static std::shared_ptr<NLRE> _nlre;
 
 	NLETimer* _fpsTimer;
+	long double _fps;
 	
 };
 #endif

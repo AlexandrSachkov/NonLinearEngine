@@ -62,7 +62,9 @@ std::shared_ptr<NLRE> NLRE::instance()
 NLRE::NLRE(
 	NLEWindowReference hwnd, 
 	int width, 
-	int height){
+	int height
+	)
+{
 	_deviceController.reset(new NLREDeviceController(hwnd, width, height, NLRE_RENDERING_TECHNIQUE_ID::NLRE_FORWARD_RT));
 	std::shared_ptr<NLRERenderingDevice> renderingDevice = _deviceController->getRenderingDevice();
 	_textureLoader.reset(new NLREDirectXTexTextureLoader(renderingDevice));
@@ -70,6 +72,8 @@ NLRE::NLRE(
 	_assetImporter.reset(new NLREAssimpAssetImporter(renderingDevice, _textureLoader));
 
 	_fpsTimer = new NLETimer();
+	_fps = 0.0;
+
 	NLRE_Log::console("======> NLRE successfully initialized.");
 }
 
@@ -84,6 +88,7 @@ void NLRE::render()
 {
 	_sceneManager->cameraUpdate();
 	_sceneManager->render();
+	_fps = _fpsTimer->getFPS();
 }
 
 //===========================================================================================================================
@@ -96,8 +101,9 @@ bool NLRE::importAsset(std::wstring path)
 	if (_assetImporter->importAssets(path, assets))
 	{
 		NLRE_Log::console("Successfully imported asset at: %s", strPath.c_str());
-		NLRE_Log::console("Number of items in the asset vector: %i", assets.size());
 		NLRE_Log::console("It took %Lf seconds to load the model.\n", timer.now());
+		NLRE_Log::console("Number of items in the asset vector: %i", assets.size());
+		
 		_sceneManager->addAssets(assets);
 		return true;
 	}
@@ -112,7 +118,7 @@ void NLRE::disposeAssets()
 
 long double NLRE::getFPS()
 {
-	return 0.0;
+	return _fps;
 }
 
 //===========================================================================================================================
