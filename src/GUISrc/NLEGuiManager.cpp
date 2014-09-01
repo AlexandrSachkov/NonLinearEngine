@@ -43,7 +43,7 @@ THE SOFTWARE.
 #include "CEGUI\RendererModules\Direct3D11\Renderer.h"
 #include "CEGUI\DefaultResourceProvider.h"
 
-std::shared_ptr<NLEGuiManager> NLEGuiManager::_guiManager = NULL;
+std::shared_ptr<NLEGuiManager> NLEGuiManager::_guiManager = nullptr;
 
 //===========================================================================================================================
 std::shared_ptr<NLEGuiManager> NLEGuiManager::instance(
@@ -70,7 +70,8 @@ NLEGuiManager::NLEGuiManager(
 	)
 {
 	_renderingEngine = renderingEngine;
-	_guiRenderer = NULL;
+	_guiRenderer = nullptr;
+	_rootWindow = nullptr;
 
 	if (!initialize())
 	{
@@ -143,10 +144,10 @@ bool NLEGuiManager::initialize()
 		setDefaultTooltipType("TaharezLook/Tooltip");
 
 	CEGUI::WindowManager& windowManager = CEGUI::WindowManager::getSingleton();
-	CEGUI::Window* rootWindow = windowManager.createWindow("DefaultWindow", "root");
+	_rootWindow = windowManager.createWindow("DefaultWindow", "root");
 
 	_guiContext = &CEGUI::System::getSingleton().getDefaultGUIContext();
-	_guiContext->setRootWindow(rootWindow);
+	_guiContext->setRootWindow(_rootWindow);
 	
 	CEGUI::FrameWindow* fWnd = static_cast<CEGUI::FrameWindow*>(
 		windowManager.createWindow("TaharezLook/FrameWindow", "testWindow"));
@@ -155,9 +156,15 @@ bool NLEGuiManager::initialize()
 	fWnd->setPosition(CEGUI::UVector2(CEGUI::UDim(0.25f, 0.0f), CEGUI::UDim(0.25f, 0.0f)));
 	// set size to be half the size of the parent
 	fWnd->setSize(CEGUI::USize(CEGUI::UDim(0.5f, 0.0f), CEGUI::UDim(0.5f, 0.0f)));
-	fWnd->setText("Hello World!");
-	rootWindow->addChild(fWnd);
+	fWnd->setText("My frame window");
+	_rootWindow->addChild(fWnd);
 	
+	_fpsCount = windowManager.createWindow("TaharezLook/Label", "fpsCount");
+	_fpsCount->setPosition(CEGUI::UVector2(CEGUI::UDim(0.0f, 0.0f), CEGUI::UDim(0.0f, 0.0f)));
+	_fpsCount->setSize(CEGUI::USize(CEGUI::UDim(0.1f, 0.0f), CEGUI::UDim(0.1f, 0.0f)));
+	_fpsCount->setText("FPS: ");
+	_rootWindow->addChild(_fpsCount);
+	//_fpsCount->hide();
 
 	return true;
 }
@@ -174,7 +181,16 @@ NLEGuiManager::~NLEGuiManager()
 //===========================================================================================================================
 void NLEGuiManager::updateUI()
 {
+	CEGUI::String message = "FPS: ";
+	message.append(std::to_string(_renderingEngine->getFPS()));
+	_fpsCount->setText(message);
+}
 
+//===========================================================================================================================
+void NLEGuiManager::showFPSCount(bool option)
+{
+	if (option) _fpsCount->show();
+	else _fpsCount->hide();
 }
 
 //===========================================================================================================================

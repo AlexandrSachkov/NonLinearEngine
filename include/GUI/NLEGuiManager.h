@@ -41,6 +41,7 @@ namespace CEGUI
 {
 	class Direct3D11Renderer;
 	class String;
+	class Window;
 };
 
 class NLEGuiManager : public NLEInputEventListener, public CEGUI::NativeClipboardProvider
@@ -53,6 +54,7 @@ public:
 	~NLEGuiManager();
 
 	void updateUI();
+	void showFPSCount(bool option);
 
 	void sendToClipboard(const CEGUI::String &mimeType, void *buffer, size_t size);
 	void retrieveFromClipboard(CEGUI::String &mimeType, void *&buffer, size_t &size);
@@ -72,6 +74,9 @@ private:
 
 	CEGUI::Direct3D11Renderer* _guiRenderer;
 	CEGUI::GUIContext* _guiContext;
+
+	CEGUI::Window* _rootWindow;
+	CEGUI::Window* _fpsCount;
 };
 
 #endif

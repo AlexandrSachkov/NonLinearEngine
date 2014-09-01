@@ -41,7 +41,9 @@ NLETimer::~NLETimer()
 long double NLETimer::now()
 {
 	std::chrono::high_resolution_clock::time_point tp = std::chrono::high_resolution_clock::now();
-	return std::chrono::duration_cast<std::chrono::duration<long double>>(tp - _timePoint).count();
+	std::chrono::duration<long double> duration = std::chrono::duration_cast<std::chrono::duration<long double>>(tp - _timePoint);
+	_timePoint = tp;
+	return duration.count();
 }
 
 long double NLETimer::getFPS()
