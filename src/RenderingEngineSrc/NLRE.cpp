@@ -34,6 +34,7 @@ THE SOFTWARE.
 #include "RenderingEngine\ResourceLoader\NLREDirectXTexTextureLoader.h"
 #include "RenderingEngine\RenderingDevice\NLREDeviceController.h"
 #include "NLETimer.h"
+#include "Input\NLEInputProcessor.h"
 
 std::shared_ptr<NLRE> NLRE::_nlre = NULL;
 
@@ -78,6 +79,7 @@ NLRE::NLRE(
 	_fpsChanged = false;
 	_running = false;
 
+	NLEInputProcessor::registerInputEventListener(this);
 	NLRE_Log::console("======> NLRE successfully initialized.");
 }
 
@@ -136,7 +138,7 @@ bool NLRE::importAsset(std::wstring path)
 	{
 		NLRE_Log::console("Successfully imported asset at: %s", strPath.c_str());
 		NLRE_Log::console("It took %Lf seconds to load the model.", timer.now());
-		NLRE_Log::console("Number of items in the asset vector: %i", assets.size());
+		NLRE_Log::console("Total number of assets: %i", assets.size());
 
 		_sceneManager->addAssets(assets);
 		return true;

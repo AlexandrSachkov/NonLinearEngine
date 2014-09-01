@@ -114,6 +114,8 @@ bool NLEGlfwApplicationLayer::initialize()
 	log->registerDebugCallback(debugCallback);
 	log->registerErrorCallback(errorCallback);
 
+	_nle->setGUIDataFilesRootPath(L".\\datafiles\\");
+
 	if (!_nle->initialize()) return false;
 	NLE_Log::console("======> Application Layer successfully initialized.");
 	return true;
@@ -275,22 +277,19 @@ bool NLEGlfwApplicationLayer::bindInputEventCallback(void(*processEvent)(NLE_INP
 //===========================================================================================================================
 void NLEGlfwApplicationLayer::errorCallback(NLE_Log::ErrorFlag flag, char text[])
 {
-	printf(text);
-	printf("\n");
+	printf("%s\n",text);
 }
 
 //===========================================================================================================================
 void NLEGlfwApplicationLayer::debugCallback(char text[])
 {
-	printf(text);
-	printf("\n");
+	printf("%s\n", text);
 }
 
 //===========================================================================================================================
 void NLEGlfwApplicationLayer::consoleCallback(char text[])
 {
-	printf(text);
-	printf("\n");
+	printf("%s\n", text);
 }
 
 //===========================================================================================================================
@@ -467,7 +466,7 @@ int main(int argc, const char* argv[])
 	std::shared_ptr<NLEInterface> nle = appLayer->getNLE();
 
 	std::wstring modelPath = L"D:\\3DModels\\Altair Model\\altair2.dae";
-	//modelPath = L"C:\\Users\\Alex\\Desktop\\teapot.dae";
+	modelPath = L"C:\\Users\\Alex\\Desktop\\teapot.dae";
 	if (nle)
 	{
 		nle->getRenderingEngine()->importAsset(modelPath);
