@@ -26,16 +26,25 @@ THE SOFTWARE.
 -----------------------------------------------------------------------------
 */
 
-#ifndef NLRE_INTERFACE_
-#define NLRE_INTERFACE_
+#ifndef NLE_TIMER_
+#define NLE_TIMER_
 
-class NLREInterface
+#include <chrono>
+
+class NLETimer
 {
 public:
-	virtual ~NLREInterface(){}
-	virtual bool importAsset(std::wstring path) =0;
-	virtual void disposeAssets()=0;
-	virtual long double getFPS()=0;
-};
+	NLETimer();
+	~NLETimer();
 
+	long double now();
+	long double getFPS();
+
+private:
+	NLETimer(const NLETimer&){}
+	NLETimer& operator=(const NLETimer&){}
+
+	std::chrono::high_resolution_clock::time_point _timePoint;
+
+};
 #endif

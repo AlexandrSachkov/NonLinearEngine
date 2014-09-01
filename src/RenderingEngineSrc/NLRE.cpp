@@ -33,6 +33,7 @@ THE SOFTWARE.
 #include "RenderingEngine\ResourceLoader\NLREAssimpAssetImporter.h"
 #include "RenderingEngine\ResourceLoader\NLREDirectXTexTextureLoader.h"
 #include "RenderingEngine\RenderingDevice\NLREDeviceController.h"
+#include "NLETimer.h"
 
 std::shared_ptr<NLRE> NLRE::_nlre = NULL;
 
@@ -68,12 +69,14 @@ NLRE::NLRE(
 	_sceneManager.reset(new NLRESceneManager(_deviceController, renderingDevice, _textureLoader, width, height));
 	_assetImporter.reset(new NLREAssimpAssetImporter(renderingDevice, _textureLoader));
 
+	_fpsTimer = new NLETimer();
 	NLRE_Log::console("======> NLRE successfully initialized.");
 }
 
 //===========================================================================================================================
-NLRE::~NLRE(){
-
+NLRE::~NLRE()
+{
+	delete _fpsTimer;
 }
 
 //===========================================================================================================================
@@ -84,21 +87,32 @@ void NLRE::render()
 }
 
 //===========================================================================================================================
-void NLRE::importAsset(std::wstring path)
+bool NLRE::importAsset(std::wstring path)
 {
+	NLETimer timer;
 	std::vector<std::shared_ptr<NLRE_RenderableAsset>> assets;
 	std::string strPath(path.begin(), path.end());
+	timer.now();
 	if (_assetImporter->importAssets(path, assets))
 	{
 		NLRE_Log::console("Successfully imported asset at: %s", strPath.c_str());
 		NLRE_Log::console("Number of items in the asset vector: %i", assets.size());
+		NLRE_Log::console("It took %Lf seconds to load the model.\n", timer.now());
 		_sceneManager->addAssets(assets);
+		return true;
 	}
+	return false;
 }
 
+//===========================================================================================================================
 void NLRE::disposeAssets()
 {
 	_sceneManager->disposeAssets();
+}
+
+long double NLRE::getFPS()
+{
+	return 0.0;
 }
 
 //===========================================================================================================================

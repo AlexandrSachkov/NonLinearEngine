@@ -150,12 +150,14 @@ bool NLEGuiManager::initialize()
 	
 	CEGUI::FrameWindow* fWnd = static_cast<CEGUI::FrameWindow*>(
 		windowManager.createWindow("TaharezLook/FrameWindow", "testWindow"));
-	rootWindow->addChild(fWnd);
+
 	// position a quarter of the way in from the top-left of parent.
 	fWnd->setPosition(CEGUI::UVector2(CEGUI::UDim(0.25f, 0.0f), CEGUI::UDim(0.25f, 0.0f)));
 	// set size to be half the size of the parent
 	fWnd->setSize(CEGUI::USize(CEGUI::UDim(0.5f, 0.0f), CEGUI::UDim(0.5f, 0.0f)));
 	fWnd->setText("Hello World!");
+	rootWindow->addChild(fWnd);
+	
 
 	return true;
 }
@@ -167,6 +169,12 @@ NLEGuiManager::~NLEGuiManager()
 	CEGUI::System::destroy();
 	CEGUI::Direct3D11Renderer::destroy(*_guiRenderer);
 	_guiManager = NULL;
+}
+
+//===========================================================================================================================
+void NLEGuiManager::updateUI()
+{
+
 }
 
 //===========================================================================================================================

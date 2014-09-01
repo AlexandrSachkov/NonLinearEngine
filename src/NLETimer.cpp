@@ -25,17 +25,27 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 -----------------------------------------------------------------------------
 */
+#include "stdafx.h"
+#include "NLETimer.h"
 
-#ifndef NLRE_INTERFACE_
-#define NLRE_INTERFACE_
-
-class NLREInterface
+NLETimer::NLETimer()
 {
-public:
-	virtual ~NLREInterface(){}
-	virtual bool importAsset(std::wstring path) =0;
-	virtual void disposeAssets()=0;
-	virtual long double getFPS()=0;
-};
+	_timePoint = std::chrono::high_resolution_clock::now();
+}
 
-#endif
+NLETimer::~NLETimer()
+{
+
+}
+
+long double NLETimer::now()
+{
+	std::chrono::high_resolution_clock::time_point tp = std::chrono::high_resolution_clock::now();
+	return std::chrono::duration_cast<std::chrono::duration<long double>>(tp - _timePoint).count();
+}
+
+long double NLETimer::getFPS()
+{
+	long double one = 1.0;
+	return one / now();
+}

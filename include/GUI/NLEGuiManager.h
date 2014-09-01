@@ -52,6 +52,8 @@ public:
 	static std::shared_ptr<NLEGuiManager> instance();
 	~NLEGuiManager();
 
+	void updateUI();
+
 	void sendToClipboard(const CEGUI::String &mimeType, void *buffer, size_t size);
 	void retrieveFromClipboard(CEGUI::String &mimeType, void *&buffer, size_t &size);
 	void processInputEvent(NLE_INPUT::Event event);

@@ -457,9 +457,9 @@ void NLEGlfwApplicationLayer::onClipboardPasteEvent()
 int main(int argc, const char* argv[])
 {
 	std::shared_ptr<NLEGlfwApplicationLayer> appLayer = NULL;
-
 	appLayer = NLEGlfwApplicationLayer::instance();
 	appLayer->setFullscreenHint(false);
+
 	if (!appLayer->initialize())
 	{
 		Sleep(10000);
@@ -472,6 +472,7 @@ int main(int argc, const char* argv[])
 	{
 		nle->getRenderingEngine()->importAsset(modelPath);
 	}
+	
 
 	appLayer->runMessageLoop();
 	return 0;

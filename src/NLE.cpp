@@ -160,6 +160,7 @@ void NLE::onTick()
 {
 	if (isRunning())
 	{
+		_guiManager->updateUI();
 		_renderingEngine->render();
 	}
 }

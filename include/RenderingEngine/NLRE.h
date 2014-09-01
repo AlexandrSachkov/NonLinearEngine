@@ -37,6 +37,7 @@ class NLREAssetImporter;
 class NLRESceneManager;
 class NLREDeviceController;
 class NLRETextureLoader;
+class NLETimer;
 
 class NLRE : public NLREInterface
 {
@@ -50,8 +51,10 @@ public:
 	~NLRE();
 
 	void render();
-	void importAsset(std::wstring path);
+	bool importAsset(std::wstring path);
 	void disposeAssets();
+
+	long double getFPS();
 
 	std::shared_ptr<NLREAssetImporter> getAssetImporter();	
 	std::shared_ptr<NLRETextureLoader> getTextureLoader();
@@ -63,12 +66,14 @@ private:
 	NLRE(const NLRE& ){}
 	NLRE& operator=(const NLRE&){}
 
-	static std::shared_ptr<NLRE> _nlre;
-
 	std::shared_ptr<NLREAssetImporter> _assetImporter;
 	std::shared_ptr<NLREDeviceController> _deviceController;
 	std::shared_ptr<NLRESceneManager> _sceneManager;
 	std::shared_ptr<NLRETextureLoader> _textureLoader;
+	
+	static std::shared_ptr<NLRE> _nlre;
+
+	NLETimer* _fpsTimer;
 	
 };
 #endif

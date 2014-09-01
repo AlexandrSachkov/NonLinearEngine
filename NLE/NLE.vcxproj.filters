@@ -224,6 +224,9 @@
     <ClInclude Include="..\include\RenderingEngine\NLREInterface.h">
       <Filter>Header Files\RenderingEngine</Filter>
     </ClInclude>
+    <ClInclude Include="..\include\NLETimer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\include\math\DXMath\DXMathMatrixFunctions.inl">
@@ -311,6 +314,9 @@
     </ClCompile>
     <ClCompile Include="..\src\ApplicationSrc\NLEGlfwInputMap.cpp">
       <Filter>Source Files\ApplicationSrc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\NLETimer.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

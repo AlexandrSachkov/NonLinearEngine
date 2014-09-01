@@ -418,6 +418,7 @@
     <ClInclude Include="..\include\NLEInterface.h" />
     <ClInclude Include="..\include\NLELog.h" />
     <ClInclude Include="..\include\NLELogInterface.h" />
+    <ClInclude Include="..\include\NLETimer.h" />
     <ClInclude Include="..\include\NLEWindowReference.h" />
     <ClInclude Include="..\include\NLESingleInstance.h" />
     <ClInclude Include="..\include\RenderingEngine\NLRE.h" />
@@ -523,6 +524,16 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='noApplication_Release_DLL|Win32'">Use</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='noApplication_Debug_DLL|x64'">Use</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Use</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='noApplication_Release_DLL|x64'">Use</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="..\src\NLETimer.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='noApplication_Debug_DLL|Win32'">Use</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Use</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Use</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='noApplication_Release_DLL|Win32'">Use</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='noApplication_Debug_DLL|x64'">Use</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Use</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='noApplication_Release_DLL|x64'">Use</PrecompiledHeader>
     </ClCompile>
