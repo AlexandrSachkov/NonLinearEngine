@@ -47,18 +47,18 @@ public:
 
 	NLEWindowReference getWindowReference();
 	void getClientSize(int& width, int& height);
-	void setClientSize(int width, int height);
+	void getWindowPosition(int& x, int& y);
+
+	void setWindowSizeHint(int width, int height);
 	void setFullscreenHint(bool option);
-	void setResizableHint(bool option);
 	void setDecoratedHint(bool option);
 	void setTitle(std::wstring title);
 	void setWindowPosition(int x, int y);
-	void getWindowPosition(int& x, int& y);
+	
 	void iconify();
 	void restore();
 	void show();
 	void hide();
-
 	int runMessageLoop();
 	void closeWindow();
 
@@ -74,6 +74,7 @@ private:
 	NLEGlfwApplicationLayer& operator=(const NLEGlfwApplicationLayer&){}
 
 	void setWindowCallbacks(GLFWwindow* window);
+	void setResizableHint(bool option);
 
 	static void debugCallback(char text[]);
 	static void consoleCallback(char text[]);

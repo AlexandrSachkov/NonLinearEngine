@@ -84,9 +84,12 @@ bool NLEGlfwApplicationLayer::initialize()
 		return false;
 	}
 
-	const GLFWvidmode * mode = glfwGetVideoMode(glfwGetPrimaryMonitor());
-	_width = mode->width;
-	_height = mode->height;
+	if (_fullscreen || _width == 0 || _height == 0)
+	{
+		const GLFWvidmode * mode = glfwGetVideoMode(glfwGetPrimaryMonitor());
+		_width = mode->width;
+		_height = mode->height;
+	}
 
 	setResizableHint(false);
 	if (_fullscreen)
@@ -107,7 +110,7 @@ bool NLEGlfwApplicationLayer::initialize()
 	setWindowCallbacks(_window);
 
 	_nle = std::shared_ptr<NLEInterface>(NLE::instance(getWindowReference(), _width, _height, _fullscreen));
-	
+
 	std::shared_ptr<NLELogInterface> log = _nle->getLog();
 	if (!log) return false;
 
@@ -160,9 +163,10 @@ void NLEGlfwApplicationLayer::getClientSize(int& width, int& height)
 }
 
 //===========================================================================================================================
-void NLEGlfwApplicationLayer::setClientSize(int width, int height)
+void NLEGlfwApplicationLayer::setWindowSizeHint(int width, int height)
 {
-	glfwSetWindowSize(_window, width, height);
+	_width = width;
+	_height = height;
 }
 
 //===========================================================================================================================
@@ -278,7 +282,7 @@ bool NLEGlfwApplicationLayer::bindInputEventCallback(void(*processEvent)(NLE_INP
 //===========================================================================================================================
 void NLEGlfwApplicationLayer::errorCallback(NLE_Log::ErrorFlag flag, char text[])
 {
-	printf("%s\n",text);
+	printf("%s\n", text);
 }
 
 //===========================================================================================================================
@@ -459,6 +463,7 @@ int main(int argc, const char* argv[])
 	std::shared_ptr<NLEGlfwApplicationLayer> appLayer = NULL;
 	appLayer = NLEGlfwApplicationLayer::instance();
 	appLayer->setFullscreenHint(false);
+	appLayer->setWindowSizeHint(800, 600);
 	if (!appLayer->initialize())
 	{
 		Sleep(10000);
@@ -468,11 +473,9 @@ int main(int argc, const char* argv[])
 
 	std::wstring modelPath = L"D:\\3DModels\\Altair Model\\altair2.dae";
 	modelPath = L"C:\\Users\\Alex\\Desktop\\teapot.dae";
-	if (nle)
-	{
-		nle->getRenderingEngine()->importAsset(modelPath);
-	}
-	
+
+	nle->getRenderingEngine()->importAsset(modelPath);
+
 
 	appLayer->runMessageLoop();
 	return 0;

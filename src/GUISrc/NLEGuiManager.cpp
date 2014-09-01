@@ -266,5 +266,12 @@ void NLEGuiManager::processInputEvent(NLE_INPUT::Event event)
 	case NLE_INPUT::EVENT_TYPE::EVENT_CLIPBOARD_PASTE:
 		_guiContext->injectPasteRequest();
 		break;
+
+	case NLE_INPUT::EVENT_WINDOW_SIZE:
+		CEGUI::Sizef size(
+			event.eventData.windowSizeEvent.width,
+			event.eventData.windowSizeEvent.height
+			);
+		CEGUI::System::getSingleton().notifyDisplaySizeChanged(size);
 	}
 }
