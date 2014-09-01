@@ -177,21 +177,20 @@ void NLRESceneManager::processInputEvent(NLE_INPUT::Event event)
 		break;
 
 	case NLE_INPUT::EVENT_TYPE::EVENT_CURSOR_POSITION:
+		float currX = event.eventData.cursorPositionEvent.xPos;
+		float currY = event.eventData.cursorPositionEvent.yPos;
+
 		if (_enableCameraMotion)
 		{
-			float currX = event.eventData.cursorPositionEvent.xPos;
-			float currY = event.eventData.cursorPositionEvent.yPos;
-
-			if (_lastCursorX == 0 && _lastCursorY == 0)
-			{
-				_lastCursorX = currX;
-				_lastCursorY = currY;
-			}
-
 			float yaw = currX - _lastCursorX;
 			float pitch = currY - _lastCursorY;
 			_activeCamera->rotate(yaw/500, pitch/500);
 
+			_lastCursorX = currX;
+			_lastCursorY = currY;
+		}
+		else
+		{
 			_lastCursorX = currX;
 			_lastCursorY = currY;
 		}

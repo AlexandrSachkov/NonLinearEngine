@@ -187,17 +187,7 @@ void NLRECamera::rotate(float yaw, float pitch)
 	_pitch += pitch;
 	if (_pitch >= _fullRotation) _pitch -= _fullRotation;
 	else if (_pitch <= -_fullRotation) _pitch += _fullRotation;
-	/*
-	if (NLEMath::NLEVectorGetY(*_up) > 0) _yaw += yaw * _rotationSensitivity;
-	else _yaw -= yaw * _rotationSensitivity;
 
-	if (_yaw <= -_fullRotation) _yaw += _fullRotation;
-	else if (_yaw >= _fullRotation) _yaw -= _fullRotation;
-
-	_pitch += pitch * _rotationSensitivity;
-	if (_pitch <= -_fullRotation) _pitch += _fullRotation;
-	else if (_pitch >= _fullRotation) _pitch -= _fullRotation;
-	*/
 	_hasMoved = true;
 }
 
