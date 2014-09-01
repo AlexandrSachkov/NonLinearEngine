@@ -184,16 +184,11 @@ void NLRESceneManager::processInputEvent(NLE_INPUT::Event event)
 		{
 			float yaw = currX - _lastCursorX;
 			float pitch = currY - _lastCursorY;
-			_activeCamera->rotate(yaw/500, pitch/500);
+			_activeCamera->rotate(yaw / 500, pitch / 500);
+		}
 
-			_lastCursorX = currX;
-			_lastCursorY = currY;
-		}
-		else
-		{
-			_lastCursorX = currX;
-			_lastCursorY = currY;
-		}
+		_lastCursorX = currX;
+		_lastCursorY = currY;
 		break;
 	}
 }
