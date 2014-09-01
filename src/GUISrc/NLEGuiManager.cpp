@@ -273,5 +273,6 @@ void NLEGuiManager::processInputEvent(NLE_INPUT::Event event)
 			event.eventData.windowSizeEvent.height
 			);
 		CEGUI::System::getSingleton().notifyDisplaySizeChanged(size);
+		break;
 	}
 }

@@ -117,7 +117,7 @@ void NLRE::render()
 {
 	if (isRunning())
 	{
-		_sceneManager->cameraUpdate();
+		_sceneManager->update();
 		_sceneManager->render();
 
 		if (_numFrames == _numFramesToAvrg)

@@ -29,6 +29,7 @@ THE SOFTWARE.
 #ifndef NLRE_SCENE_MANAGER_
 #define NLRE_SCENE_MANAGER_
 
+#include "Input\NLEInputEventListener.h"
 #include <vector>
 #include <memory>
 
@@ -37,7 +38,7 @@ class NLREDeviceController;
 class NLRETextureLoader;
 class NLRECamera;
 
-class NLRESceneManager
+class NLRESceneManager : public NLEInputEventListener
 {
 public:
 	NLRESceneManager(
@@ -53,29 +54,16 @@ public:
 	void render();
 	void addAssets(std::vector<std::shared_ptr<NLRE_RenderableAsset>>& assets);
 	void disposeAssets();
-
-	void cameraReset();
-	void cameraUpdate();
-
-	void cameraRotate(float yaw, float pitch);
-	void cameraPitchUp();
-	void cameraPitchDown();
-	void cameraYawLeft();
-	void cameraYawRight();
-
-	void cameraMoveForward();
-	void cameraMoveBackward();
-	void cameraMoveLeft();
-	void cameraMoveRight();
-	void cameraMoveUp();
-	void cameraMoveDown();
+	void update();
 
 private:
-	bool initialize();
+	void processInputEvent(NLE_INPUT::Event event);
 
 	std::shared_ptr<NLREDeviceController> _deviceController;
 	std::shared_ptr<NLRERenderingDevice> _renderingDevice;
 	std::shared_ptr<NLRETextureLoader> _textureLoader;
+
+	bool _enableCameraMotion;
 
 	std::shared_ptr<NLRECamera> _activeCamera;
 	std::vector<std::shared_ptr<NLRE_RenderableAsset>> _assets;

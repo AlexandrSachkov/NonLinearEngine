@@ -32,8 +32,9 @@ THE SOFTWARE.
 #include "RenderingEngine\RenderingDevice\NLREDeviceController.h"
 #include "RenderingEngine\RenderingDevice\NLRERenderingDevice.h"
 #include "RenderingEngine\SceneManager\NLRECamera.h"
+#include "Input\NLEInputProcessor.h"
 
-
+//===========================================================================================================================
 NLRESceneManager::NLRESceneManager(
 	std::shared_ptr<NLREDeviceController> deviceController,
 	std::shared_ptr<NLRERenderingDevice> renderingDevice,
@@ -43,20 +44,26 @@ NLRESceneManager::NLRESceneManager(
 {
 	if (!deviceController || !renderingDevice || !textureLoader)
 	{
-		throw std::exception("Container failed to initialize: NULL ptr");
+		throw std::exception("Scene Manager failed to initialize: uninitialized parameter");
 	}
 	_deviceController = deviceController;
 	_renderingDevice = renderingDevice;
 	_textureLoader = textureLoader;
 
-	_activeCamera.reset(new NLRECamera(0.0f, 40.0f, -100.0f, width, height));
+	_enableCameraMotion = false;
+
+	_activeCamera.reset(new NLRECamera(0.0f, 0.5f, -10.0f, width, height));
+
+	NLEInputProcessor::registerInputEventListener(this);
 }
 
+//===========================================================================================================================
 NLRESceneManager::~NLRESceneManager()
 {
 	disposeAssets();
 }
 
+//===========================================================================================================================
 void NLRESceneManager::addAssets(std::vector<std::shared_ptr<NLRE_RenderableAsset>>& assets)
 {
 	for (std::vector<std::shared_ptr<NLRE_RenderableAsset>>::iterator it = assets.begin(); it != assets.end(); ++it)
@@ -65,11 +72,13 @@ void NLRESceneManager::addAssets(std::vector<std::shared_ptr<NLRE_RenderableAsse
 	}
 }
 
+//===========================================================================================================================
 void NLRESceneManager::disposeAssets()
 {
 	_assets.clear();
 }
 
+//===========================================================================================================================
 void NLRESceneManager::render()
 {
 	if (!_assets.empty())
@@ -90,9 +99,9 @@ void NLRESceneManager::render()
 		}
 	}
 	_deviceController->render(_assets);
-	
 }
 
+//===========================================================================================================================
 void NLRESceneManager::printFloat4x4(NLE_FLOAT4X4& matrix)
 {
 	NLRE_Log::console("%f %f %f %f", matrix._11, matrix._12, matrix._13, matrix._14);
@@ -101,67 +110,95 @@ void NLRESceneManager::printFloat4x4(NLE_FLOAT4X4& matrix)
 	NLRE_Log::console("%f %f %f %f\n\n", matrix._41, matrix._42, matrix._43, matrix._44);
 }
 
-void NLRESceneManager::cameraReset()
+//===========================================================================================================================
+void NLRESceneManager::processInputEvent(NLE_INPUT::Event event)
 {
-	if (_activeCamera) _activeCamera->reset();
+	switch (event.eventType)
+	{
+	case NLE_INPUT::EVENT_TYPE::EVENT_KEY:
+		if (event.eventData.keyEvent.action == NLE_INPUT::ACTION::ACTION_PRESS)
+		{
+			switch (event.eventData.keyEvent.key)
+			{
+			case NLE_INPUT::KEY::KEY_F1:
+				if (!_enableCameraMotion)
+				{
+					_enableCameraMotion = true;
+					NLRE_Log::console("Camera motion ENABLED.");
+				}
+				else
+				{
+					_enableCameraMotion = false;
+					NLRE_Log::console("Camera motion DISABLED.");
+				}
+				break;
+
+			case NLE_INPUT::KEY::KEY_R:
+				if (_enableCameraMotion)
+				{
+					if (_activeCamera) _activeCamera->reset();
+				}
+				break;
+
+			case NLE_INPUT::KEY::KEY_W:
+				if (_enableCameraMotion)
+				{
+					if (_activeCamera) _activeCamera->moveForward();
+				}
+				break;
+
+			case NLE_INPUT::KEY::KEY_S:
+				if (_enableCameraMotion)
+				{
+					if (_activeCamera) _activeCamera->moveBackward();
+				}
+				break;
+
+			case NLE_INPUT::KEY::KEY_A:
+				if (_enableCameraMotion)
+				{
+					if (_activeCamera) _activeCamera->moveLeft();
+				}
+				break;
+
+			case NLE_INPUT::KEY::KEY_D:
+				if (_enableCameraMotion)
+				{
+					if (_activeCamera) _activeCamera->moveRight();
+				}
+				break;
+
+			case NLE_INPUT::KEY::KEY_E:
+				if (_enableCameraMotion)
+				{
+					if (_activeCamera) _activeCamera->moveUp();
+				}
+				break;
+
+			case NLE_INPUT::KEY::KEY_Q:
+				if (_enableCameraMotion)
+				{
+					if (_activeCamera) _activeCamera->moveDown();
+				}
+				break;
+			}
+		}
+		break;
+
+	case NLE_INPUT::EVENT_TYPE::EVENT_CURSOR_POSITION:
+		if (_enableCameraMotion)
+		{
+			if (_activeCamera) _activeCamera->rotate(
+				event.eventData.cursorPositionEvent.xPos/500, 
+				event.eventData.cursorPositionEvent.yPos/500
+				);
+		}
+		break;
+	}
 }
 
-void NLRESceneManager::cameraUpdate()
+//===========================================================================================================================
+void NLRESceneManager::update()
 {
 	if (_activeCamera) _activeCamera->update();
-}
-
-void NLRESceneManager::cameraRotate(float yaw, float pitch)
-{
-	if (_activeCamera) _activeCamera->rotate(yaw, pitch);
-}
-
-void NLRESceneManager::cameraPitchUp()
-{
-	if (_activeCamera) _activeCamera->pitchUp();
-}
-
-void NLRESceneManager::cameraPitchDown()
-{
-	if (_activeCamera) _activeCamera->pitchDown();
-}
-
-void NLRESceneManager::cameraYawLeft()
-{
-	if (_activeCamera) _activeCamera->yawLeft();
-}
-
-void NLRESceneManager::cameraYawRight()
-{
-	if (_activeCamera) _activeCamera->yawRight();
-}
-
-void NLRESceneManager::cameraMoveForward()
-{
-	if (_activeCamera) _activeCamera->moveForward();
-}
-
-void NLRESceneManager::cameraMoveBackward()
-{
-	if (_activeCamera) _activeCamera->moveBackward();
-}
-
-void NLRESceneManager::cameraMoveLeft()
-{
-	if (_activeCamera) _activeCamera->moveLeft();
-}
-
-void NLRESceneManager::cameraMoveRight()
-{
-	if (_activeCamera) _activeCamera->moveRight();
-}
-
-void NLRESceneManager::cameraMoveUp()
-{
-	if (_activeCamera) _activeCamera->moveUp();
-}
-
-void NLRESceneManager::cameraMoveDown()
-{
-	if (_activeCamera) _activeCamera->moveDown();
 }

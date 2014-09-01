@@ -58,7 +58,7 @@ public:
 	void updateUI();
 	void showFPS(bool option);
 
-	void processInputEvent(NLE_INPUT::Event event);
+	
 	static void renderGUI();
 
 private:
@@ -69,6 +69,7 @@ private:
 	NLEGuiManager(const NLEGuiManager&);
 	NLEGuiManager& operator=(const NLEGuiManager&){};
 	bool initialize();
+	void processInputEvent(NLE_INPUT::Event event);
 
 	static std::shared_ptr<NLEGuiManager> _guiManager;
 	std::shared_ptr<NLRE> _renderingEngine;

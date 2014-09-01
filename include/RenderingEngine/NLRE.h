@@ -59,7 +59,6 @@ public:
 	void render();
 	bool importAsset(std::wstring path);
 	void disposeAssets();
-	void processInputEvent(NLE_INPUT::Event event);
 
 	long double getFPS();
 	void setNumberFramesToAvrg(unsigned int count);
@@ -79,6 +78,7 @@ private:
 		);
 	NLRE(const NLRE& ){}
 	NLRE& operator=(const NLRE&){}
+	void processInputEvent(NLE_INPUT::Event event);
 
 	std::shared_ptr<NLREAssetImporter> _assetImporter;
 	std::shared_ptr<NLREDeviceController> _deviceController;
