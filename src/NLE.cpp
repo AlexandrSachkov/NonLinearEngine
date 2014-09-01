@@ -141,6 +141,7 @@ void NLE::run()
 	if (isInitialized())
 	{
 		_inputProcessor->run();
+		_renderingEngine->run();
 		_running = true;
 	}
 }
@@ -151,6 +152,7 @@ void NLE::stop()
 	if (isInitialized())
 	{
 		_inputProcessor->stop();
+		_renderingEngine->stop();
 		_running = false;
 	}
 }

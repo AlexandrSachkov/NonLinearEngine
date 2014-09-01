@@ -50,6 +50,10 @@ public:
 	static std::shared_ptr<NLRE> instance();
 	~NLRE();
 
+	bool isRunning();
+
+	void run();
+	void stop();
 	void render();
 	bool importAsset(std::wstring path);
 	void disposeAssets();
@@ -74,6 +78,7 @@ private:
 	std::shared_ptr<NLRETextureLoader> _textureLoader;
 	
 	static std::shared_ptr<NLRE> _nlre;
+	bool _running;
 
 	NLETimer* _fpsTimer;
 	long double _fps;

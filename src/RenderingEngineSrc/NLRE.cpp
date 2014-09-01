@@ -60,8 +60,8 @@ std::shared_ptr<NLRE> NLRE::instance()
 
 //===========================================================================================================================
 NLRE::NLRE(
-	NLEWindowReference hwnd, 
-	int width, 
+	NLEWindowReference hwnd,
+	int width,
 	int height
 	)
 {
@@ -76,6 +76,7 @@ NLRE::NLRE(
 	_numFramesToAvrg = 1000.0L;
 	_fps = 0.0L;
 	_fpsChanged = false;
+	_running = false;
 
 	NLRE_Log::console("======> NLRE successfully initialized.");
 }
@@ -87,18 +88,41 @@ NLRE::~NLRE()
 }
 
 //===========================================================================================================================
+bool NLRE::isRunning()
+{
+	return _running;
+}
+
+//===========================================================================================================================
+void NLRE::run()
+{
+	_running = true;
+}
+
+//===========================================================================================================================
+void NLRE::stop()
+{
+	_running = false;
+	_numFrames = 0;
+}
+
+//===========================================================================================================================
 void NLRE::render()
 {
-	_sceneManager->cameraUpdate();
-	_sceneManager->render();
-	
-	if (_numFrames == _numFramesToAvrg)
+	if (isRunning())
 	{
-		_fps = _numFramesToAvrg / _fpsTimer->now();
-		_numFrames = 0;
-		_fpsChanged = true;
+		_sceneManager->cameraUpdate();
+		_sceneManager->render();
+
+		if (_numFrames == _numFramesToAvrg)
+		{
+			_fps = _numFramesToAvrg / _fpsTimer->now();
+			_numFrames = 0;
+			_fpsChanged = true;
+		}
+		_numFrames++;
 	}
-	_numFrames++;
+
 }
 
 //===========================================================================================================================
@@ -113,7 +137,7 @@ bool NLRE::importAsset(std::wstring path)
 		NLRE_Log::console("Successfully imported asset at: %s", strPath.c_str());
 		NLRE_Log::console("It took %Lf seconds to load the model.", timer.now());
 		NLRE_Log::console("Number of items in the asset vector: %i", assets.size());
-		
+
 		_sceneManager->addAssets(assets);
 		return true;
 	}
