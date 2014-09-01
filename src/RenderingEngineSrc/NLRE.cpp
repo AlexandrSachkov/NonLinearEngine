@@ -95,7 +95,6 @@ void NLRE::render()
 	if (_numFrames == _numFramesToAvrg)
 	{
 		_fps = _numFramesToAvrg / _fpsTimer->now();
-		NLRE_Log::console("FPS: %Lf", _fps);
 		_numFrames = 0;
 		_fpsChanged = true;
 	}

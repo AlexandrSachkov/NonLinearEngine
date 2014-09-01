@@ -62,6 +62,8 @@ public:
 	void run();
 	void stop();
 	void onTick();
+
+	void setGUIDataFilesRootPath(std::wstring path);
 	
 	std::shared_ptr<NLELogInterface> getLog();
 	std::shared_ptr<NLREInterface> getRenderingEngine();
@@ -97,6 +99,8 @@ private:
 	std::shared_ptr<NLEInputProcessor> _inputProcessor;
 	std::shared_ptr<NLRE> _renderingEngine;
 	std::shared_ptr<NLEGuiManager> _guiManager;
+
+	std::wstring _guiDataFilesRootPath;
 };
 
 #if defined (_NLE_DLL_) && defined(_NLE_DLL_EXPORT_)

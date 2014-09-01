@@ -83,7 +83,7 @@ bool NLE::initialize()
 	try
 	{
 		_renderingEngine = NLRE::instance(_winRef, _width, _height);
-		_guiManager = NLEGuiManager::instance(_renderingEngine);
+		_guiManager = NLEGuiManager::instance(_renderingEngine, _guiDataFilesRootPath);
 		_inputProcessor = NLEInputProcessor::instance();
 	}
 	catch (std::exception& e)
@@ -162,6 +162,18 @@ void NLE::onTick()
 	{
 		_guiManager->updateUI();
 		_renderingEngine->render();
+	}
+}
+
+//===========================================================================================================================
+void NLE::setGUIDataFilesRootPath(std::wstring path)
+{
+	fs::path guiDataRootPath(path);
+	guiDataRootPath.make_preferred();
+
+	if (guiDataRootPath.has_relative_path() || guiDataRootPath.is_absolute())
+	{
+		_guiDataFilesRootPath = guiDataRootPath.generic_wstring();
 	}
 }
 

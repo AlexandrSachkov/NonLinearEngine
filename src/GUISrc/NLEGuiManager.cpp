@@ -47,12 +47,13 @@ std::shared_ptr<NLEGuiManager> NLEGuiManager::_guiManager = nullptr;
 
 //===========================================================================================================================
 std::shared_ptr<NLEGuiManager> NLEGuiManager::instance(
-	std::shared_ptr<NLRE> renderingEngine
+	std::shared_ptr<NLRE> renderingEngine,
+	std::wstring datafileRootPath
 	)
 {
 	if (!_guiManager)
 	{
-		_guiManager.reset(new NLEGuiManager(renderingEngine));
+		_guiManager.reset(new NLEGuiManager(renderingEngine, datafileRootPath));
 	}
 	return _guiManager;
 }
@@ -66,10 +67,12 @@ std::shared_ptr<NLEGuiManager> NLEGuiManager::instance()
 
 //===========================================================================================================================
 NLEGuiManager::NLEGuiManager(
-	std::shared_ptr<NLRE> renderingEngine
+	std::shared_ptr<NLRE> renderingEngine,
+	std::wstring datafileRootPath
 	)
 {
 	_renderingEngine = renderingEngine;
+	_datafileRootPath = datafileRootPath;
 	_guiRenderer = nullptr;
 	_rootWindow = nullptr;
 
@@ -95,13 +98,39 @@ bool NLEGuiManager::initialize()
 
 	CEGUI::DefaultResourceProvider* rp = static_cast<CEGUI::DefaultResourceProvider*>
 		(CEGUI::System::getSingleton().getResourceProvider());
-	rp->setResourceGroupDirectory("schemes", "./datafiles/schemes/");
-	rp->setResourceGroupDirectory("imagesets", "./datafiles/imagesets/");
-	rp->setResourceGroupDirectory("fonts", "./datafiles/fonts/");
-	rp->setResourceGroupDirectory("layouts", "./datafiles/layouts/");
-	rp->setResourceGroupDirectory("looknfeels", "./datafiles/looknfeel/");
-	rp->setResourceGroupDirectory("scripts", "./datafiles/scripts/");
-	rp->setResourceGroupDirectory("schemas", "./datafiles/xml_schemas/");
+
+	fs::path datafilePath(_datafileRootPath);
+	if (datafilePath.empty()) datafilePath /= "./datafiles/";
+
+	fs::path childPath;
+
+	childPath = datafilePath;
+	childPath /= "schemes/";
+	rp->setResourceGroupDirectory("schemes", childPath.generic_string());
+
+	childPath = datafilePath;
+	childPath /= "imagesets/";
+	rp->setResourceGroupDirectory("imagesets", childPath.generic_string());
+
+	childPath = datafilePath;
+	childPath /= "fonts/";
+	rp->setResourceGroupDirectory("fonts", childPath.generic_string());
+
+	childPath = datafilePath;
+	childPath /= "layouts/";
+	rp->setResourceGroupDirectory("layouts", childPath.generic_string());
+
+	childPath = datafilePath;
+	childPath /= "looknfeel/";
+	rp->setResourceGroupDirectory("looknfeels", childPath.generic_string());
+
+	childPath = datafilePath;
+	childPath /= "scripts/";
+	rp->setResourceGroupDirectory("scripts", childPath.generic_string());
+
+	childPath = datafilePath;
+	childPath /= "xml_schemas/";
+	rp->setResourceGroupDirectory("schemas", childPath.generic_string());
 	
 	CEGUI::ImageManager::setImagesetDefaultResourceGroup("imagesets");
 	CEGUI::Font::setDefaultResourceGroup("fonts");
@@ -172,12 +201,6 @@ void NLEGuiManager::showFPS(bool option)
 {
 	if (option) _fpsCountLabel->show();
 	else _fpsCountLabel->hide();
-}
-
-//===========================================================================================================================
-void NLEGuiManager::setDataFilesRootPath(std::wstring path)
-{
-
 }
 
 //===========================================================================================================================

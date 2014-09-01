@@ -49,21 +49,22 @@ class NLEGuiManager : public NLEGuiManagerInterface, public NLEInputEventListene
 {
 public:
 	static std::shared_ptr<NLEGuiManager> instance(
-		std::shared_ptr<NLRE> renderingEngine
+		std::shared_ptr<NLRE> renderingEngine,
+		std::wstring datafileRootPath
 		);
 	static std::shared_ptr<NLEGuiManager> instance();
 	~NLEGuiManager();
 
 	void updateUI();
 	void showFPS(bool option);
-	void setDataFilesRootPath(std::wstring path);
 
 	void processInputEvent(NLE_INPUT::Event event);
 	static void renderGUI();
 
 private:
 	NLEGuiManager(
-		std::shared_ptr<NLRE> renderingEngine
+		std::shared_ptr<NLRE> renderingEngine,
+		std::wstring datafileRootPath
 		);
 	NLEGuiManager(const NLEGuiManager&);
 	NLEGuiManager& operator=(const NLEGuiManager&){};
@@ -71,6 +72,8 @@ private:
 
 	static std::shared_ptr<NLEGuiManager> _guiManager;
 	std::shared_ptr<NLRE> _renderingEngine;
+
+	std::wstring _datafileRootPath;
 
 	CEGUI::Direct3D11Renderer* _guiRenderer;
 	CEGUI::GUIContext* _guiContext;

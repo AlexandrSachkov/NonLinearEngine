@@ -51,6 +51,8 @@ public:
 	virtual void stop() =0;
 	virtual void onTick()=0;
 
+	virtual void setGUIDataFilesRootPath(std::wstring path)=0;
+
 	virtual std::shared_ptr<NLELogInterface> getLog()=0;
 	virtual std::shared_ptr<NLREInterface> getRenderingEngine() =0;
 	virtual std::shared_ptr<NLEInputProcessorInterface> getInputProcessor()=0;
