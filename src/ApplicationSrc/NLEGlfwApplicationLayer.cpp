@@ -463,7 +463,7 @@ int main(int argc, const char* argv[])
 	std::shared_ptr<NLEGlfwApplicationLayer> appLayer = NULL;
 	appLayer = NLEGlfwApplicationLayer::instance();
 	appLayer->setFullscreenHint(false);
-	appLayer->setWindowSizeHint(800, 600);
+	appLayer->setWindowSizeHint(1440, 900);
 	if (!appLayer->initialize())
 	{
 		Sleep(10000);

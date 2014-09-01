@@ -168,7 +168,7 @@ bool NLEGuiManager::initialize()
 	_rootWindow->addChild(fWnd);
 
 	_fpsCountLabel = windowManager.createWindow("TaharezLook/Label", "fpsCount");
-	_fpsCountLabel->setPosition(CEGUI::UVector2(CEGUI::UDim(0.0f, 0.0f), CEGUI::UDim(0.0f, 0.0f)));
+	_fpsCountLabel->setPosition(CEGUI::UVector2(CEGUI::UDim(0.02f, 0.0f), CEGUI::UDim(0.0f, 0.0f)));
 	_fpsCountLabel->setSize(CEGUI::USize(CEGUI::UDim(0.1f, 0.0f), CEGUI::UDim(0.1f, 0.0f)));
 	_fpsCountLabel->setText("FPS: ");
 	_rootWindow->addChild(_fpsCountLabel);
@@ -191,7 +191,7 @@ void NLEGuiManager::updateUI()
 	if (_renderingEngine->fpsChanged())
 	{
 		CEGUI::String message = "FPS: ";
-		message.append(std::to_string(_renderingEngine->getFPS()));
+		message.append(std::to_string(_renderingEngine->getFPS()).substr(0, 8));
 		_fpsCountLabel->setText(message);
 	}
 }
