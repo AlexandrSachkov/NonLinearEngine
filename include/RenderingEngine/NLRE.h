@@ -31,6 +31,7 @@ THE SOFTWARE.
 
 #include "RenderingEngine\NLREInterface.h"
 #include "NLEWindowReference.h"
+#include "Input\NLEInputEventListener.h"
 #include <memory>
 
 class NLREAssetImporter;
@@ -39,7 +40,7 @@ class NLREDeviceController;
 class NLRETextureLoader;
 class NLETimer;
 
-class NLRE : public NLREInterface
+class NLRE : public NLREInterface, public NLEInputEventListener
 {
 public:
 	static std::shared_ptr<NLRE> instance(
@@ -57,6 +58,7 @@ public:
 	void render();
 	bool importAsset(std::wstring path);
 	void disposeAssets();
+	void processInputEvent(NLE_INPUT::Event event);
 
 	long double getFPS();
 	void setNumberFramesToAvrg(unsigned int count);

@@ -151,6 +151,18 @@ void NLRE::disposeAssets()
 }
 
 //===========================================================================================================================
+void NLRE::processInputEvent(NLE_INPUT::Event event)
+{
+	switch (event.eventType)
+	{
+	case NLE_INPUT::EVENT_WINDOW_ICONIFY:
+		if (event.eventData.windowIconifyEvent.iconified == true) stop();
+		else run();
+		break;
+	}
+}
+
+//===========================================================================================================================
 long double NLRE::getFPS()
 {
 	_fpsChanged = false;
