@@ -116,7 +116,9 @@ void NLRESceneManager::processInputEvent(NLE_INPUT::Event event)
 	switch (event.eventType)
 	{
 	case NLE_INPUT::EVENT_TYPE::EVENT_KEY:
-		if (event.eventData.keyEvent.action == NLE_INPUT::ACTION::ACTION_PRESS)
+		if (event.eventData.keyEvent.action == NLE_INPUT::ACTION::ACTION_PRESS ||
+			event.eventData.keyEvent.action == NLE_INPUT::ACTION::ACTION_REPEAT
+			)
 		{
 			switch (event.eventData.keyEvent.key)
 			{

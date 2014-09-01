@@ -189,7 +189,8 @@ namespace NLE_INPUT
 	{
 		ACTION_UNKNOWN,
 		ACTION_PRESS,
-		ACTION_RELEASE
+		ACTION_RELEASE,
+		ACTION_REPEAT
 	};
 
 	/////////////////////////////////////////////////
