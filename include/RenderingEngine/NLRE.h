@@ -46,7 +46,8 @@ public:
 	static std::shared_ptr<NLRE> instance(
 		NLEWindowReference hwnd, 
 		int width, 
-		int height
+		int height,
+		bool fullScreen
 		);
 	static std::shared_ptr<NLRE> instance();
 	~NLRE();
@@ -70,7 +71,12 @@ public:
 	std::shared_ptr<NLREDeviceController> getDeviceController();
 
 private:
-	NLRE(NLEWindowReference hwnd, int width, int height);
+	NLRE(
+		NLEWindowReference hwnd, 
+		int width, 
+		int height, 
+		bool fullScreen
+		);
 	NLRE(const NLRE& ){}
 	NLRE& operator=(const NLRE&){}
 

@@ -50,7 +50,8 @@ public:
 	static NLEInterface* instance(
 		NLEWindowReference winRef,
 		int width,
-		int height
+		int height,
+		bool fullScreen
 		);
 	~NLE();
 	bool initialize();
@@ -74,7 +75,8 @@ private:
 	NLE(
 		NLEWindowReference winRef,
 		int width,
-		int height
+		int height,
+		bool fullScreen
 		);
 	NLE(const NLE& other){}
 	NLEInputProcessor& operator=(const NLEInputProcessor&){}
@@ -92,6 +94,7 @@ private:
 
 	bool _running;
 	bool _initialized;
+	bool _fullScreen;
 
 	static NLE* _nle;
 

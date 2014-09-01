@@ -38,7 +38,7 @@ THE SOFTWARE.
 class NLRERenderingDevice : public NLREDX11RenderingDevice
 {
 public:
-	NLRERenderingDevice(NLEWindowReference hwndVal, int widthVal, int heightVal) :NLREDX11RenderingDevice(hwndVal, widthVal, heightVal){}
+	NLRERenderingDevice(NLEWindowReference hwndVal, int widthVal, int heightVal, bool fullScreen) :NLREDX11RenderingDevice(hwndVal, widthVal, heightVal, fullScreen){}
 };
 #endif
 

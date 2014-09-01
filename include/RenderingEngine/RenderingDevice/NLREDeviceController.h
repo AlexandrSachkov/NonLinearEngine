@@ -39,8 +39,13 @@ class NLRERenderingTechnique;
 class NLREDeviceController : private NLESingleInstance<NLREDeviceController>
 {
 public:
-	NLREDeviceController(NLEWindowReference hwndVal, int widthVal, int heightVal, NLRE_RENDERING_TECHNIQUE_ID techniqueId);
-	NLREDeviceController(const NLREDeviceController&);
+	NLREDeviceController(
+		NLEWindowReference hwndVal, 
+		int widthVal, 
+		int heightVal, 
+		bool fullScreen, 
+		NLRE_RENDERING_TECHNIQUE_ID techniqueId
+		);
 	~NLREDeviceController();
 
 	std::shared_ptr<NLRERenderingDevice> getRenderingDevice();
@@ -51,6 +56,9 @@ public:
 
 	std::shared_ptr<NLRERenderingTechnique> _renderingTechnique;
 private:
+	NLREDeviceController(const NLREDeviceController&){}
+	NLREDeviceController& operator=(const NLREDeviceController&);
+
 	bool initialize();
 	NLRE_RENDERING_TECHNIQUE_ID _renderingTechniqueId;
 	std::shared_ptr<NLRERenderingDevice> _renderingDevice;

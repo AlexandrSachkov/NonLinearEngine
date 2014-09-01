@@ -31,11 +31,11 @@ THE SOFTWARE.
 #include "RenderingEngine\RenderingDevice\NLRERenderingDevice.h"
 #include "RenderingEngine\RenderingDevice\NLREForwardRT.h"
 
-NLREDeviceController::NLREDeviceController(NLEWindowReference hwndVal, int widthVal, int heightVal, NLRE_RENDERING_TECHNIQUE_ID techniqueId)
+NLREDeviceController::NLREDeviceController(NLEWindowReference hwnd, int width, int height, bool fullScreen, NLRE_RENDERING_TECHNIQUE_ID techniqueId)
 {
 	_renderingTechniqueId = techniqueId;
 	_guiRenderCallback = NULL;
-	_renderingDevice.reset(new NLRERenderingDevice(hwndVal, widthVal, heightVal));
+	_renderingDevice.reset(new NLRERenderingDevice(hwnd, width, height, fullScreen));
 	if (!initialize())
 	{
 		NLRE_Log::err(NLRE_Log::CRITICAL, "Device controller failed to initialize");

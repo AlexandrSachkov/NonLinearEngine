@@ -42,12 +42,13 @@ std::shared_ptr<NLRE> NLRE::_nlre = NULL;
 std::shared_ptr<NLRE> NLRE::instance(
 	NLEWindowReference hwnd,
 	int width,
-	int height
+	int height,
+	bool fullScreen
 	)
 {
 	if (!_nlre)
 	{
-		_nlre.reset(new NLRE(hwnd, width, height));
+		_nlre.reset(new NLRE(hwnd, width, height, fullScreen));
 	}
 	return _nlre;
 }
@@ -63,10 +64,11 @@ std::shared_ptr<NLRE> NLRE::instance()
 NLRE::NLRE(
 	NLEWindowReference hwnd,
 	int width,
-	int height
+	int height,
+	bool fullScreen
 	)
 {
-	_deviceController.reset(new NLREDeviceController(hwnd, width, height, NLRE_RENDERING_TECHNIQUE_ID::NLRE_FORWARD_RT));
+	_deviceController.reset(new NLREDeviceController(hwnd, width, height, fullScreen, NLRE_RENDERING_TECHNIQUE_ID::NLRE_FORWARD_RT));
 	std::shared_ptr<NLRERenderingDevice> renderingDevice = _deviceController->getRenderingDevice();
 	_textureLoader.reset(new NLREDirectXTexTextureLoader(renderingDevice));
 	_sceneManager.reset(new NLRESceneManager(_deviceController, renderingDevice, _textureLoader, width, height));
@@ -80,12 +82,14 @@ NLRE::NLRE(
 	_running = false;
 
 	NLEInputProcessor::registerInputEventListener(this);
+
 	NLRE_Log::console("======> NLRE successfully initialized.");
 }
 
 //===========================================================================================================================
 NLRE::~NLRE()
 {
+	NLEInputProcessor::unregisterInputEventListener(this);
 	delete _fpsTimer;
 }
 

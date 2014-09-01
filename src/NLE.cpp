@@ -41,12 +41,13 @@ NLE* NLE::_nle = nullptr;
 NLEInterface* NLE::instance(
 	NLEWindowReference winRef,
 	int width,
-	int height
+	int height,
+	bool fullScreen
 	)
 {
 	if (!_nle)
 	{
-		_nle = new NLE(winRef, width, height);
+		_nle = new NLE(winRef, width, height, fullScreen);
 	}
 	return _nle;
 }
@@ -55,7 +56,8 @@ NLEInterface* NLE::instance(
 NLE::NLE(
 	NLEWindowReference winRef,
 	int width,
-	int height
+	int height,
+	bool fullScreen
 	)
 {
 	_initialized = false;
@@ -63,6 +65,7 @@ NLE::NLE(
 	_winRef = winRef;
 	_width = width;
 	_height = height;
+	_fullScreen = fullScreen;
 
 	setupLogCallbacks();
 	_log = NLE_Log::instance();
@@ -82,7 +85,7 @@ bool NLE::initialize()
 {
 	try
 	{
-		_renderingEngine = NLRE::instance(_winRef, _width, _height);
+		_renderingEngine = NLRE::instance(_winRef, _width, _height, _fullScreen);
 		_guiManager = NLEGuiManager::instance(_renderingEngine, _guiDataFilesRootPath);
 		_inputProcessor = NLEInputProcessor::instance();
 	}

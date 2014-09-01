@@ -35,7 +35,12 @@ THE SOFTWARE.
 class NLREDX11RenderingDevice : private NLESingleInstance<NLREDX11RenderingDevice>
 {
 public:
-	NLREDX11RenderingDevice(NLEWindowReference hwndVal, int widthVal, int heightVal);
+	NLREDX11RenderingDevice(
+		NLEWindowReference hwndVal, 
+		int widthVal, 
+		int heightVal, 
+		bool fullScreen
+		);
 	~NLREDX11RenderingDevice();
 
 	bool createBackBufferRenderTargetView(NLRE_APIRenderTargetView*& renderTargetView);
@@ -46,7 +51,8 @@ public:
 		NLRE_USAGE usage,
 		DataType dataArr[],
 		size_t arrayLength,
-		NLRE_Buffer& buffer);
+		NLRE_Buffer& buffer
+		);
 
 	bool createDepthStencilView(NLRE_APIDepthStencilView*& depthStencilView);
 	bool createInputLayout(NLRE_InputLayoutDesc& ilDesc, NLRE_VertexShader& vShader, NLRE_APIInputLayout*& inputLayout);
@@ -62,7 +68,8 @@ public:
 		NLRE_BIND_FLAG bindFlag,
 		void* data,
 		unsigned int memPitch,
-		NLRE_APITexture2D*& texture);
+		NLRE_APITexture2D*& texture
+		);
 
 	bool createTextureSamplerState(NLRE_APISamplerState*& samplerState);
 
@@ -83,6 +90,7 @@ public:
 	void setVertexBuffer(const NLRE_Buffer& buffer, unsigned int slotNum);
 	void setIndexBuffer(const NLRE_Buffer& buffer);
 
+	void setFullscreen(bool fullScreen);
 	void setBlendState(NLRE_APIBlendState* blendState, float blendFactor[]);
 	void setInputLayout(NLRE_APIInputLayout* inputLayout);
 	void setPrimitiveTopology(NLRE_PRIMITIVE_TOPOLOGY primitiveTopology);
@@ -104,8 +112,10 @@ public:
 
 	ID3D11Device* getAPIDevice();
 	ID3D11DeviceContext* getAPIPrimaryContext();
+
 private:
 	NLREDX11RenderingDevice(const NLREDX11RenderingDevice&);
+	NLREDX11RenderingDevice& operator=(const NLREDX11RenderingDevice&);
 	bool initialize();
 	void release();
 
@@ -115,6 +125,7 @@ private:
 	NLEWindowReference _hwnd;
 	int _screenWidth;
 	int _screenHeight;
+	bool _fullScreen;
 	
 	ID3D11Device* _d3d11Device;
 	ID3D11DeviceContext* _d3d11DevCon;

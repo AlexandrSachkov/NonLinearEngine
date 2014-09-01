@@ -30,12 +30,13 @@ THE SOFTWARE.
 #include "RenderingEngine\RenderingDevice\DX11Device\NLREDX11RenderingDevice.h"
 
 
-NLREDX11RenderingDevice::NLREDX11RenderingDevice(NLEWindowReference hwndVal, int screenWidthVal, int screenHeightVal)
+NLREDX11RenderingDevice::NLREDX11RenderingDevice(NLEWindowReference hwnd, int screenWidth, int screenHeight, bool fullScreen)
 {
 
-	_hwnd = hwndVal;
-	_screenWidth = screenWidthVal;
-	_screenHeight = screenHeightVal;
+	_hwnd = hwnd;
+	_screenWidth = screenWidth;
+	_screenHeight = screenHeight;
+	_fullScreen = fullScreen;
 
 	_d3d11Device = NULL;
 	_d3d11DevCon = NULL;
@@ -46,17 +47,6 @@ NLREDX11RenderingDevice::NLREDX11RenderingDevice(NLEWindowReference hwndVal, int
 		NLRE_Log::err(NLRE_Log::CRITICAL, "NLREDX11RenderingDevice failed to initialize");
 		throw new std::exception("NLREDX11RenderingDevice failed to initialize");
 	}
-}
-
-NLREDX11RenderingDevice::NLREDX11RenderingDevice(const NLREDX11RenderingDevice& device)
-{
-	_hwnd = device._hwnd;
-	_screenWidth = device._screenWidth;
-	_screenHeight = device._screenHeight;
-
-	_d3d11Device = device._d3d11Device;
-	_d3d11DevCon = device._d3d11DevCon;
-	_swapChain = device._swapChain;
 }
 
 NLREDX11RenderingDevice::~NLREDX11RenderingDevice()
@@ -78,10 +68,12 @@ bool NLREDX11RenderingDevice::initialize()
 
 void NLREDX11RenderingDevice::release()
 {
-	_swapChain->SetFullscreenState(FALSE, NULL);
-
-	if (_swapChain) _swapChain->Release();
-	_swapChain = NULL;
+	if (_swapChain)
+	{
+		_swapChain->SetFullscreenState(FALSE, NULL);
+		_swapChain->Release();
+		_swapChain = NULL;
+	}
 	if (_d3d11DevCon) _d3d11DevCon->Release();
 	_d3d11DevCon = NULL;
 	if (_d3d11Device) _d3d11Device->Release();
@@ -116,10 +108,10 @@ bool NLREDX11RenderingDevice::createDeviceAndSwapChain()
 	swapChainDesc.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
 	swapChainDesc.BufferCount = 1;
 	swapChainDesc.OutputWindow = (HWND)_hwnd;
-	swapChainDesc.Windowed = TRUE;
+	swapChainDesc.Windowed = _fullScreen == true ? FALSE : TRUE;
 	swapChainDesc.SwapEffect = DXGI_SWAP_EFFECT_DISCARD;
 	swapChainDesc.Flags = DXGI_SWAP_CHAIN_FLAG_ALLOW_MODE_SWITCH;
-
+	
 	UINT creationFlags = 0;
 #if defined(_DEBUG) || defined(DEBUG)
 	creationFlags |= D3D11_CREATE_DEVICE_DEBUG;
@@ -488,6 +480,13 @@ bool NLREDX11RenderingDevice::createRasterizerState(NLRE_CULL_MODE cullMode, NLR
 	}
 
 	return true;
+}
+
+void NLREDX11RenderingDevice::setFullscreen(bool fullScreen)
+{
+	_fullScreen = fullScreen;
+	if (_fullScreen) _swapChain->SetFullscreenState(true, nullptr);
+	else _swapChain->SetFullscreenState(false, nullptr);
 }
 
 ID3D11Device* NLREDX11RenderingDevice::getAPIDevice()

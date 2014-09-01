@@ -105,7 +105,7 @@ bool NLEGlfwApplicationLayer::initialize()
 	}
 	setWindowCallbacks(_window);
 
-	_nle = std::shared_ptr<NLEInterface>(NLE::instance(getWindowReference(), _width, _height));
+	_nle = std::shared_ptr<NLEInterface>(NLE::instance(getWindowReference(), _width, _height, _fullscreen));
 	
 	std::shared_ptr<NLELogInterface> log = _nle->getLog();
 	if (!log) return false;
