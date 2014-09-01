@@ -88,6 +88,7 @@ bool NLEGlfwApplicationLayer::initialize()
 	_width = mode->width;
 	_height = mode->height;
 
+	setResizableHint(false);
 	if (_fullscreen)
 	{
 		_window = glfwCreateWindow(_width, _height, _title.c_str(), glfwGetPrimaryMonitor(), NULL);
