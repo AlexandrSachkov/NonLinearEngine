@@ -52,7 +52,6 @@ NLRECamera::NLRECamera(float x, float y, float z, int width, int height)
 
 	_defaultForward = NLREAA::alloc<NLE_VECTOR>(16);
 	*_defaultForward = NLEMath::NLEVectorSet(0.0f, 0.0f, 1.0f, 0.0f);
-
 	_defaultRight = NLREAA::alloc<NLE_VECTOR>(16);
 	*_defaultRight = NLEMath::NLEVectorSet(1.0f, 0.0f, 0.0f, 0.0f);
 
@@ -62,15 +61,9 @@ NLRECamera::NLRECamera(float x, float y, float z, int width, int height)
 	_view = NLREAA::alloc<NLE_MATRIX>(16);
 	_projection = NLREAA::alloc<NLE_MATRIX>(16);
 	_viewProjection = NLREAA::alloc<NLE_MATRIX>(16);
-
-	*_projection = NLEMath::NLEMatrixPerspectiveFovLH(_fov, (float)_width / _height, _nearZ, _farZ);
 	
 	reset();
 	update();
-}
-
-NLRECamera::NLRECamera(const NLRECamera& other)
-{
 }
 
 NLRECamera::~NLRECamera()
@@ -92,17 +85,25 @@ NLRECamera::~NLRECamera()
 
 void NLRECamera::reset()
 {
-	_movementSensitivity = 1.0f;
+	_movementSensitivity = 0.1f;
 	_rotationSensitivity = 0.005f;
 
 	_distanceForward = 0.0f;
 	_distanceRight = 0.0f;
-	_distanceUp = 0.0f;
 
 	_pitch = 0.0f;
 	_yaw = 0.0f;
 
+	*_forward = NLEMath::NLEVectorSet(0.0f, 0.0f, 1.0f, 0.0f);
+	*_right = NLEMath::NLEVectorSet(1.0f, 0.0f, 0.0f, 0.0f);
+
 	*_position = NLEMath::NLEVectorSet(_initXPos, _initYPos, _initZPos, 0.0f);
+	*_target = NLEMath::NLEVectorSet(0.0f, 0.0f, 0.0f, 0.0f);
+	*_up = NLEMath::NLEVectorSet(0.0f, 1.0f, 0.0f, 0.0f);
+
+	*_view = NLEMath::NLEMatrixLookAtLH(*_position, *_target, *_up);
+	*_projection = NLEMath::NLEMatrixPerspectiveFovLH(_fov, static_cast<float>(_width / _height), _nearZ, _farZ);
+	*_viewProjection = (*_view) * (*_projection);
 
 	_hasMoved = true;
 }
@@ -115,39 +116,33 @@ void NLRECamera::update()
 	*_target = NLEMath::NLEVector3TransformCoord(*_defaultForward, _rotation);
 	*_target = NLEMath::NLEVector3Normalize(*_target);
 
-	*_right = NLEMath::NLEVector3TransformCoord(*_defaultRight, _rotation);
-	*_forward = NLEMath::NLEVector3TransformCoord(*_defaultForward, _rotation);
-	*_up = NLEMath::NLEVector3Cross(*_forward, *_right);
+	NLE_MATRIX tempYRotation = NLEMath::NLEMatrixRotationY(_pitch);
 
+	*_right = NLEMath::NLEVector3TransformCoord(*_defaultRight, tempYRotation);
+	*_up = NLEMath::NLEVector3TransformCoord(*_up, tempYRotation);
+	*_forward = NLEMath::NLEVector3TransformCoord(*_defaultForward, tempYRotation);
 
 	NLE_VECTOR temp = NLEMath::NLEVectorSet(
-	_distanceRight * NLEMath::NLEVectorGetX(*_right),
-	_distanceRight * NLEMath::NLEVectorGetY(*_right),
-	_distanceRight * NLEMath::NLEVectorGetZ(*_right),
-	0.0f);
-
+		_distanceRight * NLEMath::NLEVectorGetX(*_right),
+		_distanceRight * NLEMath::NLEVectorGetY(*_right),
+		_distanceRight * NLEMath::NLEVectorGetZ(*_right),
+		0.0f);
 	*_position = NLEMath::NLEVectorAdd(*_position, temp);
-	temp = NLEMath::NLEVectorSet(
-	_distanceForward * NLEMath::NLEVectorGetX(*_forward),
-	_distanceForward * NLEMath::NLEVectorGetY(*_forward),
-	_distanceForward * NLEMath::NLEVectorGetZ(*_forward),
-	0.0f);
 
-	*_position = NLEMath::NLEVectorAdd(*_position, temp);
 	temp = NLEMath::NLEVectorSet(
-	_distanceUp * NLEMath::NLEVectorGetX(*_up),
-	_distanceUp * NLEMath::NLEVectorGetY(*_up),
-	_distanceUp * NLEMath::NLEVectorGetZ(*_up),
-	0.0f);
+		_distanceForward * NLEMath::NLEVectorGetX(*_forward),
+		_distanceForward * NLEMath::NLEVectorGetY(*_forward),
+		_distanceForward * NLEMath::NLEVectorGetZ(*_forward),
+		0.0f);
+
 	*_position = NLEMath::NLEVectorAdd(*_position, temp);
 
 	_distanceRight = 0.0f;
 	_distanceForward = 0.0f;
-	_distanceUp = 0.0f;
 
 	*_target = NLEMath::NLEVectorAdd(*_position, *_target);
 	*_view = NLEMath::NLEMatrixLookAtLH(*_position, *_target, *_up);
-	*_viewProjection = *_view * *_projection;
+	*_viewProjection = (*_view) * (*_projection);
 
 	_hasMoved = false;
 }
@@ -185,6 +180,14 @@ void NLRECamera::setSensitivity(float movementSensitivity, float rotationSensiti
 
 void NLRECamera::rotate(float yaw, float pitch)
 {
+	_yaw += yaw;
+	if (_yaw >= _fullRotation) _yaw -= _fullRotation;
+	else if (_yaw <= -_fullRotation) _yaw += _fullRotation;
+
+	_pitch += pitch;
+	if (_pitch >= _fullRotation) _pitch -= _fullRotation;
+	else if (_pitch <= -_fullRotation) _pitch += _fullRotation;
+	/*
 	if (NLEMath::NLEVectorGetY(*_up) > 0) _yaw += yaw * _rotationSensitivity;
 	else _yaw -= yaw * _rotationSensitivity;
 
@@ -194,70 +197,30 @@ void NLRECamera::rotate(float yaw, float pitch)
 	_pitch += pitch * _rotationSensitivity;
 	if (_pitch <= -_fullRotation) _pitch += _fullRotation;
 	else if (_pitch >= _fullRotation) _pitch -= _fullRotation;
-
-	_hasMoved = true;
-}
-
-void NLRECamera::pitchUp()
-{
-	_pitch += _rotationSensitivity;
-	if (_pitch >= _fullRotation) _pitch -= _fullRotation;
-	_hasMoved = true;
-}
-
-void NLRECamera::pitchDown()
-{
-	_pitch -= _rotationSensitivity;
-	if (_pitch <= -_fullRotation) _pitch += _fullRotation;
-	_hasMoved = true;
-}
-
-void NLRECamera::yawLeft()
-{
-	_yaw -= _rotationSensitivity;
-	if (_yaw <= -_fullRotation) _yaw += _fullRotation;
-	_hasMoved = true;
-}
-
-void NLRECamera::yawRight()
-{
-	_yaw += _rotationSensitivity;
-	if (_yaw >= _fullRotation) _yaw -= _fullRotation;
+	*/
 	_hasMoved = true;
 }
 
 void NLRECamera::moveForward()
 {
-	_distanceForward += _movementSensitivity;
+	_distanceForward -= _movementSensitivity;
 	_hasMoved = true;
 }
 
 void NLRECamera::moveBackward()
 {
-	_distanceForward -= _movementSensitivity;
+	_distanceForward += _movementSensitivity;
 	_hasMoved = true;
 }
 
 void NLRECamera::moveLeft()
 {
-	_distanceRight -= _movementSensitivity;
+	_distanceRight += _movementSensitivity;
 	_hasMoved = true;
 }
 
 void NLRECamera::moveRight()
 {
-	_distanceRight += _movementSensitivity;
-	_hasMoved = true;
-}
-
-void NLRECamera::moveUp()
-{
-	_distanceUp += _movementSensitivity;
-	_hasMoved = true;
-}
-
-void NLRECamera::moveDown()
-{
-	_distanceUp -= _movementSensitivity;
+	_distanceRight -= _movementSensitivity;
 	_hasMoved = true;
 }

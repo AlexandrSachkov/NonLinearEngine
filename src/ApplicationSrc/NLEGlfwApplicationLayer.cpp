@@ -306,6 +306,8 @@ void NLEGlfwApplicationLayer::glfwErrorCallback(int error, const char* descripti
 //===========================================================================================================================
 void NLEGlfwApplicationLayer::onKeyEvent(GLFWwindow *window, int key, int scancode, int action, int mods)
 {
+	if (key == GLFW_KEY_ESCAPE) _glfwAppLayer->closeWindow();
+
 	NLE_INPUT::Event event;
 	event.eventType = NLE_INPUT::EVENT_TYPE::EVENT_KEY;
 	event.eventData.keyEvent.action = NLE_INPUT::GLFWtoNLEAction(action);

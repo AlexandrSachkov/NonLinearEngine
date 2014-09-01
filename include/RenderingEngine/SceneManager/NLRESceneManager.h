@@ -64,6 +64,8 @@ private:
 	std::shared_ptr<NLRETextureLoader> _textureLoader;
 
 	bool _enableCameraMotion;
+	float _lastCursorX;
+	float _lastCursorY;
 
 	std::shared_ptr<NLRECamera> _activeCamera;
 	std::vector<std::shared_ptr<NLRE_RenderableAsset>> _assets;

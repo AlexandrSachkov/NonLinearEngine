@@ -33,7 +33,6 @@ class NLRECamera
 {
 public:
 	NLRECamera(float x, float y, float z, int width, int height);
-	NLRECamera(const NLRECamera& other);
 	~NLRECamera();
 
 	void changeFoV(float fov);
@@ -44,20 +43,16 @@ public:
 	void setSensitivity(float movementSensitivity, float rotationSensitivity);
 	void update();
 
-	void pitchUp();
-	void pitchDown();
-	void yawLeft();
-	void yawRight();
-
 	void rotate(float yaw, float pitch);
+
 	void moveForward();
 	void moveBackward();
 	void moveLeft();
 	void moveRight();
-	void moveUp();
-	void moveDown();
 
 private:
+	NLRECamera(const NLRECamera& other){}
+
 	float _fullRotation;
 
 	float _initXPos;
@@ -91,7 +86,6 @@ private:
 
 	float _distanceForward;
 	float _distanceRight;
-	float _distanceUp;
 
 	float _pitch;
 	float _yaw;

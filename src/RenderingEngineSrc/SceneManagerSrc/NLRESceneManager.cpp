@@ -50,6 +50,9 @@ NLRESceneManager::NLRESceneManager(
 	_renderingDevice = renderingDevice;
 	_textureLoader = textureLoader;
 
+	_lastCursorX = 0.0f;
+	_lastCursorY = 0.0f;
+
 	_enableCameraMotion = false;
 
 	_activeCamera.reset(new NLRECamera(0.0f, 0.5f, -10.0f, width, height));
@@ -169,20 +172,6 @@ void NLRESceneManager::processInputEvent(NLE_INPUT::Event event)
 					if (_activeCamera) _activeCamera->moveRight();
 				}
 				break;
-
-			case NLE_INPUT::KEY::KEY_E:
-				if (_enableCameraMotion)
-				{
-					if (_activeCamera) _activeCamera->moveUp();
-				}
-				break;
-
-			case NLE_INPUT::KEY::KEY_Q:
-				if (_enableCameraMotion)
-				{
-					if (_activeCamera) _activeCamera->moveDown();
-				}
-				break;
 			}
 		}
 		break;
@@ -190,10 +179,21 @@ void NLRESceneManager::processInputEvent(NLE_INPUT::Event event)
 	case NLE_INPUT::EVENT_TYPE::EVENT_CURSOR_POSITION:
 		if (_enableCameraMotion)
 		{
-			if (_activeCamera) _activeCamera->rotate(
-				event.eventData.cursorPositionEvent.xPos/500, 
-				event.eventData.cursorPositionEvent.yPos/500
-				);
+			float currX = event.eventData.cursorPositionEvent.xPos;
+			float currY = event.eventData.cursorPositionEvent.yPos;
+
+			if (_lastCursorX == 0 && _lastCursorY == 0)
+			{
+				_lastCursorX = currX;
+				_lastCursorY = currY;
+			}
+
+			float yaw = currX - _lastCursorX;
+			float pitch = currY - _lastCursorY;
+			_activeCamera->rotate(yaw/500, pitch/500);
+
+			_lastCursorX = currX;
+			_lastCursorY = currY;
 		}
 		break;
 	}
