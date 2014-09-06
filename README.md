@@ -42,7 +42,7 @@ All NonLinear Engine versions follow the format stated below:<br/>
   <tr>
     <td><b>Minor</b></td>
     <td>
-    signifies changes that do not affect overall architecture
+    signifies changes that do not affect overall architecture. Significance may vary.
     </td> 
   </tr>
     <tr>
