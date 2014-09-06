@@ -65,8 +65,53 @@ All NonLinear Engine versions follow the format stated below:<br/>
   </tr>
   
   <tr>
+    <td>...</td>
+    <td>Upgrade to Direct3D 12 to impove rendering performance and scalability</td>
+    <td>Future Plans</td>
+  </tr>
+  <tr>
+    <td>...</td>
+    <td>...</td>
+    <td>...</td>
+  </tr>
+  <tr>
+    <td>30</td>
+    <td>Integrate Mono Scripting system for high flexibility</td>
+    <td>Future Plans</td>
+  </tr>
+  <tr>
+    <td>29</td>
+    <td>Design and implement a highly scalable engine architecture using Intel TBB</td>
+    <td>Future Plans</td>
+  </tr>
+  <tr>
+    <td>28</td>
+    <td><b>Release V0.1.1 Prototype with an example</b></td>
+    <td><b>Pending</b></td>
+  </tr>
+  <tr>
+    <td>27</td>
+    <td>Modify shaders to support normal, reflection and transparency maps</td>
+    <td><b>Pending</b></td>
+  </tr>
+  <tr>
+    <td>26</td>
+    <td>Add light importing functionality</td>
+    <td><b>Pending</b></td>
+  </tr>
+  <tr>
+    <td>25</td>
+    <td>Smooth out camera movement</td>
+    <td><b>Pending</b></td>
+  </tr>
+  <tr>
+    <td>24</td>
+    <td>Add camera controls window to the UI</td>
+    <td><b>Pending</b></td>
+  </tr>
+  <tr>
     <td>23</td>
-    <td>Implement engine systems interfaces and expose them through DLL boundary</td>
+    <td>Implement engine systems interfaces and expose them through the DLL boundary</td>
     <td>Complete</td>
   </tr>
   <tr>
