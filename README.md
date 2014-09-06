@@ -239,5 +239,15 @@ This section is created to track development progress and includes completed and
 <hr width="50%">
 
 <!--=====================================================================================-->
+<h3>Current & Pending Releases</h3>
+<hr width="20%">
+
+<p>
+<h4>V0.1.1 Prototype</h4>
+<b>Status: 95% Complete</b>
+</p>
+
+<hr width="50%">
+<!--=====================================================================================-->
 <h3>Licensing</h3>
 NonLinear engine is licensed under the MIT license.
