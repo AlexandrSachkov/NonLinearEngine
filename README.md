@@ -56,6 +56,7 @@ All NonLinear Engine versions follow the format stated below:<br/>
 
 <!--=====================================================================================-->
 <h3>Roadmap</h3>
+This section is created to track development progress and includes completed and pending tasks as well as future plans.
 
 <table style="width:100%">
   <tr>
@@ -64,6 +65,11 @@ All NonLinear Engine versions follow the format stated below:<br/>
     <td><b>Status</b></td>
   </tr>
   
+  <tr>
+    <td>...</td>
+    <td>Release the first stable version V1.0.1</td>
+    <td>Future Plans</td>
+  </tr>
   <tr>
     <td>...</td>
     <td>Upgrade to Direct3D 12 to impove rendering performance and scalability</td>
@@ -75,8 +81,8 @@ All NonLinear Engine versions follow the format stated below:<br/>
     <td>...</td>
   </tr>
   <tr>
-    <td>30</td>
-    <td>Integrate Mono Scripting system for high flexibility</td>
+    <td>...</td>
+    <td>Integrate Mono Scripting system for high flexibility and customization</td>
     <td>Future Plans</td>
   </tr>
   <tr>
