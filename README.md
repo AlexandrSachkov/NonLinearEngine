@@ -236,3 +236,8 @@ This section is created to track development progress and includes completed and
     <td>Complete</td>
   </tr>
 </table>
+<hr width="50%">
+
+<!--=====================================================================================-->
+<h3>Licensing</h3>
+NonLinear engine is licensed under the MIT license.
