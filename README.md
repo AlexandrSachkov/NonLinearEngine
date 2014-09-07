@@ -275,10 +275,6 @@ Will become available upon release
 <h5>Dependencies:</h5>
 <ul>
   <li>
-    Visual Studio 2013<br/>
-    http://www.visualstudio.com/downloads/download-visual-studio-vs
-  </li>
-  <li>
     Boost C++ 1.55.0 filesystem<br/>
     http://www.boost.org/
   </li>
@@ -299,6 +295,10 @@ Will become available upon release
 <!--=====================================================================================-->
 <h5>Build Instructions:</h5>
 <ol>
+  <li>
+    Download Visual Studio 2013 if you dont have it installed already<br/>
+    http://www.visualstudio.com/downloads/download-visual-studio-vs
+  </li>
   <li>
     Build Dependencies:<br/>  
   <p>
