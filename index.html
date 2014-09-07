@@ -34,11 +34,13 @@
         <h1>
 <a name="nonlinear-engine" class="anchor" href="#nonlinear-engine"><span class="octicon octicon-link"></span></a>NonLinear Engine</h1>
 
+
+
 <p>
 <b>3D Game and Simulation Engine</b>
 </p>
 
-<hr width="50%"><h3>
+<hr width="100%"><h3>
 <a name="about-the-project" class="anchor" href="#about-the-project"><span class="octicon octicon-link"></span></a>About the Project</h3>
 
 <p>
@@ -54,7 +56,7 @@ I started this project as a means to practice what I am passionate about which i
 I hope that some of you will find this project useful. All feedback is highly appreciated. 
 </p>
 
-<hr width="50%"><h3>
+<hr width="100%"><h3>
 <a name="versioning" class="anchor" href="#versioning"><span class="octicon octicon-link"></span></a>Versioning</h3>
 
 <p>
@@ -68,22 +70,264 @@ All NonLinear Engine versions follow the format stated below:<br><b>[Major Versi
 <tr>
 <td><b>Major</b></td>
     <td>
-    signifies major architectural changes. Always worth upgrading to. <b>0</b> denotes prototype while <b>&gt;=1</b> denotes          stable release.
+      signifies major architectural changes. Always worth upgrading to. <b>0</b> denotes prototype while <b>&gt;=1</b> denotes          stable release.
     </td> 
   </tr>
 <tr>
 <td><b>Minor</b></td>
     <td>
-    signifies changes that do not affect overall architecture. Significance may vary.
+     signifies changes that do not affect overall architecture. Significance may vary.
     </td> 
   </tr>
 <tr>
 <td><b>Interface</b></td>
     <td>
-    signifies changes to engine interfaces. May affect integration with existing applications.
+      signifies changes to engine interfaces. May affect integration with existing applications.
     </td> 
   </tr>
-</table>
+</table><hr width="100%"><h3>
+<a name="roadmap" class="anchor" href="#roadmap"><span class="octicon octicon-link"></span></a>Roadmap</h3>
+
+<p>This section is created to track development progress and includes completed and pending tasks as well as future plans.</p>
+
+<table>
+<tr>
+<td><b>Step #</b></td>
+    <td><b>Description</b></td>
+    <td><b>Status</b></td>
+  </tr>
+<tr>
+<td>...</td>
+    <td>Release the first stable version V1.0.1</td>
+    <td>Future Plans</td>
+  </tr>
+<tr>
+<td>...</td>
+    <td>Upgrade to Direct3D 12 to impove rendering performance and scalability</td>
+    <td>Future Plans</td>
+  </tr>
+<tr>
+<td>...</td>
+    <td>...</td>
+    <td>...</td>
+  </tr>
+<tr>
+<td>...</td>
+    <td>Integrate Mono Scripting system for high flexibility and customization</td>
+    <td>Future Plans</td>
+  </tr>
+<tr>
+<td>29</td>
+    <td>Design and implement a highly scalable engine architecture using Intel TBB</td>
+    <td>Future Plans</td>
+  </tr>
+<tr>
+<td>28</td>
+    <td><b>Release V0.1.1 Prototype with an example</b></td>
+    <td><b>Pending</b></td>
+  </tr>
+<tr>
+<td>27</td>
+    <td>Modify shaders to support normal, reflection and transparency maps</td>
+    <td><b>Pending</b></td>
+  </tr>
+<tr>
+<td>26</td>
+    <td>Add light importing functionality</td>
+    <td><b>Pending</b></td>
+  </tr>
+<tr>
+<td>25</td>
+    <td>Smooth out camera movement</td>
+    <td><b>Pending</b></td>
+  </tr>
+<tr>
+<td>24</td>
+    <td>Add camera controls window to the UI</td>
+    <td><b>Pending</b></td>
+  </tr>
+<tr>
+<td>23</td>
+    <td>Implement engine systems interfaces and expose them through the DLL boundary</td>
+    <td>Complete</td>
+  </tr>
+<tr>
+<td>22</td>
+    <td>Add DLL build configurations for integration into existing applications</td>
+    <td>Complete</td>
+  </tr>
+<tr>
+<td>21</td>
+    <td>Implement FPS counter</td>
+    <td>Complete</td>
+  </tr>
+<tr>
+<td>20</td>
+    <td>Connect engine systems with input processor</td>
+    <td>Complete</td>
+  </tr>
+<tr>
+<td>19</td>
+    <td>Write event conversion maps for GLFW and CEGUI to engine event system</td>
+    <td>Complete</td>
+  </tr>
+<tr>
+<td>18</td>
+    <td>Implement an event system with a simple input processor</td>
+    <td>Complete</td>
+  </tr>
+<tr>
+<td>17</td>
+    <td>Implement an application layer using GLFW library</td>
+    <td>Complete</td>
+  </tr>
+<tr>
+<td>16</td>
+    <td>Add support for GUI rendering</td>
+    <td>Complete</td>
+  </tr>
+<tr>
+<td>15</td>
+    <td>Integrate scriptable GUI using CEGUI</td>
+    <td>Complete</td>
+  </tr>
+<tr>
+<td>14</td>
+    <td>Implement a first-person camera</td>
+    <td>Complete</td>
+  </tr>
+<tr>
+<td>13</td>
+    <td>Implement a basic scene manager</td>
+    <td>Complete</td>
+  </tr>
+<tr>
+<td>12</td>
+    <td>Implement a texture loader using DirectXTex library</td>
+    <td>Complete</td>
+  </tr>
+<tr>
+<td>11</td>
+    <td>Implement a model importer using Assimp library</td>
+    <td>Complete</td>
+  </tr>
+<tr>
+<td>10</td>
+    <td>Add support for shader compilation and loading of precompiled shaders</td>
+    <td>Complete</td>
+  </tr>
+<tr>
+<td>9</td>
+    <td>Write vertex and pixel shaders for simple forward rendering</td>
+    <td>Complete</td>
+  </tr>
+<tr>
+<td>8</td>
+    <td>Implement basic rendering engine supporting rendering of static geometry with diffuse materials</td>
+    <td>Complete</td>
+  </tr>
+<tr>
+<td>7</td>
+    <td>Encapsulate shading techniques into objects and make them swappable at runtime</td>
+    <td>Complete</td>
+  </tr>
+<tr>
+<td>6</td>
+    <td>
+      Implement rendering device encapsulating Direct3D 11 state management.
+    </td>
+    <td>Complete</td>
+  </tr>
+<tr>
+<td>5</td>
+    <td>Write DirectXMath abstraction layer</td>
+    <td>Complete</td>
+  </tr>
+<tr>
+<td>4</td>
+    <td>Write Direct3D 11 abstraction layer</td>
+    <td>Complete</td>
+  </tr>
+<tr>
+<td>3</td>
+    <td>Choose graphics API</td>
+    <td>Complete</td>
+  </tr>
+<tr>
+<td>2</td>
+    <td>Add logging support</td>
+    <td>Complete</td>
+  </tr>
+<tr>
+<td>1</td>
+    <td>Design modular engine architecture</td>
+    <td>Complete</td>
+  </tr>
+</table><hr width="100%"><h3>
+<a name="current--pending-releases" class="anchor" href="#current--pending-releases"><span class="octicon octicon-link"></span></a>Current &amp; Pending Releases</h3>
+
+<hr width="20%"><p>
+</p><h4>
+<a name="v011-prototype" class="anchor" href="#v011-prototype"><span class="octicon octicon-link"></span></a>V0.1.1 Prototype</h4>
+<b>Status: 95% Complete</b>
+
+
+<p>
+</p><h5>
+<a name="purpose" class="anchor" href="#purpose"><span class="octicon octicon-link"></span></a>Purpose:</h5> 
+<ul>
+<li>
+    to identify architectural requirements
+  </li>
+  <li>
+    to better understand the challenges assiciated with game and rendering engine architecture development and find their         solutions
+  </li>
+  <li>
+    to learn and evaluate the chosen external libraries and middleware
+  </li>
+  <li>
+    to show something for all my hard work
+  </li>
+</ul><h5>
+<a name="download-binaries" class="anchor" href="#download-binaries"><span class="octicon octicon-link"></span></a>Download Binaries:</h5>
+
+<p>Will become available upon release</p>
+
+<h5>
+<a name="dependencies" class="anchor" href="#dependencies"><span class="octicon octicon-link"></span></a>Dependencies:</h5>
+
+<ul>
+<li>
+    Visual Studio 2013<br>
+    http://www.visualstudio.com/downloads/download-visual-studio-vs
+  </li>
+  <li>
+    Boost C++ 1.55.0 filesystem<br>
+    http://www.boost.org/
+  </li>
+  <li>
+    Assimp 3.1.1<br>
+    http://assimp.sourceforge.net/index.html
+  </li>
+  <li>
+    CEGUI 0.8.4<br>
+    http://cegui.org.uk/
+  </li>
+  <li>
+    GLFW 3.0.4<br>
+    http://www.glfw.org/
+  </li>
+</ul><h5>
+<a name="build-instructions" class="anchor" href="#build-instructions"><span class="octicon octicon-link"></span></a>Build Instructions:</h5>
+
+<ol>
+<li>
+    Build 
+  </li>
+</ol><hr width="100%"><h3>
+<a name="licensing" class="anchor" href="#licensing"><span class="octicon octicon-link"></span></a>Licensing</h3>
+
+<p>NonLinear engine is licensed under the MIT license.</p>
       </section>
     </div>
 
