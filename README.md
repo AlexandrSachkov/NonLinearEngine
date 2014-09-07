@@ -305,13 +305,15 @@ Will become available upon release
     Follow links in the "Dependencies" section for library-specific build instructions. Every library must be built as a          shared library (Multi-Threaded DLL), otherwise NonLinear Engine will not build under DLL configurations. The only required     part of Boost is Filesystem, and you can use bjam commands stated below to build it:<br/>
   </p>
   <p>
-    bjam --with-filesystem --toolset=msvc --stagedir=stage32debug address-model=32 variant=debug link=static threading=multi      runtime-link=shared<br/>
-    bjam --with-filesystem --toolset=msvc --stagedir=stage32release address-model=32 variant=release link=static                  threading=multi runtime-link=shared<br/>
-    bjam --with-filesystem --toolset=msvc --stagedir=stage64debug address-model=64 variant=debug link=static threading=multi      runtime-link=shared<br/>
-    bjam --with-filesystem --toolset=msvc --stagedir=stage64release address-model=64 variant=release link=static                  threading=multi runtime-link=shared<br/>
+    bjam --with-filesystem --toolset=msvc --stagedir=stage32debug address-model=32 variant=debug link=static threading=multi      runtime-link=shared<br/><br/>
+    bjam --with-filesystem --toolset=msvc --stagedir=stage32release address-model=32 variant=release link=static                  threading=multi runtime-link=shared<br/><br/>
+    bjam --with-filesystem --toolset=msvc --stagedir=stage64debug address-model=64 variant=debug link=static threading=multi      runtime-link=shared<br/><br/>
+    bjam --with-filesystem --toolset=msvc --stagedir=stage64release address-model=64 variant=release link=static                  threading=multi runtime-link=shared<br/><br/>
   </p>
   </li>
 </ol>
+
+<b>I will write the rest tomorrow</b>
 
 <hr width="100%">
 <!--=====================================================================================-->
