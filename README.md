@@ -247,7 +247,31 @@ This section is created to track development progress and includes completed and
 <b>Status: 95% Complete</b>
 </p>
 
-<hr width="50%">
+<p>
+<h5>Purpose:</h5> 
+<ul>
+  <li>
+    to identify architectural requirements
+  </li>
+  <li>
+    to better understand the challenges assiciated with game and rendering engine architecture development and find their         solutions
+  </li>
+  <li>
+    to learn and evaluate the chosen external libraries and middleware
+  </li>
+  <li>
+    to show something for all my hard work
+  </li>
+</ul>
+</p>
+
+<h5>Download Binaries:</h5>
+Will become available upon release
+
+
+<h5>Build Instructions:</h5>
+
+<hr align="middle" width="50%">
 <!--=====================================================================================-->
 <h3>Licensing</h3>
 NonLinear engine is licensed under the MIT license.
