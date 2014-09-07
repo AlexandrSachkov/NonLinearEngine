@@ -6,7 +6,7 @@ NonLinear Engine
 <b>3D Game and Simulation Engine</b>
 </p>
 
-<hr width="50%">
+<hr width="100%">
 
 <h3>About the Project</h3>
 <p>
@@ -21,7 +21,7 @@ I started this project as a means to practice what I am passionate about which i
 <p>
 I hope that some of you will find this project useful. All feedback is highly appreciated. 
 </p>
-<hr width="50%">
+<hr width="100%">
 
 <!--=====================================================================================-->
 
@@ -55,7 +55,7 @@ All NonLinear Engine versions follow the format stated below:<br/>
     </td> 
   </tr>
 </table>
-<hr width="50%">
+<hr width="100%">
 
 <!--=====================================================================================-->
 <h3>Roadmap</h3>
@@ -236,7 +236,7 @@ This section is created to track development progress and includes completed and
     <td>Complete</td>
   </tr>
 </table>
-<hr width="50%">
+<hr width="100%">
 
 <!--=====================================================================================-->
 <h3>Current & Pending Releases</h3>
@@ -268,10 +268,38 @@ This section is created to track development progress and includes completed and
 <h5>Download Binaries:</h5>
 Will become available upon release
 
+<h5>Dependencies:</h5>
+<ul>
+  <li>
+    Visual Studio 2013<br/>
+    http://www.visualstudio.com/downloads/download-visual-studio-vs
+  </li>
+  <li>
+    Boost C++ 1.55.0 filesystem<br/>
+    http://www.boost.org/
+  </li>
+  <li>
+    Assimp 3.1.1<br/>
+    http://assimp.sourceforge.net/index.html
+  </li>
+  <li>
+    CEGUI 0.8.4<br/>
+    http://cegui.org.uk/
+  </li>
+  <li>
+    GLFW 3.0.4<br/>
+    http://www.glfw.org/
+  </li>
+</ul>
 
 <h5>Build Instructions:</h5>
+<ol>
+  <li>
+    Build 
+  </li>
+</ol>
 
-<hr align="middle" width="50%">
+<hr width="100%">
 <!--=====================================================================================-->
 <h3>Licensing</h3>
 NonLinear engine is licensed under the MIT license.
