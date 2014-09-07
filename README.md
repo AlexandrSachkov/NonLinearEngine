@@ -296,7 +296,7 @@ Will become available upon release
 <h5>Build Instructions:</h5>
 <ol>
   <li>
-    Download Visual Studio 2013 if you dont have it installed already<br/>
+    Download and install Visual Studio 2013 if you dont have it installed already<br/>
     http://www.visualstudio.com/downloads/download-visual-studio-vs
   </li>
   <li>
