@@ -317,6 +317,10 @@ This section is created to track development progress and includes completed and
 </p>
 
 <!--=====================================================================================-->
+<h5>Warning:</h5>
+This is a <b>prototype</b> release and should be treated as such. It is not an accurate representation of the actual product. Use at your own risk. 
+
+<!--=====================================================================================-->
 <h5>Download Binaries:</h5>
 Will become available upon release
 
