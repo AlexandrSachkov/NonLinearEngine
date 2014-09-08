@@ -89,13 +89,18 @@ This section is created to track development progress and includes completed and
     <td>Future Plans</td>
   </tr>
   <tr>
-    <td>29</td>
+    <td>30</td>
     <td>Design and implement a highly scalable engine architecture using Intel TBB</td>
     <td>Future Plans</td>
   </tr>
   <tr>
-    <td>28</td>
+    <td>29</td>
     <td><b>Release V0.1.1 Prototype with an example</b></td>
+    <td><b>Pending</b></td>
+  </tr>
+   <tr>
+    <td>28</td>
+    <td>Fix rendering bug associated with UI rendering</td>
     <td><b>Pending</b></td>
   </tr>
   <tr>
@@ -256,13 +261,54 @@ This section is created to track development progress and includes completed and
     to identify architectural requirements
   </li>
   <li>
-    to better understand the challenges assiciated with game and rendering engine architecture development and find their         solutions
+    to better understand and solve challenges associated with with game and rendering engine development
   </li>
   <li>
     to learn and evaluate the chosen external libraries and middleware
   </li>
   <li>
     to show something for all my hard work
+  </li>
+</ul>
+</p>
+
+<!--=====================================================================================-->
+<p>
+<h5>Features:</h5>
+<ul>
+  <li>
+    loading of scenes from a variety of common interchange formats. See the link  below for a full list of                        formats:<br/>
+    http://assimp.sourceforge.net/main_features_formats.html
+  </li>
+  <li>
+    Support for DDS, BMP, JPEG, PNG, TIFF, GIF, HD Photo texture formats
+  </li>
+  <li>
+    Support for texture block compression
+  </li>
+  <li>
+    static scene rendering using Direct3D 11
+  </li>
+  <li>
+    first-person camera for scene exploration
+  </li>
+  <li>
+    UI displaying FPS and user controls
+  </li>
+  <li>
+    windowed and fullscreen modes
+  </li>
+  <li>
+    loading of precompiled shaders from file
+  </li>
+  <li>
+    abstraction of all OS and graphics API specific functionality
+  </li>
+  <li>
+    modular component design
+  </li>
+  <li>
+    well-managed complexity
   </li>
 </ul>
 </p>
