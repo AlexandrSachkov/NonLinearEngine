@@ -302,7 +302,7 @@ This section is created to track development progress and includes completed and
     loading of precompiled shaders from file
   </li>
   <li>
-    support for swapping shading techniques at runtime
+    support for swapping of shading techniques at runtime
   </li>
   <li>
     abstraction of all OS and graphics API specific functionality
