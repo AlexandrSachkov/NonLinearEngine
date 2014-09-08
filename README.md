@@ -370,6 +370,35 @@ Will become available upon release
     bjam --with-filesystem --toolset=msvc --stagedir=stage64release address-model=64 variant=release link=static                  threading=multi runtime-link=shared<br/><br/>
   </p>
   </li>
+  <li>
+    Introduce Dependencies:<br/>
+    <p>
+      Now that the dependencies are built, it is time to introduce them into NonLinear Engine SDK.<br/>
+      There are two important directories to note in the SDK root folder, "Dependencies" and "lib", because that is where           NonLinear Engine will look for its dependencies. Follow the diagram below to organize dependency contents:
+      <ul>
+        <li>
+          Dependencies
+          <ul>
+            <li>
+              Some_Dependency
+              <ul>
+                <li>
+                  include - contains dependency include root folders
+                </li>
+                <li>
+                  lib  - contains dependency static libraries sorted by configuration and platform respectively
+                </li>
+              </ul>
+            </li>
+          </ul>
+        </li>
+        <li>
+          lib - is a NonLiear Engine build directory which also contains dependency DLLs sorted by configuration and platform             respectively
+        </li>
+      </ul>
+      I've added DELETEME.txt files to preserve the above directory structure on this repository to save you some time.
+    </p>
+  </li>
 </ol>
 
 <b>I will write the rest tomorrow</b>
