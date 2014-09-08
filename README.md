@@ -308,6 +308,12 @@ This section is created to track development progress and includes completed and
     abstraction of all OS and graphics API specific functionality
   </li>
   <li>
+    DLL and Application build configurations
+  </li>
+  <li>
+    easy integration into existing applications
+  </li>
+  <li>
     modular component design
   </li>
   <li>
