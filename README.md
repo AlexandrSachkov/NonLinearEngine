@@ -383,20 +383,20 @@ Will become available upon release
               Some_Dependency
               <ul>
                 <li>
-                  include - contains dependency include root folders
+                  <b>include</b> - contains dependency include root folders
                 </li>
                 <li>
-                  lib  - contains dependency static libraries sorted by configuration and platform respectively
+                  <b>lib</b>     - contains dependency static libraries sorted by configuration and platform respectively
                 </li>
               </ul>
             </li>
           </ul>
         </li>
         <li>
-          lib - is a NonLiear Engine build directory which also contains dependency DLLs sorted by configuration and platform             respectively
+          <b>lib</b>    - is a NonLiear Engine build directory which also contains dependency DLLs sorted by configuration and                 platform respectively
         </li>
       </ul>
-      I've added DELETEME.txt files to preserve the above directory structure on this repository to save you some time.
+      I've added DELETEME.txt files to preserve the above directory structure on this repository, so all that's left to do is       to drop includes, libs and DLLs into a correct location.
     </p>
   </li>
 </ol>
