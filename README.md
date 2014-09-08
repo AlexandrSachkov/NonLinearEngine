@@ -281,10 +281,10 @@ This section is created to track development progress and includes completed and
     http://assimp.sourceforge.net/main_features_formats.html
   </li>
   <li>
-    Support for DDS, BMP, JPEG, PNG, TIFF, GIF, HD Photo texture formats
+    support for DDS, BMP, JPEG, PNG, TIFF, GIF, HD Photo texture formats
   </li>
   <li>
-    Support for texture block compression
+    support for texture block compression
   </li>
   <li>
     static scene rendering using Direct3D 11
@@ -300,6 +300,9 @@ This section is created to track development progress and includes completed and
   </li>
   <li>
     loading of precompiled shaders from file
+  </li>
+  <li>
+    support for swapping shading techniques at runtime
   </li>
   <li>
     abstraction of all OS and graphics API specific functionality
