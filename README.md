@@ -11,7 +11,7 @@ NonLinear Engine
 <h3>About the Project</h3>
 <p>
 NonLinear Engine is a completely free open-source 3D game and simulation engine for Windows.
-The goal of this project is to create a very fast, stable, and highly customizable platform that provides a solid foundation to independent game developers and hobbyists for their games. 
+The goal of this project is to create a very fast, scalable, and highly customizable platform that provides a solid foundation to independent game developers and hobbyists for their games. 
 </p>
 
 <p>
