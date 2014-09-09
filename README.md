@@ -393,7 +393,6 @@ Will become available upon release
           <b>lib</b>    - is a NonLiear Engine build directory which also contains dependency DLLs sorted by configuration and                 platform respectively
         </li>
       </ul>
-      I've added DELETEME.txt files to preserve the above directory structure on this repository, so all that's left to do is       to drop includes, libs and DLLs into a correct location.
     </p>
   </li>
 </ol>
