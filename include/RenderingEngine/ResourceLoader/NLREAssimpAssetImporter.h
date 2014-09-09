@@ -29,12 +29,12 @@ THE SOFTWARE.
 #ifndef NLRE_ASSIMP_ASSET_IMPORTER_
 #define NLRE_ASSIMP_ASSET_IMPORTER_
 
-#include <assimp\include\Importer.hpp>
-#include <assimp\include\scene.h> 
-#include <assimp\include\postprocess.h>  
-#include <assimp\include\Logger.hpp>
-#include <assimp\include\LogStream.hpp>
-#include <assimp\include\DefaultLogger.hpp>
+#include <assimp\Importer.hpp>
+#include <assimp\scene.h> 
+#include <assimp\postprocess.h>  
+#include <assimp\Logger.hpp>
+#include <assimp\LogStream.hpp>
+#include <assimp\DefaultLogger.hpp>
 
 #define AI_CONFIG_PP_SBP_REMOVE aiPrimitiveType_POINT | aiPrimitiveType_LINE
 

@@ -164,3 +164,4 @@ lib/
 [Dd]atafiles/
 *.cso
 
+NLE/nsight_profiler.cfg

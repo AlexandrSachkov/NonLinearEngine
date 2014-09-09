@@ -87,6 +87,7 @@ bool NLREAssimpAssetImporter::importAssets(std::wstring path, std::vector<std::s
 		aiProcess_CalcTangentSpace |
 		aiProcess_Triangulate |
 		aiProcess_JoinIdenticalVertices |
+		aiProcess_FlipWindingOrder |
 		aiProcess_GenUVCoords |
 		aiProcess_GenNormals |
 		aiProcess_RemoveComponent |
@@ -165,7 +166,8 @@ void NLREAssimpAssetImporter::assembleAsset(
 
 	//NLE_MATRIX temp = NLEMath::NLEMatrixIdentity();
 	//NLEMath::NLEStoreFloat4x4(&asset->transformStruct.transformation, temp);
-	asset->transformStruct.transformation = NLE_FLOAT4X4((const float*)(&transform.Transpose()));
+	//asset->transformStruct.transformation = NLE_FLOAT4X4((const float*)(&transform.Transpose()));
+	asset->transformStruct.transformation = NLE_FLOAT4X4((const float*)(&transform));
 	_renderingDevice->createBuffer<NLRE_Transformation>(NLRE_BIND_CONSTANT_BUFFER, NLRE_USAGE_DYNAMIC, &asset->transformStruct, 1, asset->transformationBuffer);
 
 	//printf("===\n");

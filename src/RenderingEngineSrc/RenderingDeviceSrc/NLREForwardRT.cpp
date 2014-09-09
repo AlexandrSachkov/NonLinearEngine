@@ -90,7 +90,10 @@ NLREForwardRT::~NLREForwardRT()
 
 void NLREForwardRT::applyState()
 {
+	float blendFactor[] = { 0.0f, 0.0f, 0.0f, 0.0f };
+
 	_renderingDevice->setRenderTargets(1, _backBufferRenderTargetView, _depthStencilView);
+	_renderingDevice->setBlendState(_noBlendState, blendFactor);
 	_renderingDevice->setVertexShader(_vertexShader);
 	_renderingDevice->setPixelShader(_pixelShader);
 	_renderingDevice->setInputLayout(_inputLayout);
@@ -109,13 +112,8 @@ void NLREForwardRT::render(std::vector<std::shared_ptr<NLRE_RenderableAsset>>& a
 	_renderingDevice->clearRenderTargetView(_backBufferRenderTargetView, bgColor);
 	_renderingDevice->clearDepthStencilView(_depthStencilView);
 
-	float blendFactor[] = { 0.75f, 0.75f, 0.75f, 1.0f };
-
-	int counter = 0;
 	for (std::vector<std::shared_ptr<NLRE_RenderableAsset>>::iterator it = assets.begin(); it != assets.end(); ++it)
 	{
-		//if (counter == 2) break;
-
 		std::shared_ptr<NLRE_RenderableAsset> asset = *it;
 		if (asset->mesh->geomBuffer.apiBuffer)
 		{
@@ -135,7 +133,6 @@ void NLREForwardRT::render(std::vector<std::shared_ptr<NLRE_RenderableAsset>>& a
 			_renderingDevice->PSSetShaderResources(0, 1, asset->material->diffuseTextView);
 		}
 		_renderingDevice->drawIndexed(asset->mesh->indexBuffer);
-		counter++;
 	}
 }
 
