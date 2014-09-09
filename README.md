@@ -316,9 +316,6 @@ This section is created to track development progress and includes completed and
   <li>
     modular component design
   </li>
-  <li>
-    well-managed complexity
-  </li>
 </ul>
 </p>
 
