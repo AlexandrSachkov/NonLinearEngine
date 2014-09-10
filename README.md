@@ -28,7 +28,7 @@ I hope that some of you will find this project useful. All feedback is highly ap
 <h3>Versioning</h3>
 <p>
 All NonLinear Engine versions follow the format stated below:<br/>
-<b>[Major Version].[Minor Version].[Interface Version]</b><br/>
+<b>[Major Version].[Minor Version].[Patch Version]</b><br/>
 </p>
 
 <table style="width:100%">
@@ -39,19 +39,19 @@ All NonLinear Engine versions follow the format stated below:<br/>
   <tr>
     <td><b>Major</b></td>
     <td>
-      signifies major architectural changes. Always worth upgrading to. <b>0</b> denotes prototype while <b>>=1</b> denotes          stable release.
+      signifies incompatible changes to public API and incorporates changes from Minor and Patch versions. <b>0</b> denotes a       pre-release version while <b>>=1</b> denotes a stable release.
     </td> 
   </tr>
   <tr>
     <td><b>Minor</b></td>
     <td>
-     signifies changes that do not affect overall architecture. Significance may vary.
+     signifies backwards compatible public API changes. Incorporates changes from Patch versions.
     </td> 
   </tr>
     <tr>
-    <td><b>Interface</b></td>
+    <td><b>Patch</b></td>
     <td>
-      signifies changes to engine interfaces. May affect integration with existing applications.
+      signifies bug fixes and changes that do not affect public API. Significance may vary.
     </td> 
   </tr>
 </table>
