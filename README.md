@@ -95,7 +95,7 @@ This section is created to track development progress and includes completed and
   </tr>
   <tr>
     <td>29</td>
-    <td><b>Release V0.1.1 Prototype with an example</b></td>
+    <td><b>Release V0.1.0 Prototype with an example</b></td>
     <td><b>Pending</b></td>
   </tr>
    <tr>
@@ -249,7 +249,7 @@ This section is created to track development progress and includes completed and
 
 <!--=====================================================================================-->
 <p>
-<h4>V0.1.1 Prototype</h4>
+<h4>V0.1.0 Prototype</h4>
 <b>Status: 95% Complete</b>
 </p>
 
