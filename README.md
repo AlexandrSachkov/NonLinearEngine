@@ -134,7 +134,7 @@ This section is created to track development progress and includes completed and
   </tr>
   <tr>
     <td>...</td>
-    <td>Integrate Mono Scripting system for high flexibility and customization</td>
+    <td>Integrate Mono Scripting system to improve flexibility</td>
     <td>Future Plans</td>
   </tr>
   <tr>
