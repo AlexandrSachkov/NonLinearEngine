@@ -282,28 +282,14 @@ This section is created to track development progress and includes completed and
 <!--=====================================================================================-->
 <h3>Downloads:</h3>
 <p>
-  None at this time<br/>
+  No binary releases at this time<br/>
   Examples will become available as the development progresses
 </p>
 <hr width="100%">
 
 <!--=====================================================================================-->
 <h3>Build Instructions:</h3>
-<ol>
-  <li>
-    Download and install Visual Studio 2013 (VS2013 Express is sufficient)
-    http://www.visualstudio.com/downloads/download-visual-studio-vs
-  </li>
-  <li>
-    Download and unzip dependencies, and throw their contents into the NonLinear Engine root directory.
-  </li>
-  <li>
-    Navigate to the NLE directory and open the project file in Visual Studio.
-  </li>
-  <li>
-    Select the desired platform and configuration, then select Build -> Build Solution from the main menu.
-  </li>
-</ol>
+Detailed instructions will be posted upon release of the first stable version.
 <hr width="100%">
 
 <!--=====================================================================================-->
