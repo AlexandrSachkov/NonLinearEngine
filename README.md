@@ -23,6 +23,54 @@ I hope that some of you will find this project useful. All feedback is highly ap
 </p>
 <hr width="100%">
 
+
+<!--=====================================================================================-->
+<p>
+<h5>Current Features:</h5>
+<ul>
+  <li>
+    loading of scenes from a variety of common interchange formats. See the link  below for a full list of                        formats:<br/>
+    http://assimp.sourceforge.net/main_features_formats.html
+  </li>
+  <li>
+    support for DDS, BMP, JPEG, PNG, TIFF, GIF, HD Photo texture formats
+  </li>
+  <li>
+    support for texture block compression
+  </li>
+  <li>
+    static scene rendering using Direct3D 11
+  </li>
+  <li>
+    first-person camera for scene exploration
+  </li>
+  <li>
+    UI displaying FPS and user controls
+  </li>
+  <li>
+    windowed and fullscreen modes
+  </li>
+  <li>
+    loading of precompiled shaders from file
+  </li>
+  <li>
+    support for shading technique swaps at runtime
+  </li>
+  <li>
+    abstraction of all OS and graphics API specific functionality
+  </li>
+  <li>
+    DLL and Application build configurations
+  </li>
+  <li>
+    easy integration into existing applications
+  </li>
+  <li>
+    modular component design
+  </li>
+</ul>
+</p>
+
 <!--=====================================================================================-->
 
 <h3>Versioning</h3>
@@ -70,7 +118,7 @@ This section is created to track development progress and includes completed and
   
   <tr>
     <td>...</td>
-    <td>Release the first stable version V1.0.1</td>
+    <td>Release the first stable version V1.0.0</td>
     <td>Future Plans</td>
   </tr>
   <tr>
@@ -89,39 +137,19 @@ This section is created to track development progress and includes completed and
     <td>Future Plans</td>
   </tr>
   <tr>
-    <td>30</td>
-    <td>Design and implement a highly scalable engine architecture using Intel TBB</td>
-    <td>Future Plans</td>
-  </tr>
-  <tr>
-    <td>29</td>
-    <td><b>Release V0.1.0 Prototype with an example</b></td>
-    <td><b>Pending</b></td>
-  </tr>
-   <tr>
-    <td>28</td>
-    <td>Fix rendering bug associated with UI rendering</td>
-    <td><b>Pending</b></td>
-  </tr>
-  <tr>
-    <td>27</td>
-    <td>Modify shaders to support normal, reflection and transparency maps</td>
-    <td><b>Pending</b></td>
-  </tr>
-  <tr>
     <td>26</td>
-    <td>Add light importing functionality</td>
+    <td>Redesign the architecture to improve scalability</td>
     <td><b>Pending</b></td>
   </tr>
   <tr>
     <td>25</td>
-    <td>Smooth out camera movement</td>
+    <td><b>Begin working on V1.0.0</b></td>
     <td><b>Pending</b></td>
   </tr>
   <tr>
     <td>24</td>
-    <td>Add camera controls window to the UI</td>
-    <td><b>Pending</b></td>
+    <td>Finalize the prototyping stage</td>
+    <td>Complete</td>
   </tr>
   <tr>
     <td>23</td>
@@ -246,160 +274,38 @@ This section is created to track development progress and includes completed and
 <!--=====================================================================================-->
 <h3>Current & Pending Releases</h3>
 <hr width="20%">
-
-<!--=====================================================================================-->
 <p>
-<h4>V0.1.0 Prototype</h4>
-<b>Status: 95% Complete</b>
+  None at this time
 </p>
+<hr width="100%">
 
 <!--=====================================================================================-->
+<h5>Downloads:</h5>
 <p>
-<h5>Purpose:</h5> 
-<ul>
-  <li>
-    to identify architectural requirements
-  </li>
-  <li>
-    to better understand and solve challenges associated with with game and rendering engine development
-  </li>
-  <li>
-    to learn and evaluate the chosen external libraries and middleware
-  </li>
-  <li>
-    to show something for all my hard work
-  </li>
-</ul>
+  None at this time<br/>
+  Examples will become available as the development progresses
 </p>
-
-<!--=====================================================================================-->
-<p>
-<h5>Features:</h5>
-<ul>
-  <li>
-    loading of scenes from a variety of common interchange formats. See the link  below for a full list of                        formats:<br/>
-    http://assimp.sourceforge.net/main_features_formats.html
-  </li>
-  <li>
-    support for DDS, BMP, JPEG, PNG, TIFF, GIF, HD Photo texture formats
-  </li>
-  <li>
-    support for texture block compression
-  </li>
-  <li>
-    static scene rendering using Direct3D 11
-  </li>
-  <li>
-    first-person camera for scene exploration
-  </li>
-  <li>
-    UI displaying FPS and user controls
-  </li>
-  <li>
-    windowed and fullscreen modes
-  </li>
-  <li>
-    loading of precompiled shaders from file
-  </li>
-  <li>
-    support for shading technique swaps at runtime
-  </li>
-  <li>
-    abstraction of all OS and graphics API specific functionality
-  </li>
-  <li>
-    DLL and Application build configurations
-  </li>
-  <li>
-    easy integration into existing applications
-  </li>
-  <li>
-    modular component design
-  </li>
-</ul>
-</p>
-
-<!--=====================================================================================-->
-<h5>Warning:</h5>
-This is a <b>prototype</b> release and should be treated as such. It is not an accurate representation of the actual product. Use at your own risk. 
-
-<!--=====================================================================================-->
-<h5>Download Binaries:</h5>
-Will become available upon release
-
-<!--=====================================================================================-->
-<h5>Dependencies:</h5>
-<ul>
-  <li>
-    Boost C++ 1.55.0 filesystem<br/>
-    http://www.boost.org/
-  </li>
-  <li>
-    Assimp 3.1.1<br/>
-    http://assimp.sourceforge.net/index.html
-  </li>
-  <li>
-    CEGUI 0.8.4<br/>
-    http://cegui.org.uk/
-  </li>
-  <li>
-    GLFW 3.0.4<br/>
-    http://www.glfw.org/
-  </li>
-</ul>
+<hr width="100%">
 
 <!--=====================================================================================-->
 <h5>Build Instructions:</h5>
 <ol>
   <li>
-    Download and install Visual Studio 2013 if you dont have it installed already<br/>
+    Download and install Visual Studio 2013 (VS2013 Express is sufficient)
     http://www.visualstudio.com/downloads/download-visual-studio-vs
   </li>
   <li>
-    Build Dependencies:<br/>  
-  <p>
-    Follow links in the "Dependencies" section for library-specific build instructions. Every library must be built as a          shared library (Multi-Threaded DLL), otherwise NonLinear Engine will not build under DLL configurations. The only required     part of Boost is Filesystem, and you can use bjam commands stated below to build it:<br/>
-  </p>
-  <p>
-    bjam --with-filesystem --toolset=msvc --stagedir=stage32debug address-model=32 variant=debug link=static threading=multi      runtime-link=shared<br/><br/>
-    bjam --with-filesystem --toolset=msvc --stagedir=stage32release address-model=32 variant=release link=static                  threading=multi runtime-link=shared<br/><br/>
-    bjam --with-filesystem --toolset=msvc --stagedir=stage64debug address-model=64 variant=debug link=static threading=multi      runtime-link=shared<br/><br/>
-    bjam --with-filesystem --toolset=msvc --stagedir=stage64release address-model=64 variant=release link=static                  threading=multi runtime-link=shared<br/><br/>
-  </p>
+    Download and unzip dependencies, and throw their contents into the NonLinear Engine root directory.
   </li>
   <li>
-    Introduce Dependencies:<br/>
-    <p>
-      Now that the dependencies are built, it is time to introduce them into NonLinear Engine SDK.<br/>
-      There are two important directories to note in the SDK root folder, "Dependencies" and "lib", because that is where           NonLinear Engine will look for its dependencies. Follow the diagram below to organize dependency contents:
-      <ul>
-        <li>
-          Dependencies
-          <ul>
-            <li>
-              Some_Dependency
-              <ul>
-                <li>
-                  <b>include</b> - contains dependency include root folders
-                </li>
-                <li>
-                  <b>lib</b>     - contains dependency static libraries sorted by configuration and platform respectively
-                </li>
-              </ul>
-            </li>
-          </ul>
-        </li>
-        <li>
-          <b>lib</b>    - is a NonLiear Engine build directory which also contains dependency DLLs sorted by configuration and                 platform respectively
-        </li>
-      </ul>
-    </p>
+    Navigate to the NLE directory and open the project file in Visual Studio.
+  </li>
+  <li>
+    Select the desired platform and configuration, then select Build -> Build Solution from the main menu.
   </li>
 </ol>
-
-<b>I will write the rest tomorrow</b>
-
 <hr width="100%">
+
 <!--=====================================================================================-->
 <h3>Licensing</h3>
 NonLinear engine is licensed under the MIT license.
