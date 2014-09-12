@@ -26,7 +26,7 @@ I hope that some of you will find this project useful. All feedback is highly ap
 
 <!--=====================================================================================-->
 <p>
-<h5>Current Features:</h5>
+<h3>Current Features:</h3>
 <ul>
   <li>
     loading of scenes from a variety of common interchange formats. See the link  below for a full list of                        formats:<br/>
@@ -70,6 +70,7 @@ I hope that some of you will find this project useful. All feedback is highly ap
   </li>
 </ul>
 </p>
+<hr width="100%">
 
 <!--=====================================================================================-->
 
@@ -272,15 +273,14 @@ This section is created to track development progress and includes completed and
 <hr width="100%">
 
 <!--=====================================================================================-->
-<h3>Current & Pending Releases</h3>
-<hr width="20%">
+<h3>Releases:</h3>
 <p>
   None at this time
 </p>
 <hr width="100%">
 
 <!--=====================================================================================-->
-<h5>Downloads:</h5>
+<h3>Downloads:</h3>
 <p>
   None at this time<br/>
   Examples will become available as the development progresses
@@ -288,7 +288,7 @@ This section is created to track development progress and includes completed and
 <hr width="100%">
 
 <!--=====================================================================================-->
-<h5>Build Instructions:</h5>
+<h3>Build Instructions:</h3>
 <ol>
   <li>
     Download and install Visual Studio 2013 (VS2013 Express is sufficient)
