@@ -45,7 +45,10 @@ I hope that some of you will find this project useful. All feedback is highly ap
     first-person camera for scene exploration
   </li>
   <li>
-    UI displaying FPS and user controls
+    integrated scriptable UI 
+  </li>
+  <li>
+    FPS counter
   </li>
   <li>
     windowed and fullscreen modes
@@ -219,7 +222,7 @@ This section is created to track development progress and includes completed and
   </tr>
   <tr>
     <td>10</td>
-    <td>Add support for shader compilation and loading of precompiled shaders</td>
+    <td>Add support for precompiled shader loading</td>
     <td>Complete</td>
   </tr>
   <tr>
@@ -234,7 +237,7 @@ This section is created to track development progress and includes completed and
   </tr>
   <tr>
     <td>7</td>
-    <td>Encapsulate shading techniques into objects and make them swappable at runtime</td>
+    <td>Add support for runtime shading technique swap</td>
     <td>Complete</td>
   </tr>
   <tr>
