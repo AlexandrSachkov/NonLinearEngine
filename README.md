@@ -41,8 +41,8 @@ This section is created to track development progress and includes completed and
   </tr>
   <tr>
     <td>2</td>
-    <td>Select a cross-platform build system</td>
-    <td>Pending</td>
+    <td>Select a cross-platform build system (CMake)</td>
+    <td>Complete</td>
   </tr>
   <tr>
     <td>1</td>
