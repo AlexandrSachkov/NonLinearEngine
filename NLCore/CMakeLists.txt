@@ -1,7 +1,7 @@
 SET(HEADERS NLCore.h)
 SET(SOURCES NLCore.cpp)
 
-add_library (NLCore 
+add_library (NLCore
   ${HEADERS}
   ${SOURCES}
 )

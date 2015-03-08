@@ -6,6 +6,15 @@ set (NLE_VERSION_MAJOR 1)
 set (NLE_VERSION_MINOR 0)
 set (NLE_VERSION_PATCH 0)
 
+IF(WIN32)
+	IF(MSVC)
+		set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} /MT /WX /arch:AVX /Ox /Ob2 /Ot /Gt")
+		set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} /MTd /WX /arch:AVX /Od /Ob0")
+	ENDIF(MSVC)
+ENDIF(WIN32)
+
+
+
 add_subdirectory (NLCore)
 include_directories(NLCore)
 
