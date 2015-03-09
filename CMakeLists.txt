@@ -1,24 +1,26 @@
 CMAKE_MINIMUM_REQUIRED(VERSION 2.6)
 
-PROJECT (NLE)
+PROJECT (NonLinearEngine)
 
-set (NLE_VERSION_MAJOR 1)
-set (NLE_VERSION_MINOR 0)
+set (NLE_VERSION_MAJOR 0)
+set (NLE_VERSION_MINOR 9)
 set (NLE_VERSION_PATCH 0)
 
-SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 IF(MSVC)
 	set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} /MT /WX /arch:AVX /Ox /Ob2 /Ot /Gt")
 	set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} /MTd /WX /arch:AVX /Od /Ob0")
 ENDIF(MSVC)
 
+# Configuration GUI goes here
 
+SET(NLE_SDK_INSTALL_PATH 
+	${PROJECT_BINARY_DIR}/${PROJECT_NAME} CACHE PATH "NLE SDK Installation Directory")
 
-add_subdirectory (NLCore)
-include_directories(NLCore)
+SET(NLE_SAMPLES_INSTALL_PATH 
+	${NLE_SDK_INSTALL_PATH}/Samples CACHE PATH "NLE Samples Installation Directory")
 
-add_executable (NLE NLCore NLE.cpp)
+SET(NLE_ROOT_DIR ${PROJECT_SOURCE_DIR})
 
-target_link_libraries (NLE NLCore)
+ADD_SUBDIRECTORY(NLE)
+ADD_SUBDIRECTORY(Samples)
 
-install (TARGETS NLE DESTINATION bin)
