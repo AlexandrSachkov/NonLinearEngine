@@ -35,9 +35,14 @@ This section is created to track development progress and includes completed and
   </tr>
   
   <tr>
-    <td>3</td>
+    <td>4</td>
     <td>Build parallel engine core</td>
     <td>Pending</td>
+  </tr>
+  <tr>
+    <td>3</td>
+    <td>Write a basic functional build system in CMake</td>
+    <td>Complete</td>
   </tr>
   <tr>
     <td>2</td>
