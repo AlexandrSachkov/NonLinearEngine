@@ -14,6 +14,7 @@ ENDIF(MSVC)
 
 # Configuration GUI goes here
 
+# NLE install path config
 SET(NLE_SDK_INSTALL_PATH 
 	${PROJECT_BINARY_DIR}/${PROJECT_NAME} CACHE PATH "NLE SDK Installation Directory")
 IF(NLE_SDK_INSTALL_PATH STREQUAL "")
@@ -26,6 +27,7 @@ IF(NLE_SAMPLES_INSTALL_PATH STREQUAL "")
 	MESSAGE(SEND_ERROR "NLE Samples Installation Directory much be specified")
 ENDIF(NLE_SAMPLES_INSTALL_PATH STREQUAL "")
 
+# NLE build config
 SET(NLE_HOST_OS CACHE STRING "Host Operating System. Choose: \n\n Windows")
 IF(NLE_HOST_OS STREQUAL "")
 	MESSAGE(SEND_ERROR "Host Operating System much be specified")
@@ -35,6 +37,31 @@ SET(NLE_TARGET_ARCHITECTURE CACHE STRING "Target Architecture. Choose: \n\n x86 
 IF(NLE_TARGET_ARCHITECTURE STREQUAL "")
 	MESSAGE(SEND_ERROR "Target Architecture much be specified")
 ENDIF(NLE_TARGET_ARCHITECTURE STREQUAL "")
+
+
+# TBB path config
+SET(NLE_TBB_INCLUDE_PATH
+	"" CACHE PATH "TBB include path")
+
+IF(NLE_TBB_INCLUDE_PATH STREQUAL "")
+	MESSAGE(SEND_ERROR "TBB include path much be specified")
+ENDIF(NLE_TBB_INCLUDE_PATH STREQUAL "")
+
+SET(NLE_TBB_LIBRARY_DEBUG_PATH
+	"" CACHE PATH "TBB library debug path")
+
+IF(NLE_TBB_LIBRARY_DEBUG_PATH STREQUAL "")
+	MESSAGE(SEND_ERROR "TBB library debug path much be specified")
+ENDIF(NLE_TBB_LIBRARY_DEBUG_PATH STREQUAL "")
+
+SET(NLE_TBB_LIBRARY_RELEASE_PATH
+	"" CACHE PATH "TBB library release path")
+
+IF(NLE_TBB_LIBRARY_RELEASE_PATH STREQUAL "")
+	MESSAGE(SEND_ERROR "TBB library release path much be specified")
+ENDIF(NLE_TBB_LIBRARY_RELEASE_PATH STREQUAL "")
+
+
 
 SET(NLE_ROOT_DIR ${PROJECT_SOURCE_DIR})
 
