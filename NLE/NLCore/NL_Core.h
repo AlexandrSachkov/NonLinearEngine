@@ -1,9 +1,9 @@
 #ifndef NL_CORE_H_
 #define NL_CORE_H_
 
-namespace NLE{
+namespace NLE {
 
-	class Core{
+	class Core {
 	public:
 		static int getNumber(void);
 	};

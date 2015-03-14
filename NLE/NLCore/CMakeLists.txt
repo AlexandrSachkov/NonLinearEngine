@@ -1,7 +1,27 @@
 PROJECT(NLCore)
 
-SET(HEADERS NLCore.h)
-SET(SOURCES NLCore.cpp)
+SET(HEADERS 
+	NL_Core.h
+	NL_MemManager.h
+	NL_MemPool.h
+	NL_Scheduler.h
+	NL_SObject.h
+	NL_SScene.h
+	NL_System.h
+	NL_UObject.h
+	NL_UScene.h
+	)
+SET(SOURCES 
+	NL_Core.cpp
+	NL_MemManager.cpp
+	NL_MemPool.cpp
+	NL_Scheduler.cpp
+	NL_SObject.cpp
+	NL_SScene.cpp
+	NL_System.cpp
+	NL_UObject.cpp
+	NL_UScene.cpp
+	)
 
 INCLUDE_DIRECTORIES(${NLE_TBB_INCLUDE_PATH})
 LINK_DIRECTORIES(${NLE_TBB_LIBRARY_DEBUG_PATH})
