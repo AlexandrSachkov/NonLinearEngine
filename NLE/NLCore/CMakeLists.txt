@@ -1,26 +1,17 @@
 PROJECT(NLCore)
 
 SET(HEADERS 
-	NL_Core.h
-	NL_MemManager.h
-	NL_MemPool.h
+	NL_Clock.h
 	NL_Scheduler.h
-	NL_SObject.h
-	NL_SScene.h
+	NL_DeviceCore.h
+	NL_SysManager.h
 	NL_System.h
-	NL_UObject.h
-	NL_UScene.h
 	)
 SET(SOURCES 
-	NL_Core.cpp
-	NL_MemManager.cpp
-	NL_MemPool.cpp
+	NL_Clock.cpp
 	NL_Scheduler.cpp
-	NL_SObject.cpp
-	NL_SScene.cpp
-	NL_System.cpp
-	NL_UObject.cpp
-	NL_UScene.cpp
+	NL_DeviceCore.cpp
+	NL_SysManager.cpp
 	)
 
 INCLUDE_DIRECTORIES(${NLE_TBB_INCLUDE_PATH})

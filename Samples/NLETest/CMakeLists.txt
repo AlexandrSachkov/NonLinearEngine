@@ -1,7 +1,12 @@
 PROJECT(NLETest)
 
-SET(HEADERS "")
-SET(SOURCES NLETest.cpp)
+SET(HEADERS 
+	TestSystem.h
+	)
+SET(SOURCES 
+	TestSystem.cpp
+	NLETest.cpp
+	)
 
 INCLUDE_DIRECTORIES(${NLE_ROOT_DIR})
 

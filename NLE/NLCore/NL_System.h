@@ -1,11 +1,20 @@
 #ifndef NL_SYSTEM_H_
 #define NL_SYSTEM_H_
 
-namespace NLE {
-	namespace Core {
+#include "tbb/task.h"
 
-		class System {
+namespace NLE 
+{
+	namespace Core 
+	{
 
+		class System : public tbb::task
+		{
+		public:
+			virtual ~System(){}
+
+			virtual int getID() = 0;
+			virtual tbb::task* execute() = 0;
 		};
 	}
 }

@@ -5,7 +5,9 @@ namespace NLE{
 	namespace Core{
 
 		class UScene {
-
+		public:
+			UScene();
+			~UScene();
 		};
 	}
 }

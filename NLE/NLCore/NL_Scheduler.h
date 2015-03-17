@@ -1,10 +1,21 @@
 #ifndef NL_SCHEDULER_H_
 #define NL_SCHEDULER_H_
 
-namespace NLE {
-	namespace Core {
+namespace NLE 
+{
+	namespace Core 
+	{
 
-		class Scheduler {
+		class Scheduler 
+		{
+		public:
+			Scheduler();
+			~Scheduler();
+
+			bool initialize();
+			void release();
+
+		private:
 
 		};
 	}
