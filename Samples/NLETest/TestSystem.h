@@ -3,6 +3,7 @@
 
 #include "NLE\NLCore\NL_System.h"
 
+class SysTask;
 class TestSystem : public NLE::Core::System
 {
 public:
@@ -10,7 +11,7 @@ public:
 	~TestSystem();
 
 	int getID();
-	tbb::task* execute();
+	NLE::Core::SysTask* getTask();
 
 private:
 	int _id;

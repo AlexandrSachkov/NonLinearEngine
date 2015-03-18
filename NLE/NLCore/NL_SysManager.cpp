@@ -1,6 +1,7 @@
 #include "NL_SysManager.h"
 #include "NL_System.h"
-
+#include "tbb\tbb.h"
+#include "NL_SysTask.h"
 namespace NLE 
 {
 	namespace Core 
@@ -36,8 +37,8 @@ namespace NLE
 			std::unordered_map<int, std::unique_ptr<System>>::iterator it;
 			for (it = _systems.begin(); it != _systems.end(); it++)
 			{
-				tbb::task::enqueue(*it->second.get());
-				
+				NLE::Core::SysTask& myTask = *it->second.get()->getTask();
+				tbb::task::enqueue(myTask);
 				//it->second->execute();
 			}
 		}

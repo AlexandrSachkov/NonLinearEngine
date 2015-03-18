@@ -6,13 +6,16 @@ int main(){
 
 	NLE::Core::DeviceCore& devCore = NLE::Core::DeviceCore::instance();
 	devCore.initialize();
-	devCore.attachSystem(new (tbb::task::allocate_root())TestSystem(1));
-	devCore.attachSystem(new (tbb::task::allocate_root())TestSystem(2));
+	for (int i = 0; i < 100; i++)
+	{
+		devCore.attachSystem(new TestSystem(i));
+	}
+	printf("Started...\n");
 	for (int i = 0; i < 2; i++)
 	{
 		devCore.run();
 	}
-	std::cout << "Hello, World\n";
+	printf("ENDED...\n");
 	std::cin.ignore();
 	return 0;
 }

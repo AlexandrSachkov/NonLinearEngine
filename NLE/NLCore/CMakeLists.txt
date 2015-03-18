@@ -5,6 +5,7 @@ SET(HEADERS
 	NL_Scheduler.h
 	NL_DeviceCore.h
 	NL_SysManager.h
+	NL_SysTask.h
 	NL_System.h
 	)
 SET(SOURCES 
