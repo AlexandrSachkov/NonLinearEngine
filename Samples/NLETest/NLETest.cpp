@@ -11,7 +11,7 @@ int main(){
 		devCore.attachSystem(new TestSystem(i));
 	}
 	printf("Started...\n");
-	for (int i = 0; i < 1; i++)
+	while (true)
 	{
 		devCore.drive();
 	}

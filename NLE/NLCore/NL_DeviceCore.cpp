@@ -55,10 +55,10 @@ namespace NLE
 			std::unique_ptr<Scheduler>& scheduler = _scheduler;
 			std::unique_ptr<SysManager>& sysMngr = _sysManager;
 			_clock->onTick([&scheduler, &sysMngr](){
-				printf("running\n");
+				//printf("running\n");
 				scheduler->executeSystems(sysMngr);
 			});
-			printf("FINISHED ENQUEUING");
+			//printf("FINISHED ENQUEUING");
 		}
 	}
 }

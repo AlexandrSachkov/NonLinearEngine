@@ -39,7 +39,7 @@ namespace NLE
 			uint_fast8_t sysId;
 			while (_scheduledSystems.try_pop(sysId))
 			{
-				NLE::Core::SysTask& task = *sysManager->getSystemById(sysId).get()->getTask();
+				NLE::Core::SysTask& task = *sysManager->getSystemById(sysId).get()->getTask(this);
 				tbb::task::enqueue(task);
 			}
 		}

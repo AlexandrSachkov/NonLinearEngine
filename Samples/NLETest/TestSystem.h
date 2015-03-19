@@ -4,6 +4,7 @@
 #include "NLE\NLCore\NL_System.h"
 
 class SysTask;
+class Scheduler;
 class TestSystem : public NLE::Core::System
 {
 public:
@@ -11,7 +12,7 @@ public:
 	~TestSystem();
 
 	uint_fast8_t getID();
-	NLE::Core::SysTask* getTask();
+	NLE::Core::SysTask* getTask(NLE::Core::Scheduler* scheduler);
 
 private:
 	uint_fast8_t _id;
