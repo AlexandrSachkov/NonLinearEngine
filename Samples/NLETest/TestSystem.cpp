@@ -28,7 +28,8 @@ NLE::Core::SysTask* TestSystem::getTask(NLE::Core::Scheduler* scheduler)
 		}
 		//printf("Finishing task for system %i\n", getID());
 		scheduler->scheduleExecution(getID());
-		printf("Restarting task %i\n", getID());
+
+		printf("Restarting task %i with result %f\n", getID(), num);
 		return nullptr;
 	});
 }
