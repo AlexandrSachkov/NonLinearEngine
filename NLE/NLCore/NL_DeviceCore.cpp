@@ -47,16 +47,18 @@ namespace NLE
 
 		void DeviceCore::attachSystem(System* system)
 		{
-			_sysManager->attachSystem(system);
+			_sysManager->attachSystem(system, _scheduler);
 		}
 
-		void DeviceCore::run()
+		void DeviceCore::drive()
 		{
-			std::unique_ptr<SysManager> &sysMngr = _sysManager;
-			_clock->onTick([&sysMngr](){
+			std::unique_ptr<Scheduler>& scheduler = _scheduler;
+			std::unique_ptr<SysManager>& sysMngr = _sysManager;
+			_clock->onTick([&scheduler, &sysMngr](){
 				printf("running\n");
-				sysMngr->executeSystems();
+				scheduler->executeSystems(sysMngr);
 			});
+			printf("FINISHED ENQUEUING");
 		}
 	}
 }

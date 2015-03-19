@@ -1,6 +1,8 @@
 #ifndef NL_SYSTEM_H_
 #define NL_SYSTEM_H_
 
+#include <cstdint>
+
 namespace NLE 
 {
 	namespace Core 
@@ -11,7 +13,7 @@ namespace NLE
 		public:
 			virtual ~System(){}
 
-			virtual int getID() = 0;
+			virtual uint_fast8_t getID() = 0;
 			virtual SysTask* getTask() = 0;
 		};
 	}

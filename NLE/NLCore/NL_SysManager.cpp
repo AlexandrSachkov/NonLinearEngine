@@ -27,20 +27,17 @@ namespace NLE
 
 		}
 
-		void SysManager::attachSystem(System* system)
+		std::unique_ptr<System> const& SysManager::getSystemById(uint_fast8_t sysId) const
 		{
-			_systems.insert(std::make_pair<>(system->getID(), std::unique_ptr<System>(system)));
-			printf("System attached: %i\n", system->getID());
+			return _systems.at(sysId);
 		}
 
-		void SysManager::executeSystems(){
-			std::unordered_map<int, std::unique_ptr<System>>::iterator it;
-			for (it = _systems.begin(); it != _systems.end(); it++)
-			{
-				NLE::Core::SysTask& myTask = *it->second.get()->getTask();
-				tbb::task::enqueue(myTask);
-				//it->second->execute();
-			}
+		void SysManager::attachSystem(System* system, std::unique_ptr<Scheduler> const& scheduler)
+		{
+			_systems.insert(std::make_pair<>(system->getID(), std::unique_ptr<System>(system)));
+			scheduler->scheduleExecution(system->getID());
+			
+			printf("System attached: %i\n", system->getID());
 		}
 	}
 }

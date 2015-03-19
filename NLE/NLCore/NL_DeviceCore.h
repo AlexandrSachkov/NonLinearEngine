@@ -31,7 +31,7 @@ namespace NLE
 
 			void attachSystem(System* system);
 
-			void run();
+			void drive();
 
 		private:
 			DeviceCore();

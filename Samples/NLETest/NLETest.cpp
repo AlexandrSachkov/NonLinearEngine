@@ -11,9 +11,9 @@ int main(){
 		devCore.attachSystem(new TestSystem(i));
 	}
 	printf("Started...\n");
-	for (int i = 0; i < 2; i++)
+	for (int i = 0; i < 1; i++)
 	{
-		devCore.run();
+		devCore.drive();
 	}
 	printf("ENDED...\n");
 	std::cin.ignore();

@@ -7,14 +7,14 @@ class SysTask;
 class TestSystem : public NLE::Core::System
 {
 public:
-	TestSystem(int id);
+	TestSystem(uint_fast8_t id);
 	~TestSystem();
 
-	int getID();
+	uint_fast8_t getID();
 	NLE::Core::SysTask* getTask();
 
 private:
-	int _id;
+	uint_fast8_t _id;
 };
 
 #endif
