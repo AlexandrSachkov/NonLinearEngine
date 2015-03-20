@@ -8,7 +8,9 @@ namespace NLE
 {
 	namespace Core
 	{
-		Scheduler::Scheduler() : _scheduledSystems()
+		Scheduler::Scheduler() :
+			_scheduledSystems(),
+			_numThreads()
 		{
 
 		}
@@ -20,13 +22,20 @@ namespace NLE
 
 		bool Scheduler::initialize()
 		{
-			//tbb::task_scheduler_init init(tbb::task_scheduler_init::automatic);
+			_numThreads = tbb::task_scheduler_init::default_num_threads();
+			tbb::task_scheduler_init init(_numThreads);
+			printf("Running on %i threads.\n", _numThreads);
 			return true;
 		}
 
 		void Scheduler::release()
 		{
 
+		}
+
+		uint_fast8_t Scheduler::getNumThreads()
+		{
+			return _numThreads;
 		}
 
 		void Scheduler::scheduleExecution(uint_fast8_t sysId)

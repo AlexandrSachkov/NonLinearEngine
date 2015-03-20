@@ -17,11 +17,13 @@ namespace NLE
 			bool initialize();
 			void release();
 
+			uint_fast8_t getNumThreads();
 			void scheduleExecution(uint_fast8_t sysId);
 			void executeSystems(std::unique_ptr<SysManager> const& sysManager);
 
 		private:
 			tbb::concurrent_queue<uint_fast8_t> _scheduledSystems;
+			uint_fast8_t _numThreads;
 		};
 	}
 }
