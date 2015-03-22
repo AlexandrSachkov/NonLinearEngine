@@ -11,7 +11,8 @@ namespace NLE
 		class System;
 		class SysManager;
 		class Scheduler;
-
+		class UScene;
+		class UObject;
 		class DeviceCore 
 		{
 		public:
@@ -30,6 +31,7 @@ namespace NLE
 			void release();
 
 			void attachSystem(System* system);
+			void addObject(UObject* object);
 
 			void drive();
 
@@ -43,6 +45,7 @@ namespace NLE
 			std::unique_ptr<Clock> _clock;
 			std::unique_ptr<SysManager> _sysManager;
 			std::unique_ptr<Scheduler> _scheduler;
+			std::unique_ptr<UScene> _uScene;
 		};
 	}
 }

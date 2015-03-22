@@ -1,11 +1,18 @@
 #ifndef NL_UOBJECT_H_
 #define NL_UOBJECT_H_
 
-namespace NLE {
-	namespace Core {
+#include <cstdint>
 
-		class UObject {
-
+namespace NLE 
+{
+	namespace Core 
+	{
+		class SObject;
+		class UObject 
+		{
+		public:
+			virtual ~UObject();
+			virtual SObject* getSysObject(uint_fast8_t sysId) = 0;
 		};
 	}
 }

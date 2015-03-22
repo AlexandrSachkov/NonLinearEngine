@@ -10,6 +10,8 @@ namespace NLE
 	{
 		class System;
 		class Scheduler;
+		class UScene;
+		class UObject;
 		class SysManager 
 		{
 		public:
@@ -20,7 +22,10 @@ namespace NLE
 			void release();
 
 			std::unique_ptr<System> const& getSystemById(uint_fast8_t sysId) const;
-			void attachSystem(System* system, std::unique_ptr<Scheduler> const& scheduler);
+			void attachSystem(
+				std::unique_ptr<Scheduler> const& scheduler,
+				std::unique_ptr<UScene> const& uScene,
+				System* system);
 		private:
 			std::unordered_map<uint_fast8_t, std::unique_ptr<System>> _systems;
 		};

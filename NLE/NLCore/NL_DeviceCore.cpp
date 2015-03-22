@@ -4,6 +4,7 @@
 #include "NL_System.h"
 #include "NL_SysManager.h"
 #include "NL_Scheduler.h"
+#include "NL_UScene.h"
 
 namespace NLE 
 {
@@ -14,7 +15,8 @@ namespace NLE
 		DeviceCore::DeviceCore() : 
 			_clock(new Clock()),
 			_sysManager(new SysManager()),
-			_scheduler(new Scheduler())
+			_scheduler(new Scheduler()),
+			_uScene(new UScene())
 		{ 
 			
 		}
@@ -32,11 +34,15 @@ namespace NLE
 				return false;
 			if (!_scheduler->initialize())
 				return false;
+			if (!_uScene->initialize())
+				return false;
 			return true;
 		}
 
 		void DeviceCore::release()
 		{
+			if (_uScene)
+				_uScene->release();
 			if (_scheduler)
 				_scheduler->release();
 			if (_sysManager)
@@ -47,7 +53,12 @@ namespace NLE
 
 		void DeviceCore::attachSystem(System* system)
 		{
-			_sysManager->attachSystem(system, _scheduler);
+			_sysManager->attachSystem(_scheduler, _uScene, system);
+		}
+
+		void DeviceCore::addObject(UObject* object)
+		{
+			_uScene->addObject(object);
 		}
 
 		void DeviceCore::drive()
