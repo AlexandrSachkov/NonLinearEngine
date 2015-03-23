@@ -20,9 +20,9 @@ uint_fast8_t TestSystem::getID()
 NLE::Core::SysTask* TestSystem::getTask(NLE::Core::Scheduler* scheduler)
 {
 	return new (tbb::task::allocate_root())NLE::Core::SysTask([this, scheduler](){
-		//printf("Running task for system %i\n", getID());
+		printf("Running task for system %i\n", getID());
 		double num = 2000;
-		for (int i = 0; i < 100000000; i++)
+		for (int i = 0; i < 1000000000; i++)
 		{
 			num += sqrt(num) / 2;
 		}

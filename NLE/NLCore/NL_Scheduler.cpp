@@ -12,7 +12,6 @@ namespace NLE
 			_scheduledSystems(),
 			_numThreads()
 		{
-
 		}
 
 		Scheduler::~Scheduler()
@@ -22,15 +21,16 @@ namespace NLE
 
 		bool Scheduler::initialize()
 		{
-			_numThreads = tbb::task_scheduler_init::default_num_threads();
-			tbb::task_scheduler_init init(_numThreads);
+			_numThreads = tbb::task_scheduler_init::default_num_threads() + 1;
+			_taskSchedulerInit = new tbb::task_scheduler_init(_numThreads);
 			printf("Running on %i threads.\n", _numThreads);
 			return true;
 		}
 
 		void Scheduler::release()
 		{
-
+			if (_taskSchedulerInit)
+				delete _taskSchedulerInit;
 		}
 
 		uint_fast8_t Scheduler::getNumThreads()
@@ -45,7 +45,7 @@ namespace NLE
 
 		void Scheduler::executeSystems(std::unique_ptr<SysManager> const& sysManager)
 		{
-			uint_fast8_t sysId;
+			uint_fast8_t sysId;		
 			while (_scheduledSystems.try_pop(sysId))
 			{
 				NLE::Core::SysTask& task = *sysManager->getSystemById(sysId).get()->getTask(this);

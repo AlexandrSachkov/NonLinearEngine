@@ -2,6 +2,7 @@
 #define NL_SCHEDULER_H_
 
 #include "tbb/concurrent_queue.h"
+#include "tbb/task_scheduler_init.h"
 
 namespace NLE 
 {
@@ -22,6 +23,7 @@ namespace NLE
 			void executeSystems(std::unique_ptr<SysManager> const& sysManager);
 
 		private:
+			tbb::task_scheduler_init* _taskSchedulerInit;
 			tbb::concurrent_queue<uint_fast8_t> _scheduledSystems;
 			uint_fast8_t _numThreads;
 		};
