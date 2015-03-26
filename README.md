@@ -3,7 +3,7 @@ NonLinear Engine
 
 <!--=====================================================================================-->
 <p>
-<b>3D Game and Simulation Engine</b>
+<b>Cross-Platform Data-Parallel 3D Game Engine</b>
 </p>
 
 <hr width="100%">
