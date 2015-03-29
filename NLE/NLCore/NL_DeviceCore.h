@@ -11,7 +11,7 @@ namespace NLE
 		class Scheduler;
 		class System;
 		class SysManager;
-		class DataManager;
+		class StateManager;
 		
 		class DeviceCore 
 		{
@@ -42,7 +42,7 @@ namespace NLE
 			std::unique_ptr<Clock> _clock;
 			std::unique_ptr<SysManager> _sysManager;
 			std::unique_ptr<Scheduler> _scheduler;
-			std::unique_ptr<DataManager> _dataManager;
+			std::unique_ptr<StateManager> _stateManager;
 		};
 	}
 }

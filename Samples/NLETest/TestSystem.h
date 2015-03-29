@@ -6,7 +6,7 @@
 
 class SysTask;
 class Scheduler;
-class SysData;
+class SysState;
 class TestSystem : public NLE::Core::System
 {
 public:
@@ -19,7 +19,7 @@ public:
 	uint_fast8_t getID();
 	NLE::Core::SysTask* getTask(
 		std::unique_ptr<NLE::Core::Scheduler> const& scheduler,
-		std::unique_ptr<NLE::Core::SysData> const& sysData);
+		std::unique_ptr<NLE::Core::SysState> const& SysState);
 
 private:
 	uint_fast8_t _id;

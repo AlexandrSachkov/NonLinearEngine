@@ -9,7 +9,7 @@ namespace NLE
 	namespace Core 
 	{
 		class SysManager;
-		class DataManager;
+		class StateManager;
 
 		class Scheduler 
 		{
@@ -24,7 +24,7 @@ namespace NLE
 			void scheduleExecution(uint_fast8_t sysId);
 			void executeSystems(
 				std::unique_ptr<SysManager> const& sysManager, 
-				std::unique_ptr<DataManager> const& dataManager);
+				std::unique_ptr<StateManager> const& stateManager);
 
 		private:
 			std::unique_ptr<Scheduler> _scheduler;

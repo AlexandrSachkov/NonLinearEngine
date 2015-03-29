@@ -10,7 +10,7 @@ namespace NLE
 	{
 		class SysTask;
 		class Scheduler;
-		class SysData;
+		class SysState;
 		class System
 		{
 		public:
@@ -22,7 +22,7 @@ namespace NLE
 			virtual uint_fast8_t getID() = 0;
 			virtual SysTask* getTask(
 				std::unique_ptr<Scheduler> const& scheduler,
-				std::unique_ptr<SysData> const& sysData) = 0;
+				std::unique_ptr<SysState> const& SysState) = 0;
 		};
 	}
 }

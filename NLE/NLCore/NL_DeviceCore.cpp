@@ -4,7 +4,7 @@
 #include "NL_System.h"
 #include "NL_SysManager.h"
 #include "NL_Scheduler.h"
-#include "NL_DataManager.h"
+#include "NL_StateManager.h"
 
 namespace NLE 
 {
@@ -17,7 +17,7 @@ namespace NLE
 			_clock = std::make_unique<Clock>();
 			_sysManager = std::make_unique<SysManager>();
 			_scheduler = std::make_unique<Scheduler>();
-			_dataManager = std::make_unique<DataManager>();
+			_stateManager = std::make_unique<StateManager>();
 		}
 
 		DeviceCore::~DeviceCore()
@@ -33,15 +33,15 @@ namespace NLE
 				return false;
 			if (!_sysManager->initialize(_scheduler))
 				return false;
-			if (!_dataManager->initialize(_sysManager->getNumSystems()))
+			if (!_stateManager->initialize(_sysManager->getNumSystems()))
 				return false;
 			return true;
 		}
 
 		void DeviceCore::release()
 		{	
-			if (_dataManager)
-				_dataManager->release();
+			if (_stateManager)
+				_stateManager->release();
 			if (_sysManager)
 				_sysManager->release();
 			if (_scheduler)
@@ -59,10 +59,10 @@ namespace NLE
 		{
 			std::unique_ptr<Scheduler>& scheduler = _scheduler;
 			std::unique_ptr<SysManager>& sysMngr = _sysManager;
-			std::unique_ptr<DataManager>& dataMngr = _dataManager;
+			std::unique_ptr<StateManager>& stateMngr = _stateManager;
 
-			_clock->onTick([&scheduler, &sysMngr, &dataMngr](){
-				scheduler->executeSystems(sysMngr, dataMngr);
+			_clock->onTick([&scheduler, &sysMngr, &stateMngr](){
+				scheduler->executeSystems(sysMngr, stateMngr);
 			});
 		}
 	}
