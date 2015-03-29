@@ -10,15 +10,13 @@ namespace NLE
 	{
 		class SysTask;
 		class Scheduler;
-		class SScene;
 		class System
 		{
 		public:
 			virtual ~System(){}
-			virtual SScene* getScene()
-			{ 
-				return nullptr; 
-			}
+
+			virtual bool initialize(uint_fast8_t id) = 0;
+			virtual void release() = 0;
 
 			virtual uint_fast8_t getID() = 0;
 			virtual SysTask* getTask(Scheduler* scheduler) = 0;

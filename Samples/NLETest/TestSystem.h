@@ -8,8 +8,11 @@ class Scheduler;
 class TestSystem : public NLE::Core::System
 {
 public:
-	TestSystem(uint_fast8_t id);
+	TestSystem();
 	~TestSystem();
+
+	bool initialize(uint_fast8_t id);
+	void release();
 
 	uint_fast8_t getID();
 	NLE::Core::SysTask* getTask(NLE::Core::Scheduler* scheduler);

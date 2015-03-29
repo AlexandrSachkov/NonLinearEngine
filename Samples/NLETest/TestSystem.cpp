@@ -2,12 +2,23 @@
 #include "NLE\NLCore\NL_SysTask.h"
 #include "NLE\NLCore\NL_Scheduler.h"
 
-TestSystem::TestSystem(uint_fast8_t id) : _id(id)
+TestSystem::TestSystem() : _id(-1)
 {
 
 }
 
 TestSystem::~TestSystem()
+{
+
+}
+
+bool TestSystem::initialize(uint_fast8_t id)
+{
+	_id = id;
+	return true;
+}
+
+void TestSystem::release()
 {
 
 }

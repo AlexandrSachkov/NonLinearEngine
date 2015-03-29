@@ -1,10 +1,10 @@
 #include "NL_DeviceCore.h"
+
 #include "NL_Clock.h"
 #include "NL_System.h"
 #include "NL_SysManager.h"
 #include "NL_Scheduler.h"
-
-#include "NL_UScene.h"
+#include "NL_DataManager.h"
 
 namespace NLE 
 {
@@ -17,6 +17,7 @@ namespace NLE
 			_clock = std::make_unique<Clock>();
 			_sysManager = std::make_unique<SysManager>();
 			_scheduler = std::make_unique<Scheduler>();
+			_dataManager = std::make_unique<DataManager>();
 		}
 
 		DeviceCore::~DeviceCore()
@@ -30,13 +31,17 @@ namespace NLE
 				return false;
 			if (!_scheduler->initialize())
 				return false;
-			if (!_sysManager->initialize())
+			if (!_sysManager->initialize(_scheduler))
+				return false;
+			if (!_dataManager->initialize(_sysManager->getNumSystems()))
 				return false;
 			return true;
 		}
 
 		void DeviceCore::release()
 		{	
+			if (_dataManager)
+				_dataManager->release();
 			if (_sysManager)
 				_sysManager->release();
 			if (_scheduler)
@@ -47,7 +52,7 @@ namespace NLE
 
 		void DeviceCore::attachSystem(System* system)
 		{
-			_sysManager->attachSystem(_scheduler, system);
+			_sysManager->attachSystem(system);
 		}
 
 		void DeviceCore::drive()
