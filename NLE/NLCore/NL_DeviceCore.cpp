@@ -17,7 +17,6 @@ namespace NLE
 			_clock = std::make_unique<Clock>();
 			_sysManager = std::make_unique<SysManager>();
 			_scheduler = std::make_unique<Scheduler>();
-			_uScene = std::make_unique<UScene>();
 		}
 
 		DeviceCore::~DeviceCore()
@@ -33,15 +32,11 @@ namespace NLE
 				return false;
 			if (!_sysManager->initialize())
 				return false;
-			if (!_uScene->initialize())
-				return false;
 			return true;
 		}
 
 		void DeviceCore::release()
-		{
-			if (_uScene)
-				_uScene->release();			
+		{	
 			if (_sysManager)
 				_sysManager->release();
 			if (_scheduler)
@@ -52,12 +47,7 @@ namespace NLE
 
 		void DeviceCore::attachSystem(System* system)
 		{
-			_sysManager->attachSystem(_scheduler, _uScene, system);
-		}
-
-		void DeviceCore::addObject(UObject* object)
-		{
-			_uScene->addObject(object);
+			_sysManager->attachSystem(_scheduler, system);
 		}
 
 		void DeviceCore::drive()

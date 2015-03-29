@@ -35,15 +35,9 @@ namespace NLE
 
 		void SysManager::attachSystem(
 			std::unique_ptr<Scheduler> const& scheduler,
-			std::unique_ptr<UScene> const& uScene,
 			System* system)
 		{
-			_systems.insert(std::make_pair<>(system->getID(), std::unique_ptr<System>(system)));
-			if (system->getScene())
-			{
-				uScene->attachScene(system->getID(), system->getScene());
-			}
-			
+			_systems.insert(std::make_pair<>(system->getID(), std::unique_ptr<System>(system)));		
 			scheduler->scheduleExecution(system->getID());
 			
 			printf("System attached: %i\n", system->getID());
