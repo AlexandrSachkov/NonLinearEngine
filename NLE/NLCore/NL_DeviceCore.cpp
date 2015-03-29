@@ -59,8 +59,10 @@ namespace NLE
 		{
 			std::unique_ptr<Scheduler>& scheduler = _scheduler;
 			std::unique_ptr<SysManager>& sysMngr = _sysManager;
-			_clock->onTick([&scheduler, &sysMngr](){
-				scheduler->executeSystems(sysMngr);
+			std::unique_ptr<DataManager>& dataMngr = _dataManager;
+
+			_clock->onTick([&scheduler, &sysMngr, &dataMngr](){
+				scheduler->executeSystems(sysMngr, dataMngr);
 			});
 		}
 	}

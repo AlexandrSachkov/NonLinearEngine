@@ -3,6 +3,7 @@
 #include "tbb/tbb.h"
 #include "NL_System.h"
 #include "NL_SysTask.h"
+#include "NL_DataManager.h"
 
 namespace NLE
 {
@@ -10,7 +11,8 @@ namespace NLE
 	{
 		Scheduler::Scheduler() :
 			_scheduledSystems(),
-			_numThreads()
+			_numThreads(),
+			_scheduler(this)
 		{
 		}
 
@@ -43,12 +45,17 @@ namespace NLE
 			_scheduledSystems.push(sysId);
 		}
 
-		void Scheduler::executeSystems(std::unique_ptr<SysManager> const& sysManager)
+		void Scheduler::executeSystems(
+			std::unique_ptr<SysManager> const& sysManager, 
+			std::unique_ptr<DataManager> const& dataManager)
 		{
 			uint_fast8_t sysId;		
+
 			while (_scheduledSystems.try_pop(sysId))
 			{
-				NLE::Core::SysTask& task = *sysManager->getSystemById(sysId).get()->getTask(this);
+				NLE::Core::SysTask& task = *sysManager->getSystemById(sysId).get()->getTask(
+					_scheduler,
+					dataManager->getDataHandle(sysId));
 				tbb::task::enqueue(task);
 			}
 		}

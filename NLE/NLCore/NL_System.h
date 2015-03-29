@@ -2,7 +2,7 @@
 #define NL_SYSTEM_H_
 
 #include <cstdint>
-#include "NL_Scheduler.h"
+#include <memory>
 
 namespace NLE 
 {
@@ -10,6 +10,7 @@ namespace NLE
 	{
 		class SysTask;
 		class Scheduler;
+		class SysData;
 		class System
 		{
 		public:
@@ -19,7 +20,9 @@ namespace NLE
 			virtual void release() = 0;
 
 			virtual uint_fast8_t getID() = 0;
-			virtual SysTask* getTask(Scheduler* scheduler) = 0;
+			virtual SysTask* getTask(
+				std::unique_ptr<Scheduler> const& scheduler,
+				std::unique_ptr<SysData> const& sysData) = 0;
 		};
 	}
 }

@@ -9,6 +9,8 @@ namespace NLE
 	namespace Core 
 	{
 		class SysManager;
+		class DataManager;
+
 		class Scheduler 
 		{
 		public:
@@ -20,9 +22,12 @@ namespace NLE
 
 			uint_fast8_t getNumThreads();
 			void scheduleExecution(uint_fast8_t sysId);
-			void executeSystems(std::unique_ptr<SysManager> const& sysManager);
+			void executeSystems(
+				std::unique_ptr<SysManager> const& sysManager, 
+				std::unique_ptr<DataManager> const& dataManager);
 
 		private:
+			std::unique_ptr<Scheduler> _scheduler;
 			tbb::task_scheduler_init* _taskSchedulerInit;
 			tbb::concurrent_queue<uint_fast8_t> _scheduledSystems;
 			uint_fast8_t _numThreads;
