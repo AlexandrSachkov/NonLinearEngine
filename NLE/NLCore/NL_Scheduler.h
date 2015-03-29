@@ -20,7 +20,7 @@ namespace NLE
 			bool initialize();
 			void release();
 
-			uint_fast8_t getNumThreads();
+			uint_fast8_t getNumCores();
 			void scheduleExecution(uint_fast8_t sysId);
 			void executeSystems(
 				std::unique_ptr<SysManager> const& sysManager, 
@@ -30,7 +30,7 @@ namespace NLE
 			std::unique_ptr<Scheduler> _scheduler;
 			tbb::task_scheduler_init* _taskSchedulerInit;
 			tbb::concurrent_queue<uint_fast8_t> _scheduledSystems;
-			uint_fast8_t _numThreads;
+			uint_fast8_t _numCores;
 		};
 	}
 }
