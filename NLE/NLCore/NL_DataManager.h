@@ -19,7 +19,7 @@ namespace NLE
 			bool initialize(uint_fast8_t numSystems);
 			void release();
 
-			//std::unique_ptr<SysData> const& getDataHandle(uint_fast8_t sysId);
+			std::unique_ptr<SysData> const& getDataHandle(uint_fast8_t sysId);
 
 		private:
 			std::unique_ptr<SysData> _sharedData;

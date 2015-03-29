@@ -31,10 +31,10 @@ namespace NLE
 
 		}
 
-		/*std::unique_ptr<SysData> const& DataManager::getDataHandle(uint_fast8_t sysId)
+		std::unique_ptr<SysData> const& DataManager::getDataHandle(uint_fast8_t sysId)
 		{
-			return nullptr;
-		}*/
+			return _sysData.at(sysId);
+		}
 
 
 	}

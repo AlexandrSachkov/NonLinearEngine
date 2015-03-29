@@ -22,7 +22,8 @@ namespace NLE
 		{
 			for (uint_fast8_t i = 0; i < _numSystems; i++)
 			{
-				_systems.at(i).get()->initialize(i);
+				if (!_systems.at(i).get()->initialize(i))
+					return false;
 				scheduler->scheduleExecution(i);
 			}
 			return true;
