@@ -47,9 +47,9 @@ namespace NLE
 			return _systems.at(sysId);
 		}
 
-		void SysManager::attachSystem(System* system)
+		void SysManager::attachSystem(std::unique_ptr<System> system)
 		{
-			_systems.insert(std::make_pair<>(_numSystems, std::unique_ptr<System>(system)));
+			_systems.insert(std::make_pair<>(_numSystems, std::move(system)));
 			printf("System attached: %i\n", _numSystems);
 
 			_numSystems++;

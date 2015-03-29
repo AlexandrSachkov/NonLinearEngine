@@ -29,7 +29,7 @@ namespace NLE
 			bool initialize();
 			void release();
 
-			void attachSystem(System* system);
+			void attachSystem(std::unique_ptr<System> system);
 			void drive();
 
 		private:

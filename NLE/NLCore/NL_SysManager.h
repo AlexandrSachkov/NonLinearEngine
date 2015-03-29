@@ -23,7 +23,7 @@ namespace NLE
 			uint_fast8_t getNumSystems();
 
 			std::unique_ptr<System> const& getSystemById(uint_fast8_t sysId) const;
-			void attachSystem(System* system);
+			void attachSystem(std::unique_ptr<System> system);
 		private:
 			std::unordered_map<uint_fast8_t, std::unique_ptr<System>> _systems;
 			uint_fast8_t _numSystems;

@@ -8,7 +8,7 @@ int main(){
 
 	for (int i = 0; i < 12; i++)
 	{
-		devCore.attachSystem(new TestSystem());
+		devCore.attachSystem(std::unique_ptr<TestSystem>(new TestSystem()));
 	}
 	devCore.initialize();
 
@@ -16,7 +16,7 @@ int main(){
 	//while (true)
 	//{
 		devCore.drive();
-		//Sleep(1);
+	//	Sleep(1);
 	//}
 	std::cin.ignore();
 	return 0;

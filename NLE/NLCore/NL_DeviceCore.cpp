@@ -50,9 +50,9 @@ namespace NLE
 				_clock->release();
 		}
 
-		void DeviceCore::attachSystem(System* system)
+		void DeviceCore::attachSystem(std::unique_ptr<System> system)
 		{
-			_sysManager->attachSystem(system);
+			_sysManager->attachSystem(std::move(system));
 		}
 
 		void DeviceCore::drive()
