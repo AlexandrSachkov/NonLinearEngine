@@ -8,7 +8,7 @@ int main(){
 
 	for (int i = 0; i < 12; i++)
 	{
-		devCore.attachSystem(std::unique_ptr<TestSystem>(new TestSystem()));
+		devCore.attachSystem(std::make_unique<TestSystem>());
 	}
 	devCore.initialize();
 
