@@ -19,7 +19,7 @@ namespace NLE
 		bool StateManager::initialize(uint_fast8_t numSystems)
 		{
 			_sharedState = std::make_unique<SysState>();
-			for (uint_fast8_t i = 0; i < numSystems; i++)
+			for (uint_fast8_t i = 0; i < numSystems; ++i)
 			{
 				_sysState.insert(std::make_pair<>(i, std::make_unique<SysState>()));
 			}

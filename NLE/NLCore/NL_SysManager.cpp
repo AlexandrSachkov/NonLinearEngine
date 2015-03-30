@@ -20,7 +20,7 @@ namespace NLE
 
 		bool SysManager::initialize(std::unique_ptr<Scheduler> const& scheduler)
 		{
-			for (uint_fast8_t i = 0; i < _numSystems; i++)
+			for (uint_fast8_t i = 0; i < _numSystems; ++i)
 			{
 				if (!_systems.at(i).get()->initialize(i))
 					return false;
@@ -31,7 +31,7 @@ namespace NLE
 
 		void SysManager::release()
 		{
-			for (uint_fast8_t i = 0; i < _numSystems; i++)
+			for (uint_fast8_t i = 0; i < _numSystems; ++i)
 			{
 				_systems.at(i).get()->release();
 			}
