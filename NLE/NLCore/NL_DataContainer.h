@@ -32,10 +32,14 @@ namespace NLE
 
 			void remove(uint_fast8_t index)
 			{
-				uint_fast8_t lastOccupied = _data.size() - 1;
+				uint_fast8_t size = _data.size();
+				if (index >= size)
+					return;
+
+				uint_fast8_t lastOccupied = size - 1;
 				if (index != lastOccupied)
 				{
-					std::copy(_data[lastOccupied], _data[lastOccupied], _data[index]);
+					_data[index] = _data[lastOccupied];
 				}
 				_data.pop_back();
 			}
@@ -47,7 +51,7 @@ namespace NLE
 
 			T& getData(uint_fast8_t index)
 			{
-				return &_data[index];
+				return _data[index];
 			}
 
 		private:			
