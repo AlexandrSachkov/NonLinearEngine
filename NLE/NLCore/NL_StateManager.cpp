@@ -5,8 +5,8 @@ namespace NLE
 {
 	namespace Core
 	{
-		StateManager::StateManager() :
-			_sysState()
+		StateManager::StateManager() //:
+			//_sysState()
 		{
 
 		}
@@ -18,11 +18,11 @@ namespace NLE
 
 		bool StateManager::initialize(uint_fast8_t numSystems)
 		{
-			_sharedState = std::make_unique<SysState>();
-			for (uint_fast8_t i = 0; i < numSystems; ++i)
-			{
-				_sysState.insert(std::make_pair<>(i, std::make_unique<SysState>()));
-			}
+			//_sharedState = std::make_unique<SysState>();
+			//for (uint_fast8_t i = 0; i < numSystems; ++i)
+			//{
+			//	_sysState.insert(std::make_pair<>(i, std::make_unique<SysState>()));
+			//}
 			return true;
 		}
 
@@ -31,10 +31,10 @@ namespace NLE
 
 		}
 
-		std::unique_ptr<SysState> const& StateManager::getDataHandle(uint_fast8_t sysId)
-		{
-			return _sysState.at(sysId);
-		}
+		//std::unique_ptr<SysState> const& StateManager::getDataHandle(uint_fast8_t sysId)
+		//{
+		//	return _sysState.at(sysId);
+		//}
 
 
 	}

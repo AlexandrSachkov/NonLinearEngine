@@ -1,9 +1,10 @@
 #include "TestSystem.h"
 #include "NLE\NLCore\NL_SysTask.h"
 #include "NLE\NLCore\NL_Scheduler.h"
-#include "NLE\NLCore\NL_SysState.h"
 
-TestSystem::TestSystem() : _id(-1)
+TestSystem::TestSystem() :
+	_id(-1),
+	_sysState()
 {
 
 }
@@ -29,17 +30,16 @@ uint_fast8_t TestSystem::getID()
 	return _id;
 }
 
-NLE::Core::SysTask* TestSystem::getTask(
-	std::unique_ptr<NLE::Core::Scheduler> const& scheduler,
-	std::unique_ptr<NLE::Core::SysState> const& SysState)
+NLE::Core::SysTask* TestSystem::getTask(std::unique_ptr<NLE::Core::Scheduler> const& scheduler)
 {
-	return new (tbb::task::allocate_root())NLE::Core::SysTask([this, &scheduler, &SysState](){
+	return new (tbb::task::allocate_root())NLE::Core::SysTask([this, &scheduler](){
 		printf("Running task for system %i\n", getID());
 		double num = 2000;
 		for (int i = 0; i < 1000000000; i++)
 		{
 			num += sqrt(num) / 2;
 		}
+
 		//printf("Finishing task for system %i\n", getID());
 		scheduler->scheduleExecution(getID());
 

@@ -19,11 +19,12 @@ namespace NLE
 			bool initialize(uint_fast8_t numSystems);
 			void release();
 
-			std::unique_ptr<SysState> const& getDataHandle(uint_fast8_t sysId);
+			//std::unique_ptr<SysState> const& getDataHandle(uint_fast8_t sysId);
 
 		private:
-			std::unique_ptr<SysState> _sharedState;
-			std::unordered_map<uint_fast8_t, std::unique_ptr<SysState>> _sysState;
+			//std::unique_ptr<SysState> _sharedState;
+			//std::unordered_map<uint_fast8_t, std::unique_ptr<SysState>> _sysState;
+
 		};
 	}
 }

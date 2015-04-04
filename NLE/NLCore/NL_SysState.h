@@ -1,6 +1,7 @@
 #ifndef NL_SYS_STATE_H_
 #define NL_SYS_STATE_H_
 
+
 namespace NLE
 {
 	namespace Core
@@ -9,9 +10,8 @@ namespace NLE
 		class SysState
 		{
 		public:
-			SysState();
-			~SysState();
-
+			~SysState(){}
+			virtual void update() = 0;
 		private:
 		};
 	}

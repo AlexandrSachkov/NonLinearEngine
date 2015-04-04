@@ -20,9 +20,9 @@ namespace NLE
 			virtual void release() = 0;
 
 			virtual uint_fast8_t getID() = 0;
+
 			virtual SysTask* getTask(
-				std::unique_ptr<Scheduler> const& scheduler,
-				std::unique_ptr<SysState> const& SysState) = 0;
+				std::unique_ptr<Scheduler> const& scheduler) = 0;
 		};
 	}
 }
