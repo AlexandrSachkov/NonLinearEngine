@@ -1,9 +1,6 @@
-#ifndef NL_DATA_PACK_H_
-#define NL_DATA_PACK_H_
+#ifndef NL_DATA_AGGREGATOR_H_
+#define NL_DATA_AGGREGATOR_H_
 
-#include <tuple>
-#include <vector>
-#include "tbb\scalable_allocator.h"
 
 namespace NLE
 {
