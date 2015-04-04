@@ -1,8 +1,8 @@
 #ifndef NL_DATA_CONTAINER_H_
 #define NL_DATA_CONTAINER_H_
 
-#include "tbb\concurrent_vector.h"
-#include "tbb\concurrent_queue.h"
+#include <algorithm>
+#include <vector>
 #define TBB_PREVIEW_MEMORY_POOL 1
 #include "tbb\memory_pool.h"
 
@@ -15,11 +15,8 @@ namespace NLE
 		{
 		public:
 			DataContainer(uint_fast8_t initSize) :
-				_maxSize(initSize),
-				_currentSize(0),
 				_dataPool(),
-				_data(_dataPool),
-				_removalQueue()
+				_data(_dataPool)
 			{
 				_data.reserve(initSize);
 			}
@@ -31,25 +28,16 @@ namespace NLE
 			void add(T data)
 			{
 				_data.push_back(data);
-				_maxSize = _data.capacity();
-				++_currentSize;
 			}
 
-			void markForRemoval(uint_fast8_t index)
+			void remove(uint_fast8_t index)
 			{
-				_removalQueue.push(index);
-			}
-
-			//NOT thread safe
-			void maintain()
-			{
-				uint_fast8_t index;
-				while (_removalQueue.try_pop(index))
+				uint_fast8_t lastOccupied = _data.size() - 1;
+				if (index != lastOccupied)
 				{
-					std::swap(&_data[_currentSize - 1], &_data[index]);
-					--_currentSize;
+					std::copy(_data[lastOccupied], _data[lastOccupied], _data[index]);
 				}
-				_data.shrink_to_fit();
+				_data.pop_back();
 			}
 
 			void update(uint_fast8_t index, T data)
@@ -57,13 +45,14 @@ namespace NLE
 				_data[index] = data;
 			}
 
-		private:			
-			uint_fast8_t _maxSize;
-			uint_fast8_t _currentSize;
+			T& getData(uint_fast8_t index)
+			{
+				return &_data[index];
+			}
 
+		private:			
 			tbb::memory_pool<tbb::scalable_allocator<T>> _dataPool;
-			tbb::concurrent_vector<T, tbb::memory_pool_allocator<T>> _data;
-			tbb::concurrent_queue<uint_fast8_t> _removalQueue;
+			std::vector<T, tbb::memory_pool_allocator<T>> _data;
 		};
 	}
 }
