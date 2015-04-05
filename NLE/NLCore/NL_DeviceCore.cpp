@@ -73,6 +73,11 @@ namespace NLE
 			_stateManager = std::move(stateManager);
 		}
 
+		void DeviceCore::setClockFrequenceNs(unsigned long long frequencyNs)
+		{
+			_clock->setFrequencyNs(frequencyNs);
+		}
+
 		void DeviceCore::run()
 		{
 			_clock->run();
