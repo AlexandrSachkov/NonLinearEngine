@@ -6,6 +6,8 @@
 #include "NL_Scheduler.h"
 #include "NL_StateManager.h"
 
+#include <cassert>
+
 namespace NLE 
 {
 	namespace Core 
@@ -17,7 +19,6 @@ namespace NLE
 			_clock = std::make_unique<Clock>();
 			_sysManager = std::make_unique<SysManager>();
 			_scheduler = std::make_unique<Scheduler>();
-			_stateManager = std::make_unique<StateManager>();
 		}
 
 		DeviceCore::~DeviceCore()
@@ -33,8 +34,10 @@ namespace NLE
 				return false;
 			if (!_sysManager->initialize(_scheduler))
 				return false;
-			if (!_stateManager->initialize(_sysManager->getNumSystems()))
+			assert(_stateManager);
+			if (!_stateManager->initialize())
 				return false;
+			
 			return true;
 		}
 
@@ -55,6 +58,11 @@ namespace NLE
 			_sysManager->attachSystem(std::move(system));
 		}
 
+		void DeviceCore::attachStateManager(std::unique_ptr<StateManager> stateManager)
+		{
+			_stateManager = std::move(stateManager);
+		}
+
 		void DeviceCore::drive()
 		{
 			std::unique_ptr<Scheduler>& scheduler = _scheduler;
@@ -62,7 +70,8 @@ namespace NLE
 			std::unique_ptr<StateManager>& stateMngr = _stateManager;
 
 			_clock->onTick([&scheduler, &sysMngr, &stateMngr](){
-				scheduler->executeSystems(sysMngr, stateMngr);
+				stateMngr->distributeData();
+				scheduler->executeSystems(sysMngr);
 			});
 		}
 	}

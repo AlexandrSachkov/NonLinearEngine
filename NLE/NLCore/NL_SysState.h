@@ -10,9 +10,8 @@ namespace NLE
 		class SysState
 		{
 		public:
-			~SysState(){}
+			virtual ~SysState(){}
 			virtual void update() = 0;
-		private:
 		};
 	}
 }

@@ -2,8 +2,11 @@ PROJECT(NLCore)
 
 SET(HEADERS 
 	NL_Clock.h
-	NL_DataAggregator.h
 	NL_DataContainer.h
+	NL_DataContainer.inl
+	NL_DataDistributor.h	
+	NL_DataDistributor.inl
+	NL_DataPacket.h
 	NL_DeviceCore.h
 	NL_Scheduler.h
 	NL_StateManager.h
@@ -16,7 +19,6 @@ SET(SOURCES
 	NL_Clock.cpp
 	NL_DeviceCore.cpp
 	NL_Scheduler.cpp	
-	NL_StateManager.cpp
 	NL_SysManager.cpp
 	)
 

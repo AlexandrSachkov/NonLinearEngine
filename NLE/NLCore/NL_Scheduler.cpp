@@ -45,9 +45,7 @@ namespace NLE
 			_scheduledSystems.push(sysId);
 		}
 
-		void Scheduler::executeSystems(
-			std::unique_ptr<SysManager> const& sysManager, 
-			std::unique_ptr<StateManager> const& stateManager)
+		void Scheduler::executeSystems(std::unique_ptr<SysManager> const& sysManager)
 		{
 			uint_fast8_t sysId;		
 

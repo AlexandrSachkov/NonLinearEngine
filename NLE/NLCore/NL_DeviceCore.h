@@ -30,6 +30,7 @@ namespace NLE
 			void release();
 
 			void attachSystem(std::unique_ptr<System> system);
+			void attachStateManager(std::unique_ptr<StateManager> stateManager);
 			void drive();
 
 		private:

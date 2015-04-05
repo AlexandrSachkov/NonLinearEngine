@@ -7,7 +7,6 @@
 
 class SysTask;
 class Scheduler;
-class SysState;
 
 class TestSysState : public NLE::Core::SysState
 {
