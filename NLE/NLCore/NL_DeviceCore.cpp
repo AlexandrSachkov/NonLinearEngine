@@ -28,8 +28,18 @@ namespace NLE
 
 		bool DeviceCore::initialize()
 		{
-			if (!_clock->initialize())
+			std::unique_ptr<Scheduler>& scheduler = _scheduler;
+			std::unique_ptr<SysManager>& sysMngr = _sysManager;
+			std::unique_ptr<StateManager>& stateMngr = _stateManager;
+
+			if (!_clock->initialize([&scheduler, &sysMngr, &stateMngr](){
+				stateMngr->distributeData();
+				scheduler->executeSystems(sysMngr);
+			}))
+			{
 				return false;
+			}
+				
 			if (!_scheduler->initialize())
 				return false;
 			assert(_stateManager);
@@ -63,16 +73,14 @@ namespace NLE
 			_stateManager = std::move(stateManager);
 		}
 
-		void DeviceCore::drive()
+		void DeviceCore::run()
 		{
-			std::unique_ptr<Scheduler>& scheduler = _scheduler;
-			std::unique_ptr<SysManager>& sysMngr = _sysManager;
-			std::unique_ptr<StateManager>& stateMngr = _stateManager;
+			_clock->run();
+		}
 
-			_clock->onTick([&scheduler, &sysMngr, &stateMngr](){
-				stateMngr->distributeData();
-				scheduler->executeSystems(sysMngr);
-			});
+		void DeviceCore::stop()
+		{
+			_clock->stop();
 		}
 	}
 }

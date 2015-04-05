@@ -2,6 +2,8 @@
 #define NL_CLOCK_H_
 
 #include <functional>
+#include "tbb\atomic.h"
+#include <chrono>
 
 namespace NLE
 {
@@ -13,16 +15,17 @@ namespace NLE
 			Clock();
 			~Clock();
 
-			bool initialize();
+			bool initialize(std::function<void()> operation);
 			void release();
 
+			void setFrequencyNs(unsigned long long frequencyNs);
 			void run();
 			void stop();
-
-			void onTick(std::function<void()> operation);
 			
 		private:
-			
+			tbb::atomic<bool> _running;
+			std::chrono::duration<unsigned long long, std::nano> _frequencyNs;
+			std::function<void()> _operation;
 		};
 	}
 }

@@ -32,7 +32,7 @@ public:
 
 	void distributeData()
 	{
-
+		//printf("Distributing data\n");
 	}
 
 	NLE::Core::DataDistributor<float> _floats;

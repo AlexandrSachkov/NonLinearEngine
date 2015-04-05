@@ -31,7 +31,8 @@ namespace NLE
 
 			void attachSystem(std::unique_ptr<System> system);
 			void attachStateManager(std::unique_ptr<StateManager> stateManager);
-			void drive();
+			void run();
+			void stop();
 
 		private:
 			DeviceCore();

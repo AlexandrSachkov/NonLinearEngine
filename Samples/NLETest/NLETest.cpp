@@ -15,11 +15,9 @@ int main(){
 	devCore.initialize();
 
 	printf("Started...\n");
-	//while (true)
-	//{
-		devCore.drive();
-	//	Sleep(1);
-	//}
+
+	devCore.run();
+
 	std::cin.ignore();
 	return 0;
 }
