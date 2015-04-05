@@ -11,13 +11,17 @@ namespace NLE
 		class System;
 		class Scheduler;
 		class UObject;
+		class StateManager;
+
 		class SysManager 
 		{
 		public:
 			SysManager();
 			~SysManager();
 
-			bool initialize(std::unique_ptr<Scheduler> const& scheduler);
+			bool initialize(
+				std::unique_ptr<Scheduler> const& scheduler,
+				std::unique_ptr<StateManager> const& stateManager);
 			void release();
 
 			uint_fast8_t getNumSystems();

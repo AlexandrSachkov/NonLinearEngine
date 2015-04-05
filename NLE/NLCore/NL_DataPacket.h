@@ -28,17 +28,17 @@ namespace NLE
 			{
 			}
 
-			uint_fast8_t getSysId()
+			inline uint_fast8_t getSysId()
 			{
 				return _sysId;
 			}
 
-			uint_fast8_t getItemNumber()
+			inline uint_fast8_t getItemNumber()
 			{
 				return _itemNumber;
 			}
 
-			T getData()
+			inline T getData()
 			{
 				return _data;
 			}

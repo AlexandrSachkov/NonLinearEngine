@@ -7,6 +7,7 @@
 
 class SysTask;
 class Scheduler;
+class StateManager;
 
 class TestSysState : public NLE::Core::SysState
 {
@@ -17,6 +18,17 @@ public:
 	}
 
 	~TestSysState()
+	{
+
+	}
+
+	bool initialize(std::unique_ptr<NLE::Core::StateManager> const& stateManager)
+	{
+		printf("Initializing state.\n");
+		return true;
+	}
+
+	void release()
 	{
 
 	}
@@ -36,7 +48,10 @@ public:
 	TestSystem();
 	~TestSystem();
 
-	bool initialize(uint_fast8_t id);
+	bool initialize(
+		uint_fast8_t id,
+		std::unique_ptr<NLE::Core::StateManager> const& stateManager);
+
 	void release();
 
 	uint_fast8_t getID();

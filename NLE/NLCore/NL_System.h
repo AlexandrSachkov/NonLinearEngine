@@ -11,12 +11,16 @@ namespace NLE
 		class SysTask;
 		class Scheduler;
 		class SysState;
+		class StateManager;
+
 		class System
 		{
 		public:
 			virtual ~System(){}
 
-			virtual bool initialize(uint_fast8_t id) = 0;
+			virtual bool initialize(
+				uint_fast8_t id,
+				std::unique_ptr<StateManager> const& stateManager) = 0;
 			virtual void release() = 0;
 
 			virtual uint_fast8_t getID() = 0;

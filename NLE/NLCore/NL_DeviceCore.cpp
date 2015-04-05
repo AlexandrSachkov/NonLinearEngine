@@ -32,21 +32,21 @@ namespace NLE
 				return false;
 			if (!_scheduler->initialize())
 				return false;
-			if (!_sysManager->initialize(_scheduler))
-				return false;
 			assert(_stateManager);
 			if (!_stateManager->initialize())
+				return false;
+			if (!_sysManager->initialize(_scheduler, _stateManager))
 				return false;
 			
 			return true;
 		}
 
 		void DeviceCore::release()
-		{	
-			if (_stateManager)
-				_stateManager->release();
+		{		
 			if (_sysManager)
 				_sysManager->release();
+			if (_stateManager)
+				_stateManager->release();
 			if (_scheduler)
 				_scheduler->release();
 			if (_clock)

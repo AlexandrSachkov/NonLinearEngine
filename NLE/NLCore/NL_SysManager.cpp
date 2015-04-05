@@ -1,7 +1,10 @@
 #include "NL_SysManager.h"
+
+#include "NL_StateManager.h"
 #include "NL_System.h"
-#include "tbb\tbb.h"
 #include "NL_SysTask.h"
+#include "tbb\tbb.h"
+
 namespace NLE 
 {
 	namespace Core 
@@ -18,11 +21,13 @@ namespace NLE
 
 		}
 
-		bool SysManager::initialize(std::unique_ptr<Scheduler> const& scheduler)
+		bool SysManager::initialize(
+			std::unique_ptr<Scheduler> const& scheduler,
+			std::unique_ptr<StateManager> const& stateManager)
 		{
 			for (uint_fast8_t i = 0; i < _numSystems; ++i)
 			{
-				if (!_systems.at(i).get()->initialize(i))
+				if (!_systems.at(i).get()->initialize(i, stateManager))
 					return false;
 				scheduler->scheduleExecution(i);
 			}

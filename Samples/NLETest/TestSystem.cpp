@@ -1,6 +1,7 @@
 #include "TestSystem.h"
 #include "NLE\NLCore\NL_SysTask.h"
 #include "NLE\NLCore\NL_Scheduler.h"
+#include "NLE\NLCore\NL_StateManager.h"
 
 TestSystem::TestSystem() :
 	_id(-1),
@@ -14,9 +15,13 @@ TestSystem::~TestSystem()
 
 }
 
-bool TestSystem::initialize(uint_fast8_t id)
+bool TestSystem::initialize(
+	uint_fast8_t id,
+	std::unique_ptr<NLE::Core::StateManager> const& stateManager)
 {
 	_id = id;
+	if (!_sysState.initialize(stateManager))
+		return false;
 	return true;
 }
 
