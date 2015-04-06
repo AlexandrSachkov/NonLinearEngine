@@ -33,8 +33,8 @@ namespace NLE
 			std::unique_ptr<StateManager>& stateMngr = _stateManager;
 
 			if (!_clock->initialize([&scheduler, &sysMngr, &stateMngr](){
-				stateMngr->distributeData();
-				scheduler->executeSystems(sysMngr);
+				printf("Tick...\n");
+				scheduler->executeSystems(sysMngr, stateMngr);
 			}))
 			{
 				return false;

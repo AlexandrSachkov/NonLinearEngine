@@ -45,8 +45,15 @@ namespace NLE
 			_scheduledSystems.push(sysId);
 		}
 
-		void Scheduler::executeSystems(std::unique_ptr<SysManager> const& sysManager)
+		void Scheduler::executeSystems(
+			std::unique_ptr<SysManager> const& sysManager,
+			std::unique_ptr<StateManager> const& stateManager)
 		{
+			if (!_scheduledSystems.empty())
+			{
+				stateManager->distributeData();
+			}
+
 			uint_fast8_t sysId;		
 			NLE::Core::SysTask* task = nullptr;
 			while (_scheduledSystems.try_pop(sysId))

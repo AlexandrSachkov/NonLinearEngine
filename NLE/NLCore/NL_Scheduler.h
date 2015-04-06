@@ -22,7 +22,9 @@ namespace NLE
 
 			uint_fast8_t getNumCores();
 			void scheduleExecution(uint_fast8_t sysId);
-			void executeSystems(std::unique_ptr<SysManager> const& sysManager);
+			void executeSystems(
+				std::unique_ptr<SysManager> const& sysManager,
+				std::unique_ptr<StateManager> const& stateManager);
 
 		private:
 			std::unique_ptr<Scheduler> _scheduler;
