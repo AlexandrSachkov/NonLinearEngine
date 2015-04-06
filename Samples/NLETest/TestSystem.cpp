@@ -37,8 +37,11 @@ uint_fast8_t TestSystem::getID()
 
 NLE::Core::SysTask* TestSystem::getTask(std::unique_ptr<NLE::Core::Scheduler> const& scheduler)
 {
-	return new (tbb::task::allocate_root())NLE::Core::SysTask([this, &scheduler](){
+	TestSysState& testSysState = _sysState;
+	return new (tbb::task::allocate_root())NLE::Core::SysTask([this, &scheduler, &testSysState](){
 		printf("Running task for system %i\n", getID());
+		testSysState.update();
+
 		double num = 2000;
 		for (int i = 0; i < 1000000000; i++)
 		{

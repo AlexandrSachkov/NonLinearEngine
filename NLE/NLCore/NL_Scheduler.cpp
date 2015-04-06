@@ -48,11 +48,11 @@ namespace NLE
 		void Scheduler::executeSystems(std::unique_ptr<SysManager> const& sysManager)
 		{
 			uint_fast8_t sysId;		
-
+			NLE::Core::SysTask* task = nullptr;
 			while (_scheduledSystems.try_pop(sysId))
 			{
-				NLE::Core::SysTask& task = *sysManager->getSystemById(sysId).get()->getTask(_scheduler);
-				tbb::task::enqueue(task);
+				task = sysManager->getSystemById(sysId).get()->getTask(_scheduler);
+				tbb::task::enqueue(*task);
 			}
 		}
 	}
