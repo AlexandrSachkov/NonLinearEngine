@@ -18,7 +18,5 @@ int main(){
 	printf("Started...\n");
 
 	devCore.run();
-
-	std::cin.ignore();
 	return 0;
 }

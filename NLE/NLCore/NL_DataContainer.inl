@@ -7,14 +7,13 @@ namespace NLE
 	namespace Core
 	{
 		template<typename T>
-		DataContainer<T>::DataContainer(uint_fast8_t sysId, uint_fast8_t initSize) :
-			_sysId(sysId),
+		DataContainer<T>::DataContainer() :
+			_sysId(-1),
 			_dataPool(),
 			_data(_dataPool),
 			_updateQueue(),
 			_distributor(nullptr)
 		{
-			_data.reserve(initSize);
 		}
 
 		template<typename T>
@@ -23,32 +22,22 @@ namespace NLE
 		}
 
 		template<typename T>
-		void DataContainer<T>::remove(uint_fast8_t index)
+		bool DataContainer<T>::initialize(uint_fast8_t sysId, uint_fast8_t initSize)
 		{
-			uint_fast8_t size = _data.size();
-			if (index >= size)
-				return;
-
-			uint_fast8_t lastOccupied = size - 1;
-			if (index != lastOccupied)
-			{
-				_data[index] = _data[lastOccupied];
-			}
-			_data.pop_back();
+			_sysId = sysId;
+			_data.reserve(initSize);
+			return true;
 		}
 
 		template<typename T>
-		void DataContainer<T>::applyUpdates()
+		void DataContainer<T>::release()
 		{
-			DataPacket<T> packet;
-			while (_updateQueue.try_pop(packet))
-			{
-				update(packet.getItemNumber(), packet.getData());
-			}
+			_data.clear();
+			_dataPool.recycle();
 		}
 
 		template<typename T>
-		inline void DataContainer<T>::bindDistributor(DataDistributor<T>* distributor)
+		void DataContainer<T>::bindDistributor(DataDistributor<T>* distributor)
 		{
 			_distributor = distributor;
 		}
@@ -60,19 +49,34 @@ namespace NLE
 		}
 
 		template<typename T>
-		void DataContainer<T>::update(uint_fast8_t index, T data)
+		void DataContainer<T>::remove(uint_fast8_t index)
 		{
-			_data[index] = data;
-			if (_distributor)
+			uint_fast8_t size = _data.size();
+			if (index < size)
 			{
-				_distributor->queue(new DataPacket<T>(_sysId, index, data));
+				uint_fast8_t lastOccupied = size - 1;
+				if (index != lastOccupied)
+				{
+					_data[index] = _data[lastOccupied];
+				}
+				_data.pop_back();
 			}
 		}
 
 		template<typename T>
-		inline T& DataContainer<T>::get(uint_fast8_t index)
+		void DataContainer<T>::modify(uint_fast8_t index, T data)
 		{
-			return _data[index];
+			_data[index] = data;
+			if (_distributor)
+			{
+				_distributor->queue({ _sysId, index, data });
+			}
+		}
+
+		template<typename T>
+		inline void DataContainer<T>::clear()
+		{
+			_data.clear();
 		}
 
 		template<typename T>
@@ -82,9 +86,25 @@ namespace NLE
 		}
 
 		template<typename T>
+		inline T& DataContainer<T>::get(uint_fast8_t index)
+		{
+			return _data[index];
+		}
+
+		template<typename T>
 		inline void DataContainer<T>::queuePacket(DataPacket<T> packet)
 		{
 			_updateQueue.push(packet);
+		}
+
+		template<typename T>
+		void DataContainer<T>::applyUpdates()
+		{
+			DataPacket<T> packet;
+			while (_updateQueue.try_pop(packet))
+			{
+				modify(packet.getItemNumber(), packet.getData());
+			}
 		}
 	}
 }

@@ -13,7 +13,8 @@ namespace NLE
 		public:
 			virtual ~SysState(){}
 
-			virtual bool initialize(std::unique_ptr<StateManager> const& stateManager) = 0;
+			virtual bool initialize(uint_fast8_t sysId, 
+				std::unique_ptr<StateManager> const& stateManager) = 0;
 			virtual void release() = 0;
 			virtual void update() = 0;
 		};

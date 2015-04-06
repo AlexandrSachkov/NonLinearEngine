@@ -20,7 +20,7 @@ bool TestSystem::initialize(
 	std::unique_ptr<NLE::Core::StateManager> const& stateManager)
 {
 	_id = id;
-	if (!_sysState.initialize(stateManager))
+	if (!_sysState.initialize(id, stateManager))
 		return false;
 	return true;
 }

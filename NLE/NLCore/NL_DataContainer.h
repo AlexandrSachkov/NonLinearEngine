@@ -20,16 +20,21 @@ namespace NLE
 		class DataContainer
 		{
 		public:
-			DataContainer(uint_fast8_t sysId, uint_fast8_t initSize);
+			DataContainer();
 			~DataContainer();
 
+			bool initialize(uint_fast8_t sysId, uint_fast8_t initSize);
+			void release();
 			void bindDistributor(DataDistributor<T>* distributor);
+
 			void add(T data);
 			void remove(uint_fast8_t index);
-			void update(uint_fast8_t index, T data);
-			uint_fast8_t size();
+			void modify(uint_fast8_t index, T data);
+			void clear();
 
+			uint_fast8_t size();
 			T& get(uint_fast8_t index);
+
 			void queuePacket(DataPacket<T> packet);
 			void applyUpdates();
 
