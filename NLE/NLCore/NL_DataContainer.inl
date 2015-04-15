@@ -103,7 +103,7 @@ namespace NLE
 			DataPacket<T> packet;
 			while (_updateQueue.try_pop(packet))
 			{
-				modify(packet.getItemNumber(), packet.getData());
+				_data[packet.getItemNumber()] = packet.getData();
 			}
 		}
 	}
