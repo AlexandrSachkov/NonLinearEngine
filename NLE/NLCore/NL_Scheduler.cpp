@@ -12,8 +12,7 @@ namespace NLE
 		Scheduler::Scheduler() :
 			_syncSystems(),
 			_asyncSystems(),
-			_numCores(),
-			_scheduler(this)
+			_numCores()
 		{
 		}
 
@@ -43,6 +42,7 @@ namespace NLE
 
 		void Scheduler::scheduleExecution(ExecutionDesc execDesc)
 		{
+			printf("Scheduling system %i\n", execDesc.getSysId());
 			if (execDesc.getExecutionType() == ExecutionType::SYNC)
 				_syncSystems.push(execDesc);
 			else 
@@ -54,7 +54,7 @@ namespace NLE
 			std::unique_ptr<StateManager> const& stateManager)
 		{
 			ExecutionDesc execDesc;
-			NLE::Core::SysTask* task = nullptr;
+			std::function<void()> procedure;
 
 			size_t  size = _syncSystems.size();
 			if (size > 0 && size == sysManager->getNumSyncSystems())
@@ -62,8 +62,8 @@ namespace NLE
 				stateManager->distributeData();
 				while (_syncSystems.try_pop(execDesc))
 				{
-					task = sysManager->getSystemById(execDesc.getSysId()).get()->getTask(_scheduler);
-					tbb::task::enqueue(*task);
+					procedure = sysManager->getSystemById(execDesc.getSysId()).get()->getExecutionProcedure();
+					tbb::task::enqueue(*new (tbb::task::allocate_root())NLE::Core::SysTask(this, execDesc, procedure));
 				}
 			}
 
@@ -71,8 +71,8 @@ namespace NLE
 			{
 				while (_asyncSystems.try_pop(execDesc))
 				{
-					task = sysManager->getSystemById(execDesc.getSysId()).get()->getTask(_scheduler);
-					tbb::task::enqueue(*task);
+					procedure = sysManager->getSystemById(execDesc.getSysId()).get()->getExecutionProcedure();
+					tbb::task::enqueue(*new (tbb::task::allocate_root())NLE::Core::SysTask(this, execDesc, procedure));
 				}
 			}
 		}

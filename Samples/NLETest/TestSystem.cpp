@@ -1,6 +1,5 @@
 #include "TestSystem.h"
 #include "NLE\NLCore\NL_SysTask.h"
-#include "NLE\NLCore\NL_Scheduler.h"
 #include "NLE\NLCore\NL_StateManager.h"
 
 TestSystem::TestSystem(NLE::Core::ExecutionType executionType, NLE::Core::Priority priority) :
@@ -42,10 +41,10 @@ NLE::Core::ExecutionDesc TestSystem::getExecutionDesc()
 	return {_execType, _priority, _id};
 }
 
-NLE::Core::SysTask* TestSystem::getTask(std::unique_ptr<NLE::Core::Scheduler> const& scheduler)
+std::function<void()> TestSystem::getExecutionProcedure()
 {
 	TestSysState& testSysState = _sysState;
-	return new (tbb::task::allocate_root())NLE::Core::SysTask([this, &scheduler, &testSysState](){
+	return [this, &testSysState](){
 		printf("Running task for system %i\n", getID());
 		testSysState.update();
 
@@ -55,10 +54,6 @@ NLE::Core::SysTask* TestSystem::getTask(std::unique_ptr<NLE::Core::Scheduler> co
 			num += sqrt(num) / 2;
 		}
 
-		//printf("Finishing task for system %i\n", getID());
-		scheduler->scheduleExecution(getExecutionDesc());
-
-		printf("Restarting task %i with result %f\n", getID(), num);
-		return nullptr;
-	});
+		printf("System %i finished with result %f\n", getID(), num);
+	};
 }

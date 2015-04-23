@@ -87,7 +87,6 @@ namespace NLE
 				std::unique_ptr<StateManager> const& stateManager);
 
 		private:
-			std::unique_ptr<Scheduler> _scheduler;
 			tbb::task_scheduler_init* _taskSchedulerInit;
 			
 			tbb::concurrent_priority_queue<ExecutionDesc, PriorityComparator> _asyncSystems;

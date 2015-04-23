@@ -13,18 +13,24 @@ namespace NLE
 		{
 
 		public:
-			SysTask(std::function<tbb::task*()> operation)
+			SysTask(Scheduler* scheduler, ExecutionDesc execDesc, std::function<void()> operation) :
+				_scheduler(scheduler),
+				_execDesc(execDesc),
+				_operation(operation)
 			{
-				_operation = operation;
 			}
 
 			tbb::task* execute()
 			{
-				return _operation();
+				_operation();
+				_scheduler->scheduleExecution(_execDesc);
+				return nullptr;
 			}
 
 		private:
-			std::function<tbb::task*()> _operation;
+			Scheduler* _scheduler;
+			ExecutionDesc _execDesc;
+			std::function<void()> _operation;
 		};
 	}
 }

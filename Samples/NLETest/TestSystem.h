@@ -60,8 +60,7 @@ public:
 	NLE::Core::ExecutionDesc getExecutionDesc();
 	uint_fast8_t getID();
 
-	NLE::Core::SysTask* getTask(
-		std::unique_ptr<NLE::Core::Scheduler> const& scheduler);
+	std::function<void()> getExecutionProcedure();
 
 private:
 	uint_fast8_t _id;

@@ -3,13 +3,13 @@
 
 #include <cstdint>
 #include <memory>
+#include <functional>
 #include "NL_Scheduler.h"
 
 namespace NLE 
 {
 	namespace Core 
 	{
-		class SysTask;
 		class Scheduler;
 		class SysState;
 		class StateManager;
@@ -27,8 +27,7 @@ namespace NLE
 			virtual ExecutionDesc getExecutionDesc() = 0;
 			virtual uint_fast8_t getID() = 0;
 
-			virtual SysTask* getTask(
-				std::unique_ptr<Scheduler> const& scheduler) = 0;	
+			virtual std::function<void()> getExecutionProcedure() = 0;	
 		};		
 	}
 }
