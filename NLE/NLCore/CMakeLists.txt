@@ -10,7 +10,6 @@ SET(HEADERS
 	NL_Scheduler.h
 	NL_SharedDataContainer.h
 	NL_StateManager.h
-	NL_SysState.h
 	NL_SysManager.h
 	NL_SysTask.h
 	NL_System.h

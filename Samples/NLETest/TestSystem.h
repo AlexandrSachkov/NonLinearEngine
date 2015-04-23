@@ -2,7 +2,6 @@
 #define TEST_SYSTEM_H_
 
 #include "NLE\NLCore\NL_System.h"
-#include "NLE\NLCore\NL_SysState.h"
 #include "NLE\NLCore\NL_SharedDataContainer.h"
 #include "TestStateManager.h"
 #include <memory>
@@ -11,7 +10,7 @@ class SysTask;
 class Scheduler;
 class StateManager;
 
-class TestSysState : public NLE::Core::SysState
+class TestSysState
 {
 public:
 	TestSysState()
