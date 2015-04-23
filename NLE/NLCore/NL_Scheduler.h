@@ -37,17 +37,17 @@ namespace NLE
 			{
 			}
 
-			ExecutionType getExecutionType()
+			ExecutionType getExecutionType() const
 			{
 				return _execType;
 			}
 
-			Priority getPriority()
+			Priority getPriority() const
 			{
 				return _priority;
 			}
 
-			uint_fast8_t getSysId()
+			uint_fast8_t getSysId() const
 			{
 				return _sysId;
 			}
@@ -63,7 +63,7 @@ namespace NLE
 		class PriorityComparator
 		{
 		public:
-			bool operator() (ExecutionDesc firstDesc, ExecutionDesc secondDesc)
+			bool operator() (const ExecutionDesc& firstDesc, const ExecutionDesc& secondDesc)
 			{
 				return firstDesc.getPriority() < secondDesc.getPriority();
 			}
