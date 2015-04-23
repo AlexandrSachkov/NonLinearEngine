@@ -1,10 +1,12 @@
 #ifndef NL_SYSTEM_H_
 #define NL_SYSTEM_H_
 
+#include "NL_ExecutionDesc.h"
+
 #include <cstdint>
 #include <memory>
 #include <functional>
-#include "NL_Scheduler.h"
+
 
 namespace NLE 
 {
