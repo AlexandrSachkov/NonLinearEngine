@@ -11,7 +11,6 @@
 #include "tbb\memory_pool.h"
 #include "tbb\concurrent_queue.h"
 
-#include "NL_DataPacket.h"
 
 namespace NLE
 {
