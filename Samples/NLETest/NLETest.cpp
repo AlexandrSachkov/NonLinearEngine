@@ -7,7 +7,7 @@
 int main(){
 	NLE::Core::DeviceCore& devCore = NLE::Core::DeviceCore::instance();
 	devCore.attachStateManager(std::make_unique<TestStateManager>());
-	devCore.setClockFrequencyNs(1000000000L);
+	devCore.setClockPeriodNs(1000000000L);
 
 	for (int i = 0; i < 12; i++)
 	{

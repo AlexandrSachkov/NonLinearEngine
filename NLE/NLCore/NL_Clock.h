@@ -18,13 +18,13 @@ namespace NLE
 			bool initialize(std::function<void()> operation);
 			void release();
 
-			void setFrequencyNs(unsigned long long frequencyNs);
+			void setPeriodNs(unsigned long long periodNs);
 			void run();
 			void stop();
 			
 		private:
 			tbb::atomic<bool> _running;
-			std::chrono::duration<unsigned long long, std::nano> _frequencyNs;
+			std::chrono::duration<unsigned long long, std::nano> _periodNs;
 			std::function<void()> _operation;
 		};
 	}

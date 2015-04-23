@@ -31,7 +31,7 @@ namespace NLE
 
 			void attachSystem(std::unique_ptr<System> system);
 			void attachStateManager(std::unique_ptr<StateManager> stateManager);
-			void setClockFrequencyNs(unsigned long long frequencyNs);
+			void setClockPeriodNs(unsigned long long periodNs);
 			void run();
 			void stop();
 

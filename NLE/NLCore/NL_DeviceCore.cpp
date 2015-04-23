@@ -71,9 +71,9 @@ namespace NLE
 			_stateManager = std::move(stateManager);
 		}
 
-		void DeviceCore::setClockFrequenceNs(unsigned long long frequencyNs)
+		void DeviceCore::setClockPeriodNs(unsigned long long periodNs)
 		{
-			_clock->setFrequencyNs(frequencyNs);
+			_clock->setPeriodNs(periodNs);
 		}
 
 		void DeviceCore::run()

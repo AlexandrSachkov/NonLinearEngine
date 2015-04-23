@@ -6,7 +6,7 @@ namespace NLE
 	namespace Core
 	{
 		Clock::Clock() :
-			_frequencyNs(std::chrono::nanoseconds(1000000L))
+			_periodNs(std::chrono::nanoseconds(1000000L))
 		{
 			_running.fetch_and_store(false);
 		}
@@ -16,9 +16,9 @@ namespace NLE
 
 		}
 
-		void Clock::setFrequencyNs(unsigned long long frequencyNs)
+		void Clock::setPeriodNs(unsigned long long periodNs)
 		{
-			_frequencyNs = std::chrono::nanoseconds(frequencyNs);
+			_periodNs = std::chrono::nanoseconds(periodNs);
 		}
 
 		bool Clock::initialize(std::function<void()> operation)
@@ -40,7 +40,7 @@ namespace NLE
 				auto start = std::chrono::high_resolution_clock::now();
 				_operation();
 				auto end = std::chrono::high_resolution_clock::now();
-				std::this_thread::sleep_for(_frequencyNs - (end - start));
+				std::this_thread::sleep_for(_periodNs - (end - start));
 			}
 		}
 
