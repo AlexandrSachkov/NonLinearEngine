@@ -3,6 +3,7 @@
 
 #include <cstdint>
 #include <memory>
+#include "NL_Scheduler.h"
 
 namespace NLE 
 {
@@ -23,13 +24,13 @@ namespace NLE
 				std::unique_ptr<StateManager> const& stateManager) = 0;
 			virtual void release() = 0;
 
+			virtual ExecutionDesc getExecutionDesc() = 0;
 			virtual uint_fast8_t getID() = 0;
 
 			virtual SysTask* getTask(
-				std::unique_ptr<Scheduler> const& scheduler) = 0;
-		};
+				std::unique_ptr<Scheduler> const& scheduler) = 0;	
+		};		
 	}
 }
-
 
 #endif

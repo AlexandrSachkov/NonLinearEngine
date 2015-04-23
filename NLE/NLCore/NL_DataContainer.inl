@@ -11,8 +11,9 @@ namespace NLE
 			_sysId(-1),
 			_dataPool(),
 			_data(_dataPool),
-			_updateQueue(),
-			_distributor(nullptr)
+			_changesPool(),
+			_changes(_changesPool),
+			_updateQueue()
 		{
 		}
 
@@ -22,10 +23,11 @@ namespace NLE
 		}
 
 		template<typename T>
-		bool DataContainer<T>::initialize(uint_fast8_t sysId, uint_fast8_t initSize)
+		bool DataContainer<T>::initialize(uint_fast8_t sysId, uint_fast32_t initSize)
 		{
 			_sysId = sysId;
 			_data.reserve(initSize);
+			_changes.reserve(initSize / 4);
 			return true;
 		}
 
@@ -34,22 +36,18 @@ namespace NLE
 		{
 			_data.clear();
 			_dataPool.recycle();
+			_changes.clear();
+			_changesPool.recycle();
 		}
 
 		template<typename T>
-		void DataContainer<T>::bindDistributor(DataDistributor<T>* distributor)
-		{
-			_distributor = distributor;
-		}
-
-		template<typename T>
-		inline void add(T data)
+		inline void DataContainer<T>::add(T data)
 		{
 			_data.push_back(data);
 		}
 
 		template<typename T>
-		void DataContainer<T>::remove(uint_fast8_t index)
+		void DataContainer<T>::remove(uint_fast32_t index)
 		{
 			uint_fast8_t size = _data.size();
 			if (index < size)
@@ -64,29 +62,26 @@ namespace NLE
 		}
 
 		template<typename T>
-		void DataContainer<T>::modify(uint_fast8_t index, T data)
+		inline void DataContainer<T>::modify(uint_fast32_t index, T data)
 		{
 			_data[index] = data;
-			if (_distributor)
-			{
-				_distributor->queue({ _sysId, index, data });
-			}
 		}
 
 		template<typename T>
 		inline void DataContainer<T>::clear()
 		{
 			_data.clear();
+			_changes.clear();
 		}
 
 		template<typename T>
-		inline uint_fast8_t DataContainer<T>::size()
+		inline uint_fast32_t DataContainer<T>::size()
 		{
 			return _data.size();
 		}
 
 		template<typename T>
-		inline T& DataContainer<T>::get(uint_fast8_t index)
+		inline T& DataContainer<T>::get(uint_fast32_t index)
 		{
 			return _data[index];
 		}

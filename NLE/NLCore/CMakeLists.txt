@@ -5,10 +5,10 @@ SET(HEADERS
 	NL_DataContainer.h
 	NL_DataContainer.inl
 	NL_DataDistributor.h	
-	NL_DataDistributor.inl
 	NL_DataPacket.h
 	NL_DeviceCore.h
 	NL_Scheduler.h
+	NL_SharedDataContainer.h
 	NL_StateManager.h
 	NL_SysState.h
 	NL_SysManager.h
@@ -16,6 +16,8 @@ SET(HEADERS
 	NL_System.h
 	)
 SET(SOURCES 
+	NL_DataDistributor.cpp
+	NL_SharedDataContainer.cpp
 	NL_Clock.cpp
 	NL_DeviceCore.cpp
 	NL_Scheduler.cpp	

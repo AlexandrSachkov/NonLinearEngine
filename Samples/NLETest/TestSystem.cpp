@@ -3,9 +3,11 @@
 #include "NLE\NLCore\NL_Scheduler.h"
 #include "NLE\NLCore\NL_StateManager.h"
 
-TestSystem::TestSystem() :
+TestSystem::TestSystem(NLE::Core::ExecutionType executionType, NLE::Core::Priority priority) :
 	_id(-1),
-	_sysState()
+	_sysState(),
+	_execType(executionType),
+	_priority(priority)
 {
 
 }
@@ -35,6 +37,11 @@ uint_fast8_t TestSystem::getID()
 	return _id;
 }
 
+NLE::Core::ExecutionDesc TestSystem::getExecutionDesc()
+{
+	return {_execType, _priority, _id};
+}
+
 NLE::Core::SysTask* TestSystem::getTask(std::unique_ptr<NLE::Core::Scheduler> const& scheduler)
 {
 	TestSysState& testSysState = _sysState;
@@ -49,7 +56,7 @@ NLE::Core::SysTask* TestSystem::getTask(std::unique_ptr<NLE::Core::Scheduler> co
 		}
 
 		//printf("Finishing task for system %i\n", getID());
-		scheduler->scheduleExecution(getID());
+		scheduler->scheduleExecution(getExecutionDesc());
 
 		printf("Restarting task %i with result %f\n", getID(), num);
 		return nullptr;

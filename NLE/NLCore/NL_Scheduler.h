@@ -1,7 +1,7 @@
 #ifndef NL_SCHEDULER_H_
 #define NL_SCHEDULER_H_
 
-#include "tbb/concurrent_queue.h"
+#include "tbb/concurrent_priority_queue.h"
 #include "tbb/task_scheduler_init.h"
 
 namespace NLE 
@@ -10,6 +10,66 @@ namespace NLE
 	{
 		class SysManager;
 		class StateManager;
+
+		enum ExecutionType { SYNC, ASYNC };
+		enum Priority { LOW, STANDARD, HIGH };
+
+		//====================================================================================
+		class ExecutionDesc
+		{
+		public:
+			//Only used when popping from queue
+			ExecutionDesc() :
+				_execType(ExecutionType::SYNC),
+				_priority(Priority::LOW),
+				_sysId(-1)
+			{
+			}
+
+			ExecutionDesc(ExecutionType execType, Priority priority, uint_fast8_t sysId) :
+				_execType(execType),
+				_priority(priority),
+				_sysId(sysId)
+			{
+			}
+
+			~ExecutionDesc()
+			{
+			}
+
+			ExecutionType getExecutionType()
+			{
+				return _execType;
+			}
+
+			Priority getPriority()
+			{
+				return _priority;
+			}
+
+			uint_fast8_t getSysId()
+			{
+				return _sysId;
+			}
+
+		private:
+			ExecutionType _execType;
+			Priority _priority;
+			uint_fast8_t _sysId;
+		};
+
+		//====================================================================================
+
+		class PriorityComparator
+		{
+		public:
+			bool operator() (ExecutionDesc firstDesc, ExecutionDesc secondDesc)
+			{
+				return firstDesc.getPriority() < secondDesc.getPriority();
+			}
+		};
+
+		//====================================================================================
 
 		class Scheduler 
 		{
@@ -21,7 +81,7 @@ namespace NLE
 			void release();
 
 			uint_fast8_t getNumCores();
-			void scheduleExecution(uint_fast8_t sysId);
+			void scheduleExecution(ExecutionDesc execDesc);
 			void executeSystems(
 				std::unique_ptr<SysManager> const& sysManager,
 				std::unique_ptr<StateManager> const& stateManager);
@@ -29,7 +89,10 @@ namespace NLE
 		private:
 			std::unique_ptr<Scheduler> _scheduler;
 			tbb::task_scheduler_init* _taskSchedulerInit;
-			tbb::concurrent_queue<uint_fast8_t> _scheduledSystems;
+			
+			tbb::concurrent_priority_queue<ExecutionDesc, PriorityComparator> _asyncSystems;
+			tbb::concurrent_priority_queue<ExecutionDesc, PriorityComparator> _syncSystems;
+
 			uint_fast8_t _numCores;
 		};
 	}

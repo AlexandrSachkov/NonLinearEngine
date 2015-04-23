@@ -10,7 +10,8 @@ namespace NLE
 	namespace Core
 	{
 		Scheduler::Scheduler() :
-			_scheduledSystems(),
+			_syncSystems(),
+			_asyncSystems(),
 			_numCores(),
 			_scheduler(this)
 		{
@@ -40,26 +41,39 @@ namespace NLE
 			return _numCores;
 		}
 
-		void Scheduler::scheduleExecution(uint_fast8_t sysId)
+		void Scheduler::scheduleExecution(ExecutionDesc execDesc)
 		{
-			_scheduledSystems.push(sysId);
+			if (execDesc.getExecutionType() == ExecutionType::SYNC)
+				_syncSystems.push(execDesc);
+			else 
+				_asyncSystems.push(execDesc);
 		}
 
 		void Scheduler::executeSystems(
 			std::unique_ptr<SysManager> const& sysManager,
 			std::unique_ptr<StateManager> const& stateManager)
 		{
-			if (!_scheduledSystems.empty())
+			ExecutionDesc execDesc;
+			NLE::Core::SysTask* task = nullptr;
+
+			size_t  size = _syncSystems.size();
+			if (size > 0 && size == sysManager->getNumSyncSystems())
 			{
 				stateManager->distributeData();
+				while (_syncSystems.try_pop(execDesc))
+				{
+					task = sysManager->getSystemById(execDesc.getSysId()).get()->getTask(_scheduler);
+					tbb::task::enqueue(*task);
+				}
 			}
 
-			uint_fast8_t sysId;		
-			NLE::Core::SysTask* task = nullptr;
-			while (_scheduledSystems.try_pop(sysId))
+			if (!_asyncSystems.empty())
 			{
-				task = sysManager->getSystemById(sysId).get()->getTask(_scheduler);
-				tbb::task::enqueue(*task);
+				while (_asyncSystems.try_pop(execDesc))
+				{
+					task = sysManager->getSystemById(execDesc.getSysId()).get()->getTask(_scheduler);
+					tbb::task::enqueue(*task);
+				}
 			}
 		}
 	}

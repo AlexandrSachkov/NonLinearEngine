@@ -36,9 +36,7 @@ namespace NLE
 				printf("Tick...\n");
 				scheduler->executeSystems(sysMngr, stateMngr);
 			}))
-			{
 				return false;
-			}
 				
 			if (!_scheduler->initialize())
 				return false;

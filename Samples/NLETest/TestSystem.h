@@ -3,7 +3,7 @@
 
 #include "NLE\NLCore\NL_System.h"
 #include "NLE\NLCore\NL_SysState.h"
-#include "NLE\NLCore\NL_DataContainer.h"
+#include "NLE\NLCore\NL_SharedDataContainer.h"
 #include "TestStateManager.h"
 #include <memory>
 
@@ -29,37 +29,19 @@ public:
 	{
 		TestStateManager* tsm = static_cast<TestStateManager*>(stateManager.get());
 
-		printf("Initializing state.\n");
-		_myFloats.initialize(sysId, 10);
-		tsm->_floats.bindContainer(&_myFloats);
-
-		_myInts.initialize(sysId, 10);
-		tsm->_ints.bindContainer(&_myInts);
-
-		_myChars.initialize(sysId, 10);
-		tsm->_chars.bindContainer(&_myChars);
-
 		return true;
 	}
 
 	void release()
 	{
-		_myFloats.release();
-		_myInts.release();
-		_myChars.release();
+
 	}
 
 	void update()
 	{
 		printf("Updating state.\n");
-		_myFloats.applyUpdates();
-		_myInts.applyUpdates();
-		_myChars.applyUpdates();
-	}
 
-	NLE::Core::DataContainer<float> _myFloats;
-	NLE::Core::DataContainer<int> _myInts;
-	NLE::Core::DataContainer<char> _myChars;
+	}
 private:
 };
 
@@ -67,7 +49,7 @@ private:
 class TestSystem : public NLE::Core::System
 {
 public:
-	TestSystem();
+	TestSystem(NLE::Core::ExecutionType executionType, NLE::Core::Priority priority);
 	~TestSystem();
 
 	bool initialize(
@@ -75,7 +57,7 @@ public:
 		std::unique_ptr<NLE::Core::StateManager> const& stateManager);
 
 	void release();
-
+	NLE::Core::ExecutionDesc getExecutionDesc();
 	uint_fast8_t getID();
 
 	NLE::Core::SysTask* getTask(
@@ -84,6 +66,8 @@ public:
 private:
 	uint_fast8_t _id;
 	TestSysState _sysState;
+	NLE::Core::ExecutionType _execType;
+	NLE::Core::Priority _priority;
 };
 
 #endif

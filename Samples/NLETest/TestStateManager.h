@@ -7,10 +7,7 @@
 class TestStateManager : public NLE::Core::StateManager
 {
 public:
-	TestStateManager() :
-		_floats(),
-		_ints(),
-		_chars()
+	TestStateManager()
 	{
 
 	}
@@ -33,14 +30,8 @@ public:
 	void distributeData()
 	{
 		printf("Distributing data\n");
-		_floats.distribute();
-		_ints.distribute();
-		_chars.distribute();
-	}
 
-	NLE::Core::DataDistributor<float> _floats;
-	NLE::Core::DataDistributor<int> _ints;
-	NLE::Core::DataDistributor<char> _chars;
+	}
 
 private:
 };
