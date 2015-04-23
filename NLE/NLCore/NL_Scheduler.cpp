@@ -59,12 +59,12 @@ namespace NLE
 			size_t  size = _syncSystems.size();
 			if (size > 0 && size == sysManager->getNumSyncSystems())
 			{
-				stateManager->distributeData();
 				while (_syncSystems.try_pop(execDesc))
 				{
 					procedure = sysManager->getSystemById(execDesc.getSysId()).get()->getExecutionProcedure();
 					tbb::task::enqueue(*new (tbb::task::allocate_root())NLE::Core::SysTask(this, execDesc, procedure));
 				}
+				stateManager->distributeData();
 			}
 
 			if (!_asyncSystems.empty())
