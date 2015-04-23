@@ -5,7 +5,6 @@ SET(HEADERS
 	NL_DataContainer.h
 	NL_DataContainer.inl
 	NL_DataDistributor.h	
-	NL_DataPacket.h
 	NL_DeviceCore.h
 	NL_ExecutionDesc.h
 	NL_Scheduler.h
