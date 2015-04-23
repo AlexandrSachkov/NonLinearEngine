@@ -2,47 +2,12 @@
 #define TEST_SYSTEM_H_
 
 #include "NLE\NLCore\NL_System.h"
-#include "NLE\NLCore\NL_SharedDataContainer.h"
-#include "TestStateManager.h"
+#include "TestSysState.h"
 #include <memory>
 
 class SysTask;
 class Scheduler;
 class StateManager;
-
-class TestSysState
-{
-public:
-	TestSysState()
-	{
-		printf("Created State.\n");
-	}
-
-	~TestSysState()
-	{
-
-	}
-
-	bool initialize(uint_fast8_t sysId, 
-		std::unique_ptr<NLE::Core::StateManager> const& stateManager)
-	{
-		TestStateManager* tsm = static_cast<TestStateManager*>(stateManager.get());
-
-		return true;
-	}
-
-	void release()
-	{
-
-	}
-
-	void update()
-	{
-		printf("Updating state.\n");
-
-	}
-private:
-};
 
 
 class TestSystem : public NLE::Core::System

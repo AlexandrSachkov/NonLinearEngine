@@ -3,9 +3,11 @@ PROJECT(NLETest)
 SET(HEADERS 
 	TestStateManager.h
 	TestSystem.h
+	TestSysState.h
 	)
 SET(SOURCES 
 	TestSystem.cpp
+	TestSysState.cpp
 	NLETest.cpp
 	)
 

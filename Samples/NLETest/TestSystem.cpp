@@ -1,5 +1,4 @@
 #include "TestSystem.h"
-#include "NLE\NLCore\NL_SysTask.h"
 #include "NLE\NLCore\NL_StateManager.h"
 
 TestSystem::TestSystem(NLE::Core::ExecutionType executionType, NLE::Core::Priority priority) :
