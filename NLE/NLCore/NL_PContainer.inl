@@ -7,8 +7,7 @@ namespace NLE
 		namespace Data
 		{
 			template<typename T>
-			PContainer<T>::PContainer(uint_fast32_t size) :
-				_data()
+			PContainer<T>::PContainer(uint_fast32_t size)
 			{
 				_data.reserve(size);
 			}
