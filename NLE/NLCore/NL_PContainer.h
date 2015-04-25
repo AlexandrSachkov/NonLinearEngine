@@ -1,6 +1,7 @@
 #ifndef NL_P_CONTAINER_H_
 #define NL_P_CONTAINER_H_
 
+#include <cstdint>
 #include <algorithm>
 #include <vector>
 
@@ -12,28 +13,28 @@ namespace NLE
 	{
 		namespace Data
 		{
+			template<typename T>
 			class PContainer
 			{
 			public:
 				PContainer(uint_fast32_t size);
 				~PContainer();
 
-				void add(double data);
+				void add(T data);
 				void remove(uint_fast32_t index);
-				void modify(uint_fast32_t index, double data);
 				void clear();
 
 				uint_fast32_t size();
-				double& get(uint_fast32_t index);
+				T& operator[](uint_fast32_t index);
 
 			private:
-				std::vector<double, tbb::scalable_allocator<double>> _data;
+				std::vector<T, tbb::scalable_allocator<T>> _data;
 			};
 		}
 
 	}
 }
 
-//#include "NL_DataContainer.inl"
+#include "NL_PContainer.inl"
 
 #endif
