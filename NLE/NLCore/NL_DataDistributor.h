@@ -11,7 +11,7 @@
 #include <vector>
 #include <unordered_map>
 
-#include "NL_Scheduler.h"
+#include "NL_ExecutionDesc.h"
 #include "NL_SharedDataContainer.h"
 
 namespace NLE
