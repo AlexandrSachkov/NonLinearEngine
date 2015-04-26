@@ -3,7 +3,6 @@
 
 TestSystem::TestSystem(NLE::Core::Priority priority) :
 	_id(-1),
-	_sysState(),
 	_priority(priority)
 {
 
@@ -19,8 +18,6 @@ bool TestSystem::initialize(
 	std::unique_ptr<NLE::Core::StateManager> const& stateManager)
 {
 	_id = id;
-	if (!_sysState.initialize(id, stateManager))
-		return false;
 	return true;
 }
 
@@ -41,10 +38,8 @@ NLE::Core::ExecutionDesc TestSystem::getExecutionDesc()
 
 std::function<void()> TestSystem::getExecutionProcedure()
 {
-	TestSysState& testSysState = _sysState;
-	return [this, &testSysState](){
+	return [this](){
 		printf("Running task for system %i\n", getID());
-		testSysState.update();
 
 		double num = 2000;
 		for (int i = 0; i < 1000000000; i++)

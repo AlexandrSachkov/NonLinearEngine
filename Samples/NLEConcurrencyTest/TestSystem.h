@@ -2,7 +2,6 @@
 #define TEST_SYSTEM_H_
 
 #include "NLE\NLCore\NL_System.h"
-#include "TestSysState.h"
 #include <memory>
 
 class SysTask;
@@ -28,7 +27,6 @@ public:
 
 private:
 	uint_fast8_t _id;
-	TestSysState _sysState;
 	NLE::Core::Priority _priority;
 };
 

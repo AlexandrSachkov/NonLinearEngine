@@ -29,18 +29,14 @@ public:
 
 	void processRequests()
 	{
-		printf("Processing requests\n");
-
 	}
 
 	void distributeFrom(uint_fast8_t sysId)
 	{
-		printf("Distributing from %i\n", sysId);
 	}
 
 	void distributeTo(uint_fast8_t sysId)
 	{
-		printf("Distributing to %i\n", sysId);
 	}
 
 private:

@@ -1,5 +1,4 @@
 #include <iostream>
-//#include <Windows.h>
 #include "NLE\NLCore\NL_DeviceCore.h"
 #include "TestSystem.h"
 #include "TestStateManager.h"
