@@ -45,7 +45,7 @@ namespace NLE
 					src.processRequests();
 
 					auto& changes = src.getChanges();
-					for (uint_fast32_t i = 0; i < changes.size(); i++)
+					for (uint_fast32_t i = 0; i < changes.size(); ++i)
 					{
 						if (changes[i] == 1)
 						{
@@ -58,7 +58,7 @@ namespace NLE
 				{
 					auto& src = *_masterHash.second;
 					auto& changes = src.getChanges();
-					for (uint_fast32_t i = 0; i < changes.size(); i++)
+					for (uint_fast32_t i = 0; i < changes.size(); ++i)
 					{
 						if (changes[i] == 1)
 						{

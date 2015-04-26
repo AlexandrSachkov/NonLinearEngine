@@ -35,7 +35,7 @@ namespace NLE
 					auto& src = *_containers.at(sysId);
 					auto const& changes = src.getChanges();
 					uint_fast32_t change;
-					for (uint_fast32_t i = 0; i < changes.size(); i++)
+					for (uint_fast32_t i = 0; i < changes.size(); ++i)
 					{
 						change = changes[i];
 						_data[change] = src[change];

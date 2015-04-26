@@ -5,6 +5,7 @@
 
 #include "tbb/concurrent_priority_queue.h"
 #include "tbb/task_scheduler_init.h"
+#include "tbb\scalable_allocator.h"
 
 
 namespace NLE 
@@ -42,6 +43,8 @@ namespace NLE
 			tbb::task_scheduler_init* _taskSchedulerInit;		
 			tbb::concurrent_priority_queue<ExecutionDesc, PriorityComparator> _systems;
 			uint_fast8_t _numCores;
+
+			std::vector<ExecutionDesc, tbb::scalable_allocator<ExecutionDesc>> _execDescriptions;
 		};
 	}
 }

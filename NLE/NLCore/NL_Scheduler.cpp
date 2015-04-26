@@ -49,18 +49,33 @@ namespace NLE
 			std::unique_ptr<SysManager> const& sysManager,
 			std::unique_ptr<StateManager> const& stateManager)
 		{
-			ExecutionDesc execDesc;
-			std::function<void()> procedure;
-
-			if (_systems.size())
+			if (_systems.size() > 0)
 			{
+				stateManager->processRequests();
+
+				ExecutionDesc execDesc;				
 				while (_systems.try_pop(execDesc))
 				{
-					procedure = sysManager->getSystemById(execDesc.getSysId()).get()->getExecutionProcedure();
-					tbb::task::enqueue(*new (tbb::task::allocate_root())NLE::Core::SysTask(this, execDesc, procedure));
+					_execDescriptions.push_back(execDesc);			
 				}
-				stateManager->distributeData();
-				//TODO: rewrite considering new data distributors
+				
+				for (uint_fast32_t i = 0; i < _execDescriptions.size(); ++i)
+				{
+					stateManager->distributeFrom(_execDescriptions[i].getSysId());
+				}
+
+				for (uint_fast32_t i = 0; i < _execDescriptions.size(); ++i)
+				{
+					stateManager->distributeTo(_execDescriptions[i].getSysId());
+				}
+
+				std::function<void()> procedure;
+				for (uint_fast32_t i = 0; i < _execDescriptions.size(); ++i)
+				{
+					procedure = sysManager->getSystemById(_execDescriptions[i].getSysId()).get()->getExecutionProcedure();
+					tbb::task::enqueue(*new (tbb::task::allocate_root())NLE::Core::SysTask(this, _execDescriptions[i], procedure));
+				}	
+				_execDescriptions.clear();
 			}
 		}
 	}
