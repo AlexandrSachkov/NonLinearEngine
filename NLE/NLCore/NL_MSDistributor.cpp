@@ -42,6 +42,8 @@ namespace NLE
 				if (_slaves.count(sysId) > 0)
 				{
 					auto& src = *_slaves.at(sysId);
+					src.processRequests();
+
 					auto& changes = src.getChanges();
 					for (uint_fast32_t i = 0; i < changes.size(); i++)
 					{
