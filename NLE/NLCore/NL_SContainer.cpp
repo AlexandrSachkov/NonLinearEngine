@@ -1,4 +1,3 @@
-//#ifdef NL_P_CONTAINER_H_
 
 #include "NL_SContainer.h"
 
@@ -51,5 +50,3 @@ namespace NLE
 		}
 	}
 }
-
-//#endif

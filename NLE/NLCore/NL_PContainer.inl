@@ -1,5 +1,7 @@
 #ifdef NL_P_CONTAINER_H_
 
+#include <cassert>
+
 namespace NLE
 {
 	namespace Core
@@ -27,15 +29,14 @@ namespace NLE
 			void PContainer<T>::remove(uint_fast32_t index)
 			{
 				uint_fast32_t size = _data.size();
-				if (index < size)
+				assert(index < size);
+
+				uint_fast32_t lastOccupied = size - 1;
+				if (index != lastOccupied)
 				{
-					uint_fast32_t lastOccupied = size - 1;
-					if (index != lastOccupied)
-					{
-						_data[index] = _data[lastOccupied];
-					}
-					_data.pop_back();
+					_data[index] = _data[lastOccupied];
 				}
+				_data.pop_back();
 			}
 
 			template<typename T>

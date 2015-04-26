@@ -24,7 +24,6 @@ namespace NLE
 				void distributeTo(uint_fast8_t sysId);
 
 			private:
-				uint_fast32_t _dataSize;
 				uint_fast32_t _queueSize;
 
 				std::vector<double, tbb::scalable_allocator<double>> _data;

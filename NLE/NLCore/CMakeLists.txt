@@ -2,25 +2,28 @@ PROJECT(NLCore)
 
 SET(HEADERS 
 	NL_Clock.h
+	NL_DataRequest.h
+	NL_MasterContainer.h
+	NL_MSDistributor.h
 	NL_PContainer.h
 	NL_PContainer.inl
 	NL_SContainer.h
-	NL_SDistributor.h
-	NL_DataDistributor.h	
+	NL_SlaveContainer.h
+	NL_SDistributor.h	
 	NL_DeviceCore.h
 	NL_ExecutionDesc.h
 	NL_Scheduler.h
-	NL_SharedDataContainer.h
 	NL_StateManager.h
 	NL_SysManager.h
 	NL_SysTask.h
 	NL_System.h
 	)
 SET(SOURCES 
+	NL_MasterContainer.cpp
+	NL_MSDistributor.cpp
 	NL_SContainer.cpp
 	NL_SDistributor.cpp
-	NL_DataDistributor.cpp
-	NL_SharedDataContainer.cpp
+	NL_SlaveContainer.cpp
 	NL_Clock.cpp
 	NL_DeviceCore.cpp
 	NL_Scheduler.cpp	

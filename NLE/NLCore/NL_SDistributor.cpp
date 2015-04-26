@@ -8,7 +8,6 @@ namespace NLE
 		namespace Data
 		{
 			SDistributor::SDistributor(uint_fast32_t dataSize, uint_fast32_t queueSize) :
-				_dataSize(dataSize),
 				_queueSize(queueSize)
 			{
 				_data.reserve(dataSize);
@@ -25,7 +24,7 @@ namespace NLE
 			SContainer& SDistributor::buildEndpoint(uint_fast8_t sysId)
 			{
 				assert(_containers.count(sysId) == 0);
-				_containers.emplace(sysId, new SContainer(_dataSize, _queueSize));
+				_containers.emplace(sysId, new SContainer(_data.size(), _queueSize));
 				return *_containers.at(sysId);
 			}
 
