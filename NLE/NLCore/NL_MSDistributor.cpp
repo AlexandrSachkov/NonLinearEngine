@@ -105,7 +105,6 @@ namespace NLE
 					dRequest.type = mRequest.type;
 					dRequest.index = mRequest.payload.index;
 
-					_masterHash.second->queueRequest(dRequest);
 					for (auto& i : _slaves)
 					{
 						i.second->queueRequest(dRequest);

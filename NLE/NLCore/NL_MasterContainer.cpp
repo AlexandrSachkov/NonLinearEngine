@@ -10,8 +10,7 @@ namespace NLE
 		namespace Data
 		{
 			MasterContainer::MasterContainer(uint_fast32_t initialSize, MSDistributor* distributor) :
-				_distributor(distributor),
-				_requestQueue(_requestPool)
+				_distributor(distributor)
 			{
 				_data.resize(initialSize);
 				_changes.resize(initialSize, 0);
@@ -37,44 +36,14 @@ namespace NLE
 				_changes[index] = 1;
 			}
 
-			void MasterContainer::requestAdd(double data)
+			void MasterContainer::add(double data)
 			{
+				_data.push_back(data);
+				_changes.push_back(0);
 				_distributor->queueRequest({ RequestType::ADD, { data } });
 			}
 
-			void MasterContainer::requestRemove(uint_fast32_t index)
-			{
-				_distributor->queueRequest({ RequestType::REMOVE, { index } });
-			}
-
-			void MasterContainer::queueRequest(DistributorRequest request)
-			{
-				_requestQueue.push(request);
-			}
-
-			void MasterContainer::processRequests()
-			{
-				DistributorRequest request;
-				while (_requestQueue.try_pop(request))
-				{
-					if (request.type == RequestType::ADD)
-					{
-						growByOne();
-					}
-					else
-					{
-						localRemove(request.index);
-					}
-				}
-			}
-
-			void MasterContainer::growByOne()
-			{
-				_data.resize(_data.size() + 1);
-				_changes.push_back(0);
-			}
-
-			void MasterContainer::localRemove(uint_fast32_t index)
+			void MasterContainer::remove(uint_fast32_t index)
 			{
 				uint_fast32_t size = _data.size();
 				assert(index < size);
@@ -87,6 +56,8 @@ namespace NLE
 				}
 				_data.pop_back();
 				_changes.pop_back();
+
+				_distributor->queueRequest({ RequestType::REMOVE, { index } });
 			}
 
 			std::vector<double, tbb::scalable_allocator<double>>& MasterContainer::getData()
