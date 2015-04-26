@@ -2,7 +2,6 @@
 #define TEST_STATE_MANAGER_H_
 
 #include "NLE\NLCore\NL_StateManager.h"
-#include "NLE\NLCore\NL_DataDistributor.h"
 
 class TestStateManager : public NLE::Core::StateManager
 {
