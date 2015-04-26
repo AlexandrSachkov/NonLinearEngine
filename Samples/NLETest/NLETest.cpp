@@ -11,7 +11,7 @@ int main(){
 
 	for (int i = 0; i < 12; i++)
 	{
-		devCore.attachSystem(std::unique_ptr<TestSystem>(new TestSystem(NLE::Core::ExecutionType::ASYNC, NLE::Core::Priority::STANDARD)));
+		devCore.attachSystem(std::unique_ptr<TestSystem>(new TestSystem(NLE::Core::Priority::STANDARD)));
 	}
 	devCore.initialize();
 

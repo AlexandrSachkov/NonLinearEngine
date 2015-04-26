@@ -1,10 +1,9 @@
 #include "TestSystem.h"
 #include "NLE\NLCore\NL_StateManager.h"
 
-TestSystem::TestSystem(NLE::Core::ExecutionType executionType, NLE::Core::Priority priority) :
+TestSystem::TestSystem(NLE::Core::Priority priority) :
 	_id(-1),
 	_sysState(),
-	_execType(executionType),
 	_priority(priority)
 {
 
@@ -37,7 +36,7 @@ uint_fast8_t TestSystem::getID()
 
 NLE::Core::ExecutionDesc TestSystem::getExecutionDesc()
 {
-	return {_execType, _priority, _id};
+	return {_priority, _id};
 }
 
 std::function<void()> TestSystem::getExecutionProcedure()

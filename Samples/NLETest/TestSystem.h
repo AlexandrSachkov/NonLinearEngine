@@ -13,7 +13,7 @@ class StateManager;
 class TestSystem : public NLE::Core::System
 {
 public:
-	TestSystem(NLE::Core::ExecutionType executionType, NLE::Core::Priority priority);
+	TestSystem(NLE::Core::Priority priority);
 	~TestSystem();
 
 	bool initialize(
@@ -29,7 +29,6 @@ public:
 private:
 	uint_fast8_t _id;
 	TestSysState _sysState;
-	NLE::Core::ExecutionType _execType;
 	NLE::Core::Priority _priority;
 };
 

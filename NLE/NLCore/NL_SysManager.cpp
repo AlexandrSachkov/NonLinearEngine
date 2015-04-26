@@ -11,8 +11,7 @@ namespace NLE
 	{
 		SysManager::SysManager() :
 			_systems(),
-			_numSystems(0),
-			_numSyncSystems(0)
+			_numSystems(0)
 		{
 
 		}
@@ -49,11 +48,6 @@ namespace NLE
 			return _numSystems;
 		}
 
-		uint_fast8_t SysManager::getNumSyncSystems()
-		{
-			return _numSyncSystems;
-		}
-
 		std::unique_ptr<System> const& SysManager::getSystemById(uint_fast8_t sysId) const
 		{
 			return _systems.at(sysId);
@@ -61,10 +55,6 @@ namespace NLE
 
 		void SysManager::attachSystem(std::unique_ptr<System> system)
 		{
-			if (system->getExecutionDesc().getExecutionType() == ExecutionType::SYNC)
-			{
-				++_numSyncSystems;
-			}
 			_systems.insert(std::make_pair<>(_numSystems, std::move(system)));			
 			printf("System attached: %i\n", _numSystems);
 			++_numSystems;

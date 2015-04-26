@@ -23,8 +23,6 @@ namespace NLE
 			}
 		};
 
-		//====================================================================================
-
 		class Scheduler 
 		{
 		public:
@@ -41,11 +39,8 @@ namespace NLE
 				std::unique_ptr<StateManager> const& stateManager);
 
 		private:
-			tbb::task_scheduler_init* _taskSchedulerInit;
-			
-			tbb::concurrent_priority_queue<ExecutionDesc, PriorityComparator> _asyncSystems;
-			tbb::concurrent_priority_queue<ExecutionDesc, PriorityComparator> _syncSystems;
-
+			tbb::task_scheduler_init* _taskSchedulerInit;		
+			tbb::concurrent_priority_queue<ExecutionDesc, PriorityComparator> _systems;
 			uint_fast8_t _numCores;
 		};
 	}
