@@ -19,7 +19,7 @@ namespace NLE
 		public:
 			bool operator() (const ExecutionDesc& firstDesc, const ExecutionDesc& secondDesc)
 			{
-				return firstDesc.getPriority() < secondDesc.getPriority();
+				return secondDesc.getPriority() < firstDesc.getPriority();
 			}
 		};
 
