@@ -9,8 +9,8 @@ namespace NLE
 		{
 			SContainer::SContainer(uint_fast32_t dataSize, uint_fast32_t queueSize)
 			{
-				_data.reserve(dataSize);
-				_changes.reserve(queueSize);
+				_data.resize(dataSize);
+				_changes.resize(queueSize);
 			}
 
 			SContainer::~SContainer()

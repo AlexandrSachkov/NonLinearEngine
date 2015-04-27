@@ -11,8 +11,8 @@ namespace NLE
 			SlaveContainer::SlaveContainer(uint_fast32_t initialSize) :
 				_requestQueue(_requestPool)
 			{
-				_data.resize(initialSize);
-				_changes.resize(initialSize, 0);
+				_data.reserve(initialSize);
+				_changes.reserve(initialSize);
 			}
 
 			SlaveContainer::~SlaveContainer()
@@ -42,6 +42,9 @@ namespace NLE
 
 			void SlaveContainer::processRequests()
 			{
+				if (_requestQueue.empty())
+					return;
+
 				DistributorRequest request;
 				while (_requestQueue.try_pop(request))
 				{

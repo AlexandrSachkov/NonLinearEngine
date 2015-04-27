@@ -10,7 +10,7 @@ namespace NLE
 			SDistributor::SDistributor(uint_fast32_t dataSize, uint_fast32_t queueSize) :
 				_queueSize(queueSize)
 			{
-				_data.reserve(dataSize);
+				_data.resize(dataSize);
 			}
 
 			SDistributor::~SDistributor()

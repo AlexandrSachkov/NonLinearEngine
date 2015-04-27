@@ -49,7 +49,7 @@ namespace NLE
 			std::unique_ptr<SysManager> const& sysManager,
 			std::unique_ptr<StateManager> const& stateManager)
 		{
-			if (_systems.size() > 0)
+			if (!_systems.empty())
 			{
 				stateManager->processRequests();
 

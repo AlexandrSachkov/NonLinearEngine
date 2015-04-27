@@ -12,8 +12,8 @@ namespace NLE
 			MasterContainer::MasterContainer(uint_fast32_t initialSize, MSDistributor* distributor) :
 				_distributor(distributor)
 			{
-				_data.resize(initialSize);
-				_changes.resize(initialSize, 0);
+				_data.reserve(initialSize);
+				_changes.reserve(initialSize);
 			}
 
 			MasterContainer::~MasterContainer()

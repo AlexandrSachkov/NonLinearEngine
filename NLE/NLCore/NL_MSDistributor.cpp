@@ -92,6 +92,9 @@ namespace NLE
 
 			void MSDistributor::processRequests()
 			{
+				if (_requestQueue.empty())
+					return;
+
 				MasterRequest mRequest;
 				DistributorRequest dRequest;
 				while (_requestQueue.try_pop(mRequest));
