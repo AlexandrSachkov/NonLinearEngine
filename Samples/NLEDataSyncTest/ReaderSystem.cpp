@@ -47,6 +47,7 @@ std::function<void()> ReaderSystem::getExecutionProcedure()
 	NLE::Core::Data::SContainer& shared = *_shared;
 
 	return [this, &slave, &shared](){
+		printf("Reader #%i\n", getID());
 		printf("SContainer:\n");
 		for (unsigned int i = 0; i < shared.size(); ++i)
 		{

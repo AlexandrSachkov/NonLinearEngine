@@ -12,6 +12,7 @@ int main(){
 
 	devCore.attachSystem(std::unique_ptr<WriterSystem>(new WriterSystem(NLE::Core::Priority::STANDARD)));
 	devCore.attachSystem(std::unique_ptr<ReaderSystem>(new ReaderSystem(NLE::Core::Priority::STANDARD)));
+	devCore.attachSystem(std::unique_ptr<ReaderSystem>(new ReaderSystem(NLE::Core::Priority::STANDARD)));
 
 	devCore.initialize();
 
