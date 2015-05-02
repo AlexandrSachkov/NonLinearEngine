@@ -32,6 +32,7 @@ namespace NLE
 			void attachSystem(std::unique_ptr<System> system);
 			void attachStateManager(std::unique_ptr<StateManager> stateManager);
 			void setClockPeriodNs(unsigned long long periodNs);
+			uint_fast8_t getNumHardwareThreads();
 			void run();
 			void stop();
 

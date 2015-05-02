@@ -42,7 +42,6 @@ namespace NLE
 		private:
 			tbb::task_scheduler_init* _taskSchedulerInit;		
 			tbb::concurrent_priority_queue<ExecutionDesc, PriorityComparator> _systems;
-			uint_fast8_t _numHardwareThreads;
 
 			std::vector<ExecutionDesc, tbb::scalable_allocator<ExecutionDesc>> _execDescriptions;
 		};

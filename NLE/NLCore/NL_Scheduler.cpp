@@ -20,7 +20,7 @@ namespace NLE
 
 		bool Scheduler::initialize()
 		{
-			_numHardwareThreads = tbb::task_scheduler_init::default_num_threads();
+			uint_fast8_t _numHardwareThreads = getNumHardwareThreads();
 			_taskSchedulerInit = new tbb::task_scheduler_init(_numHardwareThreads + 1);
 			printf("Running on %i threads.\n", _numHardwareThreads + 1);
 			return true;
@@ -34,7 +34,7 @@ namespace NLE
 
 		uint_fast8_t Scheduler::getNumHardwareThreads()
 		{
-			return _numHardwareThreads;
+			return tbb::task_scheduler_init::default_num_threads();
 		}
 
 		void Scheduler::scheduleExecution(ExecutionDesc execDesc)
