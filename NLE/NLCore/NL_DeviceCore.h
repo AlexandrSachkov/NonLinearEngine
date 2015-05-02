@@ -2,6 +2,7 @@
 #define NL_DEVICE_CORE_H_
 
 #include <memory>
+#include <cstdint>
 
 namespace NLE 
 {
