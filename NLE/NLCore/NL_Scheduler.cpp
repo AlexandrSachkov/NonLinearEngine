@@ -68,10 +68,26 @@ namespace NLE
 				}
 
 				std::function<void()> procedure;
+				tbb::task* task;
 				for (uint_fast32_t i = 0; i < _execDescriptions.size(); ++i)
 				{
-					procedure = sysManager->getSystemById(_execDescriptions[i].getSysId()).get()->getExecutionProcedure();
-					tbb::task::enqueue(*new (tbb::task::allocate_root())NLE::Core::SysTask(this, _execDescriptions[i], procedure));
+					procedure = sysManager->getSystemById(_execDescriptions[i].getSysId())->getExecutionProcedure();
+					task = new (tbb::task::allocate_root())NLE::Core::SysTask(this, _execDescriptions[i], procedure);		
+					switch (_execDescriptions[i].getPriority())
+					{
+					case Priority::LOW:
+						tbb::task::enqueue(*task, tbb::priority_low);
+						break;
+					case Priority::STANDARD:
+						tbb::task::enqueue(*task, tbb::priority_normal);
+						break;
+					case Priority::HIGH:
+						tbb::task::enqueue(*task, tbb::priority_high);
+						break;
+					default:
+						break;
+					}
+					
 				}	
 				_execDescriptions.clear();
 			}

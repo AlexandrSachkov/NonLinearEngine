@@ -12,7 +12,6 @@ namespace NLE
 		class ExecutionDesc
 		{
 		public:
-			//Only used when popping from queue
 			ExecutionDesc() :
 				_priority(Priority::LOW),
 				_sysId(-1)
