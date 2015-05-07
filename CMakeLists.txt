@@ -18,24 +18,24 @@ ENDIF(MSVC)
 SET(NLE_SDK_INSTALL_PATH 
 	${PROJECT_BINARY_DIR}/${PROJECT_NAME} CACHE PATH "NLE SDK Installation Directory")
 IF(NLE_SDK_INSTALL_PATH STREQUAL "")
-	MESSAGE(SEND_ERROR "NLE SDK Installation Directory much be specified")
+	MESSAGE(SEND_ERROR "NLE SDK Installation Directory must be specified")
 ENDIF(NLE_SDK_INSTALL_PATH STREQUAL "")
 
 SET(NLE_SAMPLES_INSTALL_PATH 
 	${NLE_SDK_INSTALL_PATH}/Samples CACHE PATH "NLE Samples Installation Directory")
 IF(NLE_SAMPLES_INSTALL_PATH STREQUAL "")
-	MESSAGE(SEND_ERROR "NLE Samples Installation Directory much be specified")
+	MESSAGE(SEND_ERROR "NLE Samples Installation Directory must be specified")
 ENDIF(NLE_SAMPLES_INSTALL_PATH STREQUAL "")
 
 # NLE build config
 SET(NLE_HOST_OS CACHE STRING "Host Operating System. Choose: \n\n Windows")
 IF(NLE_HOST_OS STREQUAL "")
-	MESSAGE(SEND_ERROR "Host Operating System much be specified")
+	MESSAGE(SEND_ERROR "Host Operating System must be specified")
 ENDIF(NLE_HOST_OS STREQUAL "")
 
 SET(NLE_TARGET_ARCHITECTURE CACHE STRING "Target Architecture. Choose: \n\n x86 \n x64")
 IF(NLE_TARGET_ARCHITECTURE STREQUAL "")
-	MESSAGE(SEND_ERROR "Target Architecture much be specified")
+	MESSAGE(SEND_ERROR "Target Architecture must be specified")
 ENDIF(NLE_TARGET_ARCHITECTURE STREQUAL "")
 
 
