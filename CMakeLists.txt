@@ -44,21 +44,21 @@ SET(NLE_TBB_INCLUDE_PATH
 	"" CACHE PATH "TBB include path")
 
 IF(NLE_TBB_INCLUDE_PATH STREQUAL "")
-	MESSAGE(SEND_ERROR "TBB include path much be specified")
+	MESSAGE(SEND_ERROR "TBB include path must be specified")
 ENDIF(NLE_TBB_INCLUDE_PATH STREQUAL "")
 
 SET(NLE_TBB_LIBRARY_DEBUG_PATH
 	"" CACHE PATH "TBB library debug path")
 
 IF(NLE_TBB_LIBRARY_DEBUG_PATH STREQUAL "")
-	MESSAGE(SEND_ERROR "TBB library debug path much be specified")
+	MESSAGE(SEND_ERROR "TBB library debug path must be specified")
 ENDIF(NLE_TBB_LIBRARY_DEBUG_PATH STREQUAL "")
 
 SET(NLE_TBB_LIBRARY_RELEASE_PATH
 	"" CACHE PATH "TBB library release path")
 
 IF(NLE_TBB_LIBRARY_RELEASE_PATH STREQUAL "")
-	MESSAGE(SEND_ERROR "TBB library release path much be specified")
+	MESSAGE(SEND_ERROR "TBB library release path must be specified")
 ENDIF(NLE_TBB_LIBRARY_RELEASE_PATH STREQUAL "")
 
 
