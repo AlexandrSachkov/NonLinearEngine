@@ -8,9 +8,17 @@ int main(){
 	devCore.attachStateManager(std::make_unique<TestStateManager>());
 	devCore.setClockPeriodNs(1000000000L);
 
+	NLE::Core::ExecutionDesc execDesc
+		(
+			NLE::Core::Priority::STANDARD,
+			NLE::Core::Execution::RECURRING,
+			NLE::Core::Startup::AUTOMATIC,
+			0
+		);
+
 	for (int i = 0; i < devCore.getNumHardwareThreads(); i++)
 	{
-		devCore.attachSystem(std::unique_ptr<TestSystem>(new TestSystem(NLE::Core::Priority::STANDARD)));
+		devCore.attachSystem(execDesc, std::unique_ptr<TestSystem>(new TestSystem()));
 	}
 	devCore.initialize();
 

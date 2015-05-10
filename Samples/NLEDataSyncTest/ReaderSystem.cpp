@@ -1,9 +1,7 @@
 #include "ReaderSystem.h"
 #include "TestStateManager.h"
 
-ReaderSystem::ReaderSystem(NLE::Core::Priority priority) :
-	_id(-1),
-	_priority(priority)
+ReaderSystem::ReaderSystem()
 {
 
 }
@@ -34,11 +32,6 @@ void ReaderSystem::release()
 uint_fast8_t ReaderSystem::getID()
 {
 	return _id;
-}
-
-NLE::Core::ExecutionDesc ReaderSystem::getExecutionDesc()
-{
-	return {_priority, _id};
 }
 
 std::function<void()> ReaderSystem::getExecutionProcedure()

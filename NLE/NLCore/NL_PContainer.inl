@@ -40,6 +40,13 @@ namespace NLE
 			}
 
 			template<typename T>
+			void PContainer<T>::itRemove(uint_fast32_t& index)
+			{
+				remove(index);
+				--index;
+			}
+
+			template<typename T>
 			inline void PContainer<T>::clear()
 			{
 				_data.clear();

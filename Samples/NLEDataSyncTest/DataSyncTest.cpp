@@ -10,9 +10,17 @@ int main(){
 	devCore.attachStateManager(std::make_unique<TestStateManager>());
 	devCore.setClockPeriodNs(1000000000L);
 
-	devCore.attachSystem(std::unique_ptr<WriterSystem>(new WriterSystem(NLE::Core::Priority::STANDARD)));
-	devCore.attachSystem(std::unique_ptr<ReaderSystem>(new ReaderSystem(NLE::Core::Priority::STANDARD)));
-	devCore.attachSystem(std::unique_ptr<ReaderSystem>(new ReaderSystem(NLE::Core::Priority::STANDARD)));
+	NLE::Core::ExecutionDesc execDesc
+		(
+		NLE::Core::Priority::STANDARD,
+		NLE::Core::Execution::RECURRING,
+		NLE::Core::Startup::AUTOMATIC,
+		0
+		);
+
+	devCore.attachSystem(execDesc, std::unique_ptr<WriterSystem>(new WriterSystem()));
+	devCore.attachSystem(execDesc, std::unique_ptr<ReaderSystem>(new ReaderSystem()));
+	devCore.attachSystem(execDesc, std::unique_ptr<ReaderSystem>(new ReaderSystem()));
 
 	devCore.initialize();
 

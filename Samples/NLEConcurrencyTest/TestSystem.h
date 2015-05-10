@@ -12,7 +12,7 @@ class StateManager;
 class TestSystem : public NLE::Core::System
 {
 public:
-	TestSystem(NLE::Core::Priority priority);
+	TestSystem();
 	~TestSystem();
 
 	bool initialize(
@@ -20,14 +20,12 @@ public:
 		std::unique_ptr<NLE::Core::StateManager> const& stateManager);
 
 	void release();
-	NLE::Core::ExecutionDesc getExecutionDesc();
 	uint_fast8_t getID();
 
 	std::function<void()> getExecutionProcedure();
 
 private:
 	uint_fast8_t _id;
-	NLE::Core::Priority _priority;
 };
 
 #endif

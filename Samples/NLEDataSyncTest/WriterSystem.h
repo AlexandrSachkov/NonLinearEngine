@@ -13,7 +13,7 @@ class StateManager;
 class WriterSystem : public NLE::Core::System
 {
 public:
-	WriterSystem(NLE::Core::Priority priority);
+	WriterSystem();
 	~WriterSystem();
 
 	bool initialize(
@@ -21,14 +21,12 @@ public:
 		std::unique_ptr<NLE::Core::StateManager> const& stateManager);
 
 	void release();
-	NLE::Core::ExecutionDesc getExecutionDesc();
 	uint_fast8_t getID();
 
 	std::function<void()> getExecutionProcedure();
 
 private:
 	uint_fast8_t _id;
-	NLE::Core::Priority _priority;
 	bool _addItem;
 
 	NLE::Core::Data::MasterContainer* _master;

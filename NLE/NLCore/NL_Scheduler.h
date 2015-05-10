@@ -2,11 +2,10 @@
 #define NL_SCHEDULER_H_
 
 #include "NL_ExecutionDesc.h"
-
-#include "tbb/concurrent_priority_queue.h"
+#include "NL_PContainer.h"
+#include "tbb\concurrent_queue.h"
 #include "tbb/task_scheduler_init.h"
 #include "tbb\scalable_allocator.h"
-
 
 namespace NLE 
 {
@@ -14,15 +13,8 @@ namespace NLE
 	{
 		class SysManager;
 		class StateManager;
-
-		class PriorityComparator
-		{
-		public:
-			bool operator() (const ExecutionDesc& firstDesc, const ExecutionDesc& secondDesc)
-			{
-				return secondDesc.getPriority() < firstDesc.getPriority();
-			}
-		};
+		class SysTask;
+		class Clock;
 
 		class Scheduler 
 		{
@@ -34,16 +26,18 @@ namespace NLE
 			void release();
 
 			uint_fast8_t getNumHardwareThreads();
-			void scheduleExecution(ExecutionDesc execDesc);
-			void executeSystems(
+			void requestExecution(uint_fast8_t sysId);
+			void signalFinished(uint_fast8_t sysId);
+			void manageExecution(
 				std::unique_ptr<SysManager> const& sysManager,
 				std::unique_ptr<StateManager> const& stateManager);
 
 		private:
 			tbb::task_scheduler_init* _taskSchedulerInit;		
-			tbb::concurrent_priority_queue<ExecutionDesc, PriorityComparator> _systems;
-
-			std::vector<ExecutionDesc, tbb::scalable_allocator<ExecutionDesc>> _execDescriptions;
+			tbb::concurrent_queue<uint_fast8_t> _toSchedule;
+			tbb::concurrent_queue<uint_fast8_t> _finished;
+		
+			Data::PContainer<uint_fast8_t> _scheduledSystems;
 		};
 	}
 }

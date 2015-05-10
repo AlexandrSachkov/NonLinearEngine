@@ -2,9 +2,7 @@
 #include "TestStateManager.h"
 
 
-WriterSystem::WriterSystem(NLE::Core::Priority priority) :
-	_id(-1),
-	_priority(priority),
+WriterSystem::WriterSystem() :
 	_addItem(true)
 {
 
@@ -36,11 +34,6 @@ void WriterSystem::release()
 uint_fast8_t WriterSystem::getID()
 {
 	return _id;
-}
-
-NLE::Core::ExecutionDesc WriterSystem::getExecutionDesc()
-{
-	return {_priority, _id};
 }
 
 std::function<void()> WriterSystem::getExecutionProcedure()

@@ -13,23 +13,27 @@ namespace NLE
 		{
 
 		public:
-			SysTask(Scheduler* scheduler, ExecutionDesc execDesc, std::function<void()> operation) :
+			SysTask(Scheduler* scheduler, uint_fast8_t sysId, std::function<void()> operation) :
 				_scheduler(scheduler),
-				_execDesc(execDesc),
+				_sysId(sysId),
 				_operation(operation)
+			{
+			}
+
+			~SysTask()
 			{
 			}
 
 			tbb::task* execute()
 			{
 				_operation();
-				_scheduler->scheduleExecution(_execDesc);
+				_scheduler->signalFinished(_sysId);
 				return nullptr;
 			}
 
 		private:
 			Scheduler* _scheduler;
-			ExecutionDesc _execDesc;
+			uint_fast8_t _sysId;
 			std::function<void()> _operation;
 		};
 	}

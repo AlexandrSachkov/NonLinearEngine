@@ -2,45 +2,72 @@
 #define NL_EXECUTION_DESC_H_
 
 #include <cstdint>
+#include <chrono>
 
 namespace NLE
 {
 	namespace Core
 	{
-		enum Priority { LOW, STANDARD, HIGH };
+		enum Priority	{ LOW, STANDARD, HIGH };
+		enum Execution	{ NONE, SINGULAR, RECURRING };
+		enum Startup	{ MANUAL, AUTOMATIC };
 
 		class ExecutionDesc
 		{
+			friend class Scheduler;
 		public:
 			ExecutionDesc() :
-				_priority(Priority::LOW),
-				_sysId(-1)
+				_priority(Priority::STANDARD),
+				_execution(Execution::RECURRING),
+				_startup(Startup::AUTOMATIC),
+				_periodNs(0L)
 			{
 			}
 
-			ExecutionDesc(Priority priority, uint_fast8_t sysId) :
+			ExecutionDesc(
+				Priority priority,
+				Execution execution,
+				Startup startup,
+				unsigned long long periodNs
+				) :
 				_priority(priority),
-				_sysId(sysId)
+				_execution(execution),
+				_startup(startup),
+				_periodNs(std::chrono::nanoseconds(periodNs))
 			{
 			}
 
-			~ExecutionDesc()
-			{
-			}
-
-			Priority getPriority() const
+			Priority getPriority()
 			{
 				return _priority;
 			}
 
-			uint_fast8_t getSysId() const
+			Execution getExecution()
 			{
-				return _sysId;
+				return _execution;
+			}
+
+			Startup getStartup()
+			{
+				return _startup;
 			}
 
 		private:
+			bool isTimeToStart()
+			{
+				return std::chrono::high_resolution_clock::now() >= _startTime;
+			}
+			
+			void resetStartTime()
+			{
+				_startTime = std::chrono::high_resolution_clock::now() + _periodNs;
+			}
+
 			Priority _priority;
-			uint_fast8_t _sysId;
+			Execution _execution;
+			Startup _startup;
+			std::chrono::duration<unsigned long long, std::nano> _periodNs;
+			std::chrono::time_point<std::chrono::high_resolution_clock, std::chrono::nanoseconds> _startTime;
 		};
 	}
 }

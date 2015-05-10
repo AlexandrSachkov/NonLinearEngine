@@ -3,6 +3,7 @@
 
 #include <memory>
 #include <unordered_map>
+#include "NL_ExecutionDesc.h"
 
 namespace NLE 
 {
@@ -25,11 +26,13 @@ namespace NLE
 			void release();
 
 			uint_fast8_t getNumSystems();
+			ExecutionDesc& getExecutionDesc(uint_fast8_t sysId);
 
-			std::unique_ptr<System> const& getSystemById(uint_fast8_t sysId) const;
-			void attachSystem(std::unique_ptr<System> system);
+			std::unique_ptr<System> const& getSystem(uint_fast8_t sysId) const;
+			void attachSystem(ExecutionDesc execDesc, std::unique_ptr<System> system);
 		private:
 			std::unordered_map<uint_fast8_t, std::unique_ptr<System>> _systems;
+			std::unordered_map<uint_fast8_t, ExecutionDesc> _executionDesc;
 			uint_fast8_t _numSystems;
 		};
 	}

@@ -34,7 +34,7 @@ namespace NLE
 
 			if (!_clock->initialize([&scheduler, &sysMngr, &stateMngr](){
 				printf("Tick...\n");
-				scheduler->executeSystems(sysMngr, stateMngr);
+				scheduler->manageExecution(sysMngr, stateMngr);
 			}))
 				return false;
 				
@@ -61,9 +61,9 @@ namespace NLE
 				_clock->release();
 		}
 
-		void DeviceCore::attachSystem(std::unique_ptr<System> system)
+		void DeviceCore::attachSystem(ExecutionDesc executionDesc, std::unique_ptr<System> system)
 		{
-			_sysManager->attachSystem(std::move(system));
+			_sysManager->attachSystem(executionDesc, std::move(system));
 		}
 
 		void DeviceCore::attachStateManager(std::unique_ptr<StateManager> stateManager)

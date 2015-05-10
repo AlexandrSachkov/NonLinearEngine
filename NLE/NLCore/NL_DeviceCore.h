@@ -3,6 +3,7 @@
 
 #include <memory>
 #include <cstdint>
+#include "NL_ExecutionDesc.h"
 
 namespace NLE 
 {
@@ -30,7 +31,7 @@ namespace NLE
 			bool initialize();
 			void release();
 
-			void attachSystem(std::unique_ptr<System> system);
+			void attachSystem(ExecutionDesc executionDesc, std::unique_ptr<System> system);
 			void attachStateManager(std::unique_ptr<StateManager> stateManager);
 			void setClockPeriodNs(unsigned long long periodNs);
 			uint_fast8_t getNumHardwareThreads();

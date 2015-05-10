@@ -10,7 +10,6 @@ namespace NLE
 	namespace Core 
 	{
 		SysManager::SysManager() :
-			_systems(),
 			_numSystems(0)
 		{
 
@@ -27,10 +26,12 @@ namespace NLE
 		{
 			for (uint_fast8_t i = 0; i < _numSystems; ++i)
 			{
-				System* system = _systems.at(i).get();
-				if (!system->initialize(i, stateManager))
+				if (!getSystem(i)->initialize(i, stateManager))
 					return false;
-				scheduler->scheduleExecution(system->getExecutionDesc());
+				if (_executionDesc[i].getStartup() == Startup::AUTOMATIC)
+				{
+					scheduler->requestExecution(i);
+				}			
 			}
 			return true;
 		}
@@ -48,14 +49,20 @@ namespace NLE
 			return _numSystems;
 		}
 
-		std::unique_ptr<System> const& SysManager::getSystemById(uint_fast8_t sysId) const
+		ExecutionDesc& SysManager::getExecutionDesc(uint_fast8_t sysId)
+		{
+			return _executionDesc.at(sysId);
+		}
+
+		std::unique_ptr<System> const& SysManager::getSystem(uint_fast8_t sysId) const
 		{
 			return _systems.at(sysId);
 		}
 
-		void SysManager::attachSystem(std::unique_ptr<System> system)
+		void SysManager::attachSystem(ExecutionDesc execDesc, std::unique_ptr<System> system)
 		{
-			_systems.insert(std::make_pair<>(_numSystems, std::move(system)));			
+			_systems.insert(std::make_pair<>(_numSystems, std::move(system)));
+			_executionDesc.insert(std::make_pair<>(_numSystems, execDesc));
 			printf("System attached: %i\n", _numSystems);
 			++_numSystems;
 		}

@@ -54,7 +54,7 @@ namespace NLE
 						}					
 					}
 				}
-				if (_masterHash.first == sysId)
+				else if (_masterHash.first == sysId)
 				{
 					auto& src = *_masterHash.second;
 					auto& changes = src.getChanges();
@@ -73,15 +73,18 @@ namespace NLE
 			{
 				if (_slaves.count(sysId) > 0)
 				{
-					auto& dest = _slaves.at(sysId)->getData();
-					assert(dest.size() == _data.size());
-					std::copy(_data.begin(), _data.end(), dest.begin());
+					auto& dest = *_slaves.at(sysId);
+					dest.processRequests();
+
+					auto& destData = dest.getData();
+					assert(destData.size() == _data.size());
+					std::copy(_data.begin(), _data.end(), destData.begin());
 				}
-				if (_masterHash.first == sysId)
+				else if (_masterHash.first == sysId)
 				{
-					auto& dest = _masterHash.second->getData();
-					assert(dest.size() == _data.size());
-					std::copy(_data.begin(), _data.end(), dest.begin());
+					auto& destData = _masterHash.second->getData();
+					assert(destData.size() == _data.size());
+					std::copy(_data.begin(), _data.end(), destData.begin());
 				}
 			}
 

@@ -1,6 +1,7 @@
 #include "NL_Scheduler.h"
 #include "NL_SysManager.h"
 #include "tbb/tbb.h"
+#include "NL_Clock.h"
 #include "NL_System.h"
 #include "NL_SysTask.h"
 #include "NL_StateManager.h"
@@ -9,7 +10,8 @@ namespace NLE
 {
 	namespace Core
 	{
-		Scheduler::Scheduler()
+		Scheduler::Scheduler() :
+			_scheduledSystems(10)
 		{
 		}
 
@@ -37,43 +39,60 @@ namespace NLE
 			return tbb::task_scheduler_init::default_num_threads();
 		}
 
-		void Scheduler::scheduleExecution(ExecutionDesc execDesc)
+		void Scheduler::signalFinished(uint_fast8_t sysId)
 		{
-			printf("Scheduling system %i\n", execDesc.getSysId());
-			_systems.push(execDesc);
+			printf("Finished system %i\n", sysId);
+			_finished.push(sysId);
 		}
 
-		void Scheduler::executeSystems(
+		void Scheduler::requestExecution(uint_fast8_t sysId)
+		{
+			_toSchedule.push(sysId);
+		}
+
+		void Scheduler::manageExecution(
 			std::unique_ptr<SysManager> const& sysManager,
 			std::unique_ptr<StateManager> const& stateManager)
 		{
-			if (!_systems.empty())
+			stateManager->processRequests();
+
+			uint_fast8_t sysId;
+			ExecutionDesc* execDesc;
+
+			if (!_finished.empty())
 			{
-				stateManager->processRequests();
-
-				ExecutionDesc execDesc;				
-				while (_systems.try_pop(execDesc))
+				while (_finished.try_pop(sysId))
 				{
-					_execDescriptions.push_back(execDesc);			
+					stateManager->distributeFrom(sysId);
+					execDesc = &sysManager->getExecutionDesc(sysId);
+					if (execDesc->getExecution() == Execution::RECURRING)
+					{
+						_scheduledSystems.add(sysId);
+					}				
 				}
-				
-				for (uint_fast32_t i = 0; i < _execDescriptions.size(); ++i)
-				{
-					stateManager->distributeFrom(_execDescriptions[i].getSysId());
-				}
+			}
 
-				for (uint_fast32_t i = 0; i < _execDescriptions.size(); ++i)
+			if (!_toSchedule.empty())
+			{
+				while (_toSchedule.try_pop(sysId))
 				{
-					stateManager->distributeTo(_execDescriptions[i].getSysId());
+					_scheduledSystems.add(sysId);
 				}
+			}
+	
+			for (uint_fast32_t i = 0; i < _scheduledSystems.size(); ++i)
+			{
+				sysId = _scheduledSystems[i];
+				execDesc = &sysManager->getExecutionDesc(sysId);
 
-				std::function<void()> procedure;
-				tbb::task* task;
-				for (uint_fast32_t i = 0; i < _execDescriptions.size(); ++i)
+				if (execDesc->isTimeToStart())
 				{
-					procedure = sysManager->getSystemById(_execDescriptions[i].getSysId())->getExecutionProcedure();
-					task = new (tbb::task::allocate_root())NLE::Core::SysTask(this, _execDescriptions[i], procedure);		
-					switch (_execDescriptions[i].getPriority())
+					execDesc->resetStartTime();
+					stateManager->distributeTo(sysId);
+
+					std::function<void()> procedure = sysManager->getSystem(sysId)->getExecutionProcedure();
+					SysTask* task = new (tbb::task::allocate_root())NLE::Core::SysTask(this, sysId, procedure);
+					switch (execDesc->getPriority())
 					{
 					case Priority::LOW:
 						tbb::task::enqueue(*task, tbb::priority_low);
@@ -85,11 +104,12 @@ namespace NLE
 						tbb::task::enqueue(*task, tbb::priority_high);
 						break;
 					default:
-						break;
+						//should never be reached
+						assert(false);
 					}
-					
-				}	
-				_execDescriptions.clear();
+
+					_scheduledSystems.itRemove(i);
+				}
 			}
 		}
 	}

@@ -60,6 +60,12 @@ namespace NLE
 				_distributor->queueRequest({ RequestType::REMOVE, { index } });
 			}
 
+			void MasterContainer::itRemove(uint_fast32_t& index)
+			{
+				remove(index);
+				--index;
+			}
+
 			std::vector<double, tbb::scalable_allocator<double>>& MasterContainer::getData()
 			{
 				return _data;

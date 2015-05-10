@@ -29,6 +29,23 @@ namespace NLE
 				void add(double data);
 				void remove(uint_fast32_t index);
 
+				/*
+				Convenience removal method which should be used while iterating over the container.
+
+				Since the removal of element at 'index' will cause the container to overwrite it
+				with the contents of the last element and remove the last element,
+				using a for loop to iterate the container will cause an element to be skipped
+				after every removal operation.
+
+				for(int i = 0; i < container.size(); ++i)
+				{
+				container.remove(i); <-- SKIPPING element at size() - 1 on the next iteration
+				}
+
+				This method decrements the index so that the next iteration will occur over the moved element
+				*/
+				void itRemove(uint_fast32_t& index);
+
 			private:
 				MSDistributor* _distributor;
 				std::vector<double, tbb::scalable_allocator<double>>& getData();
