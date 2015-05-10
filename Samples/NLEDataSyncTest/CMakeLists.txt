@@ -1,12 +1,14 @@
 PROJECT(NLEDataSyncTest)
 
 SET(HEADERS 
+	ReaderSystem.h
 	TestStateManager.h
-	TestSystem.h
+	WriterSystem.h
 	)
 SET(SOURCES
 	DataSyncTest.cpp 
-	TestSystem.cpp
+	ReaderSystem.cpp
+	WriterSystem.cpp
 	)
 
 INCLUDE_DIRECTORIES(${NLE_ROOT_DIR})
