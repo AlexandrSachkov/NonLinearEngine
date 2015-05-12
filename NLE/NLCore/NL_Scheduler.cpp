@@ -41,7 +41,6 @@ namespace NLE
 
 		void Scheduler::signalFinished(uint_fast8_t sysId)
 		{
-			printf("Finished system %i\n", sysId);
 			_finished.push(sysId);
 		}
 
