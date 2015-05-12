@@ -90,7 +90,7 @@ namespace NLE
 					stateManager->distributeTo(sysId);
 
 					std::function<void()> procedure = sysManager->getSystem(sysId)->getExecutionProcedure();
-					SysTask* task = new (tbb::task::allocate_root())NLE::Core::SysTask(this, sysId, procedure);
+					SysTask* task = new (tbb::task::allocate_root())NLE::Core::SysTask(*this, sysId, procedure);
 					switch (execDesc->getPriority())
 					{
 					case Priority::LOW:
