@@ -1,19 +1,20 @@
-#ifndef TEST_SYSTEM_H_
-#define TEST_SYSTEM_H_
+#ifndef WRITER_SYSTEM_H_
+#define WRITER_SYSTEM_H_
 
 #include "NLE\NLCore\NL_System.h"
+#include "NLE\NLCore\NL_MasterContainer.h"
+#include "NLE\NLCore\NL_SContainer.h"
 #include <memory>
 
 class SysTask;
 class Scheduler;
 class StateManager;
 
-
-class TestSystem : public NLE::Core::System
+class WriterSystem : public NLE::Core::System
 {
 public:
-	TestSystem();
-	~TestSystem();
+	WriterSystem();
+	~WriterSystem();
 
 	bool initialize(
 		uint_fast8_t sysId,
@@ -27,6 +28,10 @@ public:
 
 private:
 	uint_fast8_t _id;
+	bool _addItem;
+
+	NLE::Core::Data::MasterContainer<double>* _master;
+	NLE::Core::Data::SContainer<double>* _shared;
 };
 
 #endif

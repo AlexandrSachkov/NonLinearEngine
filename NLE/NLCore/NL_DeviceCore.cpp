@@ -5,6 +5,7 @@
 #include "NL_SysManager.h"
 #include "NL_Scheduler.h"
 #include "NL_StateManager.h"
+#include "NL_SysRuntimeControl.h"
 
 #include <cassert>
 
@@ -20,6 +21,7 @@ namespace NLE
 			_sysManager = std::make_unique<SysManager>();
 			_scheduler = std::make_unique<Scheduler>();
 			_stateManager = std::make_unique<StateManager>();
+			_sysRuntimeControl = std::make_unique<SysRuntimeControl>(_scheduler, _sysManager);
 		}
 
 		DeviceCore::~DeviceCore()
@@ -43,7 +45,7 @@ namespace NLE
 				return false;
 			if (!_stateManager->initialize())
 				return false;
-			if (!_sysManager->initialize(_scheduler, _stateManager))
+			if (!_sysManager->initialize(_scheduler, _stateManager, _sysRuntimeControl))
 				return false;
 			
 			return true;

@@ -3,6 +3,7 @@
 #include "NL_StateManager.h"
 #include "NL_System.h"
 #include "NL_SysTask.h"
+#include "NL_SysRuntimeControl.h"
 #include "tbb\tbb.h"
 
 namespace NLE 
@@ -22,11 +23,12 @@ namespace NLE
 
 		bool SysManager::initialize(
 			std::unique_ptr<Scheduler> const& scheduler,
-			std::unique_ptr<StateManager> const& stateManager)
+			std::unique_ptr<StateManager> const& stateManager,
+			std::unique_ptr<SysRuntimeControl> const& sysRuntimeControl)
 		{
 			for (uint_fast8_t i = 0; i < _numSystems; ++i)
 			{
-				if (!getSystem(i)->initialize(i, stateManager.get()))
+				if (!getSystem(i)->initialize(i, stateManager.get(), *sysRuntimeControl.get()))
 					return false;
 				if (_executionDesc[i].getStartup() == Startup::AUTOMATIC)
 				{

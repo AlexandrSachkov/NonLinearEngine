@@ -26,7 +26,7 @@ namespace NLE
 			}		
 
 			template<typename T>
-			double const& SContainer<T>::operator[](uint_fast32_t index)
+			T const& SContainer<T>::operator[](uint_fast32_t index)
 			{
 				return _data[index];
 			}

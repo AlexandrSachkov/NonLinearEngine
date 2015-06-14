@@ -21,6 +21,7 @@ SET(HEADERS
 	NL_Scheduler.h
 	NL_StateManager.h
 	NL_SysManager.h
+	NL_SysRuntimeControl.h
 	NL_SysTask.h
 	NL_System.h
 	)

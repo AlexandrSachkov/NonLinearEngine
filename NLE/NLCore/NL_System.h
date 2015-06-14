@@ -6,6 +6,7 @@
 #include <functional>
 
 #include "NL_StateManager.h"
+#include "NL_SysRuntimeControl.h"
 
 namespace NLE 
 {
@@ -18,7 +19,8 @@ namespace NLE
 
 			virtual bool initialize(
 				uint_fast8_t id,
-				StateManager* stateManager) = 0;
+				StateManager* stateManager,
+				SysRuntimeControl& sysRuntimeControl) = 0;
 			virtual void release() = 0;
 			virtual std::function<void()> getExecutionProcedure() = 0;	
 		};		

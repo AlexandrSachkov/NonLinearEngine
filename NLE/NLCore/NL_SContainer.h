@@ -23,7 +23,7 @@ namespace NLE
 				~SContainer();
 
 				uint_fast32_t size();			
-				double const& operator[](uint_fast32_t index);
+				T const& operator[](uint_fast32_t index);
 				void modify(uint_fast32_t index, T data);
 
 			private:

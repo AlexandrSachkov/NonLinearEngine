@@ -1,25 +1,25 @@
-#ifndef READER_SYSTEM_H_
-#define READER_SYSTEM_H_
+#ifndef SYSTEM_H_
+#define SYSTEM_H_
 
 #include "NLE\NLCore\NL_System.h"
-#include "NLE\NLCore\NL_SlaveContainer.h"
 #include "NLE\NLCore\NL_SContainer.h"
 #include <memory>
+#include "Data.h"
 
 class SysTask;
 class Scheduler;
 class StateManager;
 
-
-class ReaderSystem : public NLE::Core::System
+class System : public NLE::Core::System
 {
 public:
-	ReaderSystem();
-	~ReaderSystem();
+	System();
+	~System();
 
 	bool initialize(
 		uint_fast8_t sysId,
-		NLE::Core::StateManager* stateManager);
+		NLE::Core::StateManager* stateManager,
+		NLE::Core::SysRuntimeControl& sysRuntimeControl);
 
 	void release();
 	uint_fast8_t getID();
@@ -29,8 +29,7 @@ public:
 private:
 	uint_fast8_t _id;
 
-	NLE::Core::Data::SlaveContainer<double>* _slave;
-	NLE::Core::Data::SContainer<double>* _shared;
+	NLE::Core::Data::SContainer<Data>* _shared;
 };
 
 #endif
