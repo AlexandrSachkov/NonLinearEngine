@@ -13,8 +13,10 @@ namespace NLE
 	{
 		namespace Data
 		{
+			template<typename T>
 			class SContainer
 			{
+				template<typename T>
 				friend class SDistributor;
 			public:
 				SContainer(uint_fast32_t dataSize, uint_fast32_t queueSize);
@@ -22,18 +24,20 @@ namespace NLE
 
 				uint_fast32_t size();			
 				double const& operator[](uint_fast32_t index);
-				void modify(uint_fast32_t index, double data);
+				void modify(uint_fast32_t index, T data);
 
 			private:
-				std::vector<double, tbb::scalable_allocator<double>>& getData();
+				std::vector<T, tbb::scalable_allocator<T>>& getData();
 				std::vector<uint_fast32_t, tbb::scalable_allocator<uint_fast32_t>> const& getChanges();
 				void clearChanges();
 
-				std::vector<double, tbb::scalable_allocator<double>> _data;
+				std::vector<T, tbb::scalable_allocator<T>> _data;
 				std::vector<uint_fast32_t, tbb::scalable_allocator<uint_fast32_t>> _changes;
 			};
 		}
 	}
 }
+
+#include "NL_SContainer.inl"
 
 #endif

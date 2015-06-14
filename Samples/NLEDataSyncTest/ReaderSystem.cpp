@@ -1,5 +1,5 @@
 #include "ReaderSystem.h"
-#include "TestStateManager.h"
+#include "SharedDataId.h"
 
 ReaderSystem::ReaderSystem()
 {
@@ -13,13 +13,12 @@ ReaderSystem::~ReaderSystem()
 
 bool ReaderSystem::initialize(
 	uint_fast8_t id,
-	std::unique_ptr<NLE::Core::StateManager> const& stateManager)
+	NLE::Core::StateManager* stateManager)
 {
 	_id = id;
 
-	TestStateManager& stateMngr = *static_cast<TestStateManager*>(stateManager.get());
-	_slave = &stateMngr.msDistributor.buildSlaveEndpoint(getID());
-	_shared = &stateMngr.sDistributor.buildEndpoint(getID());
+	_slave = &stateManager->getMSDistributor<double>(MS_CONTAINER).buildSlaveEndpoint(getID());
+	_shared = &stateManager->getSDistributor<double>(S_CONTAINER).buildEndpoint(id);
 
 	return true;
 }
@@ -36,8 +35,8 @@ uint_fast8_t ReaderSystem::getID()
 
 std::function<void()> ReaderSystem::getExecutionProcedure()
 {
-	NLE::Core::Data::SlaveContainer& slave = *_slave;
-	NLE::Core::Data::SContainer& shared = *_shared;
+	NLE::Core::Data::SlaveContainer<double>& slave = *_slave;
+	NLE::Core::Data::SContainer<double>& shared = *_shared;
 
 	return [this, &slave, &shared](){
 		printf("Reader #%i\n", getID());

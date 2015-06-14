@@ -1,4 +1,5 @@
-#include "NL_MSDistributor.h"
+#ifdef NL_MS_DISTRIBUTOR_H_
+
 #include <cassert>
 
 namespace NLE
@@ -7,14 +8,16 @@ namespace NLE
 	{
 		namespace Data
 		{
-			MSDistributor::MSDistributor(uint_fast32_t initialSize) :
-				_masterHash(INT_FAST8_MAX, new MasterContainer(initialSize, this)),
+			template<typename T>
+			MSDistributor<T>::MSDistributor(uint_fast32_t initialSize) :
+				_masterHash(INT_FAST8_MAX, new MasterContainer<T>(initialSize, this)),
 				_requestQueue(_requestPool)
 			{
 				_data.reserve(initialSize);
 			}
 
-			MSDistributor::~MSDistributor()
+			template<typename T>
+			MSDistributor<T>::~MSDistributor()
 			{
 				delete _masterHash.second;
 				for (auto& i : _slaves)
@@ -23,21 +26,24 @@ namespace NLE
 				}
 			}
 
-			MasterContainer& MSDistributor::buildMasterEndpoint(uint_fast8_t sysId)
+			template<typename T>
+			MasterContainer<T>& MSDistributor<T>::buildMasterEndpoint(uint_fast8_t sysId)
 			{
 				assert(_masterHash.first == INT_FAST8_MAX);
 				_masterHash.first = sysId;
 				return *_masterHash.second;
 			}
 
-			SlaveContainer& MSDistributor::buildSlaveEndpoint(uint_fast8_t sysId)
+			template<typename T>
+			SlaveContainer<T>& MSDistributor<T>::buildSlaveEndpoint(uint_fast8_t sysId)
 			{
 				assert(_slaves.count(sysId) == 0);
-				_slaves.emplace(sysId, new SlaveContainer(_data.size()));
+				_slaves.emplace(sysId, new SlaveContainer<T>(_data.size()));
 				return *_slaves.at(sysId);
 			}
 
-			void MSDistributor::distributeFrom(uint_fast8_t sysId)
+			template<typename T>
+			void MSDistributor<T>::distributeFrom(uint_fast8_t sysId)
 			{
 				if (_slaves.count(sysId) > 0)
 				{
@@ -69,7 +75,8 @@ namespace NLE
 				}
 			}
 
-			void MSDistributor::distributeTo(uint_fast8_t sysId)
+			template<typename T>
+			void MSDistributor<T>::distributeTo(uint_fast8_t sysId)
 			{
 				if (_slaves.count(sysId) > 0)
 				{
@@ -88,17 +95,19 @@ namespace NLE
 				}
 			}
 
-			void MSDistributor::queueRequest(MasterRequest request)
+			template<typename T>
+			void MSDistributor<T>::queueRequest(MasterRequest<T> request)
 			{
 				_requestQueue.push(request);
 			}
 
-			void MSDistributor::processRequests()
+			template<typename T>
+			void MSDistributor<T>::processRequests()
 			{
 				if (_requestQueue.empty())
 					return;
 
-				MasterRequest mRequest;
+				MasterRequest<T> mRequest;
 				DistributorRequest dRequest;
 				while (_requestQueue.try_pop(mRequest));
 				{
@@ -120,7 +129,8 @@ namespace NLE
 				}
 			}
 
-			void MSDistributor::localRemove(uint_fast32_t index)
+			template<typename T>
+			void MSDistributor<T>::localRemove(uint_fast32_t index)
 			{
 				uint_fast32_t size = _data.size();
 				assert(index < size);
@@ -135,3 +145,5 @@ namespace NLE
 		}
 	}
 }
+
+#endif

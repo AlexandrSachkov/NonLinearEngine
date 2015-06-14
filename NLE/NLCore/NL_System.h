@@ -5,15 +5,12 @@
 #include <memory>
 #include <functional>
 
+#include "NL_StateManager.h"
 
 namespace NLE 
 {
 	namespace Core 
 	{
-		class Scheduler;
-		class SysState;
-		class StateManager;
-
 		class System
 		{
 		public:
@@ -21,7 +18,7 @@ namespace NLE
 
 			virtual bool initialize(
 				uint_fast8_t id,
-				std::unique_ptr<StateManager> const& stateManager) = 0;
+				StateManager* stateManager) = 0;
 			virtual void release() = 0;
 			virtual std::function<void()> getExecutionProcedure() = 0;	
 		};		

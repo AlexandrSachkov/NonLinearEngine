@@ -13,7 +13,7 @@ TestSystem::~TestSystem()
 
 bool TestSystem::initialize(
 	uint_fast8_t id,
-	std::unique_ptr<NLE::Core::StateManager> const& stateManager)
+	NLE::Core::StateManager* stateManager)
 {
 	_id = id;
 	return true;

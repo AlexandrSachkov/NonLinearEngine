@@ -5,17 +5,17 @@
 #include <cstdint>
 #include "NL_ExecutionDesc.h"
 
-namespace NLE 
+namespace NLE
 {
-	namespace Core 
+	namespace Core
 	{
 		class Clock;
 		class Scheduler;
 		class System;
 		class SysManager;
 		class StateManager;
-		
-		class DeviceCore 
+
+		class DeviceCore
 		{
 		public:
 			static DeviceCore& instance()
@@ -32,7 +32,19 @@ namespace NLE
 			void release();
 
 			void attachSystem(ExecutionDesc executionDesc, std::unique_ptr<System> system);
-			void attachStateManager(std::unique_ptr<StateManager> stateManager);
+
+			template <typename T>
+			void installMSContainer(unsigned int id, uint_fast32_t initialSize)
+			{
+				_stateManager->installMSContainer<T>(id, initialSize);
+			}
+
+			template <typename T>
+			void installSContainer(unsigned int id, uint_fast32_t size)
+			{
+				_stateManager->installSContainer<T>(id, size);
+			}
+
 			void setClockPeriodNs(unsigned long long periodNs);
 			uint_fast8_t getNumHardwareThreads();
 			void run();

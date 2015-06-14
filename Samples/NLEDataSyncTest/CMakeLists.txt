@@ -2,7 +2,7 @@ PROJECT(NLEDataSyncTest)
 
 SET(HEADERS 
 	ReaderSystem.h
-	TestStateManager.h
+	SharedDataId.h
 	WriterSystem.h
 	)
 SET(SOURCES

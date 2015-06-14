@@ -4,14 +4,20 @@ SET(HEADERS
 	NL_Clock.h
 	NL_DataRequest.h
 	NL_DeviceCore.h
+	NL_Distributor.h
 	NL_ExecutionDesc.h
 	NL_MasterContainer.h
+	NL_MasterContainer.inl
 	NL_MSDistributor.h
+	NL_MSDistributor.inl
 	NL_PContainer.h
 	NL_PContainer.inl
 	NL_SContainer.h
-	NL_SDistributor.h	
-	NL_SlaveContainer.h	
+	NL_SContainer.inl
+	NL_SDistributor.h
+	NL_SDistributor.inl
+	NL_SlaveContainer.h
+	NL_SlaveContainer.inl
 	NL_Scheduler.h
 	NL_StateManager.h
 	NL_SysManager.h
@@ -21,12 +27,7 @@ SET(HEADERS
 SET(SOURCES 
 	NL_Clock.cpp
 	NL_DeviceCore.cpp
-	NL_MasterContainer.cpp
-	NL_MSDistributor.cpp
-	NL_SContainer.cpp
-	NL_SDistributor.cpp
-	NL_Scheduler.cpp
-	NL_SlaveContainer.cpp		
+	NL_Scheduler.cpp		
 	NL_SysManager.cpp
 	)
 

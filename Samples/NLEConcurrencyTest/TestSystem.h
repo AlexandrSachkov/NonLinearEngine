@@ -17,7 +17,7 @@ public:
 
 	bool initialize(
 		uint_fast8_t sysId,
-		std::unique_ptr<NLE::Core::StateManager> const& stateManager);
+		NLE::Core::StateManager* stateManager);
 
 	void release();
 	uint_fast8_t getID();

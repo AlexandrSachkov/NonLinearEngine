@@ -26,7 +26,7 @@ namespace NLE
 		{
 			for (uint_fast8_t i = 0; i < _numSystems; ++i)
 			{
-				if (!getSystem(i)->initialize(i, stateManager))
+				if (!getSystem(i)->initialize(i, stateManager.get()))
 					return false;
 				if (_executionDesc[i].getStartup() == Startup::AUTOMATIC)
 				{

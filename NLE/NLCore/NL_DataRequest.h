@@ -9,15 +9,18 @@ namespace NLE
 		{
 			enum RequestType {ADD, REMOVE};
 
+			template<typename T>
 			struct MasterRequest
 			{
 				RequestType type;
+
+				template<typename T>
 				union Payload
 				{
 					uint_fast32_t index;
-					double data;
+					T data;
 				};
-				Payload payload;
+				Payload<T> payload;
 				
 				MasterRequest()
 				{
@@ -29,7 +32,7 @@ namespace NLE
 					payload.index = indexVal;
 				}
 
-				MasterRequest(RequestType typeVal, double dataVal) :
+				MasterRequest(RequestType typeVal, T dataVal) :
 					type(typeVal)
 				{
 					payload.data = dataVal;

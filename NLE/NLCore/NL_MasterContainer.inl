@@ -1,4 +1,4 @@
-#include "NL_MasterContainer.h"
+#ifdef NL_MASTER_CONTAINER_H_
 
 #include "NL_MSDistributor.h"
 #include <cassert>
@@ -9,41 +9,48 @@ namespace NLE
 	{
 		namespace Data
 		{
-			MasterContainer::MasterContainer(uint_fast32_t initialSize, MSDistributor* distributor) :
+			template<typename T>
+			MasterContainer<T>::MasterContainer(uint_fast32_t initialSize, MSDistributor<T>* distributor) :
 				_distributor(distributor)
 			{
 				_data.reserve(initialSize);
 				_changes.reserve(initialSize);
 			}
 
-			MasterContainer::~MasterContainer()
+			template<typename T>
+			MasterContainer<T>::~MasterContainer()
 			{
 			}
 
-			uint_fast32_t MasterContainer::size()
+			template<typename T>
+			uint_fast32_t MasterContainer<T>::size()
 			{
 				return _data.size();
 			}
 
-			double const& MasterContainer::operator[](uint_fast32_t index)
+			template<typename T>
+			double const& MasterContainer<T>::operator[](uint_fast32_t index)
 			{
 				return _data[index];
 			}
 
-			void MasterContainer::modify(uint_fast32_t index, double data)
+			template<typename T>
+			void MasterContainer<T>::modify(uint_fast32_t index, T data)
 			{
 				_data[index] = data;
 				_changes[index] = 1;
 			}
 
-			void MasterContainer::add(double data)
+			template<typename T>
+			void MasterContainer<T>::add(T data)
 			{
 				_data.push_back(data);
 				_changes.push_back(0);
 				_distributor->queueRequest({ RequestType::ADD, { data } });
 			}
 
-			void MasterContainer::remove(uint_fast32_t index)
+			template<typename T>
+			void MasterContainer<T>::remove(uint_fast32_t index)
 			{
 				uint_fast32_t size = _data.size();
 				assert(index < size);
@@ -60,21 +67,26 @@ namespace NLE
 				_distributor->queueRequest({ RequestType::REMOVE, { index } });
 			}
 
-			void MasterContainer::itRemove(uint_fast32_t& index)
+			template<typename T>
+			void MasterContainer<T>::itRemove(uint_fast32_t& index)
 			{
 				remove(index);
 				--index;
 			}
 
-			std::vector<double, tbb::scalable_allocator<double>>& MasterContainer::getData()
+			template<typename T>
+			std::vector<T, tbb::scalable_allocator<T>>& MasterContainer<T>::getData()
 			{
 				return _data;
 			}
 
-			std::vector<char, tbb::scalable_allocator<char>>& MasterContainer::getChanges()
+			template<typename T>
+			std::vector<char, tbb::scalable_allocator<char>>& MasterContainer<T>::getChanges()
 			{
 				return _changes;
 			}
 		}
 	}
 }
+
+#endif

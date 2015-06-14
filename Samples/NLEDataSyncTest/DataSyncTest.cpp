@@ -3,11 +3,10 @@
 #include "NLE\NLCore\NL_DeviceCore.h"
 #include "WriterSystem.h"
 #include "ReaderSystem.h"
-#include "TestStateManager.h"
+#include "SharedDataId.h"
 
 int main(){
 	NLE::Core::DeviceCore& devCore = NLE::Core::DeviceCore::instance();
-	devCore.attachStateManager(std::make_unique<TestStateManager>());
 	devCore.setClockPeriodNs(1000000000L);
 
 	NLE::Core::ExecutionDesc execDesc
@@ -18,10 +17,13 @@ int main(){
 		0
 		);
 
+	devCore.installMSContainer<double>(MS_CONTAINER, 10);
+	devCore.installSContainer<double>(S_CONTAINER, 10);
+
 	devCore.attachSystem(execDesc, std::unique_ptr<WriterSystem>(new WriterSystem()));
 	devCore.attachSystem(execDesc, std::unique_ptr<ReaderSystem>(new ReaderSystem()));
 	devCore.attachSystem(execDesc, std::unique_ptr<ReaderSystem>(new ReaderSystem()));
-
+	
 	devCore.initialize();
 
 	printf("Started...\n");

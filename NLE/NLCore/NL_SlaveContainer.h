@@ -21,8 +21,10 @@ namespace NLE
 	{
 		namespace Data
 		{
+			template<typename T>
 			class SlaveContainer
 			{
+				template<typename T>
 				friend class MSDistributor;
 			public:
 				SlaveContainer(uint_fast32_t initialSize);
@@ -30,7 +32,7 @@ namespace NLE
 
 				uint_fast32_t size();
 				double const& operator[](uint_fast32_t index);
-				void modify(uint_fast32_t index, double data);
+				void modify(uint_fast32_t index, T data);
 
 			private:
 				void queueRequest(DistributorRequest request);
@@ -38,10 +40,10 @@ namespace NLE
 				void growByOne();
 				void localRemove(uint_fast32_t index);
 
-				std::vector<double, tbb::scalable_allocator<double>>& getData();
+				std::vector<T, tbb::scalable_allocator<T>>& getData();
 				std::vector<char, tbb::scalable_allocator<char>>& getChanges();
 
-				std::vector<double, tbb::scalable_allocator<double>> _data;
+				std::vector<T, tbb::scalable_allocator<T>> _data;
 				std::vector<char, tbb::scalable_allocator<char>> _changes;
 
 				tbb::memory_pool<tbb::scalable_allocator<DistributorRequest>> _requestPool;
@@ -50,5 +52,7 @@ namespace NLE
 		}
 	}
 }
+
+#include "NL_SlaveContainer.inl"
 
 #endif

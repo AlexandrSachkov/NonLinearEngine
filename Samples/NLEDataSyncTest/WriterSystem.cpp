@@ -1,5 +1,5 @@
 #include "WriterSystem.h"
-#include "TestStateManager.h"
+#include "SharedDataId.h"
 
 
 WriterSystem::WriterSystem() :
@@ -15,13 +15,12 @@ WriterSystem::~WriterSystem()
 
 bool WriterSystem::initialize(
 	uint_fast8_t id,
-	std::unique_ptr<NLE::Core::StateManager> const& stateManager)
+	NLE::Core::StateManager* stateManager)
 {
 	_id = id;
 
-	TestStateManager& stateMngr = *static_cast<TestStateManager*>(stateManager.get());
-	_master = &stateMngr.msDistributor.buildMasterEndpoint(getID());
-	_shared = &stateMngr.sDistributor.buildEndpoint(getID());
+	_master = &stateManager->getMSDistributor<double>(MS_CONTAINER).buildMasterEndpoint(id);
+	_shared = &stateManager->getSDistributor<double>(S_CONTAINER).buildEndpoint(id);
 
 	return true;
 }
@@ -38,8 +37,8 @@ uint_fast8_t WriterSystem::getID()
 
 std::function<void()> WriterSystem::getExecutionProcedure()
 {
-	NLE::Core::Data::MasterContainer& master = *_master;
-	NLE::Core::Data::SContainer& shared = *_shared;
+	NLE::Core::Data::MasterContainer<double>& master = *_master;
+	NLE::Core::Data::SContainer<double>& shared = *_shared;
 	bool& addItem = _addItem;
 
 	return [this, &master, &shared, &addItem](){

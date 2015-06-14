@@ -14,19 +14,22 @@ namespace NLE
 	{
 		namespace Data
 		{
+			template<typename T>
 			class MSDistributor;
 
+			template<typename T>
 			class MasterContainer
 			{
+				template<typename T>
 				friend class MSDistributor;
 			public:
-				MasterContainer(uint_fast32_t initialSize, MSDistributor* distributor);
+				MasterContainer(uint_fast32_t initialSize, MSDistributor<T>* distributor);
 				~MasterContainer();
 
 				uint_fast32_t size();
 				double const& operator[](uint_fast32_t index);
-				void modify(uint_fast32_t index, double data);
-				void add(double data);
+				void modify(uint_fast32_t index, T data);
+				void add(T data);
 				void remove(uint_fast32_t index);
 
 				/*
@@ -47,16 +50,17 @@ namespace NLE
 				void itRemove(uint_fast32_t& index);
 
 			private:
-				MSDistributor* _distributor;
-				std::vector<double, tbb::scalable_allocator<double>>& getData();
+				MSDistributor<T>* _distributor;
+				std::vector<T, tbb::scalable_allocator<T>>& getData();
 				std::vector<char, tbb::scalable_allocator<char>>& getChanges();
 
-				std::vector<double, tbb::scalable_allocator<double>> _data;
+				std::vector<T, tbb::scalable_allocator<T>> _data;
 				std::vector<char, tbb::scalable_allocator<char>> _changes;
 			};
 		}
 	}
 }
 
+#include "NL_MasterContainer.inl"
 
 #endif

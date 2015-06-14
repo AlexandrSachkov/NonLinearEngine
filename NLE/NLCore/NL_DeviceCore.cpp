@@ -19,6 +19,7 @@ namespace NLE
 			_clock = std::make_unique<Clock>();
 			_sysManager = std::make_unique<SysManager>();
 			_scheduler = std::make_unique<Scheduler>();
+			_stateManager = std::make_unique<StateManager>();
 		}
 
 		DeviceCore::~DeviceCore()
@@ -40,7 +41,6 @@ namespace NLE
 				
 			if (!_scheduler->initialize())
 				return false;
-			assert(_stateManager);
 			if (!_stateManager->initialize())
 				return false;
 			if (!_sysManager->initialize(_scheduler, _stateManager))
@@ -64,11 +64,6 @@ namespace NLE
 		void DeviceCore::attachSystem(ExecutionDesc executionDesc, std::unique_ptr<System> system)
 		{
 			_sysManager->attachSystem(executionDesc, std::move(system));
-		}
-
-		void DeviceCore::attachStateManager(std::unique_ptr<StateManager> stateManager)
-		{
-			_stateManager = std::move(stateManager);
 		}
 
 		void DeviceCore::setClockPeriodNs(unsigned long long periodNs)

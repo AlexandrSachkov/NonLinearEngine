@@ -1,4 +1,4 @@
-#include "NL_SlaveContainer.h"
+#ifdef NL_SLAVE_CONTAINER_H_
 
 #include <cassert>
 
@@ -8,39 +8,46 @@ namespace NLE
 	{
 		namespace Data
 		{
-			SlaveContainer::SlaveContainer(uint_fast32_t initialSize) :
+			template<typename T>
+			SlaveContainer<T>::SlaveContainer(uint_fast32_t initialSize) :
 				_requestQueue(_requestPool)
 			{
 				_data.reserve(initialSize);
 				_changes.reserve(initialSize);
 			}
 
-			SlaveContainer::~SlaveContainer()
+			template<typename T>
+			SlaveContainer<T>::~SlaveContainer()
 			{
 			}
 
-			uint_fast32_t SlaveContainer::size()
+			template<typename T>
+			uint_fast32_t SlaveContainer<T>::size()
 			{
 				return _data.size();
 			}
 
-			double const& SlaveContainer::operator[](uint_fast32_t index)
+			template<typename T>
+			double const& SlaveContainer<T>::operator[](uint_fast32_t index)
 			{
 				return _data[index];
 			}
 
-			void SlaveContainer::modify(uint_fast32_t index, double data)
+			template<typename T>
+			void SlaveContainer<T>::modify(uint_fast32_t index, T data)
 			{
 				_data[index] = data;
 				_changes[index] = 1;
 			}
 
-			void SlaveContainer::queueRequest(DistributorRequest request)
+			template<typename T>
+			void SlaveContainer<T>::queueRequest(DistributorRequest request)
 			{
 				_requestQueue.push(request);
 			}
 
-			void SlaveContainer::processRequests()
+			template<typename T>
+			void SlaveContainer<T>::processRequests()
 			{
 				if (_requestQueue.empty())
 					return;
@@ -59,13 +66,15 @@ namespace NLE
 				}
 			}
 
-			void SlaveContainer::growByOne()
+			template<typename T>
+			void SlaveContainer<T>::growByOne()
 			{
 				_data.resize(_data.size() + 1);
 				_changes.push_back(0);
 			}
 
-			void SlaveContainer::localRemove(uint_fast32_t index)
+			template<typename T>
+			void SlaveContainer<T>::localRemove(uint_fast32_t index)
 			{
 				uint_fast32_t size = _data.size();
 				assert(index < size);
@@ -80,15 +89,19 @@ namespace NLE
 				_changes.pop_back();
 			}
 
-			std::vector<double, tbb::scalable_allocator<double>>& SlaveContainer::getData()
+			template<typename T>
+			std::vector<T, tbb::scalable_allocator<T>>& SlaveContainer<T>::getData()
 			{
 				return _data;
 			}
 
-			std::vector<char, tbb::scalable_allocator<char>>& SlaveContainer::getChanges()
+			template<typename T>
+			std::vector<char, tbb::scalable_allocator<char>>& SlaveContainer<T>::getChanges()
 			{
 				return _changes;
 			}
 		}
 	}
 }
+
+#endif

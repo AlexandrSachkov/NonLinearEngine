@@ -1,4 +1,5 @@
-#include "NL_SDistributor.h"
+#ifdef NL_S_DISTRIBUTOR_H_
+
 #include <cassert>
 
 namespace NLE
@@ -7,13 +8,15 @@ namespace NLE
 	{
 		namespace Data
 		{
-			SDistributor::SDistributor(uint_fast32_t dataSize, uint_fast32_t queueSize) :
+			template<typename T>
+			SDistributor<T>::SDistributor(uint_fast32_t dataSize, uint_fast32_t queueSize) :
 				_queueSize(queueSize)
 			{
 				_data.resize(dataSize);
 			}
 
-			SDistributor::~SDistributor()
+			template<typename T>
+			SDistributor<T>::~SDistributor()
 			{
 				for (auto& i : _containers)
 				{
@@ -21,14 +24,16 @@ namespace NLE
 				}
 			}
 
-			SContainer& SDistributor::buildEndpoint(uint_fast8_t sysId)
+			template<typename T>
+			SContainer<T>& SDistributor<T>::buildEndpoint(uint_fast8_t sysId)
 			{
 				assert(_containers.count(sysId) == 0);
-				_containers.emplace(sysId, new SContainer(_data.size(), _queueSize));
+				_containers.emplace(sysId, new SContainer<T>(_data.size(), _queueSize));
 				return *_containers.at(sysId);
 			}
 
-			void SDistributor::distributeFrom(uint_fast8_t sysId)
+			template<typename T>
+			void SDistributor<T>::distributeFrom(uint_fast8_t sysId)
 			{
 				if (_containers.count(sysId) > 0)
 				{
@@ -44,7 +49,8 @@ namespace NLE
 				}
 			}
 
-			void SDistributor::distributeTo(uint_fast8_t sysId)
+			template<typename T>
+			void SDistributor<T>::distributeTo(uint_fast8_t sysId)
 			{
 				if (_containers.count(sysId) > 0)
 				{
@@ -55,3 +61,6 @@ namespace NLE
 		}
 	}
 }
+
+
+#endif

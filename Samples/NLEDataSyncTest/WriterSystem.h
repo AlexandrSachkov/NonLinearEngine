@@ -18,7 +18,7 @@ public:
 
 	bool initialize(
 		uint_fast8_t sysId,
-		std::unique_ptr<NLE::Core::StateManager> const& stateManager);
+		NLE::Core::StateManager* stateManager);
 
 	void release();
 	uint_fast8_t getID();
@@ -29,8 +29,8 @@ private:
 	uint_fast8_t _id;
 	bool _addItem;
 
-	NLE::Core::Data::MasterContainer* _master;
-	NLE::Core::Data::SContainer* _shared;
+	NLE::Core::Data::MasterContainer<double>* _master;
+	NLE::Core::Data::SContainer<double>* _shared;
 };
 
 #endif

@@ -9,6 +9,7 @@
 #include "tbb\scalable_allocator.h"
 #include "tbb\concurrent_queue.h"
 
+#include "NL_Distributor.h"
 #include "NL_MasterContainer.h"
 #include "NL_SlaveContainer.h"
 #include "NL_DataRequest.h"
@@ -23,32 +24,35 @@ namespace NLE
 	{
 		namespace Data
 		{
-			class MSDistributor
+			template<typename T>
+			class MSDistributor : public Distributor
 			{
 			public:
 				MSDistributor(uint_fast32_t initialSize);
 				~MSDistributor();
 
-				MasterContainer& buildMasterEndpoint(uint_fast8_t sysId);
-				SlaveContainer& buildSlaveEndpoint(uint_fast8_t sysId);
+				MasterContainer<T>& buildMasterEndpoint(uint_fast8_t sysId);
+				SlaveContainer<T>& buildSlaveEndpoint(uint_fast8_t sysId);
 				void distributeFrom(uint_fast8_t sysId);
 				void distributeTo(uint_fast8_t sysId);
-				void queueRequest(MasterRequest request);
+				void queueRequest(MasterRequest<T> request);
 				void processRequests();
 
 			private:
 				void localRemove(uint_fast32_t index);
 
-				std::vector<double, tbb::scalable_allocator<double>> _data;
+				std::vector<T, tbb::scalable_allocator<T>> _data;
 
-				std::pair<uint_fast8_t, MasterContainer*> _masterHash;
-				std::unordered_map<uint_fast8_t, SlaveContainer*> _slaves;
+				std::pair<uint_fast8_t, MasterContainer<T>*> _masterHash;
+				std::unordered_map<uint_fast8_t, SlaveContainer<T>*> _slaves;
 
-				tbb::memory_pool<tbb::scalable_allocator<MasterRequest>> _requestPool;
-				tbb::concurrent_queue<MasterRequest, tbb::memory_pool_allocator<MasterRequest>> _requestQueue;
+				tbb::memory_pool<tbb::scalable_allocator<MasterRequest<T>>> _requestPool;
+				tbb::concurrent_queue<MasterRequest<T>, tbb::memory_pool_allocator<MasterRequest<T>>> _requestQueue;
 			};
 		}
 	}
 }
+
+#include "NL_MSDistributor.inl"
 
 #endif

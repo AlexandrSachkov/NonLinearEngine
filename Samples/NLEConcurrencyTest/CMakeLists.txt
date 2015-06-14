@@ -1,7 +1,6 @@
 PROJECT(NLEConcurrencyTest)
 
 SET(HEADERS 
-	TestStateManager.h
 	TestSystem.h
 	)
 SET(SOURCES
