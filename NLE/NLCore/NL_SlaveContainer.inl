@@ -9,7 +9,7 @@ namespace NLE
 		namespace Data
 		{
 			template<typename T>
-			SlaveContainer<T>::SlaveContainer(uint_fast32_t initialSize) :
+			SlaveContainer<T>::SlaveContainer(size_t initialSize) :
 				_requestQueue(_requestPool)
 			{
 				_data.reserve(initialSize);
@@ -22,7 +22,7 @@ namespace NLE
 			}
 
 			template<typename T>
-			uint_fast32_t SlaveContainer<T>::size()
+			size_t SlaveContainer<T>::size()
 			{
 				return _data.size();
 			}
@@ -76,10 +76,10 @@ namespace NLE
 			template<typename T>
 			void SlaveContainer<T>::localRemove(uint_fast32_t index)
 			{
-				uint_fast32_t size = _data.size();
+				size_t size = _data.size();
 				assert(index < size);
 
-				uint_fast32_t lastOccupied = size - 1;
+				size_t lastOccupied = size - 1;
 				if (index != lastOccupied)
 				{
 					_data[index] = _data[lastOccupied];

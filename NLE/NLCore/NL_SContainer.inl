@@ -8,7 +8,7 @@ namespace NLE
 		namespace Data
 		{
 			template<typename T>
-			SContainer<T>::SContainer(uint_fast32_t dataSize, uint_fast32_t queueSize)
+			SContainer<T>::SContainer(size_t dataSize, size_t queueSize)
 			{
 				_data.resize(dataSize);
 				_changes.reserve(queueSize);
@@ -20,7 +20,7 @@ namespace NLE
 			}
 
 			template<typename T>
-			uint_fast32_t SContainer<T>::size()
+			size_t SContainer<T>::size()
 			{
 				return _data.size();
 			}		

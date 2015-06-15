@@ -10,7 +10,7 @@ namespace NLE
 		namespace Data
 		{
 			template<typename T>
-			MasterContainer<T>::MasterContainer(uint_fast32_t initialSize, MSDistributor<T>* distributor) :
+			MasterContainer<T>::MasterContainer(size_t initialSize, MSDistributor<T>* distributor) :
 				_distributor(distributor)
 			{
 				_data.reserve(initialSize);
@@ -23,7 +23,7 @@ namespace NLE
 			}
 
 			template<typename T>
-			uint_fast32_t MasterContainer<T>::size()
+			size_t MasterContainer<T>::size()
 			{
 				return _data.size();
 			}
@@ -52,10 +52,10 @@ namespace NLE
 			template<typename T>
 			void MasterContainer<T>::remove(uint_fast32_t index)
 			{
-				uint_fast32_t size = _data.size();
+				size_t size = _data.size();
 				assert(index < size);
 
-				uint_fast32_t lastOccupied = size - 1;
+				size_t lastOccupied = size - 1;
 				if (index != lastOccupied)
 				{
 					_data[index] = _data[lastOccupied];

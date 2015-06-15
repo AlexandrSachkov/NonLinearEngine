@@ -19,10 +19,10 @@ namespace NLE
 				template<typename T>
 				friend class SDistributor;
 			public:
-				SContainer(uint_fast32_t dataSize, uint_fast32_t queueSize);
+				SContainer(size_t dataSize, size_t queueSize);
 				~SContainer();
 
-				uint_fast32_t size();			
+				size_t size();			
 				T const& operator[](uint_fast32_t index);
 				void modify(uint_fast32_t index, T data);
 

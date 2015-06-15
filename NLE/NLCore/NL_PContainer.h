@@ -47,7 +47,7 @@ namespace NLE
 
 				void clear();
 
-				uint_fast32_t size();
+				size_t size();
 				T& operator[](uint_fast32_t index);
 			};
 		}

@@ -28,7 +28,8 @@ namespace NLE
 			SContainer<T>& SDistributor<T>::buildEndpoint(uint_fast8_t sysId)
 			{
 				assert(_containers.count(sysId) == 0);
-				_containers.emplace(sysId, new SContainer<T>(_data.size(), _queueSize));
+				SContainer<T>* container = new SContainer<T>(_data.size(), _queueSize);
+				_containers.emplace(sysId, container);
 				return *_containers.at(sysId);
 			}
 
@@ -40,11 +41,15 @@ namespace NLE
 					auto& src = *_containers.at(sysId);
 					auto const& changes = src.getChanges();
 					uint_fast32_t change;
+
+					auto start = std::chrono::high_resolution_clock::now();
 					for (uint_fast32_t i = 0; i < changes.size(); ++i)
 					{
 						change = changes[i];
 						_data[change] = src[change];
 					}
+					auto end = std::chrono::high_resolution_clock::now();
+					printf("From: %f\n", std::chrono::duration <double, std::micro>(end - start).count());
 					src.clearChanges();
 				}
 			}
@@ -54,8 +59,11 @@ namespace NLE
 			{
 				if (_containers.count(sysId) > 0)
 				{
+					auto start = std::chrono::high_resolution_clock::now();
 					auto& dest = _containers.at(sysId)->getData();
 					std::copy(_data.begin(), _data.end(), dest.begin());
+					auto end = std::chrono::high_resolution_clock::now();
+					printf("To: %f\n", std::chrono::duration <double, std::micro>(end - start).count());
 				}
 			}
 		}

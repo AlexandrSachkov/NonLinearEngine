@@ -30,6 +30,7 @@ private:
 	uint_fast8_t _id;
 
 	NLE::Core::Data::SContainer<Data>* _shared;
+	NLE::Core::SysRuntimeControl* _sysRuntimeControl;
 };
 
 #endif

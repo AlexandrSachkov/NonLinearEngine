@@ -28,10 +28,10 @@ namespace NLE
 			template<typename T>
 			void PContainer<T>::remove(uint_fast32_t index)
 			{
-				uint_fast32_t size = _data.size();
+				size_t size = _data.size();
 				assert(index < size);
 
-				uint_fast32_t lastOccupied = size - 1;
+				size_t lastOccupied = size - 1;
 				if (index != lastOccupied)
 				{
 					_data[index] = _data[lastOccupied];
@@ -53,7 +53,7 @@ namespace NLE
 			}
 
 			template<typename T>
-			inline uint_fast32_t PContainer<T>::size()
+			inline size_t PContainer<T>::size()
 			{
 				return _data.size();
 			}

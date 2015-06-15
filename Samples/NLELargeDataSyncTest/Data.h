@@ -3,33 +3,16 @@
 
 class Data{
 public:
-	Data()
+	Data() : _size(100)
 	{
-		_size = 1000;
-		_data = new double[_size];
 	}
 	 
 	~Data()
 	{
-		delete[] _data;
-	}
-
-	Data& operator=(const Data& other)
-	{
-		if (this == &other)
-		{
-			return *this;
-		}
-		for (int i = 0; i < _size; ++i)
-		{
-			_data[i] = other._data[i];
-		}
-
-		return *this;
 	}
 
 private:
-	double* _data;
+	double _data[100];
 	int _size;
 };
 

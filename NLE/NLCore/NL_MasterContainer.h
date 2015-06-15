@@ -23,10 +23,10 @@ namespace NLE
 				template<typename T>
 				friend class MSDistributor;
 			public:
-				MasterContainer(uint_fast32_t initialSize, MSDistributor<T>* distributor);
+				MasterContainer(size_t initialSize, MSDistributor<T>* distributor);
 				~MasterContainer();
 
-				uint_fast32_t size();
+				size_t size();
 				double const& operator[](uint_fast32_t index);
 				void modify(uint_fast32_t index, T data);
 				void add(T data);

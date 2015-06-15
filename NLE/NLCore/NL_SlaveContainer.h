@@ -27,10 +27,10 @@ namespace NLE
 				template<typename T>
 				friend class MSDistributor;
 			public:
-				SlaveContainer(uint_fast32_t initialSize);
+				SlaveContainer(size_t initialSize);
 				~SlaveContainer();
 
-				uint_fast32_t size();
+				size_t size();
 				double const& operator[](uint_fast32_t index);
 				void modify(uint_fast32_t index, T data);
 
