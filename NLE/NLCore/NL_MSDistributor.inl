@@ -31,6 +31,7 @@ namespace NLE
 			{
 				assert(_masterHash.first == INT_FAST8_MAX);
 				_masterHash.first = sysId;
+				_endpoints.push_back(sysId);
 				return *_masterHash.second;
 			}
 
@@ -39,6 +40,7 @@ namespace NLE
 			{
 				assert(_slaves.count(sysId) == 0);
 				_slaves.emplace(sysId, new SlaveContainer<T>(_data.size()));
+				_endpoints.push_back(sysId);
 				return *_slaves.at(sysId);
 			}
 
@@ -141,6 +143,12 @@ namespace NLE
 					_data[index] = _data[lastOccupied];
 				}
 				_data.pop_back();
+			}
+
+			template<typename T>
+			std::vector<uint_fast8_t>& MSDistributor<T>::getEndpoints()
+			{
+				return _endpoints;
 			}
 		}
 	}

@@ -6,6 +6,7 @@ SET(HEADERS
 	NL_DeviceCore.h
 	NL_Distributor.h
 	NL_ExecutionDesc.h
+	NL_IEngine.h
 	NL_MasterContainer.h
 	NL_MasterContainer.inl
 	NL_MSDistributor.h
@@ -21,7 +22,6 @@ SET(HEADERS
 	NL_Scheduler.h
 	NL_StateManager.h
 	NL_SysManager.h
-	NL_SysRuntimeControl.h
 	NL_SysTask.h
 	NL_System.h
 	)

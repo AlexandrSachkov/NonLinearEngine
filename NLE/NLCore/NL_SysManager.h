@@ -13,7 +13,7 @@ namespace NLE
 		class Scheduler;
 		class UObject;
 		class StateManager;
-		class SysRuntimeControl;
+		class IEngine;
 
 		class SysManager 
 		{
@@ -23,8 +23,7 @@ namespace NLE
 
 			bool initialize(
 				std::unique_ptr<Scheduler> const& scheduler,
-				std::unique_ptr<StateManager> const& stateManager,
-				std::unique_ptr<SysRuntimeControl> const& sysRuntimeControl);
+				std::unique_ptr<IEngine> const& iEngine);
 			void release();
 
 			uint_fast8_t getNumSystems();

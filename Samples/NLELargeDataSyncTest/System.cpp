@@ -13,12 +13,11 @@ System::~System()
 
 bool System::initialize(
 	uint_fast8_t id,
-	NLE::Core::StateManager* stateManager,
-	NLE::Core::SysRuntimeControl& sysRuntimeControl)
+	NLE::Core::IEngine& iEngine)
 {
 	_id = id;
-	_sysRuntimeControl = &sysRuntimeControl;
-	_shared = &stateManager->getSDistributor<Data>(id).buildEndpoint(id);
+	_iEngine = &iEngine;
+	_shared = &iEngine.getSDistributor<Data>(id).buildEndpoint(id);
 
 	return true;
 }

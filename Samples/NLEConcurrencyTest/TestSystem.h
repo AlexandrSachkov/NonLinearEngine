@@ -17,8 +17,7 @@ public:
 
 	bool initialize(
 		uint_fast8_t sysId,
-		NLE::Core::StateManager* stateManager,
-		NLE::Core::SysRuntimeControl& sysRuntimeControl);
+		NLE::Core::IEngine& iEngine);
 
 	void release();
 	uint_fast8_t getID();

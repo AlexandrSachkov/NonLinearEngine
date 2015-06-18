@@ -30,6 +30,7 @@ namespace NLE
 				assert(_containers.count(sysId) == 0);
 				SContainer<T>* container = new SContainer<T>(_data.size(), _queueSize);
 				_containers.emplace(sysId, container);
+				_endpoints.push_back(sysId);
 				return *_containers.at(sysId);
 			}
 
@@ -65,6 +66,12 @@ namespace NLE
 					auto end = std::chrono::high_resolution_clock::now();
 					printf("To: %f\n", std::chrono::duration <double, std::micro>(end - start).count());
 				}
+			}
+
+			template<typename T>
+			std::vector<uint_fast8_t>& SDistributor<T>::getEndpoints()
+			{
+				return _endpoints;
 			}
 		}
 	}

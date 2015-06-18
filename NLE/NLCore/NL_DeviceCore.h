@@ -14,7 +14,7 @@ namespace NLE
 		class System;
 		class SysManager;
 		class StateManager;
-		class SysRuntimeControl;
+		class IEngine;
 
 		class DeviceCore
 		{
@@ -62,7 +62,7 @@ namespace NLE
 			std::unique_ptr<SysManager> _sysManager;
 			std::unique_ptr<Scheduler> _scheduler;
 			std::unique_ptr<StateManager> _stateManager;
-			std::unique_ptr<SysRuntimeControl> _sysRuntimeControl;
+			std::unique_ptr<IEngine> _iEngine;
 		};
 	}
 }

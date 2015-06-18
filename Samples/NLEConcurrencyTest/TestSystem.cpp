@@ -13,8 +13,7 @@ TestSystem::~TestSystem()
 
 bool TestSystem::initialize(
 	uint_fast8_t id,
-	NLE::Core::StateManager* stateManager,
-	NLE::Core::SysRuntimeControl& sysRuntimeControl)
+	NLE::Core::IEngine& iEngine)
 {
 	_id = id;
 	return true;

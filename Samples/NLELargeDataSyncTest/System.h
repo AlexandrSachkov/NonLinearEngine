@@ -18,8 +18,7 @@ public:
 
 	bool initialize(
 		uint_fast8_t sysId,
-		NLE::Core::StateManager* stateManager,
-		NLE::Core::SysRuntimeControl& sysRuntimeControl);
+		NLE::Core::IEngine& iEngine);
 
 	void release();
 	uint_fast8_t getID();
@@ -30,7 +29,7 @@ private:
 	uint_fast8_t _id;
 
 	NLE::Core::Data::SContainer<Data>* _shared;
-	NLE::Core::SysRuntimeControl* _sysRuntimeControl;
+	NLE::Core::IEngine* _iEngine;
 };
 
 #endif

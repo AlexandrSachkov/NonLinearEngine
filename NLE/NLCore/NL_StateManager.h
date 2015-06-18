@@ -28,6 +28,44 @@ namespace NLE
 
 			bool initialize()
 			{
+				for (auto distributor : _sDistributors)
+				{
+					auto& endpoints = distributor->getEndpoints();
+					for (auto& sysId : endpoints)
+					{
+						if (_sdMap.count(sysId) > 0)
+						{
+							_sdMap.at(sysId)->push_back(distributor);
+						}
+						else
+						{
+							_sdMap.insert(std::make_pair<>(
+								sysId, 
+								new std::vector<Data::Distributor*, tbb::scalable_allocator<Data::Distributor*>>()
+							));
+							_sdMap.at(sysId)->push_back(distributor);
+						}
+					}
+				}
+				for (auto distributor : _msDistributors)
+				{
+					auto& endpoints = distributor->getEndpoints();
+					for (auto& sysId : endpoints)
+					{
+						if (_sdMap.count(sysId) > 0)
+						{
+							_sdMap.at(sysId)->push_back(distributor);
+						}
+						else
+						{
+							_sdMap.insert(std::make_pair<>(
+								sysId,
+								new std::vector<Data::Distributor*, tbb::scalable_allocator<Data::Distributor*>>()
+								));
+							_sdMap.at(sysId)->push_back(distributor);
+						}
+					}
+				}
 				return true;
 			}
 
@@ -43,6 +81,7 @@ namespace NLE
 				}
 				_sDistributorIndex.clear();
 				_msDistributorIndex.clear();
+				_sdMap.clear();
 			}
 
 			void processRequests()
@@ -55,25 +94,25 @@ namespace NLE
 
 			void distributeFrom(uint_fast8_t sysId)
 			{
-				for (auto& i : _sDistributors)
+				if (_sdMap.count(sysId) > 0)
 				{
-					i->distributeFrom(sysId);
-				}
-				for (auto& i : _msDistributors)
-				{
-					i->distributeFrom(sysId);
+					auto distributors = _sdMap.at(sysId);
+					for (uint_fast32_t i = 0; i < distributors->size(); ++i)
+					{
+						distributors->at(i)->distributeFrom(sysId);
+					}
 				}
 			}
 
 			void distributeTo(uint_fast8_t sysId)
 			{
-				for (auto& i : _sDistributors)
+				if (_sdMap.count(sysId) > 0)
 				{
-					i->distributeTo(sysId);
-				}
-				for (auto& i : _msDistributors)
-				{
-					i->distributeTo(sysId);
+					auto distributors = _sdMap.at(sysId);
+					for (uint_fast32_t i = 0; i < distributors->size(); ++i)
+					{
+						distributors->at(i)->distributeTo(sysId);
+					}
 				}
 			}
 
@@ -113,6 +152,7 @@ namespace NLE
 			tbb::concurrent_unordered_map<unsigned int, Data::Distributor*> _sDistributorIndex;
 			tbb::concurrent_unordered_map<unsigned int, Data::Distributor*> _msDistributorIndex;
 			
+			std::unordered_map<unsigned int, std::vector<Data::Distributor*, tbb::scalable_allocator<Data::Distributor*>>*> _sdMap;
 		};
 	}
 }

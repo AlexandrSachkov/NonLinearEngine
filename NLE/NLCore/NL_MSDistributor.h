@@ -37,6 +37,7 @@ namespace NLE
 				void distributeTo(uint_fast8_t sysId);
 				void queueRequest(MasterRequest<T> request);
 				void processRequests();
+				std::vector<uint_fast8_t>& getEndpoints();
 
 			private:
 				void localRemove(uint_fast32_t index);
@@ -48,6 +49,7 @@ namespace NLE
 
 				tbb::memory_pool<tbb::scalable_allocator<MasterRequest<T>>> _requestPool;
 				tbb::concurrent_queue<MasterRequest<T>, tbb::memory_pool_allocator<MasterRequest<T>>> _requestQueue;
+				std::vector<uint_fast8_t> _endpoints;
 			};
 		}
 	}

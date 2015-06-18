@@ -15,13 +15,12 @@ WriterSystem::~WriterSystem()
 
 bool WriterSystem::initialize(
 	uint_fast8_t id,
-	NLE::Core::StateManager* stateManager,
-	NLE::Core::SysRuntimeControl& sysRuntimeControl)
+	NLE::Core::IEngine& iEngine)
 {
 	_id = id;
 
-	_master = &stateManager->getMSDistributor<double>(MS_CONTAINER).buildMasterEndpoint(id);
-	_shared = &stateManager->getSDistributor<double>(S_CONTAINER).buildEndpoint(id);
+	_master = &iEngine.getMSDistributor<double>(MS_CONTAINER).buildMasterEndpoint(id);
+	_shared = &iEngine.getSDistributor<double>(S_CONTAINER).buildEndpoint(id);
 
 	return true;
 }
