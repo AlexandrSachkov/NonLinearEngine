@@ -30,41 +30,11 @@ namespace NLE
 			{
 				for (auto distributor : _sDistributors)
 				{
-					auto& endpoints = distributor->getEndpoints();
-					for (auto& sysId : endpoints)
-					{
-						if (_sdMap.count(sysId) > 0)
-						{
-							_sdMap.at(sysId)->push_back(distributor);
-						}
-						else
-						{
-							_sdMap.insert(std::make_pair<>(
-								sysId, 
-								new std::vector<Data::Distributor*, tbb::scalable_allocator<Data::Distributor*>>()
-							));
-							_sdMap.at(sysId)->push_back(distributor);
-						}
-					}
+					mapDistributor(distributor);
 				}
 				for (auto distributor : _msDistributors)
 				{
-					auto& endpoints = distributor->getEndpoints();
-					for (auto& sysId : endpoints)
-					{
-						if (_sdMap.count(sysId) > 0)
-						{
-							_sdMap.at(sysId)->push_back(distributor);
-						}
-						else
-						{
-							_sdMap.insert(std::make_pair<>(
-								sysId,
-								new std::vector<Data::Distributor*, tbb::scalable_allocator<Data::Distributor*>>()
-								));
-							_sdMap.at(sysId)->push_back(distributor);
-						}
-					}
+					mapDistributor(distributor);
 				}
 				return true;
 			}
@@ -146,6 +116,26 @@ namespace NLE
 			
 
 		private:
+			void mapDistributor(Data::Distributor* distributor)
+			{
+				auto& endpoints = distributor->getEndpoints();
+				for (auto& sysId : endpoints)
+				{
+					if (_sdMap.count(sysId) > 0)
+					{
+						_sdMap.at(sysId)->push_back(distributor);
+					}
+					else
+					{
+						_sdMap.insert(std::make_pair<>(
+							sysId,
+							new std::vector<Data::Distributor*, tbb::scalable_allocator<Data::Distributor*>>()
+							));
+						_sdMap.at(sysId)->push_back(distributor);
+					}
+				}
+			}
+
 			std::vector<Data::Distributor*, tbb::scalable_allocator<Data::Distributor*>> _sDistributors;
 			std::vector<Data::Distributor*, tbb::scalable_allocator<Data::Distributor*>> _msDistributors;
 
