@@ -24,7 +24,7 @@ namespace NLE
 
 			~StateManager()
 			{
-
+				release();
 			}
 
 			bool initialize()
@@ -52,6 +52,11 @@ namespace NLE
 				}
 				_sDistributorIndex.clear();
 				_msDistributorIndex.clear();
+
+				for (auto it = _sdMap.begin(); it != _sdMap.end(); ++it)
+				{
+					delete it->second;
+				}
 				_sdMap.clear();
 			}
 
