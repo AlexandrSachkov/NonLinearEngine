@@ -1,6 +1,7 @@
 #ifdef NL_S_DISTRIBUTOR_H_
 
 #include <cassert>
+#include "tbb\tbb.h"
 
 namespace NLE
 {
@@ -44,11 +45,17 @@ namespace NLE
 					uint_fast32_t change;
 
 					auto start = std::chrono::high_resolution_clock::now();
-					for (uint_fast32_t i = 0; i < changes.size(); ++i)
+					tbb::parallel_for(
+						tbb::blocked_range<size_t>(0, changes.size()),
+						[&](const tbb::blocked_range<size_t>& r)
 					{
-						change = changes[i];
-						_data[change] = src[change];
-					}
+						for (size_t i = r.begin(); i < r.end(); ++i)
+						{
+							change = changes[i];
+							_data[change] = src[change];
+						}
+					});
+
 					auto end = std::chrono::high_resolution_clock::now();
 					printf("From: %f\n", std::chrono::duration <double, std::micro>(end - start).count());
 					src.clearChanges();
@@ -62,7 +69,12 @@ namespace NLE
 				{
 					auto start = std::chrono::high_resolution_clock::now();
 					auto& dest = _containers.at(sysId)->getData();
-					std::copy(_data.begin(), _data.end(), dest.begin());
+					tbb::parallel_for(
+						tbb::blocked_range<size_t>(0, _data.size()),
+						[&](const tbb::blocked_range<size_t>& r)
+					{
+						std::copy(_data.begin() + r.begin(), _data.begin() + r.end(), dest.begin() + r.begin());
+					});
 					auto end = std::chrono::high_resolution_clock::now();
 					printf("To: %f\n", std::chrono::duration <double, std::micro>(end - start).count());
 				}

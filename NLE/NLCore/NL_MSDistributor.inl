@@ -53,27 +53,37 @@ namespace NLE
 					src.processRequests();
 
 					auto& changes = src.getChanges();
-					for (uint_fast32_t i = 0; i < changes.size(); ++i)
+					tbb::parallel_for(
+						tbb::blocked_range<size_t>(0, changes.size()),
+						[&](const tbb::blocked_range<size_t>& r)
 					{
-						if (changes[i] == 1)
+						for (uint_fast32_t i = (uint_fast8_t) r.begin(); i < r.end(); ++i)
 						{
-							_data[i] = src[i];
-							changes[i] = 0;
-						}					
-					}
+							if (changes[i] == 1)
+							{
+								_data[i] = src[i];
+								changes[i] = 0;
+							}							
+						}
+					});
 				}
 				else if (_masterHash.first == sysId)
 				{
 					auto& src = *_masterHash.second;
 					auto& changes = src.getChanges();
-					for (uint_fast32_t i = 0; i < changes.size(); ++i)
+					tbb::parallel_for(
+						tbb::blocked_range<size_t>(0, changes.size()),
+						[&](const tbb::blocked_range<size_t>& r)
 					{
-						if (changes[i] == 1)
+						for (uint_fast8_t i = (uint_fast8_t)r.begin(); i < r.end(); ++i)
 						{
-							_data[i] = src[i];
-							changes[i] = 0;
+							if (changes[i] == 1)
+							{
+								_data[i] = src[i];
+								changes[i] = 0;
+							}
 						}
-					}
+					});
 				}
 			}
 
@@ -87,13 +97,23 @@ namespace NLE
 
 					auto& destData = dest.getData();
 					assert(destData.size() == _data.size());
-					std::copy(_data.begin(), _data.end(), destData.begin());
+					tbb::parallel_for(
+						tbb::blocked_range<size_t>(0, _data.size()),
+						[&](const tbb::blocked_range<size_t>& r)
+					{
+						std::copy(_data.begin() + r.begin(), _data.begin() + r.end(), destData.begin() + r.begin());
+					});
 				}
 				else if (_masterHash.first == sysId)
 				{
 					auto& destData = _masterHash.second->getData();
 					assert(destData.size() == _data.size());
-					std::copy(_data.begin(), _data.end(), destData.begin());
+					tbb::parallel_for(
+						tbb::blocked_range<size_t>(0, _data.size()),
+						[&](const tbb::blocked_range<size_t>& r)
+					{
+						std::copy(_data.begin() + r.begin(), _data.begin() + r.end(), destData.begin() + r.begin());
+					});
 				}
 			}
 

@@ -3,7 +3,7 @@
 
 class Data{
 public:
-	Data() : _size(100)
+	Data() : _size(1000)
 	{
 	}
 	 
@@ -12,7 +12,7 @@ public:
 	}
 
 private:
-	double _data[100];
+	double _data[1000];
 	int _size;
 };
 

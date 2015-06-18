@@ -7,6 +7,7 @@
 #include <cstdint>
 #include <unordered_map>
 #include <memory>
+#include "tbb\scalable_allocator.h"
 
 namespace NLE
 {
