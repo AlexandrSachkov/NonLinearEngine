@@ -3,6 +3,7 @@
 
 #include "NL_MSDistributor.h"
 #include "NL_SDistributor.h"
+#include "tbb\tbb.h"
 #include "tbb\scalable_allocator.h"
 #include "tbb\concurrent_unordered_map.h"
 
@@ -56,10 +57,15 @@ namespace NLE
 
 			void processRequests()
 			{
-				for (auto& msDist : _msDistributors)
+				tbb::parallel_for(
+					tbb::blocked_range<size_t>(0, _msDistributors.size()),
+					[&](const tbb::blocked_range<size_t>& r)
 				{
-					msDist->processRequests();
-				}
+					for (size_t i = r.begin(); i < r.end(); ++i)
+					{
+						_msDistributors[i]->processRequests();
+					}
+				});
 			}
 
 			void distributeFrom(uint_fast8_t sysId)
@@ -67,10 +73,15 @@ namespace NLE
 				if (_sdMap.count(sysId) > 0)
 				{
 					auto distributors = _sdMap.at(sysId);
-					for (uint_fast32_t i = 0; i < distributors->size(); ++i)
+					tbb::parallel_for(
+						tbb::blocked_range<size_t>(0, distributors->size()),
+						[&](const tbb::blocked_range<size_t>& r)
 					{
-						distributors->at(i)->distributeFrom(sysId);
-					}
+						for (size_t i = r.begin(); i < r.end(); ++i)
+						{
+							distributors->at(i)->distributeFrom(sysId);
+						}
+					});
 				}
 			}
 
@@ -79,10 +90,15 @@ namespace NLE
 				if (_sdMap.count(sysId) > 0)
 				{
 					auto distributors = _sdMap.at(sysId);
-					for (uint_fast32_t i = 0; i < distributors->size(); ++i)
+					tbb::parallel_for(
+						tbb::blocked_range<size_t>(0, distributors->size()),
+						[&](const tbb::blocked_range<size_t>& r)
 					{
-						distributors->at(i)->distributeTo(sysId);
-					}
+						for (size_t i = r.begin(); i < r.end(); ++i)
+						{
+							distributors->at(i)->distributeTo(sysId);
+						}
+					});
 				}
 			}
 
