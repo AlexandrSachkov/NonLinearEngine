@@ -5,13 +5,12 @@
 #include <memory>
 #include <functional>
 
-#include "NL_StateManager.h"
-#include "NL_IEngine.h"
-
 namespace NLE 
 {
 	namespace Core 
 	{
+		class IEngine;
+		class ISystem;
 		class System
 		{
 		public:
@@ -20,6 +19,7 @@ namespace NLE
 			virtual bool initialize(IEngine& engine) = 0;
 			virtual void release() = 0;
 			virtual std::function<void()> getExecutionProcedure() = 0;	
+			virtual ISystem* getInterface() = 0;
 		};		
 	}
 }

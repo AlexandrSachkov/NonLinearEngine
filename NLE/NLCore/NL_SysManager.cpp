@@ -64,7 +64,7 @@ namespace NLE
 			return _executionDesc.at(sysId);
 		}
 
-		std::unique_ptr<System> const& SysManager::getSystem(uint_fast32_t sysId) const
+		std::unique_ptr<System> const& SysManager::getSystem(uint_fast32_t sysId)
 		{
 			return _systems.at(sysId);
 		}

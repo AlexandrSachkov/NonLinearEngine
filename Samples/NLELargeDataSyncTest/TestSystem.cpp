@@ -1,17 +1,18 @@
-#include "System.h"
+#include "TestSystem.h"
 #include "Data.h"
+#include "NLE\NLCore\NL_IEngine.h"
 
-System::System(uint_fast32_t id) : _id(id)
+TestSystem::TestSystem(uint_fast32_t id) : _id(id)
 {
 
 }
 
-System::~System()
+TestSystem::~TestSystem()
 {
 
 }
 
-bool System::initialize(NLE::Core::IEngine& iEngine)
+bool TestSystem::initialize(NLE::Core::IEngine& iEngine)
 {
 	_iEngine = &iEngine;
 	_shared = &iEngine.getSDistributor<Data>(_id).buildEndpoint(_id);
@@ -29,14 +30,19 @@ bool System::initialize(NLE::Core::IEngine& iEngine)
 	return true;
 }
 
-void System::release()
+void TestSystem::release()
 {
 
 }
 
-std::function<void()> System::getExecutionProcedure()
+std::function<void()> TestSystem::getExecutionProcedure()
 {
 	NLE::Core::Data::SContainer<Data>& shared = *_shared;
 
 	return _operation;
+}
+
+NLE::Core::ISystem* TestSystem::getInterface()
+{
+	return nullptr;
 }

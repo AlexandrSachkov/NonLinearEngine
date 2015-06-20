@@ -1,7 +1,7 @@
 #include <iostream>
 
 #include "NLE\NLCore\NL_DeviceCore.h"
-#include "System.h"
+#include "TestSystem.h"
 #include "Data.h"
 
 int main(){
@@ -20,7 +20,7 @@ int main(){
 	for (unsigned int i = 0; i < devCore.getNumHardwareThreads(); ++i)
 	{
 		devCore.installSContainer<Data>(i, 50000, 65);
-		devCore.attachSystem(i, execDesc, std::unique_ptr<System>(new System(i)));
+		devCore.attachSystem(i, execDesc, std::unique_ptr<TestSystem>(new TestSystem(i)));
 	}
 	devCore.initialize();
 

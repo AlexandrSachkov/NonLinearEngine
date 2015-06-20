@@ -4,6 +4,7 @@
 #include <memory>
 #include <cstdint>
 #include "NL_ExecutionDesc.h"
+#include "NL_StateManager.h"
 
 namespace NLE
 {

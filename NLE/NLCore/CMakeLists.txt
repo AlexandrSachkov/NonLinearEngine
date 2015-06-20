@@ -7,6 +7,7 @@ SET(HEADERS
 	NL_Distributor.h
 	NL_ExecutionDesc.h
 	NL_IEngine.h
+	NL_ISystem.h
 	NL_MasterContainer.h
 	NL_MasterContainer.inl
 	NL_MSDistributor.h

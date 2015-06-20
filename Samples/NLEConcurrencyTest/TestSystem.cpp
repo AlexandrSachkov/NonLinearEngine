@@ -1,5 +1,5 @@
 #include "TestSystem.h"
-#include "NLE\NLCore\NL_StateManager.h"
+#include "NLE\NLCore\NL_IEngine.h"
 
 TestSystem::TestSystem(uint_fast32_t id) :
 _id(id)
@@ -40,4 +40,9 @@ std::function<void()> TestSystem::getExecutionProcedure()
 
 		printf("System %i finished with result %f\n", getID(), num);
 	};
+}
+
+NLE::Core::ISystem* TestSystem::getInterface()
+{
+	return nullptr;
 }

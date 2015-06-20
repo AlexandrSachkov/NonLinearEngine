@@ -23,6 +23,7 @@ public:
 	uint_fast32_t getID();
 
 	std::function<void()> getExecutionProcedure();
+	NLE::Core::ISystem* getInterface();
 
 private:
 	uint_fast32_t _id;

@@ -4,6 +4,8 @@
 #include "NL_Scheduler.h"
 #include "NL_SysManager.h"
 #include "NL_StateManager.h"
+#include "NL_ISystem.h"
+#include <memory>
 
 namespace NLE
 {
@@ -40,6 +42,11 @@ namespace NLE
 			uint_fast32_t getNumSystems()
 			{
 				return _sysManager->getNumSystems();
+			}
+
+			ISystem* getSystemInterface(uint_fast32_t sysId)
+			{
+				return _sysManager->getSystem(sysId)->getInterface();
 			}
 
 			template <typename T>

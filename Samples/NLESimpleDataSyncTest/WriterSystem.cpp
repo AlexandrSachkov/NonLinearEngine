@@ -1,6 +1,6 @@
 #include "WriterSystem.h"
 #include "SharedDataId.h"
-
+#include "NLE\NLCore\NL_IEngine.h"
 
 WriterSystem::WriterSystem(uint_fast32_t id) :
 	_addItem(true),
@@ -68,4 +68,9 @@ std::function<void()> WriterSystem::getExecutionProcedure()
 		}
 		
 	};
+}
+
+NLE::Core::ISystem* WriterSystem::getInterface()
+{
+	return nullptr;
 }

@@ -1,5 +1,6 @@
 #include "ReaderSystem.h"
 #include "SharedDataId.h"
+#include "NLE\NLCore\NL_IEngine.h"
 
 ReaderSystem::ReaderSystem(uint_fast32_t id) :
 _id(id)
@@ -51,4 +52,9 @@ std::function<void()> ReaderSystem::getExecutionProcedure()
 		}
 		printf("\n");
 	};
+}
+
+NLE::Core::ISystem* ReaderSystem::getInterface()
+{
+	return nullptr;
 }

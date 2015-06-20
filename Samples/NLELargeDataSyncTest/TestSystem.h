@@ -10,16 +10,17 @@ class SysTask;
 class Scheduler;
 class StateManager;
 
-class System : public NLE::Core::System
+class TestSystem : public NLE::Core::System
 {
 public:
-	System(uint_fast32_t id);
-	~System();
+	TestSystem(uint_fast32_t id);
+	~TestSystem();
 
 	bool initialize(NLE::Core::IEngine& iEngine);
 	void release();
 
 	std::function<void()> getExecutionProcedure();
+	NLE::Core::ISystem* getInterface();
 
 private:
 	uint_fast32_t _id;
