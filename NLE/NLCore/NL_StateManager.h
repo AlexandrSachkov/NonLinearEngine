@@ -113,21 +113,21 @@ namespace NLE
 			}
 
 			template <typename T>
-			void installMSContainer(unsigned int id, uint_fast32_t initialSize)
+			void installMSContainer(unsigned int id, uint_fast32_t initialSize, uint_fast32_t grainSize)
 			{
 				assert(!_initialized);
 
-				Data::Distributor* distributor = new Data::MSDistributor<T>(initialSize);
+				Data::Distributor* distributor = new Data::MSDistributor<T>(initialSize, grainSize);
 				_msDistributors.push_back(distributor);
 				_msDistributorIndex.insert(std::make_pair<>(id, distributor));
 			}
 
 			template <typename T>
-			void installSContainer(unsigned int id, uint_fast32_t size)
+			void installSContainer(unsigned int id, uint_fast32_t size, uint_fast32_t grainSize)
 			{
 				assert(!_initialized);
 
-				Data::Distributor* distributor = new Data::SDistributor<T>(size, size / 4);
+				Data::Distributor* distributor = new Data::SDistributor<T>(size, size / 4, grainSize);
 				_sDistributors.push_back(distributor);
 				_sDistributorIndex.insert(std::make_pair<>(id, distributor));
 			}

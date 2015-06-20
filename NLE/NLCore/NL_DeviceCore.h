@@ -35,15 +35,15 @@ namespace NLE
 			void attachSystem(ExecutionDesc executionDesc, std::unique_ptr<System> system);
 
 			template <typename T>
-			void installMSContainer(unsigned int id, uint_fast32_t initialSize)
+			void installMSContainer(unsigned int id, uint_fast32_t initialSize, uint_fast32_t grainSize)
 			{
-				_stateManager->installMSContainer<T>(id, initialSize);
+				_stateManager->installMSContainer<T>(id, initialSize, grainSize);
 			}
 
 			template <typename T>
-			void installSContainer(unsigned int id, uint_fast32_t size)
+			void installSContainer(unsigned int id, uint_fast32_t size, uint_fast32_t grainSize)
 			{
-				_stateManager->installSContainer<T>(id, size);
+				_stateManager->installSContainer<T>(id, size, grainSize);
 			}
 
 			void setClockPeriodNs(unsigned long long periodNs);

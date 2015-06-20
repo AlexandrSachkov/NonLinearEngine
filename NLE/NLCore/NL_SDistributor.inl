@@ -10,8 +10,9 @@ namespace NLE
 		namespace Data
 		{
 			template<typename T>
-			SDistributor<T>::SDistributor(uint_fast32_t dataSize, uint_fast32_t queueSize) :
-				_queueSize(queueSize)
+			SDistributor<T>::SDistributor(uint_fast32_t dataSize, uint_fast32_t queueSize, uint_fast32_t grainSize) :
+				_queueSize(queueSize),
+				_grainSize(grainSize)
 			{
 				_data.resize(dataSize);
 			}
@@ -46,7 +47,7 @@ namespace NLE
 
 					auto start = std::chrono::high_resolution_clock::now();
 					tbb::parallel_for(
-						tbb::blocked_range<size_t>(0, changes.size(), 60),
+						tbb::blocked_range<size_t>(0, changes.size(), _grainSize),
 						[&](const tbb::blocked_range<size_t>& r)
 					{
 						for (size_t i = r.begin(); i < r.end(); ++i)
@@ -70,7 +71,7 @@ namespace NLE
 					auto start = std::chrono::high_resolution_clock::now();
 					auto& dest = _containers.at(sysId)->getData();
 					tbb::parallel_for(
-						tbb::blocked_range<size_t>(0, _data.size(), 60),
+						tbb::blocked_range<size_t>(0, _data.size(), _grainSize),
 						[&](const tbb::blocked_range<size_t>& r)
 					{
 						std::copy(_data.begin() + r.begin(), _data.begin() + r.end(), dest.begin() + r.begin());

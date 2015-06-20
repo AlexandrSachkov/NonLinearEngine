@@ -19,7 +19,7 @@ namespace NLE
 			class SDistributor : public Distributor
 			{
 			public:
-				SDistributor(uint_fast32_t dataSize, uint_fast32_t queueSize);
+				SDistributor(uint_fast32_t dataSize, uint_fast32_t queueSize, uint_fast32_t grainSize);
 				~SDistributor();
 
 				SContainer<T>& buildEndpoint(uint_fast32_t sysId);
@@ -29,6 +29,7 @@ namespace NLE
 
 			private:
 				uint_fast32_t _queueSize;
+				uint_fast32_t _grainSize;
 
 				std::vector<T, tbb::scalable_allocator<T>> _data;
 				std::unordered_map<uint_fast32_t, SContainer<T>*> _containers;

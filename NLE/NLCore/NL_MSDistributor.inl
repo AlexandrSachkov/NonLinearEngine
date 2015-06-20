@@ -9,9 +9,10 @@ namespace NLE
 		namespace Data
 		{
 			template<typename T>
-			MSDistributor<T>::MSDistributor(uint_fast32_t initialSize) :
-				_masterHash(INT_FAST8_MAX, new MasterContainer<T>(initialSize, this)),
-				_requestQueue(_requestPool)
+			MSDistributor<T>::MSDistributor(uint_fast32_t initialSize, uint_fast32_t grainSize) :
+				_masterHash(INT_FAST32_MAX, new MasterContainer<T>(initialSize, this)),
+				_requestQueue(_requestPool),
+				_grainSize(grainSize)
 			{
 				_data.reserve(initialSize);
 			}
@@ -29,7 +30,7 @@ namespace NLE
 			template<typename T>
 			MasterContainer<T>& MSDistributor<T>::buildMasterEndpoint(uint_fast32_t sysId)
 			{
-				assert(_masterHash.first == INT_FAST8_MAX);
+				assert(_masterHash.first == INT_FAST32_MAX);
 				_masterHash.first = sysId;
 				_endpoints.push_back(sysId);
 				return *_masterHash.second;
@@ -54,7 +55,7 @@ namespace NLE
 
 					auto& changes = src.getChanges();
 					tbb::parallel_for(
-						tbb::blocked_range<size_t>(0, changes.size()),
+						tbb::blocked_range<size_t>(0, changes.size(), _grainSize),
 						[&](const tbb::blocked_range<size_t>& r)
 					{
 						for (uint_fast32_t i = (uint_fast32_t) r.begin(); i < r.end(); ++i)
@@ -72,7 +73,7 @@ namespace NLE
 					auto& src = *_masterHash.second;
 					auto& changes = src.getChanges();
 					tbb::parallel_for(
-						tbb::blocked_range<size_t>(0, changes.size()),
+						tbb::blocked_range<size_t>(0, changes.size(), _grainSize),
 						[&](const tbb::blocked_range<size_t>& r)
 					{
 						for (uint_fast32_t i = (uint_fast32_t)r.begin(); i < r.end(); ++i)
@@ -98,7 +99,7 @@ namespace NLE
 					auto& destData = dest.getData();
 					assert(destData.size() == _data.size());
 					tbb::parallel_for(
-						tbb::blocked_range<size_t>(0, _data.size()),
+						tbb::blocked_range<size_t>(0, _data.size(), _grainSize),
 						[&](const tbb::blocked_range<size_t>& r)
 					{
 						std::copy(_data.begin() + r.begin(), _data.begin() + r.end(), destData.begin() + r.begin());
@@ -109,7 +110,7 @@ namespace NLE
 					auto& destData = _masterHash.second->getData();
 					assert(destData.size() == _data.size());
 					tbb::parallel_for(
-						tbb::blocked_range<size_t>(0, _data.size()),
+						tbb::blocked_range<size_t>(0, _data.size(), _grainSize),
 						[&](const tbb::blocked_range<size_t>& r)
 					{
 						std::copy(_data.begin() + r.begin(), _data.begin() + r.end(), destData.begin() + r.begin());
