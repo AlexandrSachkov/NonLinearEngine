@@ -9,6 +9,7 @@
 
 #include <cstdint>
 #include <vector>
+#include <assert.h>
 
 namespace NLE
 {
@@ -17,7 +18,8 @@ namespace NLE
 		class StateManager
 		{
 		public:
-			StateManager()
+			StateManager() :
+				_initialized(false)
 			{
 
 			}
@@ -29,6 +31,8 @@ namespace NLE
 
 			bool initialize()
 			{
+				assert(!_initialized);
+
 				for (auto distributor : _sDistributors)
 				{
 					mapDistributor(distributor);
@@ -58,6 +62,7 @@ namespace NLE
 					delete it->second;
 				}
 				_sdMap.clear();
+				_initialized = true;
 			}
 
 			void processRequests()
@@ -110,6 +115,8 @@ namespace NLE
 			template <typename T>
 			void installMSContainer(unsigned int id, uint_fast32_t initialSize)
 			{
+				assert(!_initialized);
+
 				Data::Distributor* distributor = new Data::MSDistributor<T>(initialSize);
 				_msDistributors.push_back(distributor);
 				_msDistributorIndex.insert(std::make_pair<>(id, distributor));
@@ -118,6 +125,8 @@ namespace NLE
 			template <typename T>
 			void installSContainer(unsigned int id, uint_fast32_t size)
 			{
+				assert(!_initialized);
+
 				Data::Distributor* distributor = new Data::SDistributor<T>(size, size / 4);
 				_sDistributors.push_back(distributor);
 				_sDistributorIndex.insert(std::make_pair<>(id, distributor));
@@ -164,6 +173,8 @@ namespace NLE
 			tbb::concurrent_unordered_map<unsigned int, Data::Distributor*> _msDistributorIndex;
 			
 			std::unordered_map<unsigned int, std::vector<Data::Distributor*, tbb::scalable_allocator<Data::Distributor*>>*> _sdMap;
+
+			bool _initialized;
 		};
 	}
 }
