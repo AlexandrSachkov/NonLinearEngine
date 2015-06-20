@@ -5,13 +5,15 @@
 #include "NL_SysTask.h"
 #include "NL_IEngine.h"
 #include "tbb\tbb.h"
+#include <assert.h>
 
 namespace NLE 
 {
 	namespace Core 
 	{
 		SysManager::SysManager() :
-			_numSystems(0)
+			_numSystems(0),
+			_initialized(false)
 		{
 
 		}
@@ -25,6 +27,8 @@ namespace NLE
 			std::unique_ptr<Scheduler> const& scheduler,
 			std::unique_ptr<IEngine> const& iEngine)
 		{
+			assert(!_initialized);
+
 			for (uint_fast32_t i = 0; i < _numSystems; ++i)
 			{
 				if (!getSystem(i)->initialize(i, *iEngine.get()))
@@ -34,6 +38,7 @@ namespace NLE
 					scheduler->requestExecution(i);
 				}			
 			}
+			_initialized = true;
 			return true;
 		}
 
@@ -43,6 +48,10 @@ namespace NLE
 			{
 				_systems.at(i).get()->release();
 			}
+			_systems.clear();
+			_numSystems = 0;
+
+			_initialized = false;
 		}
 
 		uint_fast32_t SysManager::getNumSystems()
@@ -62,6 +71,8 @@ namespace NLE
 
 		void SysManager::attachSystem(ExecutionDesc execDesc, std::unique_ptr<System> system)
 		{
+			assert(!_initialized);
+
 			_systems.insert(std::make_pair<>(_numSystems, std::move(system)));
 			_executionDesc.insert(std::make_pair<>(_numSystems, execDesc));
 			printf("System attached: %i\n", _numSystems);

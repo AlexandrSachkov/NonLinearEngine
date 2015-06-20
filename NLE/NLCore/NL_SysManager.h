@@ -35,6 +35,8 @@ namespace NLE
 			std::unordered_map<uint_fast32_t, std::unique_ptr<System>> _systems;
 			std::unordered_map<uint_fast32_t, ExecutionDesc> _executionDesc;
 			uint_fast32_t _numSystems;
+
+			bool _initialized;
 		};
 	}
 }
