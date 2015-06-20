@@ -78,7 +78,6 @@ namespace NLE
 			_systems.insert(std::make_pair<>(sysId, std::move(system)));
 			_executionDesc.insert(std::make_pair<>(sysId, execDesc));
 			_sysInitOrder.push_back(sysId);
-			printf("System attached: %i\n", sysId);
 			++_numSystems;
 		}
 	}

@@ -40,7 +40,6 @@ namespace NLE
 			std::unique_ptr<StateManager>& stateMngr = _stateManager;
 
 			if (!_clock->initialize([&scheduler, &sysMngr, &stateMngr](){
-				printf("Tick...\n");
 				scheduler->manageExecution(sysMngr, stateMngr);
 			}))
 				return false;

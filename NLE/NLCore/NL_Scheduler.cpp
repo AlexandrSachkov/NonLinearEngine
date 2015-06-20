@@ -30,8 +30,7 @@ namespace NLE
 
 			uint_fast32_t _numHardwareThreads = getNumHardwareThreads();
 			_taskSchedulerInit = new tbb::task_scheduler_init(_numHardwareThreads + 1);
-			_initialized = true;
-			printf("Running on %i threads.\n", _numHardwareThreads + 1);		
+			_initialized = true;	
 			return true;
 		}
 

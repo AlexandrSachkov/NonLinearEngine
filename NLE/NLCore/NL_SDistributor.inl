@@ -45,7 +45,6 @@ namespace NLE
 					auto& src = *_containers.at(sysId);
 					auto const& changes = src.getChanges();
 
-					auto start = std::chrono::high_resolution_clock::now();
 					if (changes.size() > 0)
 					{
 						tbb::parallel_for(
@@ -64,9 +63,6 @@ namespace NLE
 						++_updateCycle;
 						src.updateCycle = _updateCycle;
 					}
-
-					auto end = std::chrono::high_resolution_clock::now();
-					printf("From: %f\n", std::chrono::duration <double, std::micro>(end - start).count());
 				}
 			}
 
@@ -75,7 +71,6 @@ namespace NLE
 			{
 				if (_containers.count(sysId) > 0)
 				{
-					auto start = std::chrono::high_resolution_clock::now();
 					auto container = _containers.at(sysId);
 					if (container->updateCycle != _updateCycle)
 					{
@@ -88,9 +83,6 @@ namespace NLE
 						});
 						container->updateCycle = _updateCycle;
 					}
-
-					auto end = std::chrono::high_resolution_clock::now();
-					printf("To: %f\n", std::chrono::duration <double, std::micro>(end - start).count());
 				}
 			}
 
