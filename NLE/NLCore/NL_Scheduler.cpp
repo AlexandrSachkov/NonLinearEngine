@@ -6,13 +6,17 @@
 #include "NL_SysTask.h"
 #include "NL_StateManager.h"
 
+#include <assert.h>
+
 namespace NLE
 {
 	namespace Core
 	{
 		Scheduler::Scheduler() :
-			_scheduledSystems(10)
+			_scheduledSystems(10),
+			_initialized(false)
 		{
+			_numThreads = tbb::task_scheduler_init::default_num_threads();
 		}
 
 		Scheduler::~Scheduler()
@@ -22,9 +26,12 @@ namespace NLE
 
 		bool Scheduler::initialize()
 		{
+			assert(!_initialized);
+
 			uint_fast32_t _numHardwareThreads = getNumHardwareThreads();
 			_taskSchedulerInit = new tbb::task_scheduler_init(_numHardwareThreads + 1);
-			printf("Running on %i threads.\n", _numHardwareThreads + 1);
+			_initialized = true;
+			printf("Running on %i threads.\n", _numHardwareThreads + 1);		
 			return true;
 		}
 
@@ -32,11 +39,18 @@ namespace NLE
 		{
 			if (_taskSchedulerInit)
 				delete _taskSchedulerInit;
+			_initialized = false;
+		}
+
+		void Scheduler::setNumThreads(uint_fast32_t numThreads)
+		{
+			assert(!_initialized && numThreads > 0);
+			_numThreads = numThreads;
 		}
 
 		uint_fast32_t Scheduler::getNumHardwareThreads()
 		{
-			return tbb::task_scheduler_init::default_num_threads();
+			return _numThreads;
 		}
 
 		void Scheduler::signalFinished(uint_fast32_t sysId)

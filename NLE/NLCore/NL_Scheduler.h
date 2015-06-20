@@ -25,6 +25,7 @@ namespace NLE
 			bool initialize();
 			void release();
 
+			void setNumThreads(uint_fast32_t numThreads);
 			uint_fast32_t getNumHardwareThreads();
 			void requestExecution(uint_fast32_t sysId);
 			void signalFinished(uint_fast32_t sysId);
@@ -38,6 +39,8 @@ namespace NLE
 			tbb::concurrent_queue<uint_fast32_t> _finished;
 		
 			Data::PContainer<uint_fast32_t> _scheduledSystems;
+			uint_fast32_t _numThreads;
+			bool _initialized;
 		};
 	}
 }

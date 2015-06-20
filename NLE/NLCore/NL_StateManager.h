@@ -78,10 +78,6 @@ namespace NLE
 				if (_sdMap.count(sysId) > 0)
 				{
 					auto distributors = _sdMap.at(sysId);
-					/*for (uint_fast32_t i = 0; i < distributors->size(); ++i)
-					{
-						distributors->at(i)->distributeFrom(sysId);
-					}*/
 					tbb::parallel_for(
 						tbb::blocked_range<size_t>(0, distributors->size()),
 						[&](const tbb::blocked_range<size_t>& r)
@@ -99,10 +95,6 @@ namespace NLE
 				if (_sdMap.count(sysId) > 0)
 				{
 					auto distributors = _sdMap.at(sysId);
-					/*for (uint_fast32_t i = 0; i < distributors->size(); ++i)
-					{
-						distributors->at(i)->distributeTo(sysId);
-					}*/
 					tbb::parallel_for(
 						tbb::blocked_range<size_t>(0, distributors->size()),
 						[&](const tbb::blocked_range<size_t>& r)

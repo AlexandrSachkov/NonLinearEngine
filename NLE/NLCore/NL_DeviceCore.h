@@ -47,6 +47,7 @@ namespace NLE
 			}
 
 			void setClockPeriodNs(unsigned long long periodNs);
+			void setNumThreads(uint_fast32_t numThreads);
 			uint_fast32_t getNumHardwareThreads();
 			void run();
 			void stop();
