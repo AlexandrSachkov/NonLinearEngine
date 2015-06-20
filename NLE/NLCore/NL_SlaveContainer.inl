@@ -10,7 +10,8 @@ namespace NLE
 		{
 			template<typename T>
 			SlaveContainer<T>::SlaveContainer(size_t initialSize) :
-				_requestQueue(_requestPool)
+				_requestQueue(_requestPool),
+				updateCycle(0)
 			{
 				_data.reserve(initialSize);
 				_changes.reserve(initialSize);

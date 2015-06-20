@@ -30,6 +30,7 @@ namespace NLE
 			private:
 				uint_fast32_t _queueSize;
 				uint_fast32_t _grainSize;
+				uint_fast32_t _updateCycle;
 
 				std::vector<T, tbb::scalable_allocator<T>> _data;
 				std::unordered_map<uint_fast32_t, SContainer<T>*> _containers;

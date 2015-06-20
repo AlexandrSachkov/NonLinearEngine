@@ -48,6 +48,9 @@ namespace NLE
 
 				tbb::memory_pool<tbb::scalable_allocator<DistributorRequest>> _requestPool;
 				tbb::concurrent_queue<DistributorRequest, tbb::memory_pool_allocator<DistributorRequest>> _requestQueue;
+
+				//used by distributor
+				uint_fast32_t updateCycle;
 			};
 		}
 	}

@@ -11,7 +11,8 @@ namespace NLE
 		{
 			template<typename T>
 			MasterContainer<T>::MasterContainer(size_t initialSize, MSDistributor<T>* distributor) :
-				_distributor(distributor)
+				_distributor(distributor),
+				updateCycle(0)
 			{
 				_data.reserve(initialSize);
 				_changes.reserve(initialSize);

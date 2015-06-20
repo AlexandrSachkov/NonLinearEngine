@@ -44,6 +44,7 @@ namespace NLE
 
 				std::vector<T, tbb::scalable_allocator<T>> _data;
 				uint_fast32_t _grainSize;
+				uint_fast32_t _updateCycle;
 
 				std::pair<uint_fast32_t, MasterContainer<T>*> _masterHash;
 				std::unordered_map<uint_fast32_t, SlaveContainer<T>*> _slaves;

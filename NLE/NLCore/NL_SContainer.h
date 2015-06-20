@@ -33,6 +33,9 @@ namespace NLE
 
 				std::vector<T, tbb::scalable_allocator<T>> _data;
 				std::vector<uint_fast32_t, tbb::scalable_allocator<uint_fast32_t>> _changes;
+
+				//used by distributor
+				uint_fast32_t updateCycle;
 			};
 		}
 	}
