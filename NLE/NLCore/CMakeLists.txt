@@ -4,6 +4,7 @@ SET(HEADERS
 	NL_Clock.h
 	NL_DataRequest.h
 	NL_DeviceCore.h
+	NL_DeviceCore.inl
 	NL_Distributor.h
 	NL_ExecutionDesc.h
 	NL_IEngine.h

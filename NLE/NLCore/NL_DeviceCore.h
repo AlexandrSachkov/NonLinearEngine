@@ -3,7 +3,6 @@
 
 #include <memory>
 #include <cstdint>
-#include "NL_StateManager.h"
 
 namespace NLE
 {
@@ -36,16 +35,10 @@ namespace NLE
 			void attachSystem(uint_fast32_t sysId, ExecutionDesc& executionDesc, std::unique_ptr<System> system);
 
 			template <typename T>
-			void installMSContainer(uint_fast32_t id, uint_fast32_t initialSize, uint_fast32_t grainSize)
-			{
-				_stateManager->installMSContainer<T>(id, initialSize, grainSize);
-			}
+			void installMSContainer(uint_fast32_t id, uint_fast32_t initialSize, uint_fast32_t grainSize);
 
 			template <typename T>
-			void installSContainer(uint_fast32_t id, uint_fast32_t size, uint_fast32_t grainSize)
-			{
-				_stateManager->installSContainer<T>(id, size, grainSize);
-			}
+			void installSContainer(uint_fast32_t id, uint_fast32_t size, uint_fast32_t grainSize);
 
 			void setClockPeriodNs(unsigned long long periodNs);
 			void setNumThreads(uint_fast32_t numThreads);
@@ -70,5 +63,7 @@ namespace NLE
 		};
 	}
 }
+
+#include "NL_DeviceCore.inl"
 
 #endif
