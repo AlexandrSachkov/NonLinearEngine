@@ -29,15 +29,17 @@ namespace NLE
 		{
 			assert(!_initialized);
 
-			for (auto& system : _systems)
+			for (uint_fast32_t& sysId : _sysInitOrder)
 			{
-				if (!system.second->initialize(*iEngine.get()))
+				assert(_systems.count(sysId) > 0 && _executionDesc.count(sysId) > 0);
+				if (!_systems.at(sysId)->initialize(*iEngine.get()))
 					return false;
-				if (_executionDesc[system.first].getStartup() == Startup::AUTOMATIC)
+				if (_executionDesc.at(sysId).getStartup() == Startup::AUTOMATIC)
 				{
-					scheduler->requestExecution(system.first);
+					scheduler->requestExecution(sysId);
 				}
 			}
+
 			_initialized = true;
 			return true;
 		}
@@ -75,6 +77,7 @@ namespace NLE
 
 			_systems.insert(std::make_pair<>(sysId, std::move(system)));
 			_executionDesc.insert(std::make_pair<>(sysId, execDesc));
+			_sysInitOrder.push_back(sysId);
 			printf("System attached: %i\n", sysId);
 			++_numSystems;
 		}
