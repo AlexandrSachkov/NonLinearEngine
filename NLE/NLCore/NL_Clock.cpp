@@ -1,5 +1,6 @@
 #include "NL_Clock.h"
 #include <thread>
+#include <assert.h>
 
 namespace NLE
 {
@@ -18,6 +19,7 @@ namespace NLE
 
 		void Clock::setPeriodNs(unsigned long long periodNs)
 		{
+			assert(!_running);
 			_periodNs = std::chrono::nanoseconds(periodNs);
 		}
 
