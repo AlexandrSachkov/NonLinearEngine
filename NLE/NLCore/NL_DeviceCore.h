@@ -64,6 +64,8 @@ namespace NLE
 			std::unique_ptr<Scheduler> _scheduler;
 			std::unique_ptr<StateManager> _stateManager;
 			std::unique_ptr<IEngine> _iEngine;
+
+			bool _initialized;
 		};
 	}
 }

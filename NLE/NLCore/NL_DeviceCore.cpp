@@ -15,7 +15,8 @@ namespace NLE
 	{
 		DeviceCore *DeviceCore::_deviceCore = nullptr;
 
-		DeviceCore::DeviceCore()
+		DeviceCore::DeviceCore() :
+			_initialized(false)
 		{ 
 			_clock = std::make_unique<Clock>();
 			_sysManager = std::make_unique<SysManager>();
@@ -31,6 +32,8 @@ namespace NLE
 
 		bool DeviceCore::initialize()
 		{
+			assert(!_initialized);
+
 			std::unique_ptr<Scheduler>& scheduler = _scheduler;
 			std::unique_ptr<SysManager>& sysMngr = _sysManager;
 			std::unique_ptr<StateManager>& stateMngr = _stateManager;
@@ -48,6 +51,7 @@ namespace NLE
 			if (!_stateManager->initialize())
 				return false;
 			
+			_initialized = true;
 			return true;
 		}
 
@@ -61,6 +65,8 @@ namespace NLE
 				_scheduler->release();
 			if (_clock)
 				_clock->release();
+
+			_initialized = false;
 		}
 
 		void DeviceCore::attachSystem(ExecutionDesc executionDesc, std::unique_ptr<System> system)
