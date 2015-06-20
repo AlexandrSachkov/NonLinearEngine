@@ -91,6 +91,7 @@ namespace NLE
 
 		void DeviceCore::run()
 		{
+			assert(_initialized);
 			_clock->run();
 		}
 
