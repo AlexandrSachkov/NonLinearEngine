@@ -3,7 +3,6 @@
 
 #include <memory>
 #include <cstdint>
-#include "NL_ExecutionDesc.h"
 #include "NL_StateManager.h"
 
 namespace NLE
@@ -16,6 +15,7 @@ namespace NLE
 		class SysManager;
 		class StateManager;
 		class IEngine;
+		class ExecutionDesc;
 
 		class DeviceCore
 		{
@@ -33,7 +33,7 @@ namespace NLE
 			bool initialize();
 			void release();
 
-			void attachSystem(uint_fast32_t sysId, ExecutionDesc executionDesc, std::unique_ptr<System> system);
+			void attachSystem(uint_fast32_t sysId, ExecutionDesc& executionDesc, std::unique_ptr<System> system);
 
 			template <typename T>
 			void installMSContainer(uint_fast32_t id, uint_fast32_t initialSize, uint_fast32_t grainSize)

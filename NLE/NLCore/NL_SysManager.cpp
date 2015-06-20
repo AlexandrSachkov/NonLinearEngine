@@ -71,7 +71,7 @@ namespace NLE
 			return _systems.at(sysId);
 		}
 
-		void SysManager::attachSystem(uint_fast32_t sysId, ExecutionDesc execDesc, std::unique_ptr<System> system)
+		void SysManager::attachSystem(uint_fast32_t sysId, ExecutionDesc& execDesc, std::unique_ptr<System> system)
 		{
 			assert(!_initialized);
 

@@ -30,7 +30,7 @@ namespace NLE
 			ExecutionDesc& getExecutionDesc(uint_fast32_t sysId);
 
 			std::unique_ptr<System> const& getSystem(uint_fast32_t sysId);
-			void attachSystem(uint_fast32_t sysId, ExecutionDesc execDesc, std::unique_ptr<System> system);
+			void attachSystem(uint_fast32_t sysId, ExecutionDesc& execDesc, std::unique_ptr<System> system);
 		private:
 			std::unordered_map<uint_fast32_t, std::unique_ptr<System>> _systems;
 			std::vector<uint_fast32_t> _sysInitOrder;

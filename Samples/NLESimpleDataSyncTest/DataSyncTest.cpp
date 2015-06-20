@@ -4,6 +4,7 @@
 #include "WriterSystem.h"
 #include "ReaderSystem.h"
 #include "SharedDataId.h"
+#include "NLE\NLCore\NL_ExecutionDesc.h"
 
 int main(){
 	NLE::Core::DeviceCore& devCore = NLE::Core::DeviceCore::instance();

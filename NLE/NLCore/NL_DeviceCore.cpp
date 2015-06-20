@@ -6,6 +6,7 @@
 #include "NL_Scheduler.h"
 #include "NL_StateManager.h"
 #include "NL_IEngine.h"
+#include "NL_ExecutionDesc.h"
 
 #include <cassert>
 
@@ -69,7 +70,7 @@ namespace NLE
 			_initialized = false;
 		}
 
-		void DeviceCore::attachSystem(uint_fast32_t sysId, ExecutionDesc executionDesc, std::unique_ptr<System> system)
+		void DeviceCore::attachSystem(uint_fast32_t sysId, ExecutionDesc& executionDesc, std::unique_ptr<System> system)
 		{
 			_sysManager->attachSystem(sysId, executionDesc, std::move(system));
 		}

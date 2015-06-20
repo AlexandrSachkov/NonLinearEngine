@@ -1,6 +1,7 @@
 #include <iostream>
 #include "NLE\NLCore\NL_DeviceCore.h"
 #include "TestSystem.h"
+#include "NLE\NLCore\NL_ExecutionDesc.h"
 
 int main(){
 	NLE::Core::DeviceCore& devCore = NLE::Core::DeviceCore::instance();
