@@ -9,6 +9,7 @@
 class SysTask;
 class Scheduler;
 class StateManager;
+class WSysInterface;
 
 class WriterSystem : public NLE::Core::System
 {
@@ -17,16 +18,18 @@ public:
 	~WriterSystem();
 
 	bool initialize(NLE::Core::IEngine& iEngine);
-
+	bool initialized();
 	void release();
 	uint_fast32_t getID();
 
 	std::function<void()> getExecutionProcedure();
-	NLE::Core::ISystem* getInterface();
+	NLE::Core::ISystem& getInterface();
 
 private:
 	uint_fast32_t _id;
 	bool _addItem;
+	bool _initialized;
+	WSysInterface* _interface;
 
 	NLE::Core::Data::MasterContainer<double>* _master;
 	NLE::Core::Data::SContainer<double>* _shared;

@@ -1,10 +1,13 @@
 #include "TestSystem.h"
 #include "Data.h"
 #include "NLE\NLCore\NL_IEngine.h"
+#include "SysInterface.h"
 
-TestSystem::TestSystem(uint_fast32_t id) : _id(id)
+TestSystem::TestSystem(uint_fast32_t id) : 
+_id(id), 
+_initialized(false)
 {
-
+	_interface = new SysInterface(*this);
 }
 
 TestSystem::~TestSystem()
@@ -21,7 +24,7 @@ bool TestSystem::initialize(NLE::Core::IEngine& iEngine)
 		_sharedReader = &iEngine.getSDistributor<Data>(0).buildEndpoint(_id);
 	else
 		_sharedReader = &iEngine.getSDistributor<Data>(_id + 1).buildEndpoint(_id);
-	
+
 	_operation = [&](){
 		printf("Running task for system %i\n", _id);
 		Data data;
@@ -33,12 +36,19 @@ bool TestSystem::initialize(NLE::Core::IEngine& iEngine)
 		auto end = std::chrono::high_resolution_clock::now();
 		printf("Modify: %f\n", std::chrono::duration <double, std::micro>(end - start).count());
 	};
+
+	_initialized = true;
 	return true;
 }
 
 void TestSystem::release()
 {
+	_initialized = false;
+}
 
+bool TestSystem::initialized()
+{
+	return _initialized;
 }
 
 std::function<void()> TestSystem::getExecutionProcedure()
@@ -46,7 +56,7 @@ std::function<void()> TestSystem::getExecutionProcedure()
 	return _operation;
 }
 
-NLE::Core::ISystem* TestSystem::getInterface()
+NLE::Core::ISystem& TestSystem::getInterface()
 {
-	return nullptr;
+	return *_interface;
 }

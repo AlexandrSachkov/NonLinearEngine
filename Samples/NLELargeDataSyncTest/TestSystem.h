@@ -9,6 +9,7 @@
 class SysTask;
 class Scheduler;
 class StateManager;
+class SysInterface;
 
 class TestSystem : public NLE::Core::System
 {
@@ -19,10 +20,13 @@ public:
 	bool initialize(NLE::Core::IEngine& iEngine);
 	void release();
 
+	bool initialized();
 	std::function<void()> getExecutionProcedure();
-	NLE::Core::ISystem* getInterface();
+	NLE::Core::ISystem& getInterface();
 
 private:
+	bool _initialized;
+	SysInterface* _interface;
 	uint_fast32_t _id;
 
 	NLE::Core::Data::SContainer<Data>* _shared;

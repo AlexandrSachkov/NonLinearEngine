@@ -3,10 +3,12 @@ PROJECT(NLELargeDataSyncTest)
 SET(HEADERS 
 	TestSystem.h
 	Data.h
+	SysInterface.h
 	)
 SET(SOURCES
 	DataSyncTest.cpp 
 	TestSystem.cpp
+	SysInterface.cpp
 	)
 
 INCLUDE_DIRECTORIES(${NLE_ROOT_DIR})

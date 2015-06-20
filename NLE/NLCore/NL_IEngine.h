@@ -44,7 +44,7 @@ namespace NLE
 				return _sysManager->getNumSystems();
 			}
 
-			ISystem* getSystemInterface(uint_fast32_t sysId)
+			ISystem& getSystemInterface(uint_fast32_t sysId)
 			{
 				return _sysManager->getSystem(sysId)->getInterface();
 			}

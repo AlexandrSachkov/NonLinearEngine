@@ -4,11 +4,15 @@ SET(HEADERS
 	ReaderSystem.h
 	SharedDataId.h
 	WriterSystem.h
+	RSysInterface.h
+	WSysInterface.h
 	)
 SET(SOURCES
 	DataSyncTest.cpp 
 	ReaderSystem.cpp
 	WriterSystem.cpp
+	RSysInterface.cpp
+	WSysInterface.cpp
 	)
 
 INCLUDE_DIRECTORIES(${NLE_ROOT_DIR})

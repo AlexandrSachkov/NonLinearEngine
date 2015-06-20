@@ -8,8 +8,7 @@ namespace NLE
 		class ISystem
 		{
 		public:
-			ISystem(){}
-			~ISystem(){}
+			virtual bool initialized() = 0;
 		};
 	}
 }

@@ -1,12 +1,14 @@
 #include "WriterSystem.h"
 #include "SharedDataId.h"
 #include "NLE\NLCore\NL_IEngine.h"
+#include "WSysInterface.h"
 
 WriterSystem::WriterSystem(uint_fast32_t id) :
 	_addItem(true),
-	_id(id)
+	_id(id),
+	_initialized(false)
 {
-
+	_interface = new WSysInterface(*this);
 }
 
 WriterSystem::~WriterSystem()
@@ -20,12 +22,18 @@ bool WriterSystem::initialize(NLE::Core::IEngine& iEngine)
 	_master = &iEngine.getMSDistributor<double>(MS_CONTAINER).buildMasterEndpoint(_id);
 	_shared = &iEngine.getSDistributor<double>(S_CONTAINER).buildEndpoint(_id);
 
+	_initialized = true;
 	return true;
 }
 
 void WriterSystem::release()
 {
+	_initialized = false;
+}
 
+bool WriterSystem::initialized()
+{
+	return _initialized;
 }
 
 uint_fast32_t WriterSystem::getID()
@@ -70,7 +78,7 @@ std::function<void()> WriterSystem::getExecutionProcedure()
 	};
 }
 
-NLE::Core::ISystem* WriterSystem::getInterface()
+NLE::Core::ISystem& WriterSystem::getInterface()
 {
-	return nullptr;
+	return *_interface;
 }

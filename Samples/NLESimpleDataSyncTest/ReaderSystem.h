@@ -9,7 +9,7 @@
 class SysTask;
 class Scheduler;
 class StateManager;
-
+class RSysInterface;
 
 class ReaderSystem : public NLE::Core::System
 {
@@ -18,15 +18,17 @@ public:
 	~ReaderSystem();
 
 	bool initialize(NLE::Core::IEngine& iEngine);
-
+	bool initialized();
 	void release();
 	uint_fast32_t getID();
 
 	std::function<void()> getExecutionProcedure();
-	NLE::Core::ISystem* getInterface();
+	NLE::Core::ISystem& getInterface();
 
 private:
 	uint_fast32_t _id;
+	bool _initialized;
+	RSysInterface* _interface;
 
 	NLE::Core::Data::SlaveContainer<double>* _slave;
 	NLE::Core::Data::SContainer<double>* _shared;

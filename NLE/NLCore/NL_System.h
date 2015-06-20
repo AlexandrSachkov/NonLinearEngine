@@ -19,7 +19,7 @@ namespace NLE
 			virtual bool initialize(IEngine& engine) = 0;
 			virtual void release() = 0;
 			virtual std::function<void()> getExecutionProcedure() = 0;	
-			virtual ISystem* getInterface() = 0;
+			virtual ISystem& getInterface() = 0;
 		};		
 	}
 }

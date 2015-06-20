@@ -1,11 +1,13 @@
 #include "ReaderSystem.h"
 #include "SharedDataId.h"
 #include "NLE\NLCore\NL_IEngine.h"
+#include "RSysInterface.h"
 
 ReaderSystem::ReaderSystem(uint_fast32_t id) :
-_id(id)
+_id(id),
+_initialized(false)
 {
-
+	_interface = new RSysInterface(*this);
 }
 
 ReaderSystem::~ReaderSystem()
@@ -18,12 +20,18 @@ bool ReaderSystem::initialize(NLE::Core::IEngine& iEngine)
 	_slave = &iEngine.getMSDistributor<double>(MS_CONTAINER).buildSlaveEndpoint(_id);
 	_shared = &iEngine.getSDistributor<double>(S_CONTAINER).buildEndpoint(_id);
 
+	_initialized = true;
 	return true;
 }
 
 void ReaderSystem::release()
 {
+	_initialized = false;
+}
 
+bool ReaderSystem::initialized()
+{
+	return _initialized;
 }
 
 uint_fast32_t ReaderSystem::getID()
@@ -54,7 +62,7 @@ std::function<void()> ReaderSystem::getExecutionProcedure()
 	};
 }
 
-NLE::Core::ISystem* ReaderSystem::getInterface()
+NLE::Core::ISystem& ReaderSystem::getInterface()
 {
-	return nullptr;
+	return *_interface;
 }
