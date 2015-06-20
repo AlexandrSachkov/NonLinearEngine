@@ -12,7 +12,7 @@ TestSystem::~TestSystem()
 }
 
 bool TestSystem::initialize(
-	uint_fast8_t id,
+	uint_fast32_t id,
 	NLE::Core::IEngine& iEngine)
 {
 	_id = id;
@@ -24,7 +24,7 @@ void TestSystem::release()
 
 }
 
-uint_fast8_t TestSystem::getID()
+uint_fast32_t TestSystem::getID()
 {
 	return _id;
 }

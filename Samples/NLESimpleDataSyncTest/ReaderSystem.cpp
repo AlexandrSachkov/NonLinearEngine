@@ -12,7 +12,7 @@ ReaderSystem::~ReaderSystem()
 }
 
 bool ReaderSystem::initialize(
-	uint_fast8_t id,
+	uint_fast32_t id,
 	NLE::Core::IEngine& iEngine)
 {
 	_id = id;
@@ -28,7 +28,7 @@ void ReaderSystem::release()
 
 }
 
-uint_fast8_t ReaderSystem::getID()
+uint_fast32_t ReaderSystem::getID()
 {
 	return _id;
 }

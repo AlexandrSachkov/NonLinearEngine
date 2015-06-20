@@ -14,7 +14,7 @@ WriterSystem::~WriterSystem()
 }
 
 bool WriterSystem::initialize(
-	uint_fast8_t id,
+	uint_fast32_t id,
 	NLE::Core::IEngine& iEngine)
 {
 	_id = id;
@@ -30,7 +30,7 @@ void WriterSystem::release()
 
 }
 
-uint_fast8_t WriterSystem::getID()
+uint_fast32_t WriterSystem::getID()
 {
 	return _id;
 }

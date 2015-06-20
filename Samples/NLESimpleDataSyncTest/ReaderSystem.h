@@ -18,16 +18,16 @@ public:
 	~ReaderSystem();
 
 	bool initialize(
-		uint_fast8_t sysId,
+		uint_fast32_t sysId,
 		NLE::Core::IEngine& iEngine);
 
 	void release();
-	uint_fast8_t getID();
+	uint_fast32_t getID();
 
 	std::function<void()> getExecutionProcedure();
 
 private:
-	uint_fast8_t _id;
+	uint_fast32_t _id;
 
 	NLE::Core::Data::SlaveContainer<double>* _slave;
 	NLE::Core::Data::SContainer<double>* _shared;

@@ -27,17 +27,17 @@ namespace NLE
 			{
 			}
 
-			void startSystem(uint_fast8_t sysId)
+			void startSystem(uint_fast32_t sysId)
 			{
 				_scheduler->requestExecution(sysId);
 			}
 
-			uint_fast8_t getNumHardwareThreads()
+			uint_fast32_t getNumHardwareThreads()
 			{
 				return _scheduler->getNumHardwareThreads();
 			}
 
-			uint_fast8_t getNumSystems()
+			uint_fast32_t getNumSystems()
 			{
 				return _sysManager->getNumSystems();
 			}

@@ -27,7 +27,7 @@ namespace NLE
 			}
 
 			template<typename T>
-			MasterContainer<T>& MSDistributor<T>::buildMasterEndpoint(uint_fast8_t sysId)
+			MasterContainer<T>& MSDistributor<T>::buildMasterEndpoint(uint_fast32_t sysId)
 			{
 				assert(_masterHash.first == INT_FAST8_MAX);
 				_masterHash.first = sysId;
@@ -36,7 +36,7 @@ namespace NLE
 			}
 
 			template<typename T>
-			SlaveContainer<T>& MSDistributor<T>::buildSlaveEndpoint(uint_fast8_t sysId)
+			SlaveContainer<T>& MSDistributor<T>::buildSlaveEndpoint(uint_fast32_t sysId)
 			{
 				assert(_slaves.count(sysId) == 0);
 				_slaves.emplace(sysId, new SlaveContainer<T>(_data.size()));
@@ -45,7 +45,7 @@ namespace NLE
 			}
 
 			template<typename T>
-			void MSDistributor<T>::distributeFrom(uint_fast8_t sysId)
+			void MSDistributor<T>::distributeFrom(uint_fast32_t sysId)
 			{
 				if (_slaves.count(sysId) > 0)
 				{
@@ -57,7 +57,7 @@ namespace NLE
 						tbb::blocked_range<size_t>(0, changes.size()),
 						[&](const tbb::blocked_range<size_t>& r)
 					{
-						for (uint_fast32_t i = (uint_fast8_t) r.begin(); i < r.end(); ++i)
+						for (uint_fast32_t i = (uint_fast32_t) r.begin(); i < r.end(); ++i)
 						{
 							if (changes[i] == 1)
 							{
@@ -75,7 +75,7 @@ namespace NLE
 						tbb::blocked_range<size_t>(0, changes.size()),
 						[&](const tbb::blocked_range<size_t>& r)
 					{
-						for (uint_fast8_t i = (uint_fast8_t)r.begin(); i < r.end(); ++i)
+						for (uint_fast32_t i = (uint_fast32_t)r.begin(); i < r.end(); ++i)
 						{
 							if (changes[i] == 1)
 							{
@@ -88,7 +88,7 @@ namespace NLE
 			}
 
 			template<typename T>
-			void MSDistributor<T>::distributeTo(uint_fast8_t sysId)
+			void MSDistributor<T>::distributeTo(uint_fast32_t sysId)
 			{
 				if (_slaves.count(sysId) > 0)
 				{
@@ -166,7 +166,7 @@ namespace NLE
 			}
 
 			template<typename T>
-			std::vector<uint_fast8_t>& MSDistributor<T>::getEndpoints()
+			std::vector<uint_fast32_t>& MSDistributor<T>::getEndpoints()
 			{
 				return _endpoints;
 			}

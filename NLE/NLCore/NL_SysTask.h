@@ -13,7 +13,7 @@ namespace NLE
 		{
 
 		public:
-			SysTask(Scheduler& scheduler, uint_fast8_t sysId, std::function<void()> operation) :
+			SysTask(Scheduler& scheduler, uint_fast32_t sysId, std::function<void()> operation) :
 				_scheduler(scheduler),
 				_sysId(sysId),
 				_operation(operation)
@@ -33,7 +33,7 @@ namespace NLE
 
 		private:
 			Scheduler& _scheduler;
-			uint_fast8_t _sysId;
+			uint_fast32_t _sysId;
 			std::function<void()> _operation;
 		};
 	}

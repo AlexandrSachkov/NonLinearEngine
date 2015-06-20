@@ -22,7 +22,7 @@ namespace NLE
 
 		bool Scheduler::initialize()
 		{
-			uint_fast8_t _numHardwareThreads = getNumHardwareThreads();
+			uint_fast32_t _numHardwareThreads = getNumHardwareThreads();
 			_taskSchedulerInit = new tbb::task_scheduler_init(_numHardwareThreads + 1);
 			printf("Running on %i threads.\n", _numHardwareThreads + 1);
 			return true;
@@ -34,17 +34,17 @@ namespace NLE
 				delete _taskSchedulerInit;
 		}
 
-		uint_fast8_t Scheduler::getNumHardwareThreads()
+		uint_fast32_t Scheduler::getNumHardwareThreads()
 		{
 			return tbb::task_scheduler_init::default_num_threads();
 		}
 
-		void Scheduler::signalFinished(uint_fast8_t sysId)
+		void Scheduler::signalFinished(uint_fast32_t sysId)
 		{
 			_finished.push(sysId);
 		}
 
-		void Scheduler::requestExecution(uint_fast8_t sysId)
+		void Scheduler::requestExecution(uint_fast32_t sysId)
 		{
 			_toSchedule.push(sysId);
 		}
@@ -55,7 +55,7 @@ namespace NLE
 		{
 			stateManager->processRequests();
 
-			uint_fast8_t sysId;
+			uint_fast32_t sysId;
 			ExecutionDesc* execDesc;
 
 			if (!_finished.empty())

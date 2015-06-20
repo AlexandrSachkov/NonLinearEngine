@@ -21,7 +21,7 @@ int main(){
 	{
 		devCore.installSContainer<Data>(i, 50000);
 		devCore.attachSystem(execDesc, std::unique_ptr<System>(new System()));
-	}	
+	}
 	devCore.initialize();
 
 	printf("Started...\n");

@@ -25,7 +25,7 @@ namespace NLE
 			std::unique_ptr<Scheduler> const& scheduler,
 			std::unique_ptr<IEngine> const& iEngine)
 		{
-			for (uint_fast8_t i = 0; i < _numSystems; ++i)
+			for (uint_fast32_t i = 0; i < _numSystems; ++i)
 			{
 				if (!getSystem(i)->initialize(i, *iEngine.get()))
 					return false;
@@ -39,23 +39,23 @@ namespace NLE
 
 		void SysManager::release()
 		{
-			for (uint_fast8_t i = 0; i < _numSystems; ++i)
+			for (uint_fast32_t i = 0; i < _numSystems; ++i)
 			{
 				_systems.at(i).get()->release();
 			}
 		}
 
-		uint_fast8_t SysManager::getNumSystems()
+		uint_fast32_t SysManager::getNumSystems()
 		{
 			return _numSystems;
 		}
 
-		ExecutionDesc& SysManager::getExecutionDesc(uint_fast8_t sysId)
+		ExecutionDesc& SysManager::getExecutionDesc(uint_fast32_t sysId)
 		{
 			return _executionDesc.at(sysId);
 		}
 
-		std::unique_ptr<System> const& SysManager::getSystem(uint_fast8_t sysId) const
+		std::unique_ptr<System> const& SysManager::getSystem(uint_fast32_t sysId) const
 		{
 			return _systems.at(sysId);
 		}

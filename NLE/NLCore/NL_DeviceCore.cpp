@@ -73,7 +73,7 @@ namespace NLE
 			_clock->setPeriodNs(periodNs);
 		}
 
-		uint_fast8_t DeviceCore::getNumHardwareThreads()
+		uint_fast32_t DeviceCore::getNumHardwareThreads()
 		{
 			return _scheduler->getNumHardwareThreads();
 		}

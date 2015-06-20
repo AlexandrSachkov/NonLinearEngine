@@ -26,7 +26,7 @@ namespace NLE
 			}
 
 			template<typename T>
-			SContainer<T>& SDistributor<T>::buildEndpoint(uint_fast8_t sysId)
+			SContainer<T>& SDistributor<T>::buildEndpoint(uint_fast32_t sysId)
 			{
 				assert(_containers.count(sysId) == 0);
 				SContainer<T>* container = new SContainer<T>(_data.size(), _queueSize);
@@ -36,7 +36,7 @@ namespace NLE
 			}
 
 			template<typename T>
-			void SDistributor<T>::distributeFrom(uint_fast8_t sysId)
+			void SDistributor<T>::distributeFrom(uint_fast32_t sysId)
 			{
 				if (_containers.count(sysId) > 0)
 				{
@@ -46,7 +46,7 @@ namespace NLE
 
 					auto start = std::chrono::high_resolution_clock::now();
 					tbb::parallel_for(
-						tbb::blocked_range<size_t>(0, changes.size()),
+						tbb::blocked_range<size_t>(0, changes.size(), 60),
 						[&](const tbb::blocked_range<size_t>& r)
 					{
 						for (size_t i = r.begin(); i < r.end(); ++i)
@@ -63,14 +63,14 @@ namespace NLE
 			}
 
 			template<typename T>
-			void SDistributor<T>::distributeTo(uint_fast8_t sysId)
+			void SDistributor<T>::distributeTo(uint_fast32_t sysId)
 			{
 				if (_containers.count(sysId) > 0)
 				{
 					auto start = std::chrono::high_resolution_clock::now();
 					auto& dest = _containers.at(sysId)->getData();
 					tbb::parallel_for(
-						tbb::blocked_range<size_t>(0, _data.size()),
+						tbb::blocked_range<size_t>(0, _data.size(), 60),
 						[&](const tbb::blocked_range<size_t>& r)
 					{
 						std::copy(_data.begin() + r.begin(), _data.begin() + r.end(), dest.begin() + r.begin());
@@ -81,7 +81,7 @@ namespace NLE
 			}
 
 			template<typename T>
-			std::vector<uint_fast8_t>& SDistributor<T>::getEndpoints()
+			std::vector<uint_fast32_t>& SDistributor<T>::getEndpoints()
 			{
 				return _endpoints;
 			}

@@ -25,19 +25,19 @@ namespace NLE
 			bool initialize();
 			void release();
 
-			uint_fast8_t getNumHardwareThreads();
-			void requestExecution(uint_fast8_t sysId);
-			void signalFinished(uint_fast8_t sysId);
+			uint_fast32_t getNumHardwareThreads();
+			void requestExecution(uint_fast32_t sysId);
+			void signalFinished(uint_fast32_t sysId);
 			void manageExecution(
 				std::unique_ptr<SysManager> const& sysManager,
 				std::unique_ptr<StateManager> const& stateManager);
 
 		private:
 			tbb::task_scheduler_init* _taskSchedulerInit;		
-			tbb::concurrent_queue<uint_fast8_t> _toSchedule;
-			tbb::concurrent_queue<uint_fast8_t> _finished;
+			tbb::concurrent_queue<uint_fast32_t> _toSchedule;
+			tbb::concurrent_queue<uint_fast32_t> _finished;
 		
-			Data::PContainer<uint_fast8_t> _scheduledSystems;
+			Data::PContainer<uint_fast32_t> _scheduledSystems;
 		};
 	}
 }

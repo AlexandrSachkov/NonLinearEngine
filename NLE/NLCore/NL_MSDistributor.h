@@ -31,25 +31,25 @@ namespace NLE
 				MSDistributor(uint_fast32_t initialSize);
 				~MSDistributor();
 
-				MasterContainer<T>& buildMasterEndpoint(uint_fast8_t sysId);
-				SlaveContainer<T>& buildSlaveEndpoint(uint_fast8_t sysId);
-				void distributeFrom(uint_fast8_t sysId);
-				void distributeTo(uint_fast8_t sysId);
+				MasterContainer<T>& buildMasterEndpoint(uint_fast32_t sysId);
+				SlaveContainer<T>& buildSlaveEndpoint(uint_fast32_t sysId);
+				void distributeFrom(uint_fast32_t sysId);
+				void distributeTo(uint_fast32_t sysId);
 				void queueRequest(MasterRequest<T> request);
 				void processRequests();
-				std::vector<uint_fast8_t>& getEndpoints();
+				std::vector<uint_fast32_t>& getEndpoints();
 
 			private:
 				void localRemove(uint_fast32_t index);
 
 				std::vector<T, tbb::scalable_allocator<T>> _data;
 
-				std::pair<uint_fast8_t, MasterContainer<T>*> _masterHash;
-				std::unordered_map<uint_fast8_t, SlaveContainer<T>*> _slaves;
+				std::pair<uint_fast32_t, MasterContainer<T>*> _masterHash;
+				std::unordered_map<uint_fast32_t, SlaveContainer<T>*> _slaves;
 
 				tbb::memory_pool<tbb::scalable_allocator<MasterRequest<T>>> _requestPool;
 				tbb::concurrent_queue<MasterRequest<T>, tbb::memory_pool_allocator<MasterRequest<T>>> _requestQueue;
-				std::vector<uint_fast8_t> _endpoints;
+				std::vector<uint_fast32_t> _endpoints;
 			};
 		}
 	}

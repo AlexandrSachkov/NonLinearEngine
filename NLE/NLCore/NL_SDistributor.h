@@ -22,17 +22,17 @@ namespace NLE
 				SDistributor(uint_fast32_t dataSize, uint_fast32_t queueSize);
 				~SDistributor();
 
-				SContainer<T>& buildEndpoint(uint_fast8_t sysId);
-				void distributeFrom(uint_fast8_t sysId);
-				void distributeTo(uint_fast8_t sysId);
-				std::vector<uint_fast8_t>& getEndpoints();
+				SContainer<T>& buildEndpoint(uint_fast32_t sysId);
+				void distributeFrom(uint_fast32_t sysId);
+				void distributeTo(uint_fast32_t sysId);
+				std::vector<uint_fast32_t>& getEndpoints();
 
 			private:
 				uint_fast32_t _queueSize;
 
 				std::vector<T, tbb::scalable_allocator<T>> _data;
-				std::unordered_map<uint_fast8_t, SContainer<T>*> _containers;
-				std::vector<uint_fast8_t> _endpoints;
+				std::unordered_map<uint_fast32_t, SContainer<T>*> _containers;
+				std::vector<uint_fast32_t> _endpoints;
 			};
 		}
 	}
