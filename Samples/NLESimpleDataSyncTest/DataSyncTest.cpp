@@ -20,9 +20,9 @@ int main(){
 	devCore.installMSContainer<double>(MS_CONTAINER, 10, 6500);
 	devCore.installSContainer<double>(S_CONTAINER, 10, 6500);
 
-	devCore.attachSystem(execDesc, std::unique_ptr<WriterSystem>(new WriterSystem()));
-	devCore.attachSystem(execDesc, std::unique_ptr<ReaderSystem>(new ReaderSystem()));
-	devCore.attachSystem(execDesc, std::unique_ptr<ReaderSystem>(new ReaderSystem()));
+	devCore.attachSystem(0, execDesc, std::unique_ptr<WriterSystem>(new WriterSystem(0)));
+	devCore.attachSystem(1, execDesc, std::unique_ptr<ReaderSystem>(new ReaderSystem(1)));
+	devCore.attachSystem(2, execDesc, std::unique_ptr<ReaderSystem>(new ReaderSystem(2)));
 	
 	devCore.initialize();
 

@@ -14,9 +14,9 @@ int main(){
 			0
 		);
 
-	for (int i = 0; i < devCore.getNumHardwareThreads(); i++)
+	for (unsigned int i = 0; i < devCore.getNumHardwareThreads(); i++)
 	{
-		devCore.attachSystem(execDesc, std::unique_ptr<TestSystem>(new TestSystem()));
+		devCore.attachSystem(i, execDesc, std::unique_ptr<TestSystem>(new TestSystem(i)));
 	}
 	devCore.initialize();
 

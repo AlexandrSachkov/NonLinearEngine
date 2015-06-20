@@ -1,7 +1,8 @@
 #include "TestSystem.h"
 #include "NLE\NLCore\NL_StateManager.h"
 
-TestSystem::TestSystem()
+TestSystem::TestSystem(uint_fast32_t id) :
+_id(id)
 {
 
 }
@@ -11,11 +12,8 @@ TestSystem::~TestSystem()
 
 }
 
-bool TestSystem::initialize(
-	uint_fast32_t id,
-	NLE::Core::IEngine& iEngine)
+bool TestSystem::initialize(NLE::Core::IEngine& iEngine)
 {
-	_id = id;
 	return true;
 }
 

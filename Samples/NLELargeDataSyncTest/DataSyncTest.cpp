@@ -20,7 +20,7 @@ int main(){
 	for (unsigned int i = 0; i < devCore.getNumHardwareThreads(); ++i)
 	{
 		devCore.installSContainer<Data>(i, 50000, 65);
-		devCore.attachSystem(execDesc, std::unique_ptr<System>(new System()));
+		devCore.attachSystem(i, execDesc, std::unique_ptr<System>(new System(i)));
 	}
 	devCore.initialize();
 

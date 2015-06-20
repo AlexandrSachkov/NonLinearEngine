@@ -113,7 +113,7 @@ namespace NLE
 			}
 
 			template <typename T>
-			void installMSContainer(unsigned int id, uint_fast32_t initialSize, uint_fast32_t grainSize)
+			void installMSContainer(uint_fast32_t id, uint_fast32_t initialSize, uint_fast32_t grainSize)
 			{
 				assert(!_initialized);
 
@@ -123,7 +123,7 @@ namespace NLE
 			}
 
 			template <typename T>
-			void installSContainer(unsigned int id, uint_fast32_t size, uint_fast32_t grainSize)
+			void installSContainer(uint_fast32_t id, uint_fast32_t size, uint_fast32_t grainSize)
 			{
 				assert(!_initialized);
 
@@ -133,13 +133,13 @@ namespace NLE
 			}
 
 			template <typename T>
-			Data::SDistributor<T>& getSDistributor(unsigned int id)
+			Data::SDistributor<T>& getSDistributor(uint_fast32_t id)
 			{
 				return *static_cast<Data::SDistributor<T>*>(_sDistributorIndex.at(id));
 			}
 
 			template <typename T>
-			Data::MSDistributor<T>& getMSDistributor(unsigned int id)
+			Data::MSDistributor<T>& getMSDistributor(uint_fast32_t id)
 			{
 				return *static_cast<Data::MSDistributor<T>*>(_msDistributorIndex.at(id));
 			}
@@ -169,10 +169,10 @@ namespace NLE
 			std::vector<Data::Distributor*, tbb::scalable_allocator<Data::Distributor*>> _sDistributors;
 			std::vector<Data::Distributor*, tbb::scalable_allocator<Data::Distributor*>> _msDistributors;
 
-			tbb::concurrent_unordered_map<unsigned int, Data::Distributor*> _sDistributorIndex;
-			tbb::concurrent_unordered_map<unsigned int, Data::Distributor*> _msDistributorIndex;
+			tbb::concurrent_unordered_map<uint_fast32_t, Data::Distributor*> _sDistributorIndex;
+			tbb::concurrent_unordered_map<uint_fast32_t, Data::Distributor*> _msDistributorIndex;
 			
-			std::unordered_map<unsigned int, std::vector<Data::Distributor*, tbb::scalable_allocator<Data::Distributor*>>*> _sdMap;
+			std::unordered_map<uint_fast32_t, std::vector<Data::Distributor*, tbb::scalable_allocator<Data::Distributor*>>*> _sdMap;
 
 			bool _initialized;
 		};

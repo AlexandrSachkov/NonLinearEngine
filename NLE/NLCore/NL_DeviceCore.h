@@ -32,16 +32,16 @@ namespace NLE
 			bool initialize();
 			void release();
 
-			void attachSystem(ExecutionDesc executionDesc, std::unique_ptr<System> system);
+			void attachSystem(uint_fast32_t sysId, ExecutionDesc executionDesc, std::unique_ptr<System> system);
 
 			template <typename T>
-			void installMSContainer(unsigned int id, uint_fast32_t initialSize, uint_fast32_t grainSize)
+			void installMSContainer(uint_fast32_t id, uint_fast32_t initialSize, uint_fast32_t grainSize)
 			{
 				_stateManager->installMSContainer<T>(id, initialSize, grainSize);
 			}
 
 			template <typename T>
-			void installSContainer(unsigned int id, uint_fast32_t size, uint_fast32_t grainSize)
+			void installSContainer(uint_fast32_t id, uint_fast32_t size, uint_fast32_t grainSize)
 			{
 				_stateManager->installSContainer<T>(id, size, grainSize);
 			}

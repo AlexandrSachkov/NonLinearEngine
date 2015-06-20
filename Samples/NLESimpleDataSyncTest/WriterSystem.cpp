@@ -2,8 +2,9 @@
 #include "SharedDataId.h"
 
 
-WriterSystem::WriterSystem() :
-	_addItem(true)
+WriterSystem::WriterSystem(uint_fast32_t id) :
+	_addItem(true),
+	_id(id)
 {
 
 }
@@ -13,14 +14,11 @@ WriterSystem::~WriterSystem()
 
 }
 
-bool WriterSystem::initialize(
-	uint_fast32_t id,
-	NLE::Core::IEngine& iEngine)
+bool WriterSystem::initialize(NLE::Core::IEngine& iEngine)
 {
-	_id = id;
 
-	_master = &iEngine.getMSDistributor<double>(MS_CONTAINER).buildMasterEndpoint(id);
-	_shared = &iEngine.getSDistributor<double>(S_CONTAINER).buildEndpoint(id);
+	_master = &iEngine.getMSDistributor<double>(MS_CONTAINER).buildMasterEndpoint(_id);
+	_shared = &iEngine.getSDistributor<double>(S_CONTAINER).buildEndpoint(_id);
 
 	return true;
 }

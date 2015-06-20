@@ -43,13 +43,13 @@ namespace NLE
 			}
 
 			template <typename T>
-			Data::SDistributor<T>& getSDistributor(unsigned int id)
+			Data::SDistributor<T>& getSDistributor(uint_fast32_t id)
 			{
 				return _stateManager->getSDistributor<T>(id);
 			}
 
 			template <typename T>
-			Data::MSDistributor<T>& getMSDistributor(unsigned int id)
+			Data::MSDistributor<T>& getMSDistributor(uint_fast32_t id)
 			{
 				return _stateManager->getMSDistributor<T>(id);
 			}

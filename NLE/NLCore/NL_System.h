@@ -17,9 +17,7 @@ namespace NLE
 		public:
 			virtual ~System(){}
 
-			virtual bool initialize(
-				uint_fast32_t id,
-				IEngine& iEngine) = 0;
+			virtual bool initialize(IEngine& engine) = 0;
 			virtual void release() = 0;
 			virtual std::function<void()> getExecutionProcedure() = 0;	
 		};		

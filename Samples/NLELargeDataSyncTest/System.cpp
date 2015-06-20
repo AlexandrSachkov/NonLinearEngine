@@ -1,7 +1,7 @@
 #include "System.h"
 #include "Data.h"
 
-System::System()
+System::System(uint_fast32_t id) : _id(id)
 {
 
 }
@@ -11,15 +11,12 @@ System::~System()
 
 }
 
-bool System::initialize(
-	uint_fast32_t id,
-	NLE::Core::IEngine& iEngine)
+bool System::initialize(NLE::Core::IEngine& iEngine)
 {
-	_id = id;
 	_iEngine = &iEngine;
-	_shared = &iEngine.getSDistributor<Data>(id).buildEndpoint(id);
+	_shared = &iEngine.getSDistributor<Data>(_id).buildEndpoint(_id);
 	_operation = [&](){
-		printf("Running task for system %i\n", getID());
+		printf("Running task for system %i\n", _id);
 		Data data;
 		auto start = std::chrono::high_resolution_clock::now();
 		for (unsigned int i = 0; i < _shared->size(); ++i)
@@ -35,11 +32,6 @@ bool System::initialize(
 void System::release()
 {
 
-}
-
-uint_fast32_t System::getID()
-{
-	return _id;
 }
 
 std::function<void()> System::getExecutionProcedure()

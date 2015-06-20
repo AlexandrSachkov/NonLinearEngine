@@ -12,12 +12,10 @@ class StateManager;
 class TestSystem : public NLE::Core::System
 {
 public:
-	TestSystem();
+	TestSystem(uint_fast32_t id);
 	~TestSystem();
 
-	bool initialize(
-		uint_fast32_t sysId,
-		NLE::Core::IEngine& iEngine);
+	bool initialize(NLE::Core::IEngine& iEngine);
 
 	void release();
 	uint_fast32_t getID();

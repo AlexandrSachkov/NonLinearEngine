@@ -13,12 +13,10 @@ class StateManager;
 class WriterSystem : public NLE::Core::System
 {
 public:
-	WriterSystem();
+	WriterSystem(uint_fast32_t id);
 	~WriterSystem();
 
-	bool initialize(
-		uint_fast32_t sysId,
-		NLE::Core::IEngine& iEngine);
+	bool initialize(NLE::Core::IEngine& iEngine);
 
 	void release();
 	uint_fast32_t getID();

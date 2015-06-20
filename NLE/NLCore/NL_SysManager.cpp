@@ -29,14 +29,14 @@ namespace NLE
 		{
 			assert(!_initialized);
 
-			for (uint_fast32_t i = 0; i < _numSystems; ++i)
+			for (auto& system : _systems)
 			{
-				if (!getSystem(i)->initialize(i, *iEngine.get()))
+				if (!system.second->initialize(*iEngine.get()))
 					return false;
-				if (_executionDesc[i].getStartup() == Startup::AUTOMATIC)
+				if (_executionDesc[system.first].getStartup() == Startup::AUTOMATIC)
 				{
-					scheduler->requestExecution(i);
-				}			
+					scheduler->requestExecution(system.first);
+				}
 			}
 			_initialized = true;
 			return true;
@@ -44,9 +44,9 @@ namespace NLE
 
 		void SysManager::release()
 		{
-			for (uint_fast32_t i = 0; i < _numSystems; ++i)
+			for (auto& system : _systems)
 			{
-				_systems.at(i).get()->release();
+				system.second->release();
 			}
 			_systems.clear();
 			_numSystems = 0;
@@ -69,13 +69,13 @@ namespace NLE
 			return _systems.at(sysId);
 		}
 
-		void SysManager::attachSystem(ExecutionDesc execDesc, std::unique_ptr<System> system)
+		void SysManager::attachSystem(uint_fast32_t sysId, ExecutionDesc execDesc, std::unique_ptr<System> system)
 		{
 			assert(!_initialized);
 
-			_systems.insert(std::make_pair<>(_numSystems, std::move(system)));
-			_executionDesc.insert(std::make_pair<>(_numSystems, execDesc));
-			printf("System attached: %i\n", _numSystems);
+			_systems.insert(std::make_pair<>(sysId, std::move(system)));
+			_executionDesc.insert(std::make_pair<>(sysId, execDesc));
+			printf("System attached: %i\n", sysId);
 			++_numSystems;
 		}
 	}

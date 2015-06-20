@@ -69,9 +69,9 @@ namespace NLE
 			_initialized = false;
 		}
 
-		void DeviceCore::attachSystem(ExecutionDesc executionDesc, std::unique_ptr<System> system)
+		void DeviceCore::attachSystem(uint_fast32_t sysId, ExecutionDesc executionDesc, std::unique_ptr<System> system)
 		{
-			_sysManager->attachSystem(executionDesc, std::move(system));
+			_sysManager->attachSystem(sysId, executionDesc, std::move(system));
 		}
 
 		void DeviceCore::setClockPeriodNs(unsigned long long periodNs)

@@ -13,15 +13,11 @@ class StateManager;
 class System : public NLE::Core::System
 {
 public:
-	System();
+	System(uint_fast32_t id);
 	~System();
 
-	bool initialize(
-		uint_fast32_t sysId,
-		NLE::Core::IEngine& iEngine);
-
+	bool initialize(NLE::Core::IEngine& iEngine);
 	void release();
-	uint_fast32_t getID();
 
 	std::function<void()> getExecutionProcedure();
 

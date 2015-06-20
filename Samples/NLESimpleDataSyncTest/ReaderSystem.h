@@ -14,12 +14,10 @@ class StateManager;
 class ReaderSystem : public NLE::Core::System
 {
 public:
-	ReaderSystem();
+	ReaderSystem(uint_fast32_t id);
 	~ReaderSystem();
 
-	bool initialize(
-		uint_fast32_t sysId,
-		NLE::Core::IEngine& iEngine);
+	bool initialize(NLE::Core::IEngine& iEngine);
 
 	void release();
 	uint_fast32_t getID();
