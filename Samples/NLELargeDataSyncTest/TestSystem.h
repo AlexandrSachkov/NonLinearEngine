@@ -26,6 +26,7 @@ private:
 	uint_fast32_t _id;
 
 	NLE::Core::Data::SContainer<Data>* _shared;
+	NLE::Core::Data::SContainer<Data>* _sharedReader;
 	NLE::Core::IEngine* _iEngine;
 	std::function<void()> _operation;
 };

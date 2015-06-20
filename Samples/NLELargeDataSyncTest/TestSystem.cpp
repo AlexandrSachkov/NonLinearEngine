@@ -16,6 +16,12 @@ bool TestSystem::initialize(NLE::Core::IEngine& iEngine)
 {
 	_iEngine = &iEngine;
 	_shared = &iEngine.getSDistributor<Data>(_id).buildEndpoint(_id);
+
+	if (_id + 1 == iEngine.getNumHardwareThreads())
+		_sharedReader = &iEngine.getSDistributor<Data>(0).buildEndpoint(_id);
+	else
+		_sharedReader = &iEngine.getSDistributor<Data>(_id + 1).buildEndpoint(_id);
+	
 	_operation = [&](){
 		printf("Running task for system %i\n", _id);
 		Data data;
@@ -37,8 +43,6 @@ void TestSystem::release()
 
 std::function<void()> TestSystem::getExecutionProcedure()
 {
-	NLE::Core::Data::SContainer<Data>& shared = *_shared;
-
 	return _operation;
 }
 

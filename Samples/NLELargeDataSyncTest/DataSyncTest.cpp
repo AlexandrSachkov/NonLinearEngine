@@ -6,7 +6,7 @@
 
 int main(){
 	NLE::Core::DeviceCore& devCore = NLE::Core::DeviceCore::instance();
-	devCore.setClockPeriodNs(1000000000L);
+	devCore.setClockPeriodNs(1000000L);
 
 	NLE::Core::ExecutionDesc execDesc
 		(
@@ -19,7 +19,7 @@ int main(){
 	printf("Data size: %i", sizeof(Data));
 	for (unsigned int i = 0; i < devCore.getNumHardwareThreads(); ++i)
 	{
-		devCore.installSContainer<Data>(i, 50000, 65);
+		devCore.installSContainer<Data>(i, 25000, 65);
 		devCore.attachSystem(i, execDesc, std::unique_ptr<TestSystem>(new TestSystem(i)));
 	}
 	devCore.initialize();
