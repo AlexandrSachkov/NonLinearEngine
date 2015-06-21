@@ -14,7 +14,7 @@ namespace NLE
 {
 	namespace Core 
 	{
-		DeviceCore *DeviceCore::_deviceCore = nullptr;
+		DeviceCore* DeviceCore::_deviceCore = nullptr;
 
 		DeviceCore::DeviceCore() :
 			_initialized(false)
