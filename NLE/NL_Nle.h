@@ -1,5 +1,5 @@
-#ifndef NL_ENGINE_H_
-#define NL_ENGINE_H_
+#ifndef NL_NLE_H_
+#define NL_NLE_H_
 
 #include "NL_INle.h"
 #include "NL_DllApi.h"
