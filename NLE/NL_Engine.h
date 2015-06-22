@@ -35,13 +35,13 @@ namespace NLE
 		bool _initialized;
 	};
 
-#if defined (_NLE_DLL_) && defined(_NLE_DLL_EXPORT_)
-	extern "C" _NLE_API_ IEngine* APIENTRY GetNLE()
+#if defined (NLE_DLL) && defined(NLE_DLL_EXPORT)
+	extern "C" NLE_API IEngine* APIENTRY GetNLE()
 	{
 		return &Engine::instance();
 	}
-#elif defined(_NLE_DLL_)
-	extern "C" _NLE_API_ IEngine* GetNLE();
+#elif defined(NLE_DLL)
+	extern "C" NLE_API IEngine* GetNLE();
 #endif
 }
 

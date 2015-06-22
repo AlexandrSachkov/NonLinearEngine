@@ -1,12 +1,12 @@
 #ifndef NL_DLL_API_H_
 #define NL_DLL_API_H_
 
-#if defined(_NLE_DLL_)
+#if defined(NLE_DLL)
 #include <Windows.h>
-#if defined(_NLE_DLL_EXPORT_)
-#define _NLE_API_ __declspec(dllexport)
+#if defined(NLE_DLL_EXPORT)
+#define NLE_API __declspec(dllexport)
 #else
-#define _NLE_API_ __declspec(dllimport)
+#define NLE_API __declspec(dllimport)
 #endif
 #endif
 
