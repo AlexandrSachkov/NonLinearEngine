@@ -4,6 +4,7 @@
 #include "NL_IApplication.h"
 
 #include <assert.h>
+#include <iostream>
 
 namespace NLE
 {
@@ -23,7 +24,7 @@ namespace NLE
 		assert(!_initialized);
 
 		_procedure = [&](){
-
+			printf("Application running");
 		};
 
 		_initialized = true;

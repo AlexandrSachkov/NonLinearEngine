@@ -1,7 +1,12 @@
 PROJECT(NLE)
 
-SET(HEADERS NLE.h)
-SET(SOURCES NLE.cpp)
+SET(HEADERS 
+	NL_DllApi.h
+	NL_Engine.h
+	NL_IEngine.h
+	)
+
+SET(SOURCES NL_Engine.cpp)
 
 INCLUDE_DIRECTORIES(${PROJECT_SOURCE_DIR})
 ADD_SUBDIRECTORY(NLCore)
@@ -37,6 +42,11 @@ TARGET_LINK_LIBRARIES(NLE
 	optimized tbbmalloc_proxy
 	debug tbbproxy_debug
 	optimized tbbproxy
+	
+	debug NLCore_d
+	optimized NLCore
+	debug NLApplication_d
+	optimized NLApplication
 	)
 
 set_target_properties(NLE PROPERTIES DEBUG_POSTFIX _d)
