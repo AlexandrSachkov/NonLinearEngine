@@ -1,24 +1,24 @@
 #ifndef NL_ENGINE_H_
 #define NL_ENGINE_H_
 
-#include "NL_IEngine.h"
+#include "NL_INle.h"
 #include "NL_DllApi.h"
 
 namespace NLE
 {
-	class Engine :public IEngine
+	class Nle :public INle
 	{
 	public:
-		static IEngine& instance()
+		static INle& instance()
 		{
 			if (!_nle)
 			{
-				_nle = new Engine();
+				_nle = new Nle();
 			}
 			return *_nle;
 		};
 
-		~Engine();
+		~Nle();
 
 		bool initialize();
 		void release();
@@ -27,21 +27,21 @@ namespace NLE
 		void stop();
 
 	private:
-		Engine();
-		Engine(Engine const&) = delete;
-		void operator=(Engine const&) = delete;
+		Nle();
+		Nle(Nle const&) = delete;
+		void operator=(Nle const&) = delete;
 
-		static Engine* _nle;
+		static Nle* _nle;
 		bool _initialized;
 	};
 
 #if defined (NLE_DLL) && defined(NLE_DLL_EXPORT)
-	extern "C" NLE_API IEngine* APIENTRY GetNLE()
+	extern "C" NLE_API INle* APIENTRY GetNLE()
 	{
-		return &Engine::instance();
+		return &Nle::instance();
 	}
 #elif defined(NLE_DLL)
-	extern "C" NLE_API IEngine* GetNLE();
+	extern "C" NLE_API INle* GetNLE();
 #endif
 }
 

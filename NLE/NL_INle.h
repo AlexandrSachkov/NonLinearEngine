@@ -3,7 +3,7 @@
 
 namespace NLE
 {
-	class IEngine
+	class INle
 	{
 	public:
 		virtual bool initialize() = 0;

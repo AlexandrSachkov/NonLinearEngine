@@ -2,11 +2,12 @@ PROJECT(NLE)
 
 SET(HEADERS 
 	NL_DllApi.h
-	NL_Engine.h
-	NL_IEngine.h
+	NL_Nle.h
+	NL_INle.h
 	)
 
-SET(SOURCES NL_Engine.cpp)
+SET(SOURCES 
+	NL_Nle.cpp)
 
 INCLUDE_DIRECTORIES(
 	${PROJECT_SOURCE_DIR}

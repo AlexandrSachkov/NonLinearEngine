@@ -1,9 +1,9 @@
 #include <iostream>
-#include "NLE\NL_Engine.h"
+#include "NLE\NL_Nle.h"
 
 int main()
 {
-	NLE::IEngine* engine = NLE::GetNLE();
+	NLE::INle* engine = NLE::GetNLE();
 	if (engine->initialize())
 	{
 		printf("Engine initialized");

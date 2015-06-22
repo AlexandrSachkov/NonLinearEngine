@@ -1,4 +1,4 @@
-#include "NL_Engine.h"
+#include "NL_Nle.h"
 #include "NLCore\NL_DeviceCore.h"
 #include "NLCore\NL_ExecutionDesc.h"
 
@@ -9,9 +9,9 @@
 
 namespace NLE
 {
-	Engine* Engine::_nle = nullptr;
+	Nle* Nle::_nle = nullptr;
 
-	Engine::Engine() :
+	Nle::Nle() :
 		_initialized(false)
 	{
 		Core::DeviceCore& core = Core::DeviceCore::instance();
@@ -27,12 +27,12 @@ namespace NLE
 		core.attachSystem(0, desc, std::unique_ptr<Application>(new Application()));
 	}
 
-	Engine::~Engine()
+	Nle::~Nle()
 	{
 		release();
 	}
 
-	bool Engine::initialize()
+	bool Nle::initialize()
 	{
 		assert(!_initialized);
 		Core::DeviceCore::instance().initialize();
@@ -41,19 +41,19 @@ namespace NLE
 		return true;
 	}
 
-	void Engine::release()
+	void Nle::release()
 	{
 		Core::DeviceCore::instance().release();
 		_initialized = false;
 	}
 
-	void Engine::run()
+	void Nle::run()
 	{
 		assert(_initialized);
 		Core::DeviceCore::instance().run();
 	}
 
-	void Engine::stop()
+	void Nle::stop()
 	{
 		Core::DeviceCore::instance().stop();
 	}
