@@ -27,6 +27,11 @@ ADD_EXECUTABLE (EngineTest
   ${SOURCES}
 )
 
+ADD_CUSTOM_COMMAND(TARGET EngineTest POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_directory
+        "${NLE_SDK_INSTALL_PATH}/bin" 
+        $<TARGET_FILE_DIR:EngineTest>)              
+
 TARGET_LINK_LIBRARIES(EngineTest 
 	debug NLE_d
 	optimized NLE
