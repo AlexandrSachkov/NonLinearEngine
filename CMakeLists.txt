@@ -21,15 +21,19 @@ IF(NLE_SDK_INSTALL_PATH STREQUAL "")
 	MESSAGE(SEND_ERROR "NLE SDK Installation Directory must be specified")
 ENDIF(NLE_SDK_INSTALL_PATH STREQUAL "")
 
-SET(NLE_BUILD_SAMPLES
-	ON CACHE BOOL "Build NLE Samples")
+#Sample build toggle
+SET(NLE_BUILD_CORE_SAMPLES
+	ON CACHE BOOL "Build NLE Core Samples")
+
+SET(NLE_BUILD_ENGINE_SAMPLES
+	ON CACHE BOOL "Build NLE Engine Samples")
 
 
 SET(NLE_SAMPLES_INSTALL_PATH 
 	${NLE_SDK_INSTALL_PATH}/Samples CACHE PATH "NLE Samples Installation Directory")
-IF(NLE_BUILD_SAMPLES AND NLE_SAMPLES_INSTALL_PATH STREQUAL "")
+IF(NLE_BUILD_CORE_SAMPLES AND NLE_BUILD_ENGINE_SAMPLES AND NLE_SAMPLES_INSTALL_PATH STREQUAL "")
 	MESSAGE(SEND_ERROR "NLE Samples Installation Directory must be specified")
-ENDIF(NLE_BUILD_SAMPLES AND NLE_SAMPLES_INSTALL_PATH STREQUAL "")
+ENDIF(NLE_BUILD_CORE_SAMPLES AND NLE_BUILD_ENGINE_SAMPLES AND NLE_SAMPLES_INSTALL_PATH STREQUAL "")
 
 # NLE build config
 SET(NLE_HOST_OS CACHE STRING "Host Operating System. Choose: \n\n Windows")
@@ -42,8 +46,14 @@ IF(NLE_TARGET_ARCHITECTURE STREQUAL "")
 	MESSAGE(SEND_ERROR "Target Architecture must be specified")
 ENDIF(NLE_TARGET_ARCHITECTURE STREQUAL "")
 
+# =====================================================================================
 
-# TBB path config
+#                                     Global includes
+
+# =====================================================================================
+
+# TBB
+
 SET(NLE_TBB_INCLUDE_PATH
 	"" CACHE PATH "TBB include path")
 
@@ -66,11 +76,24 @@ IF(NLE_TBB_LIBRARY_RELEASE_PATH STREQUAL "")
 ENDIF(NLE_TBB_LIBRARY_RELEASE_PATH STREQUAL "")
 
 
+# =====================================================================================
+
+#                                     Optional system toggle
+
+# =====================================================================================
+
+# NLE
+SET(NLE_BUILD_ENGINE
+	ON CACHE BOOL "Build NonLinear Engine")
+
+# Application system
+SET(NLE_BUILD_SYSTEM_APPLICATION
+	ON CACHE BOOL "Build NLE Application system")
+
+
+# =====================================================================================
 
 SET(NLE_ROOT_DIR ${PROJECT_SOURCE_DIR})
 
 ADD_SUBDIRECTORY(NLE)
-
-IF(NLE_BUILD_SAMPLES)
-	ADD_SUBDIRECTORY(Samples)
-ENDIF(NLE_BUILD_SAMPLES)
+ADD_SUBDIRECTORY(Samples)
