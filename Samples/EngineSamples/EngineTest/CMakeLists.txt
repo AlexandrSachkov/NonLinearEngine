@@ -1,16 +1,45 @@
 PROJECT(EngineTest)
 
-SET(HEADERS "")
+SET(HEADERS 
+	NL_GlfwApplicationLayer.h
+	NL_GlfwInputMap.h
+	)
 SET(SOURCES 
 	EngineTest.cpp
+	NL_GlfwApplicationLayer.cpp
+	NL_GlfwInputMap.cpp
 	)
+
+SET(NLE_GLFW_INCLUDE_PATH
+	"" CACHE PATH "NLE GLFW include path")
+
+IF(NLE_GLFW_INCLUDE_PATH STREQUAL "")
+	MESSAGE(SEND_ERROR "NLE GLFW include path must be specified")
+ENDIF(NLE_GLFW_INCLUDE_PATH STREQUAL "")
+
+SET(NLE_GLFW_LIBRARY_DEBUG_PATH
+	"" CACHE PATH "NLE GLFW library debug path")
+
+IF(NLE_GLFW_LIBRARY_DEBUG_PATH STREQUAL "")
+	MESSAGE(SEND_ERROR "NLE GLFW library debug path must be specified")
+ENDIF(NLE_GLFW_LIBRARY_DEBUG_PATH STREQUAL "")
+
+SET(NLE_GLFW_LIBRARY_RELEASE_PATH
+	"" CACHE PATH "NLE GLFW library release path")
+
+IF(NLE_GLFW_LIBRARY_RELEASE_PATH STREQUAL "")
+	MESSAGE(SEND_ERROR "NLE GLFW library release path must be specified")
+ENDIF(NLE_GLFW_LIBRARY_RELEASE_PATH STREQUAL "")
 
 INCLUDE_DIRECTORIES(
 	${NLE_ROOT_DIR}
+	${NLE_GLFW_INCLUDE_PATH}
 	)
 
 LINK_DIRECTORIES(
 	${NLE_SDK_INSTALL_PATH}/lib
+	${NLE_GLFW_LIBRARY_DEBUG_PATH}
+	${NLE_GLFW_LIBRARY_RELEASE_PATH}
 	)
 
 IF(NLE_HOST_OS STREQUAL "Windows")
@@ -30,6 +59,9 @@ ADD_CUSTOM_COMMAND(TARGET EngineTest POST_BUILD
 TARGET_LINK_LIBRARIES(EngineTest 
 	debug NLE_d
 	optimized NLE
+	
+	debug glfw3dll
+	optimized glfw3dll
 	)
 
 set_target_properties(EngineTest PROPERTIES DEBUG_POSTFIX _d)

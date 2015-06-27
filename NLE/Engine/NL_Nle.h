@@ -36,12 +36,12 @@ namespace NLE
 	};
 
 #if defined (NLE_DLL) && defined(NLE_DLL_EXPORT)
-	extern "C" NLE_API INle* APIENTRY GetNLE()
+	extern "C" NLE_API INle* APIENTRY instance()
 	{
 		return &Nle::instance();
 	}
 #elif defined(NLE_DLL)
-	extern "C" NLE_API INle* GetNLE();
+	extern "C" NLE_API INle* instance();
 #endif
 }
 

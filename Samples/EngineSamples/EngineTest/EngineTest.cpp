@@ -1,9 +1,18 @@
 #include <iostream>
-#include "NLE\Engine\NL_Nle.h"
+#include "NL_GlfwApplicationLayer.h"
 
 int main()
 {
-	NLE::INle* engine = NLE::GetNLE();
+	NLEGlfwApplicationLayer& appLayer = NLEGlfwApplicationLayer::instance();
+
+	appLayer.setFullscreenHint(false);
+	appLayer.setWindowSizeHint(1440, 900);
+	if (!appLayer.initialize())
+	{
+		return 0;
+	}
+	appLayer.runMessageLoop();
+	/*NLE::INle* engine = NLE::instance();
 	if (engine->initialize())
 	{
 		printf("Engine initialized");
@@ -11,5 +20,6 @@ int main()
 	}
 	
 	printf("Engine test running...\n");
+	*/
 	return 0;
 }
