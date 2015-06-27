@@ -31,11 +31,14 @@ THE SOFTWARE.
 
 #include "NLE\Engine\NL_InputEvents.h"
 
-namespace NLE_INPUT
+namespace NLE
 {
-	NLE_INPUT::KEY		GLFWtoNLEKey(int key);
-	NLE_INPUT::MOUSE	GLFWtoNLEMouse(int button);
-	NLE_INPUT::MOD		GLFWtoNLEMod(int mod);
-	NLE_INPUT::ACTION	GLFWtoNLEAction(int action);
+	namespace INPUT
+	{
+		KEY		GLFWtoNLEKey(int key);
+		MOUSE	GLFWtoNLEMouse(int button);
+		MOD		GLFWtoNLEMod(int mod);
+		ACTION	GLFWtoNLEAction(int action);
+	}	
 };
 #endif

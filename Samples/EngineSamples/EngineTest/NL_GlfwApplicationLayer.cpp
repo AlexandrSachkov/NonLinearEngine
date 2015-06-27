@@ -255,11 +255,11 @@ void NLEGlfwApplicationLayer::onKeyEvent(GLFWwindow *window, int key, int scanco
 {
 	if (key == GLFW_KEY_ESCAPE) _glfwAppLayer->closeWindow();
 
-	NLE_INPUT::Event event;
-	event.eventType = NLE_INPUT::EVENT_TYPE::EVENT_KEY;
-	event.eventData.keyEvent.action = NLE_INPUT::GLFWtoNLEAction(action);
-	event.eventData.keyEvent.key = NLE_INPUT::GLFWtoNLEKey(key);
-	event.eventData.keyEvent.mods = NLE_INPUT::GLFWtoNLEMod(mods);
+	NLE::INPUT::Event event;
+	event.eventType = NLE::INPUT::EVENT_TYPE::EVENT_KEY;
+	event.eventData.keyEvent.action = NLE::INPUT::GLFWtoNLEAction(action);
+	event.eventData.keyEvent.key = NLE::INPUT::GLFWtoNLEKey(key);
+	event.eventData.keyEvent.mods = NLE::INPUT::GLFWtoNLEMod(mods);
 	event.eventData.keyEvent.scancode = scancode;
 
 	//_glfwAppLayer->getNLE()->getInputProcessor()->processInputEvent(event);
@@ -268,8 +268,8 @@ void NLEGlfwApplicationLayer::onKeyEvent(GLFWwindow *window, int key, int scanco
 //===========================================================================================================================
 void NLEGlfwApplicationLayer::onCharEvent(GLFWwindow *window, unsigned int codepoint)
 {
-	NLE_INPUT::Event event;
-	event.eventType = NLE_INPUT::EVENT_TYPE::EVENT_CHAR;
+	NLE::INPUT::Event event;
+	event.eventType = NLE::INPUT::EVENT_TYPE::EVENT_CHAR;
 	event.eventData.charEvent.code = codepoint;
 
 	//_glfwAppLayer->getNLE()->getInputProcessor()->processInputEvent(event);
@@ -278,11 +278,11 @@ void NLEGlfwApplicationLayer::onCharEvent(GLFWwindow *window, unsigned int codep
 //===========================================================================================================================
 void NLEGlfwApplicationLayer::onMouseButtonEvent(GLFWwindow *window, int button, int action, int mods)
 {
-	NLE_INPUT::Event event;
-	event.eventType = NLE_INPUT::EVENT_TYPE::EVENT_MOUSE_BUTTON;
-	event.eventData.mouseButtonEvent.action = NLE_INPUT::GLFWtoNLEAction(action);
-	event.eventData.mouseButtonEvent.button = NLE_INPUT::GLFWtoNLEMouse(button);
-	event.eventData.mouseButtonEvent.mods = NLE_INPUT::GLFWtoNLEMod(mods);
+	NLE::INPUT::Event event;
+	event.eventType = NLE::INPUT::EVENT_TYPE::EVENT_MOUSE_BUTTON;
+	event.eventData.mouseButtonEvent.action = NLE::INPUT::GLFWtoNLEAction(action);
+	event.eventData.mouseButtonEvent.button = NLE::INPUT::GLFWtoNLEMouse(button);
+	event.eventData.mouseButtonEvent.mods = NLE::INPUT::GLFWtoNLEMod(mods);
 
 	//_glfwAppLayer->getNLE()->getInputProcessor()->processInputEvent(event);
 }
@@ -290,8 +290,8 @@ void NLEGlfwApplicationLayer::onMouseButtonEvent(GLFWwindow *window, int button,
 //===========================================================================================================================
 void NLEGlfwApplicationLayer::onCursorPositionEvent(GLFWwindow *window, double xPos, double yPos)
 {
-	NLE_INPUT::Event event;
-	event.eventType = NLE_INPUT::EVENT_TYPE::EVENT_CURSOR_POSITION;
+	NLE::INPUT::Event event;
+	event.eventType = NLE::INPUT::EVENT_TYPE::EVENT_CURSOR_POSITION;
 	event.eventData.cursorPositionEvent.xPos = xPos;
 	event.eventData.cursorPositionEvent.yPos = yPos;
 
@@ -301,8 +301,8 @@ void NLEGlfwApplicationLayer::onCursorPositionEvent(GLFWwindow *window, double x
 //===========================================================================================================================
 void NLEGlfwApplicationLayer::onCursorEnterEvent(GLFWwindow *window, int entered)
 {
-	NLE_INPUT::Event event;
-	event.eventType = NLE_INPUT::EVENT_TYPE::EVENT_CURSOR_ENTER;
+	NLE::INPUT::Event event;
+	event.eventType = NLE::INPUT::EVENT_TYPE::EVENT_CURSOR_ENTER;
 	event.eventData.cursorEnterEvent.entered = entered == GL_TRUE ? true : false;
 
 	//_glfwAppLayer->getNLE()->getInputProcessor()->processInputEvent(event);
@@ -311,8 +311,8 @@ void NLEGlfwApplicationLayer::onCursorEnterEvent(GLFWwindow *window, int entered
 //===========================================================================================================================
 void NLEGlfwApplicationLayer::onScrollEvent(GLFWwindow *window, double xOffset, double yOffset)
 {
-	NLE_INPUT::Event event;
-	event.eventType = NLE_INPUT::EVENT_TYPE::EVENT_SCROLL;
+	NLE::INPUT::Event event;
+	event.eventType = NLE::INPUT::EVENT_TYPE::EVENT_SCROLL;
 	event.eventData.scrollEvent.xOffset = xOffset;
 	event.eventData.scrollEvent.yOffset = yOffset;
 
@@ -322,8 +322,8 @@ void NLEGlfwApplicationLayer::onScrollEvent(GLFWwindow *window, double xOffset, 
 //===========================================================================================================================
 void NLEGlfwApplicationLayer::onWindowPositionEvent(GLFWwindow *window, int xPos, int yPos)
 {
-	NLE_INPUT::Event event;
-	event.eventType = NLE_INPUT::EVENT_TYPE::EVENT_WINDOW_POSITION;
+	NLE::INPUT::Event event;
+	event.eventType = NLE::INPUT::EVENT_TYPE::EVENT_WINDOW_POSITION;
 	event.eventData.windowPositionEvent.xPos = xPos;
 	event.eventData.windowPositionEvent.yPos = yPos;
 
@@ -333,8 +333,8 @@ void NLEGlfwApplicationLayer::onWindowPositionEvent(GLFWwindow *window, int xPos
 //===========================================================================================================================
 void NLEGlfwApplicationLayer::onWindowSizeEvent(GLFWwindow *window, int width, int height)
 {
-	NLE_INPUT::Event event;
-	event.eventType = NLE_INPUT::EVENT_TYPE::EVENT_WINDOW_SIZE;
+	NLE::INPUT::Event event;
+	event.eventType = NLE::INPUT::EVENT_TYPE::EVENT_WINDOW_SIZE;
 	event.eventData.windowSizeEvent.width = width;
 	event.eventData.windowSizeEvent.height = height;
 
@@ -344,8 +344,8 @@ void NLEGlfwApplicationLayer::onWindowSizeEvent(GLFWwindow *window, int width, i
 //===========================================================================================================================
 void NLEGlfwApplicationLayer::onWindowCloseEvent(GLFWwindow *window)
 {
-	NLE_INPUT::Event event;
-	event.eventType = NLE_INPUT::EVENT_TYPE::EVENT_WINDOW_CLOSE;
+	NLE::INPUT::Event event;
+	event.eventType = NLE::INPUT::EVENT_TYPE::EVENT_WINDOW_CLOSE;
 
 	//_glfwAppLayer->getNLE()->getInputProcessor()->processInputEvent(event);
 }
@@ -353,8 +353,8 @@ void NLEGlfwApplicationLayer::onWindowCloseEvent(GLFWwindow *window)
 //===========================================================================================================================
 void NLEGlfwApplicationLayer::onWindowRefreshEvent(GLFWwindow *window)
 {
-	NLE_INPUT::Event event;
-	event.eventType = NLE_INPUT::EVENT_TYPE::EVENT_WINDOW_REFRESH;
+	NLE::INPUT::Event event;
+	event.eventType = NLE::INPUT::EVENT_TYPE::EVENT_WINDOW_REFRESH;
 
 	//_glfwAppLayer->getNLE()->getInputProcessor()->processInputEvent(event);
 }
@@ -362,8 +362,8 @@ void NLEGlfwApplicationLayer::onWindowRefreshEvent(GLFWwindow *window)
 //===========================================================================================================================
 void NLEGlfwApplicationLayer::onWindowFocusEvent(GLFWwindow *window, int focused)
 {
-	NLE_INPUT::Event event;
-	event.eventType = NLE_INPUT::EVENT_TYPE::EVENT_WINDOW_FOCUS;
+	NLE::INPUT::Event event;
+	event.eventType = NLE::INPUT::EVENT_TYPE::EVENT_WINDOW_FOCUS;
 	event.eventData.windowFocusEvent.focused = focused == GL_TRUE ? true : false;
 
 	//_glfwAppLayer->getNLE()->getInputProcessor()->processInputEvent(event);
@@ -372,8 +372,8 @@ void NLEGlfwApplicationLayer::onWindowFocusEvent(GLFWwindow *window, int focused
 //===========================================================================================================================
 void NLEGlfwApplicationLayer::onWindowIconifyEvent(GLFWwindow *window, int iconified)
 {
-	NLE_INPUT::Event event;
-	event.eventType = NLE_INPUT::EVENT_TYPE::EVENT_WINDOW_ICONIFY;
+	NLE::INPUT::Event event;
+	event.eventType = NLE::INPUT::EVENT_TYPE::EVENT_WINDOW_ICONIFY;
 	event.eventData.windowIconifyEvent.iconified = iconified == GL_TRUE ? true : false;
 
 	//_glfwAppLayer->getNLE()->getInputProcessor()->processInputEvent(event);
@@ -382,8 +382,8 @@ void NLEGlfwApplicationLayer::onWindowIconifyEvent(GLFWwindow *window, int iconi
 //===========================================================================================================================
 void NLEGlfwApplicationLayer::onClipboardCopyEvent()
 {
-	NLE_INPUT::Event event;
-	event.eventType = NLE_INPUT::EVENT_TYPE::EVENT_CLIPBOARD_COPY;
+	NLE::INPUT::Event event;
+	event.eventType = NLE::INPUT::EVENT_TYPE::EVENT_CLIPBOARD_COPY;
 
 	//_glfwAppLayer->getNLE()->getInputProcessor()->processInputEvent(event);
 }
@@ -391,8 +391,8 @@ void NLEGlfwApplicationLayer::onClipboardCopyEvent()
 //===========================================================================================================================
 void NLEGlfwApplicationLayer::onClipboardCutEvent()
 {
-	NLE_INPUT::Event event;
-	event.eventType = NLE_INPUT::EVENT_TYPE::EVENT_CLIPBOARD_CUT;
+	NLE::INPUT::Event event;
+	event.eventType = NLE::INPUT::EVENT_TYPE::EVENT_CLIPBOARD_CUT;
 
 	//_glfwAppLayer->getNLE()->getInputProcessor()->processInputEvent(event);
 }
@@ -400,24 +400,8 @@ void NLEGlfwApplicationLayer::onClipboardCutEvent()
 //===========================================================================================================================
 void NLEGlfwApplicationLayer::onClipboardPasteEvent()
 {
-	NLE_INPUT::Event event;
-	event.eventType = NLE_INPUT::EVENT_TYPE::EVENT_CLIPBOARD_PASTE;
+	NLE::INPUT::Event event;
+	event.eventType = NLE::INPUT::EVENT_TYPE::EVENT_CLIPBOARD_PASTE;
 
 	//_glfwAppLayer->getNLE()->getInputProcessor()->processInputEvent(event);
 }
-
-/*
-//===========================================================================================================================
-int main(int argc, const char* argv[])
-{
-	NLEGlfwApplicationLayer& appLayer = NLEGlfwApplicationLayer::instance();
-
-	appLayer.setFullscreenHint(false);
-	appLayer.setWindowSizeHint(1440, 900);
-	if (!appLayer.initialize())
-	{
-		Sleep(10000);
-		return 0;
-	}
-	return 0;
-}*/

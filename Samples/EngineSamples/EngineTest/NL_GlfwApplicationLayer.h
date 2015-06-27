@@ -63,7 +63,6 @@ public:
 	void copyText(std::wstring text);
 	std::wstring pasteText();
 
-	bool bindInputEventCallback(void(*processEvent)(NLE_INPUT::Event event));
 	NLE::INle* getNLE();
 
 private:	
