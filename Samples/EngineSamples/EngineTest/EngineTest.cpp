@@ -11,7 +11,7 @@ int main()
 	{
 		return 0;
 	}
-	appLayer.runMessageLoop();
+	appLayer.run();
 	/*NLE::INle* engine = NLE::instance();
 	if (engine->initialize())
 	{

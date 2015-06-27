@@ -3,6 +3,7 @@
 
 #include <memory>
 #include <cstdint>
+#include <functional>
 
 namespace NLE
 {
@@ -32,6 +33,7 @@ namespace NLE
 			bool initialize();
 			void release();
 
+			void attachUITheadOperation(unsigned long long periodNs, std::function<void()> uiOperation);
 			void attachSystem(uint_fast32_t sysId, ExecutionDesc& executionDesc, std::unique_ptr<System> system);
 
 			template <typename T>
@@ -60,6 +62,8 @@ namespace NLE
 			std::unique_ptr<IEngine> _iEngine;
 
 			bool _initialized;
+
+			std::function<void()> _uiOperation;
 		};
 	}
 }

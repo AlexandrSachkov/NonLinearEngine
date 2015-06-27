@@ -4,6 +4,7 @@ SET(HEADERS
 	NL_Application.h
 	NL_IApplication.h
 	NL_InputEvents.h
+	NL_InputProcessor.h
 	NL_DllApi.h
 	NL_Nle.h
 	NL_INle.h
@@ -12,12 +13,12 @@ SET(HEADERS
 SET(SOURCES 
 	NL_Application.cpp
 	NL_IApplication.cpp
+	NL_InputProcessor.cpp
 	NL_Nle.cpp
 	)
 
 
 INCLUDE_DIRECTORIES(
-	${PROJECT_SOURCE_DIR}
 	${NLE_SDK_INSTALL_PATH}/include/NLE
 	${NLE_TBB_INCLUDE_PATH}
 	)

@@ -35,12 +35,12 @@ namespace NLE
 		{
 			assert(!_initialized);
 
-			std::unique_ptr<Scheduler>& scheduler = _scheduler;
-			std::unique_ptr<SysManager>& sysMngr = _sysManager;
-			std::unique_ptr<StateManager>& stateMngr = _stateManager;
-
-			if (!_clock->initialize([&scheduler, &sysMngr, &stateMngr](){
-				scheduler->manageExecution(sysMngr, stateMngr);
+			if (!_clock->initialize([&](){
+				if (_uiOperation)
+				{
+					_uiOperation();
+				}
+				_scheduler->manageExecution(_sysManager, _stateManager);
 			}))
 				return false;
 				
@@ -67,6 +67,12 @@ namespace NLE
 				_clock->release();
 
 			_initialized = false;
+		}
+
+		void DeviceCore::attachUITheadOperation(unsigned long long periodNs, std::function<void()> uiOperation)
+		{
+			assert(!_initialized);
+			_uiOperation = uiOperation;
 		}
 
 		void DeviceCore::attachSystem(uint_fast32_t sysId, ExecutionDesc& executionDesc, std::unique_ptr<System> system)

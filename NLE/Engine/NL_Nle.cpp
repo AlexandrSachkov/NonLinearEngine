@@ -3,6 +3,7 @@
 #include "NLCore\NL_DeviceCore.h"
 #include "NLCore\NL_ExecutionDesc.h"
 #include "NL_Application.h"
+#include "NL_InputEvents.h"
 
 #include <assert.h>
 #include <memory>
@@ -21,7 +22,7 @@ namespace NLE
 			NLE::Core::Priority::HIGH,
 			NLE::Core::Execution::RECURRING,
 			NLE::Core::Startup::AUTOMATIC,
-			16666666L
+			16666666L	//60 FPS
 		);
 
 		core.attachSystem(0, desc, std::unique_ptr<Application>(new Application()));
@@ -56,5 +57,15 @@ namespace NLE
 	void Nle::stop()
 	{
 		Core::DeviceCore::instance().stop();
+	}
+
+	void Nle::attachEventPollingOperation(std::function<void()> operation)
+	{
+		Core::DeviceCore::instance().attachUITheadOperation(0L, operation);
+	}
+
+	void Nle::processEvent(INPUT::Event& event)
+	{
+
 	}
 }

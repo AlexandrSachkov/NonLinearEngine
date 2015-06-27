@@ -26,6 +26,9 @@ namespace NLE
 		void run();
 		void stop();
 
+		void attachEventPollingOperation(std::function<void()> operation);
+		void processEvent(INPUT::Event& event);
+
 	private:
 		Nle();
 		Nle(Nle const&) = delete;

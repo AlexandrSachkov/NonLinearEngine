@@ -57,7 +57,7 @@ public:
 	void restore();
 	void show();
 	void hide();
-	int runMessageLoop();
+	void run();
 	void closeWindow();
 
 	void copyText(std::wstring text);
