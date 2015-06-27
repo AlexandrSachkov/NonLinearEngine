@@ -2,7 +2,7 @@
 
 #include "NLCore\NL_DeviceCore.h"
 #include "NLCore\NL_ExecutionDesc.h"
-#include "NLApplication\NL_Application.h"
+#include "NL_Application.h"
 
 #include <assert.h>
 #include <memory>

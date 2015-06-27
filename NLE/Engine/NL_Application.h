@@ -4,12 +4,18 @@
 #include "NLCore\NL_System.h"
 #include <functional>
 
+namespace sf
+{
+	class Window;
+}
+
 namespace NLE
 {
 	class Core::IEngine;
 	class Core::ISystem;
 	class IApplication;
-
+	class Window;
+	
 	class Application : public Core::System
 	{
 	public:
@@ -27,6 +33,7 @@ namespace NLE
 		bool _initialized;
 		std::function<void()> _procedure;
 		IApplication* _interface;
+		sf::Window* _window;
 	};
 }
 

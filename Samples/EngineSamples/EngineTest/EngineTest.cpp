@@ -1,5 +1,5 @@
 #include <iostream>
-#include "NLE\NLE\NL_Nle.h"
+#include "NLE\Engine\NL_Nle.h"
 
 int main()
 {

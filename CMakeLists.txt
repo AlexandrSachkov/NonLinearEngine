@@ -86,10 +86,6 @@ ENDIF(NLE_TBB_LIBRARY_RELEASE_PATH STREQUAL "")
 SET(NLE_BUILD_ENGINE
 	ON CACHE BOOL "Build NonLinear Engine")
 
-# Application system
-SET(NLE_BUILD_SYSTEM_APPLICATION
-	ON CACHE BOOL "Build NLE Application system")
-
 
 # =====================================================================================
 
