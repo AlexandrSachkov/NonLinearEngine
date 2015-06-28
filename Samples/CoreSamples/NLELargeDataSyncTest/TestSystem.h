@@ -21,7 +21,7 @@ public:
 	void release();
 
 	bool initialized();
-	std::function<void()> getExecutionProcedure();
+	std::function<void()> const& getExecutionProcedure();
 	NLE::Core::ISystem& getInterface();
 
 private:

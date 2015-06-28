@@ -51,7 +51,7 @@ bool TestSystem::initialized()
 	return _initialized;
 }
 
-std::function<void()> TestSystem::getExecutionProcedure()
+std::function<void()> const& TestSystem::getExecutionProcedure()
 {
 	return _operation;
 }

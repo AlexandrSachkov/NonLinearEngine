@@ -16,6 +16,18 @@ TestSystem::~TestSystem()
 
 bool TestSystem::initialize(NLE::Core::IEngine& iEngine)
 {
+	_procedure = [&](){
+		printf("Running task for system %i\n", getID());
+
+		double num = 2000;
+		for (int i = 0; i < 1000000000; i++)
+		{
+			num += sqrt(num) / 2;
+		}
+
+		printf("System %i finished with result %f\n", getID(), num);
+	};
+
 	_initialized = true;
 	return true;
 }
@@ -36,19 +48,9 @@ uint_fast32_t TestSystem::getID()
 	return _id;
 }
 
-std::function<void()> TestSystem::getExecutionProcedure()
+std::function<void()> const& TestSystem::getExecutionProcedure()
 {
-	return [this](){
-		printf("Running task for system %i\n", getID());
-
-		double num = 2000;
-		for (int i = 0; i < 1000000000; i++)
-		{
-			num += sqrt(num) / 2;
-		}
-
-		printf("System %i finished with result %f\n", getID(), num);
-	};
+	return _procedure;
 }
 
 NLE::Core::ISystem& TestSystem::getInterface()

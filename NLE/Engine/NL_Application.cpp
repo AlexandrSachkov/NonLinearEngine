@@ -42,7 +42,7 @@ namespace NLE
 		return _initialized;
 	}
 
-	std::function<void()> Application::getExecutionProcedure()
+	std::function<void()> const& Application::getExecutionProcedure()
 	{
 		return _procedure;
 	}

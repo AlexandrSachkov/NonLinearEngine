@@ -21,7 +21,7 @@ namespace NLE
 		void release();
 		bool initialized();
 
-		std::function<void()> getExecutionProcedure();
+		std::function<void()> const& getExecutionProcedure();
 		Core::ISystem& getInterface();
 
 	private:

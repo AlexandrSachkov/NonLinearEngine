@@ -22,7 +22,7 @@ public:
 	void release();
 	uint_fast32_t getID();
 
-	std::function<void()> getExecutionProcedure();
+	std::function<void()> const& getExecutionProcedure();
 	NLE::Core::ISystem& getInterface();
 
 private:
@@ -30,6 +30,7 @@ private:
 	bool _addItem;
 	bool _initialized;
 	WSysInterface* _interface;
+	std::function<void()> _procedure;
 
 	NLE::Core::Data::MasterContainer<double>* _master;
 	NLE::Core::Data::SContainer<double>* _shared;

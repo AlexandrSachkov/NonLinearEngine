@@ -22,13 +22,14 @@ public:
 	void release();
 	uint_fast32_t getID();
 
-	std::function<void()> getExecutionProcedure();
+	std::function<void()> const& getExecutionProcedure();
 	NLE::Core::ISystem& getInterface();
 
 private:
 	uint_fast32_t _id;
 	bool _initialized;
 	RSysInterface* _interface;
+	std::function<void()> _procedure;
 
 	NLE::Core::Data::SlaveContainer<double>* _slave;
 	NLE::Core::Data::SContainer<double>* _shared;

@@ -20,6 +20,22 @@ bool ReaderSystem::initialize(NLE::Core::IEngine& iEngine)
 	_slave = &iEngine.getMSDistributor<double>(MS_CONTAINER).buildSlaveEndpoint(_id);
 	_shared = &iEngine.getSDistributor<double>(S_CONTAINER).buildEndpoint(_id);
 
+	_procedure = [&](){
+		printf("Reader #%i\n", getID());
+		printf("SContainer:\n");
+		for (unsigned int i = 0; i < _shared->size(); ++i)
+		{
+			printf("%f\n", (*_shared)[i]);
+		}
+		printf("\n");
+
+		printf("MSContainer:\n");
+		for (unsigned int i = 0; i < _slave->size(); ++i)
+		{
+			printf("%f\n", (*_slave)[i]);
+		}
+		printf("\n");
+	};
 	_initialized = true;
 	return true;
 }
@@ -39,27 +55,9 @@ uint_fast32_t ReaderSystem::getID()
 	return _id;
 }
 
-std::function<void()> ReaderSystem::getExecutionProcedure()
+std::function<void()> const& ReaderSystem::getExecutionProcedure()
 {
-	NLE::Core::Data::SlaveContainer<double>& slave = *_slave;
-	NLE::Core::Data::SContainer<double>& shared = *_shared;
-
-	return [this, &slave, &shared](){
-		printf("Reader #%i\n", getID());
-		printf("SContainer:\n");
-		for (unsigned int i = 0; i < shared.size(); ++i)
-		{
-			printf("%f\n", shared[i]);
-		}
-		printf("\n");
-
-		printf("MSContainer:\n");
-		for (unsigned int i = 0; i < slave.size(); ++i)
-		{
-			printf("%f\n", slave[i]);
-		}
-		printf("\n");
-	};
+	return _procedure;
 }
 
 NLE::Core::ISystem& ReaderSystem::getInterface()
