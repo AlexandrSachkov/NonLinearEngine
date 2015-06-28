@@ -18,8 +18,10 @@ namespace NLE
 
 	bool InputProcessor::initialize(Core::IEngine& engine)
 	{
+		assert(!_initialized && _eventPoller);
 
 		_procedure = [&](){
+			_eventPoller();
 		};
 
 		_initialized = true;
@@ -48,10 +50,11 @@ namespace NLE
 
 	void InputProcessor::attachEventPollingOperation(std::function<void()> operation)
 	{
+		_eventPoller = operation;
 	}
 
 	void InputProcessor::processEvent(INPUT::Event& event)
 	{
+		printf("Processing event\n");
 	}
 }
-
