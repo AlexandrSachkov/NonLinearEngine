@@ -13,7 +13,7 @@ namespace NLE
 		{
 
 		public:
-			AsyncTask(Scheduler& scheduler, uint_fast32_t sysId, std::function<void()> operation) :
+			AsyncTask(Scheduler& scheduler, uint_fast32_t sysId, std::function<void()> const& operation) :
 				_scheduler(scheduler),
 				_sysId(sysId),
 				_operation(operation)

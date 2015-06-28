@@ -106,7 +106,7 @@ namespace NLE
 					{
 						execDesc->resetStartTime();
 						
-						std::function<void()> procedure = sysManager->getSystem(sysId)->getExecutionProcedure();
+						std::function<void()> const& procedure = sysManager->getSystem(sysId)->getExecutionProcedure();
 						AsyncTask* task = new (tbb::task::allocate_root())NLE::Core::AsyncTask(*this, sysId, procedure);
 						switch (execDesc->getPriority())
 						{
@@ -139,7 +139,7 @@ namespace NLE
 					execDesc = &sysManager->getExecutionDesc(sysId);
 					execDesc->resetStartTime();
 
-					std::function<void()> procedure = sysManager->getSystem(sysId)->getExecutionProcedure();
+					std::function<void()> const& procedure = sysManager->getSystem(sysId)->getExecutionProcedure();
 					SyncTask task(*this, sysId, procedure);
 					task.execute();
 				}

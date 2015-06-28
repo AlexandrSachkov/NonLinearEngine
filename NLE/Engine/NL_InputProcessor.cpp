@@ -57,7 +57,7 @@ namespace NLE
 		return *this;
 	}
 
-	void InputProcessor::attachEventPollingOperation(std::function<void()> operation)
+	void InputProcessor::attachEventPollingOperation(std::function<void()> const& operation)
 	{
 		assert(!_initialized);
 		_eventPoller = operation;

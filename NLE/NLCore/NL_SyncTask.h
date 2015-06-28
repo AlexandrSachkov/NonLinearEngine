@@ -12,7 +12,7 @@ namespace NLE
 		{
 
 		public:
-			SyncTask(Scheduler& scheduler, uint_fast32_t sysId, std::function<void()> operation) :
+			SyncTask(Scheduler& scheduler, uint_fast32_t sysId, std::function<void()> const& operation) :
 				_scheduler(scheduler),
 				_sysId(sysId),
 				_operation(operation)

@@ -14,7 +14,7 @@ namespace NLE
 	class IInputProcessor : public Core::ISystem
 	{
 	public:
-		virtual void attachEventPollingOperation(std::function<void()> operation) = 0;
+		virtual void attachEventPollingOperation(std::function<void()> const& operation) = 0;
 		virtual void processEvent(INPUT::Event& event) = 0;
 	};
 }

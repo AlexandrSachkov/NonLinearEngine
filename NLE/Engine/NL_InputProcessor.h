@@ -28,7 +28,7 @@ namespace NLE
 		std::function<void()> const& getExecutionProcedure();
 		Core::ISystem& getInterface();
 
-		void attachEventPollingOperation(std::function<void()> operation);
+		void attachEventPollingOperation(std::function<void()> const& operation);
 		void processEvent(INPUT::Event& event);
 
 	private:
