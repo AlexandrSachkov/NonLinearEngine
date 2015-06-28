@@ -2,6 +2,7 @@
 #define TEST_SYSTEM_H_
 
 #include "NLE\NLCore\NL_System.h"
+#include "NLE\NLCore\NL_ISystem.h"
 #include <memory>
 
 class SysTask;
@@ -9,7 +10,7 @@ class Scheduler;
 class StateManager;
 class SysInterface;
 
-class TestSystem : public NLE::Core::System
+class TestSystem : public NLE::Core::System, public NLE::Core::ISystem
 {
 public:
 	TestSystem(uint_fast32_t id);
@@ -26,7 +27,6 @@ public:
 private:
 	uint_fast32_t _id;
 	bool _initialized;
-	SysInterface* _interface;
 	std::function<void()> _procedure;
 };
 

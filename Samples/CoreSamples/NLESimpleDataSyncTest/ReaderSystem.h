@@ -4,6 +4,7 @@
 #include "NLE\NLCore\NL_System.h"
 #include "NLE\NLCore\NL_SlaveContainer.h"
 #include "NLE\NLCore\NL_SContainer.h"
+#include "NLE\NLCore\NL_ISystem.h"
 #include <memory>
 
 class SysTask;
@@ -11,7 +12,7 @@ class Scheduler;
 class StateManager;
 class RSysInterface;
 
-class ReaderSystem : public NLE::Core::System
+class ReaderSystem : public NLE::Core::System, public NLE::Core::ISystem
 {
 public:
 	ReaderSystem(uint_fast32_t id);
@@ -28,7 +29,6 @@ public:
 private:
 	uint_fast32_t _id;
 	bool _initialized;
-	RSysInterface* _interface;
 	std::function<void()> _procedure;
 
 	NLE::Core::Data::SlaveContainer<double>* _slave;

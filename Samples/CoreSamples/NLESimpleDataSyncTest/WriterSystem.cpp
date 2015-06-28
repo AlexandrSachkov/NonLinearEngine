@@ -1,14 +1,13 @@
 #include "WriterSystem.h"
 #include "SharedDataId.h"
 #include "NLE\NLCore\NL_IEngine.h"
-#include "WSysInterface.h"
 
 WriterSystem::WriterSystem(uint_fast32_t id) :
 	_addItem(true),
 	_id(id),
 	_initialized(false)
 {
-	_interface = new WSysInterface(*this);
+
 }
 
 WriterSystem::~WriterSystem()
@@ -76,5 +75,5 @@ std::function<void()> const& WriterSystem::getExecutionProcedure()
 
 NLE::Core::ISystem& WriterSystem::getInterface()
 {
-	return *_interface;
+	return *this;
 }

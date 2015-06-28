@@ -1,7 +1,6 @@
 #include "NL_Application.h"
 #include "NLCore\NL_IEngine.h"
 #include "NLCore\NL_ISystem.h"
-#include "NL_IApplication.h"
 
 #include <assert.h>
 #include <iostream>
@@ -11,7 +10,7 @@ namespace NLE
 	Application::Application() :
 		_initialized(false)
 	{
-		_interface = new IApplication(*this);
+
 	}
 
 	Application::~Application()
@@ -49,6 +48,6 @@ namespace NLE
 
 	Core::ISystem& Application::getInterface()
 	{
-		return *_interface;
+		return *this;
 	}
 }

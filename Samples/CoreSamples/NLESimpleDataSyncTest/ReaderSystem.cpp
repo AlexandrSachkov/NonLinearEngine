@@ -1,13 +1,12 @@
 #include "ReaderSystem.h"
 #include "SharedDataId.h"
 #include "NLE\NLCore\NL_IEngine.h"
-#include "RSysInterface.h"
 
 ReaderSystem::ReaderSystem(uint_fast32_t id) :
 _id(id),
 _initialized(false)
 {
-	_interface = new RSysInterface(*this);
+	
 }
 
 ReaderSystem::~ReaderSystem()
@@ -62,5 +61,5 @@ std::function<void()> const& ReaderSystem::getExecutionProcedure()
 
 NLE::Core::ISystem& ReaderSystem::getInterface()
 {
-	return *_interface;
+	return *this;
 }

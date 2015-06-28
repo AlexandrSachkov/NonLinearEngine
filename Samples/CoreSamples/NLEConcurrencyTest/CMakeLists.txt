@@ -2,12 +2,10 @@ PROJECT(NLEConcurrencyTest)
 
 SET(HEADERS 
 	TestSystem.h
-	SysInterface.h
 	)
 SET(SOURCES
 	ConcurrencyTest.cpp 
 	TestSystem.cpp
-	SysInterface.cpp
 	)
 
 INCLUDE_DIRECTORIES(${NLE_ROOT_DIR})

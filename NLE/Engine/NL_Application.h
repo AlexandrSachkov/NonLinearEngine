@@ -2,6 +2,7 @@
 #define NL_APPLICATION_H_
 
 #include "NLCore\NL_System.h"
+#include "NLCore\NL_ISystem.h"
 #include <functional>
 
 namespace NLE
@@ -11,7 +12,7 @@ namespace NLE
 	class IApplication;
 	class Window;
 	
-	class Application : public Core::System
+	class Application : public Core::System, public Core::ISystem
 	{
 	public:
 		Application();
@@ -27,7 +28,6 @@ namespace NLE
 	private:
 		bool _initialized;
 		std::function<void()> _procedure;
-		IApplication* _interface;
 	};
 }
 

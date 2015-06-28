@@ -1,12 +1,11 @@
 #include "TestSystem.h"
 #include "NLE\NLCore\NL_IEngine.h"
-#include "SysInterface.h"
 
 TestSystem::TestSystem(uint_fast32_t id) :
 _id(id),
 _initialized(false)
 {
-	_interface = new SysInterface(*this);
+
 }
 
 TestSystem::~TestSystem()
@@ -55,5 +54,5 @@ std::function<void()> const& TestSystem::getExecutionProcedure()
 
 NLE::Core::ISystem& TestSystem::getInterface()
 {
-	return *_interface;
+	return *this;
 }

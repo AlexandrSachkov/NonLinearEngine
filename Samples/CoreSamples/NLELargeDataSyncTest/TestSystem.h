@@ -2,6 +2,7 @@
 #define SYSTEM_H_
 
 #include "NLE\NLCore\NL_System.h"
+#include "NLE\NLCore\NL_ISystem.h"
 #include "NLE\NLCore\NL_SContainer.h"
 #include <memory>
 #include "Data.h"
@@ -11,7 +12,7 @@ class Scheduler;
 class StateManager;
 class SysInterface;
 
-class TestSystem : public NLE::Core::System
+class TestSystem : public NLE::Core::System, public NLE::Core::ISystem
 {
 public:
 	TestSystem(uint_fast32_t id);
@@ -26,7 +27,6 @@ public:
 
 private:
 	bool _initialized;
-	SysInterface* _interface;
 	uint_fast32_t _id;
 
 	NLE::Core::Data::SContainer<Data>* _shared;

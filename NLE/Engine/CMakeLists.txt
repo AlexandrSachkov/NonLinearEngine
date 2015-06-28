@@ -2,7 +2,6 @@ PROJECT(NLE)
 
 SET(HEADERS 
 	NL_Application.h
-	NL_IApplication.h
 	NL_InputEvents.h
 	NL_InputProcessor.h
 	NL_DllApi.h
@@ -12,7 +11,6 @@ SET(HEADERS
 
 SET(SOURCES 
 	NL_Application.cpp
-	NL_IApplication.cpp
 	NL_InputProcessor.cpp
 	NL_Nle.cpp
 	)
