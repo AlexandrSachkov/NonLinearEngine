@@ -4,6 +4,8 @@
 #include "NLCore\NL_System.h"
 #include "NL_IInputProcessor.h"
 
+#include "tbb\concurrent_queue.h"
+
 namespace NLE
 {
 	namespace Core
@@ -33,6 +35,8 @@ namespace NLE
 		bool _initialized;
 		std::function<void()> _procedure;
 		std::function<void()> _eventPoller;
+
+		tbb::concurrent_queue<INPUT::Event> _events;
 	};
 }
 

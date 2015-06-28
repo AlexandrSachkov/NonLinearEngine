@@ -22,6 +22,15 @@ namespace NLE
 
 		_procedure = [&](){
 			_eventPoller();
+
+			if (!_events.empty())
+			{
+				INPUT::Event event;
+				while (_events.try_pop(event))
+				{
+					printf("Processing event...\n");
+				}
+			}
 		};
 
 		_initialized = true;
@@ -50,11 +59,12 @@ namespace NLE
 
 	void InputProcessor::attachEventPollingOperation(std::function<void()> operation)
 	{
+		assert(!_initialized);
 		_eventPoller = operation;
 	}
 
 	void InputProcessor::processEvent(INPUT::Event& event)
 	{
-		printf("Processing event\n");
+		_events.push(event);
 	}
 }
