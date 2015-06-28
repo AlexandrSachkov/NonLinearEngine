@@ -13,6 +13,7 @@ int main(){
 		(
 		NLE::Core::Priority::STANDARD,
 		NLE::Core::Execution::RECURRING,
+		NLE::Core::Mode::ASYNC,
 		NLE::Core::Startup::AUTOMATIC,
 		0
 		);

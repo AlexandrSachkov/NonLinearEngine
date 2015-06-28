@@ -23,6 +23,7 @@ SET(HEADERS
 	NL_SlaveContainer.inl
 	NL_Scheduler.h
 	NL_StateManager.h
+	NL_SyncTask.h
 	NL_SysManager.h
 	NL_AsyncTask.h
 	NL_System.h

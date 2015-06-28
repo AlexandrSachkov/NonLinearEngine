@@ -10,6 +10,7 @@ namespace NLE
 	{
 		enum Priority	{ LOW, STANDARD, HIGH };
 		enum Execution	{ NONE, SINGULAR, RECURRING };
+		enum Mode		{ SYNC, ASYNC };
 		enum Startup	{ MANUAL, AUTOMATIC };
 
 		class ExecutionDesc
@@ -19,6 +20,7 @@ namespace NLE
 			ExecutionDesc() :
 				_priority(Priority::STANDARD),
 				_execution(Execution::RECURRING),
+				_mode(Mode::ASYNC),
 				_startup(Startup::AUTOMATIC),
 				_periodNs(0L)
 			{
@@ -27,11 +29,13 @@ namespace NLE
 			ExecutionDesc(
 				Priority priority,
 				Execution execution,
+				Mode mode,
 				Startup startup,
 				unsigned long long periodNs
 				) :
 				_priority(priority),
 				_execution(execution),
+				_mode(mode),
 				_startup(startup),
 				_periodNs(std::chrono::nanoseconds(periodNs))
 			{
@@ -45,6 +49,11 @@ namespace NLE
 			Execution getExecution()
 			{
 				return _execution;
+			}
+
+			Mode getMode()
+			{
+				return _mode;
 			}
 
 			Startup getStartup()
@@ -65,6 +74,7 @@ namespace NLE
 
 			Priority _priority;
 			Execution _execution;
+			Mode _mode;
 			Startup _startup;
 			std::chrono::duration<unsigned long long, std::nano> _periodNs;
 			std::chrono::time_point<std::chrono::high_resolution_clock, std::chrono::nanoseconds> _startTime;

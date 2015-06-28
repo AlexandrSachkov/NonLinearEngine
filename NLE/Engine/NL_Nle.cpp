@@ -19,9 +19,10 @@ namespace NLE
 		core.setClockPeriodNs(1000000L);
 
 		Core::ExecutionDesc desc(
-			NLE::Core::Priority::HIGH,
-			NLE::Core::Execution::RECURRING,
-			NLE::Core::Startup::AUTOMATIC,
+			Core::Priority::HIGH,
+			Core::Execution::RECURRING,
+			Core::Mode::ASYNC,
+			Core::Startup::AUTOMATIC,
 			16666666L	//60 FPS
 		);
 
