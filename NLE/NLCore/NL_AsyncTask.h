@@ -1,5 +1,5 @@
-#ifndef NL_SYS_TASK_H_
-#define NL_SYS_TASK_H_
+#ifndef NL_ASYNC_TASK_H_
+#define NL_ASYNC_TASK_H_
 
 #include "NL_Scheduler.h"
 #include "tbb\task.h"
@@ -9,18 +9,18 @@ namespace NLE
 {
 	namespace Core
 	{
-		class SysTask : public tbb::task
+		class AsyncTask : public tbb::task
 		{
 
 		public:
-			SysTask(Scheduler& scheduler, uint_fast32_t sysId, std::function<void()> operation) :
+			AsyncTask(Scheduler& scheduler, uint_fast32_t sysId, std::function<void()> operation) :
 				_scheduler(scheduler),
 				_sysId(sysId),
 				_operation(operation)
 			{
 			}
 
-			~SysTask()
+			~AsyncTask()
 			{
 			}
 

@@ -2,7 +2,6 @@
 
 #include "NL_StateManager.h"
 #include "NL_System.h"
-#include "NL_SysTask.h"
 #include "NL_IEngine.h"
 #include "tbb\tbb.h"
 #include <assert.h>

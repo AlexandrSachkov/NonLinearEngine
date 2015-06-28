@@ -3,7 +3,7 @@
 #include "tbb/tbb.h"
 #include "NL_Clock.h"
 #include "NL_System.h"
-#include "NL_SysTask.h"
+#include "NL_AsyncTask.h"
 #include "NL_StateManager.h"
 
 #include <assert.h>
@@ -103,7 +103,7 @@ namespace NLE
 					stateManager->distributeTo(sysId);
 
 					std::function<void()> procedure = sysManager->getSystem(sysId)->getExecutionProcedure();
-					SysTask* task = new (tbb::task::allocate_root())NLE::Core::SysTask(*this, sysId, procedure);
+					AsyncTask* task = new (tbb::task::allocate_root())NLE::Core::AsyncTask(*this, sysId, procedure);
 					switch (execDesc->getPriority())
 					{
 					case Priority::LOW:
