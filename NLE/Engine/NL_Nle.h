@@ -26,7 +26,7 @@ namespace NLE
 		void run();
 		void stop();
 
-		void attachEventPollingOperation(std::function<void()> operation);
+		void attachEventPollingOperation(std::function<void()> const& operation);
 		void processEvent(INPUT::Event& event);
 
 	private:

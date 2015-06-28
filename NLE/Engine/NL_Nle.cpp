@@ -4,6 +4,8 @@
 #include "NLCore\NL_ExecutionDesc.h"
 #include "NL_Application.h"
 #include "NL_InputEvents.h"
+#include "NL_InputProcessor.h"
+#include "NL_Systems.h"
 
 #include <assert.h>
 #include <memory>
@@ -18,7 +20,7 @@ namespace NLE
 		Core::DeviceCore& core = Core::DeviceCore::instance();
 		core.setClockPeriodNs(1000000L);
 
-		Core::ExecutionDesc desc(
+		Core::ExecutionDesc applicationDesc(
 			Core::Priority::HIGH,
 			Core::Execution::RECURRING,
 			Core::Mode::ASYNC,
@@ -26,7 +28,17 @@ namespace NLE
 			16666666L	//60 FPS
 		);
 
-		core.attachSystem(0, desc, std::unique_ptr<Application>(new Application()));
+		core.attachSystem(SYS::SYS_APPLICATION, applicationDesc, std::unique_ptr<Application>(new Application()));
+
+		Core::ExecutionDesc inputProcDesc(
+			Core::Priority::HIGH,
+			Core::Execution::RECURRING,
+			Core::Mode::SYNC,
+			Core::Startup::AUTOMATIC,
+			16666666L	//60 FPS
+		);
+
+		core.attachSystem(SYS::SYS_INPUT_PROCESSOR, inputProcDesc, std::unique_ptr<InputProcessor>(new InputProcessor()));
 	}
 
 	Nle::~Nle()
@@ -60,13 +72,15 @@ namespace NLE
 		Core::DeviceCore::instance().stop();
 	}
 
-	void Nle::attachEventPollingOperation(std::function<void()> operation)
+	void Nle::attachEventPollingOperation(std::function<void()> const& operation)
 	{
-		Core::DeviceCore::instance().attachUITheadOperation(0L, operation);
+		static_cast<IInputProcessor*>(&Core::DeviceCore::instance().getSystemInterface(SYS::SYS_INPUT_PROCESSOR))
+			->attachEventPollingOperation(operation);
 	}
 
 	void Nle::processEvent(INPUT::Event& event)
 	{
-
+		static_cast<IInputProcessor*>(&Core::DeviceCore::instance().getSystemInterface(SYS::SYS_INPUT_PROCESSOR))
+			->processEvent(event);
 	}
 }

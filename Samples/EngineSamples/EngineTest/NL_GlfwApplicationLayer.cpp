@@ -109,7 +109,6 @@ bool NLEGlfwApplicationLayer::initialize()
 	_nle->attachEventPollingOperation([&](){
 		if (!glfwWindowShouldClose(_window))
 		{
-			printf("Polling\n");
 			glfwPollEvents();
 		}
 		else

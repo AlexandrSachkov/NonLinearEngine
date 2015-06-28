@@ -3,10 +3,12 @@ PROJECT(NLE)
 SET(HEADERS 
 	NL_Application.h
 	NL_InputEvents.h
+	NL_IInputProcessor.h
 	NL_InputProcessor.h
 	NL_DllApi.h
 	NL_Nle.h
 	NL_INle.h
+	NL_Systems.h
 	)
 
 SET(SOURCES 
