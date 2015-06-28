@@ -39,6 +39,7 @@ namespace NLE
 			tbb::concurrent_queue<uint_fast32_t> _finished;
 		
 			Data::PContainer<uint_fast32_t> _scheduledSystems;
+			std::vector<uint_fast32_t, tbb::scalable_allocator<uint_fast32_t>> _syncSystemsToRun;
 			uint_fast32_t _numThreads;
 			bool _initialized;
 		};

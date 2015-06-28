@@ -4,6 +4,7 @@
 #include "NL_Clock.h"
 #include "NL_System.h"
 #include "NL_AsyncTask.h"
+#include "NL_SyncTask.h"
 #include "NL_StateManager.h"
 
 #include <assert.h>
@@ -99,29 +100,50 @@ namespace NLE
 
 				if (execDesc->isTimeToStart())
 				{
-					execDesc->resetStartTime();
 					stateManager->distributeTo(sysId);
 
-					std::function<void()> procedure = sysManager->getSystem(sysId)->getExecutionProcedure();
-					AsyncTask* task = new (tbb::task::allocate_root())NLE::Core::AsyncTask(*this, sysId, procedure);
-					switch (execDesc->getPriority())
+					if (execDesc->getMode() == Mode::ASYNC)
 					{
-					case Priority::LOW:
-						tbb::task::enqueue(*task, tbb::priority_low);
-						break;
-					case Priority::STANDARD:
-						tbb::task::enqueue(*task, tbb::priority_normal);
-						break;
-					case Priority::HIGH:
-						tbb::task::enqueue(*task, tbb::priority_high);
-						break;
-					default:
-						//should never be reached
-						assert(false);
-					}
+						execDesc->resetStartTime();
+						
+						std::function<void()> procedure = sysManager->getSystem(sysId)->getExecutionProcedure();
+						AsyncTask* task = new (tbb::task::allocate_root())NLE::Core::AsyncTask(*this, sysId, procedure);
+						switch (execDesc->getPriority())
+						{
+						case Priority::LOW:
+							tbb::task::enqueue(*task, tbb::priority_low);
+							break;
+						case Priority::STANDARD:
+							tbb::task::enqueue(*task, tbb::priority_normal);
+							break;
+						case Priority::HIGH:
+							tbb::task::enqueue(*task, tbb::priority_high);
+							break;
+						default:
+							//should never be reached
+							assert(false);
+						}
 
+					} else {
+						_syncSystemsToRun.push_back(sysId);
+					}
+				
 					_scheduledSystems.itRemove(i);
 				}
+			}
+
+			if (_syncSystemsToRun.size() > 0)
+			{
+				for (uint_fast32_t sysId : _syncSystemsToRun)
+				{
+					execDesc = &sysManager->getExecutionDesc(sysId);
+					execDesc->resetStartTime();
+
+					std::function<void()> procedure = sysManager->getSystem(sysId)->getExecutionProcedure();
+					SyncTask task(*this, sysId, procedure);
+					task.execute();
+				}
+				_syncSystemsToRun.clear();
 			}
 		}
 	}
