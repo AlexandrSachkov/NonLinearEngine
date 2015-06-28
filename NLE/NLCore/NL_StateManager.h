@@ -132,16 +132,14 @@ namespace NLE
 				_sDistributorIndex.insert(std::make_pair<>(id, distributor));
 			}
 
-			template <typename T>
-			Data::SDistributor<T>& getSDistributor(uint_fast32_t id)
+			Data::Distributor& getSDistributor(uint_fast32_t id)
 			{
-				return *static_cast<Data::SDistributor<T>*>(_sDistributorIndex.at(id));
+				return *_sDistributorIndex.at(id);
 			}
 
-			template <typename T>
-			Data::MSDistributor<T>& getMSDistributor(uint_fast32_t id)
+			Data::Distributor& getMSDistributor(uint_fast32_t id)
 			{
-				return *static_cast<Data::MSDistributor<T>*>(_msDistributorIndex.at(id));
+				return *_msDistributorIndex.at(id);
 			}
 			
 

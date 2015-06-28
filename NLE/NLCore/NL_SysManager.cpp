@@ -3,6 +3,7 @@
 #include "NL_StateManager.h"
 #include "NL_System.h"
 #include "NL_IEngine.h"
+#include "NL_Scheduler.h"
 #include "tbb\tbb.h"
 #include <assert.h>
 
@@ -24,14 +25,14 @@ namespace NLE
 
 		bool SysManager::initialize(
 			std::unique_ptr<Scheduler> const& scheduler,
-			std::unique_ptr<IEngine> const& iEngine)
+			IEngine& iEngine)
 		{
 			assert(!_initialized);
 
 			for (uint_fast32_t& sysId : _sysInitOrder)
 			{
 				assert(_systems.count(sysId) > 0 && _executionDesc.count(sysId) > 0);
-				if (!_systems.at(sysId)->initialize(*iEngine.get()))
+				if (!_systems.at(sysId)->initialize(iEngine))
 					return false;
 				if (_executionDesc.at(sysId).getStartup() == Startup::AUTOMATIC)
 				{

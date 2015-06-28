@@ -1,6 +1,8 @@
 #ifndef NL_DEVICE_CORE_H_
 #define NL_DEVICE_CORE_H_
 
+#include "NL_IEngine.h"
+
 #include <memory>
 #include <cstdint>
 #include <functional>
@@ -9,15 +11,20 @@ namespace NLE
 {
 	namespace Core
 	{
+		namespace Data
+		{
+			class Distributor;
+		}
+
 		class Clock;
 		class Scheduler;
 		class System;
 		class SysManager;
 		class StateManager;
-		class IEngine;
 		class ExecutionDesc;
+		class ISystem;
 
-		class DeviceCore
+		class DeviceCore : public IEngine
 		{
 		public:
 			static DeviceCore& instance()
@@ -44,9 +51,17 @@ namespace NLE
 
 			void setClockPeriodNs(unsigned long long periodNs);
 			void setNumThreads(uint_fast32_t numThreads);
-			uint_fast32_t getNumHardwareThreads();
+			
 			void run();
 			void stop();
+			
+			// Interface Methods
+			void startSystem(uint_fast32_t sysId);
+			uint_fast32_t getNumHardwareThreads();			
+			uint_fast32_t getNumSystems();
+			ISystem& getSystemInterface(uint_fast32_t sysId);
+			Data::Distributor& getSDistributor(uint_fast32_t id);
+			Data::Distributor& getMSDistributor(uint_fast32_t id);
 
 		private:
 			DeviceCore();
@@ -59,7 +74,6 @@ namespace NLE
 			std::unique_ptr<SysManager> _sysManager;
 			std::unique_ptr<Scheduler> _scheduler;
 			std::unique_ptr<StateManager> _stateManager;
-			std::unique_ptr<IEngine> _iEngine;
 
 			bool _initialized;
 

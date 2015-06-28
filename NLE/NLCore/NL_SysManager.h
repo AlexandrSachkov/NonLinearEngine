@@ -23,7 +23,7 @@ namespace NLE
 
 			bool initialize(
 				std::unique_ptr<Scheduler> const& scheduler,
-				std::unique_ptr<IEngine> const& iEngine);
+				IEngine& iEngine);
 			void release();
 
 			uint_fast32_t getNumSystems();

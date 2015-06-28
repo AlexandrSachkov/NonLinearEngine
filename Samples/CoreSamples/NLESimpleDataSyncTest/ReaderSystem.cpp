@@ -1,6 +1,8 @@
 #include "ReaderSystem.h"
 #include "SharedDataId.h"
 #include "NLE\NLCore\NL_IEngine.h"
+#include "NLE\NLCore\NL_MSDistributor.h"
+#include "NLE\NLCore\NL_SDistributor.h"
 
 ReaderSystem::ReaderSystem(uint_fast32_t id) :
 _id(id),
@@ -16,8 +18,8 @@ ReaderSystem::~ReaderSystem()
 
 bool ReaderSystem::initialize(NLE::Core::IEngine& iEngine)
 {
-	_slave = &iEngine.getMSDistributor<double>(MS_CONTAINER).buildSlaveEndpoint(_id);
-	_shared = &iEngine.getSDistributor<double>(S_CONTAINER).buildEndpoint(_id);
+	_slave = &static_cast<NLE::Core::Data::MSDistributor<double>*>(&iEngine.getMSDistributor(MS_CONTAINER))->buildSlaveEndpoint(_id);
+	_shared = &static_cast<NLE::Core::Data::SDistributor<double>*>(&iEngine.getSDistributor(S_CONTAINER))->buildEndpoint(_id);
 
 	_procedure = [&](){
 		printf("Reader #%i\n", getID());

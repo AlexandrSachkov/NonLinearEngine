@@ -1,6 +1,8 @@
 #include "WriterSystem.h"
 #include "SharedDataId.h"
 #include "NLE\NLCore\NL_IEngine.h"
+#include "NLE\NLCore\NL_MSDistributor.h"
+#include "NLE\NLCore\NL_SDistributor.h"
 
 WriterSystem::WriterSystem(uint_fast32_t id) :
 	_addItem(true),
@@ -17,8 +19,8 @@ WriterSystem::~WriterSystem()
 
 bool WriterSystem::initialize(NLE::Core::IEngine& iEngine)
 {
-	_master = &iEngine.getMSDistributor<double>(MS_CONTAINER).buildMasterEndpoint(_id);
-	_shared = &iEngine.getSDistributor<double>(S_CONTAINER).buildEndpoint(_id);
+	_master = &static_cast<NLE::Core::Data::MSDistributor<double>*>(&iEngine.getMSDistributor(MS_CONTAINER))->buildMasterEndpoint(_id);
+	_shared = &static_cast<NLE::Core::Data::SDistributor<double>*>(&iEngine.getSDistributor(S_CONTAINER))->buildEndpoint(_id);
 
 	_procedure = [&](){
 		for (unsigned int i = 0; i < _shared->size(); ++i)

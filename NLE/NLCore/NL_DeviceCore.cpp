@@ -5,8 +5,9 @@
 #include "NL_SysManager.h"
 #include "NL_Scheduler.h"
 #include "NL_StateManager.h"
-#include "NL_IEngine.h"
 #include "NL_ExecutionDesc.h"
+#include "NL_ISystem.h"
+#include "NL_Distributor.h"
 
 #include <cassert>
 
@@ -23,7 +24,6 @@ namespace NLE
 			_sysManager = std::make_unique<SysManager>();
 			_scheduler = std::make_unique<Scheduler>();
 			_stateManager = std::make_unique<StateManager>();
-			_iEngine = std::make_unique<IEngine>(_scheduler, _sysManager, _stateManager);
 		}
 
 		DeviceCore::~DeviceCore()
@@ -46,7 +46,7 @@ namespace NLE
 				
 			if (!_scheduler->initialize())
 				return false;
-			if (!_sysManager->initialize(_scheduler, _iEngine))
+			if (!_sysManager->initialize(_scheduler, *this))
 				return false;
 			if (!_stateManager->initialize())
 				return false;
@@ -90,11 +90,6 @@ namespace NLE
 			_scheduler->setNumThreads(numThreads);
 		}
 
-		uint_fast32_t DeviceCore::getNumHardwareThreads()
-		{
-			return _scheduler->getNumHardwareThreads();
-		}
-
 		void DeviceCore::run()
 		{
 			assert(_initialized);
@@ -104,6 +99,38 @@ namespace NLE
 		void DeviceCore::stop()
 		{
 			_clock->stop();
+		}
+
+		// Interface Methods
+
+		void DeviceCore::startSystem(uint_fast32_t sysId)
+		{
+			_scheduler->requestExecution(sysId);
+		}
+
+		uint_fast32_t DeviceCore::getNumHardwareThreads()
+		{
+			return _scheduler->getNumHardwareThreads();
+		}
+
+		uint_fast32_t DeviceCore::getNumSystems()
+		{
+			return _sysManager->getNumSystems();
+		}
+
+		ISystem& DeviceCore::getSystemInterface(uint_fast32_t sysId)
+		{
+			return _sysManager->getSystem(sysId)->getInterface();
+		}
+
+		Data::Distributor& DeviceCore::getSDistributor(uint_fast32_t id)
+		{
+			return _stateManager->getSDistributor(id);
+		}
+
+		Data::Distributor& DeviceCore::getMSDistributor(uint_fast32_t id)
+		{
+			return _stateManager->getMSDistributor(id);
 		}
 	}
 }
