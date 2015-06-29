@@ -38,7 +38,8 @@ namespace NLE
 	bool Nle::initialize()
 	{
 		assert(!_initialized);
-		Core::DeviceCore::instance().initialize();
+		if (!Core::DeviceCore::instance().initialize())
+			return false;
 
 		_initialized = true;
 		return true;
