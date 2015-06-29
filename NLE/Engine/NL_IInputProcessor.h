@@ -9,14 +9,14 @@ namespace NLE
 	namespace INPUT
 	{
 		struct Event;
-	}
 
-	class IInputProcessor : public Core::ISystem
-	{
-	public:
-		virtual void attachEventPollingOperation(std::function<void()> const& operation) = 0;
-		virtual void processEvent(INPUT::Event& event) = 0;
-	};
+		class IInputProcessor : public Core::ISystem
+		{
+		public:
+			virtual void attachEventPollingOperation(std::function<void()> const& operation) = 0;
+			virtual void processEvent(INPUT::Event& event) = 0;
+		};
+	}
 }
 
 #endif

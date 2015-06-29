@@ -27,7 +27,7 @@ namespace NLE
 			16666666L	//60 FPS
 		);
 
-		core.attachSystem(SYS::SYS_INPUT_PROCESSOR, inputProcDesc, std::unique_ptr<InputProcessor>(new InputProcessor()));
+		core.attachSystem(SYS::SYS_INPUT_PROCESSOR, inputProcDesc, std::unique_ptr<INPUT::InputProcessor>(new INPUT::InputProcessor()));
 	}
 
 	Nle::~Nle()
@@ -64,13 +64,13 @@ namespace NLE
 
 	void Nle::attachEventPollingOperation(std::function<void()> const& operation)
 	{
-		static_cast<IInputProcessor*>(&Core::DeviceCore::instance().getSystemInterface(SYS::SYS_INPUT_PROCESSOR))
+		static_cast<INPUT::IInputProcessor*>(&Core::DeviceCore::instance().getSystemInterface(SYS::SYS_INPUT_PROCESSOR))
 			->attachEventPollingOperation(operation);
 	}
 
 	void Nle::processEvent(INPUT::Event& event)
 	{
-		static_cast<IInputProcessor*>(&Core::DeviceCore::instance().getSystemInterface(SYS::SYS_INPUT_PROCESSOR))
+		static_cast<INPUT::IInputProcessor*>(&Core::DeviceCore::instance().getSystemInterface(SYS::SYS_INPUT_PROCESSOR))
 			->processEvent(event);
 	}
 }

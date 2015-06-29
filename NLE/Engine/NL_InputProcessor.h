@@ -13,31 +13,33 @@ namespace NLE
 		class IEngine;
 		class ISystem;
 	}
-	
-	class InputProcessor : public Core::System, public IInputProcessor
+	namespace INPUT
 	{
-	public:
-		InputProcessor();
-		~InputProcessor();
+		class InputProcessor : public Core::System, public IInputProcessor
+		{
+		public:
+			InputProcessor();
+			~InputProcessor();
 
-		bool initialize(Core::IEngine& engine);
-		void release();
+			bool initialize(Core::IEngine& engine);
+			void release();
 
-		bool initialized();
+			bool initialized();
 
-		std::function<void()> const& getExecutionProcedure();
-		Core::ISystem& getInterface();
+			std::function<void()> const& getExecutionProcedure();
+			Core::ISystem& getInterface();
 
-		void attachEventPollingOperation(std::function<void()> const& operation);
-		void processEvent(INPUT::Event& event);
+			void attachEventPollingOperation(std::function<void()> const& operation);
+			void processEvent(INPUT::Event& event);
 
-	private:
-		bool _initialized;
-		std::function<void()> _procedure;
-		std::function<void()> _eventPoller;
+		private:
+			bool _initialized;
+			std::function<void()> _procedure;
+			std::function<void()> _eventPoller;
 
-		tbb::concurrent_queue<INPUT::Event> _events;
-	};
+			tbb::concurrent_queue<INPUT::Event> _events;
+		};
+	}
 }
 
 #endif
