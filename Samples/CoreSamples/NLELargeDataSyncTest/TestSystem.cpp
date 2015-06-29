@@ -22,7 +22,7 @@ bool TestSystem::initialize(NLE::Core::IEngine& iEngine)
 	_iEngine = &iEngine;
 	_shared = &static_cast<NLE::Core::Data::SDistributor<Data>*>(&iEngine.getSDistributor(_id))->buildEndpoint(_id);
 
-	if (_id + 1 == iEngine.getNumHardwareThreads())
+	if (_id + 1 == iEngine.getNumThreads())
 		_sharedReader = &static_cast<NLE::Core::Data::SDistributor<Data>*>(&iEngine.getSDistributor(0))->buildEndpoint(_id);
 	else
 		_sharedReader = &static_cast<NLE::Core::Data::SDistributor<Data>*>(&iEngine.getSDistributor(_id + 1))->buildEndpoint(_id);

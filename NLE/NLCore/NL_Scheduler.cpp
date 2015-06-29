@@ -29,7 +29,7 @@ namespace NLE
 		{
 			assert(!_initialized);
 
-			uint_fast32_t _numHardwareThreads = getNumHardwareThreads();
+			uint_fast32_t _numHardwareThreads = getNumThreads();
 			_taskSchedulerInit = new tbb::task_scheduler_init(_numHardwareThreads + 1);
 			_initialized = true;	
 			return true;
@@ -48,7 +48,7 @@ namespace NLE
 			_numThreads = numThreads;
 		}
 
-		uint_fast32_t Scheduler::getNumHardwareThreads()
+		uint_fast32_t Scheduler::getNumThreads()
 		{
 			return _numThreads;
 		}

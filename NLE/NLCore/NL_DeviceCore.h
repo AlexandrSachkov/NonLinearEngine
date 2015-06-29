@@ -56,7 +56,7 @@ namespace NLE
 			
 			// Interface Methods
 			void startSystem(uint_fast32_t sysId);
-			uint_fast32_t getNumHardwareThreads();			
+			uint_fast32_t getNumThreads();	
 			uint_fast32_t getNumSystems();
 			ISystem& getSystemInterface(uint_fast32_t sysId);
 			Data::Distributor& getSDistributor(uint_fast32_t id);

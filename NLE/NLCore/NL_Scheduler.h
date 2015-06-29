@@ -26,7 +26,7 @@ namespace NLE
 			void release();
 
 			void setNumThreads(uint_fast32_t numThreads);
-			uint_fast32_t getNumHardwareThreads();
+			uint_fast32_t getNumThreads();
 			void requestExecution(uint_fast32_t sysId);
 			void signalFinished(uint_fast32_t sysId);
 			void manageExecution(

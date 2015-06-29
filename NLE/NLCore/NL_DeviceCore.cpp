@@ -98,9 +98,9 @@ namespace NLE
 			_scheduler->requestExecution(sysId);
 		}
 
-		uint_fast32_t DeviceCore::getNumHardwareThreads()
+		uint_fast32_t DeviceCore::getNumThreads()
 		{
-			return _scheduler->getNumHardwareThreads();
+			return _scheduler->getNumThreads();
 		}
 
 		uint_fast32_t DeviceCore::getNumSystems()

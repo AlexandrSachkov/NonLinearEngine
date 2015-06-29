@@ -19,7 +19,7 @@ int main(){
 		);
 
 	printf("Data size: %i", sizeof(Data));
-	for (unsigned int i = 0; i < devCore.getNumHardwareThreads(); ++i)
+	for (unsigned int i = 0; i < devCore.getNumThreads(); ++i)
 	{
 		devCore.installSContainer<Data>(i, 25000, 65);
 		devCore.attachSystem(i, execDesc, std::unique_ptr<TestSystem>(new TestSystem(i)));
