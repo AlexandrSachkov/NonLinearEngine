@@ -30,10 +30,9 @@ THE SOFTWARE.
 #include "NL_GlfwInputMap.h"
 #include "NLE\Engine\NL_Nle.h"
 
+#include "GL\glew.h"
 #include "GLFW\glfw3.h"
-//#define GLFW_EXPOSE_NATIVE_WIN32
-//#define GLFW_EXPOSE_NATIVE_WGL
-//#include "GLFW\glfw3native.h"
+
 #include <assert.h>
 
 NLEGlfwApplicationLayer* NLEGlfwApplicationLayer::_glfwAppLayer = nullptr;
@@ -87,6 +86,14 @@ bool NLEGlfwApplicationLayer::initialize()
 	}
 
 	setResizableHint(false);
+
+	glfwWindowHint(GLFW_SAMPLES, 4); // 4x antialiasing
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
+	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+
+
 	if (_fullscreen)
 	{
 		_window = glfwCreateWindow(_width, _height, _title.c_str(), glfwGetPrimaryMonitor(), NULL);
@@ -103,6 +110,13 @@ bool NLEGlfwApplicationLayer::initialize()
 		return false;
 	}
 	setWindowCallbacks(_window);
+
+	glfwMakeContextCurrent(_window); // Initialize GLEW 
+	glewExperimental = true;
+	if (glewInit() != GLEW_OK) {
+		printf("Failed to initialize GLEW\n");
+		return false;
+	}
 
 	_nle = NLE::instance();
 
