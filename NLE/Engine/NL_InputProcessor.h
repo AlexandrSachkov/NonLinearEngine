@@ -29,13 +29,13 @@ namespace NLE
 			std::function<void()> const& getExecutionProcedure();
 			Core::ISystem& getInterface();
 
-			void attachEventPollingOperation(std::function<void()> const& operation);
+			void attachPollEvents(std::function<void()> const& operation);
 			void processEvent(INPUT::Event& event);
 
 		private:
 			bool _initialized;
 			std::function<void()> _procedure;
-			std::function<void()> _eventPoller;
+			std::function<void()> _pollEvents;
 
 			tbb::concurrent_queue<INPUT::Event> _events;
 		};

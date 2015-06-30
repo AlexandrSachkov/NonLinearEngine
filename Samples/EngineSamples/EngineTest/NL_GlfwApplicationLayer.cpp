@@ -120,7 +120,7 @@ bool NLEGlfwApplicationLayer::initialize()
 
 	_nle = NLE::instance();
 
-	_nle->attachEventPollingOperation([&](){
+	_nle->attachPollEvents([&](){
 		if (!glfwWindowShouldClose(_window))
 		{
 			glfwPollEvents();

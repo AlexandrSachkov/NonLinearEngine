@@ -18,7 +18,7 @@ namespace NLE
 		virtual void run() = 0;
 		virtual void stop() = 0;
 
-		virtual void attachEventPollingOperation(std::function<void()> const& operation) = 0;
+		virtual void attachPollEvents(std::function<void()> const& operation) = 0;
 		virtual void processEvent(INPUT::Event& event) = 0;
 	};
 }

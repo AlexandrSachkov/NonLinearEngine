@@ -62,10 +62,10 @@ namespace NLE
 		Core::DeviceCore::instance().stop();
 	}
 
-	void Nle::attachEventPollingOperation(std::function<void()> const& operation)
+	void Nle::attachPollEvents(std::function<void()> const& operation)
 	{
 		static_cast<INPUT::IInputProcessor*>(&Core::DeviceCore::instance().getSystemInterface(SYS::SYS_INPUT_PROCESSOR))
-			->attachEventPollingOperation(operation);
+			->attachPollEvents(operation);
 	}
 
 	void Nle::processEvent(INPUT::Event& event)

@@ -20,10 +20,10 @@ namespace NLE
 
 		bool InputProcessor::initialize(Core::IEngine& engine)
 		{
-			assert(!_initialized && _eventPoller);
+			assert(!_initialized && _pollEvents);
 
 			_procedure = [&](){
-				_eventPoller();
+				_pollEvents();
 
 				if (!_events.empty())
 				{
@@ -59,10 +59,10 @@ namespace NLE
 			return *this;
 		}
 
-		void InputProcessor::attachEventPollingOperation(std::function<void()> const& operation)
+		void InputProcessor::attachPollEvents(std::function<void()> const& operation)
 		{
 			assert(!_initialized);
-			_eventPoller = operation;
+			_pollEvents = operation;
 		}
 
 		void InputProcessor::processEvent(INPUT::Event& event)
