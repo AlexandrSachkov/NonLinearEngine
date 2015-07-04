@@ -28,6 +28,8 @@ namespace NLE
 
 		void attachPollEvents(std::function<void()> const& operation);
 		void processEvent(INPUT::Event& event);
+		void attachMakeContextCurrent(std::function<void()> const& operation);
+		void attachSwapBuffers(std::function<void()> const& operation);
 
 	private:
 		Nle();

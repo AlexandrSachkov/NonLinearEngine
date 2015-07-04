@@ -30,7 +30,7 @@ namespace NLE
 					INPUT::Event event;
 					while (_events.try_pop(event))
 					{
-						printf("Processing event...\n");
+						//printf("Processing event...\n");
 					}
 				}
 			};

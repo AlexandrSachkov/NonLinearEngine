@@ -20,6 +20,8 @@ namespace NLE
 
 		virtual void attachPollEvents(std::function<void()> const& operation) = 0;
 		virtual void processEvent(INPUT::Event& event) = 0;
+		virtual void attachMakeContextCurrent(std::function<void()> const& operation) = 0;
+		virtual void attachSwapBuffers(std::function<void()> const& operation) = 0;
 	};
 }
 #endif

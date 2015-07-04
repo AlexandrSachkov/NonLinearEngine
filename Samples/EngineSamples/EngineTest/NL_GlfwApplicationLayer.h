@@ -29,13 +29,18 @@ THE SOFTWARE.
 #ifndef NLE_GLFW_APPLICATION_LAYER_
 #define NLE_GLFW_APPLICATION_LAYER_
 
-#include "NLE\Engine\NL_InputEvents.h"
-#include "NLE\Engine\NL_INle.h"
+#include "NLE\NL_InputEvents.h"
+//#include "NLE\Engine\NL_INle.h"
 #include <string>
 #include <memory>
 
 struct GLFWwindow;
 class NLEInterface;
+
+namespace NLE
+{
+	class INle;
+}
 
 class NLEGlfwApplicationLayer
 {

@@ -8,6 +8,7 @@
 #include "NL_ExecutionDesc.h"
 #include "NL_ISystem.h"
 #include "NL_Distributor.h"
+#include "NL_StateManager.h"
 
 #include <cassert>
 

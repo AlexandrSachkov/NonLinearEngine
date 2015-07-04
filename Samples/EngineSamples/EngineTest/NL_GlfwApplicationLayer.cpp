@@ -28,7 +28,7 @@ THE SOFTWARE.
 
 #include "NL_GlfwApplicationLayer.h"
 #include "NL_GlfwInputMap.h"
-#include "NLE\Engine\NL_Nle.h"
+#include "NLE\NL_Nle.h"
 
 #include "GL\glew.h"
 #include "GLFW\glfw3.h"
@@ -106,7 +106,7 @@ bool NLEGlfwApplicationLayer::initialize()
 	if (!_window)
 	{
 		glfwTerminate();
-		printf("Window failed to initialize.");
+		printf("Window failed to initialize.\n");
 		return false;
 	}
 	setWindowCallbacks(_window);
@@ -130,8 +130,17 @@ bool NLEGlfwApplicationLayer::initialize()
 			_nle->stop();
 		}					
 	});
+	
+	_nle->attachMakeContextCurrent([&](){
+		glfwMakeContextCurrent(_window);
+	}); 
+
+	_nle->attachSwapBuffers([&](){
+		glfwSwapBuffers(_window);
+	});
 
 	if (!_nle->initialize()) return false;
+
 	printf("======> Application Layer successfully initialized.\n");
 	return true;
 }

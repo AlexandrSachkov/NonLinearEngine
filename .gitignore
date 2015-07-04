@@ -49,6 +49,8 @@ x64/
 build/
 [Bb]in/*
 [Bb]inx64/*
+[Bb]in*/
+[Bb]inx64*/
 [Oo]bj/
 
 # MSTest test Results

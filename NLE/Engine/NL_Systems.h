@@ -5,7 +5,8 @@ namespace NLE
 {
 	enum SYS
 	{
-		SYS_INPUT_PROCESSOR
+		SYS_INPUT_PROCESSOR,
+		SYS_RENDERER
 	};
 }
 

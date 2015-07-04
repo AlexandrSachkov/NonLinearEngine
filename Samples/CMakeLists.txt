@@ -1,3 +1,86 @@
+CMAKE_MINIMUM_REQUIRED(VERSION 2.6)
+
+PROJECT (NLESamples)
+
+set (NLE_VERSION_MAJOR 0)
+set (NLE_VERSION_MINOR 9)
+set (NLE_VERSION_PATCH 0)
+
+
+IF(MSVC)
+	set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} /MT /WX /arch:AVX /Ox /Ob2 /Ot /Gt")
+	set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} /MTd /WX /arch:AVX /Od /Ob0")
+ENDIF(MSVC)
+
+# Configuration GUI goes here
+
+# NLE install path config
+SET(NLE_SAMPLE_INSTALL_PATH 
+	${PROJECT_BINARY_DIR}/${PROJECT_NAME} CACHE PATH "NLE Sample Installation Directory")
+IF(NLE_SAMPLE_INSTALL_PATH STREQUAL "")
+	MESSAGE(SEND_ERROR "NLE Sample Installation Directory must be specified")
+ENDIF(NLE_SAMPLE_INSTALL_PATH STREQUAL "")
+
+# =====================================================================================
+
+SET(NLE_SDK_INCLUDE_PATH
+	"" CACHE PATH "NLE include path")
+
+IF(NLE_SDK_INCLUDE_PATH STREQUAL "")
+	MESSAGE(SEND_ERROR "NLE include path must be specified")
+ENDIF(NLE_SDK_INCLUDE_PATH STREQUAL "")
+
+SET(NLE_SDK_LIBRARY_DEBUG_PATH
+	"" CACHE PATH "NLE library debug path")
+
+IF(NLE_SDK_LIBRARY_DEBUG_PATH STREQUAL "")
+	MESSAGE(SEND_ERROR "NLE library debug path must be specified")
+ENDIF(NLE_SDK_LIBRARY_DEBUG_PATH STREQUAL "")
+
+SET(NLE_SDK_LIBRARY_RELEASE_PATH
+	"" CACHE PATH "NLE library release path")
+
+IF(NLE_SDK_LIBRARY_RELEASE_PATH STREQUAL "")
+	MESSAGE(SEND_ERROR "NLE library release path must be specified")
+ENDIF(NLE_SDK_LIBRARY_RELEASE_PATH STREQUAL "")
+
+
+SET(NLE_TBB_INCLUDE_PATH
+	"" CACHE PATH "TBB include path")
+
+IF(NLE_TBB_INCLUDE_PATH STREQUAL "")
+	MESSAGE(SEND_ERROR "TBB include path must be specified")
+ENDIF(NLE_TBB_INCLUDE_PATH STREQUAL "")
+
+SET(NLE_TBB_LIBRARY_DEBUG_PATH
+	"" CACHE PATH "TBB library debug path")
+
+IF(NLE_TBB_LIBRARY_DEBUG_PATH STREQUAL "")
+	MESSAGE(SEND_ERROR "TBB library debug path must be specified")
+ENDIF(NLE_TBB_LIBRARY_DEBUG_PATH STREQUAL "")
+
+SET(NLE_TBB_LIBRARY_RELEASE_PATH
+	"" CACHE PATH "TBB library release path")
+
+IF(NLE_TBB_LIBRARY_RELEASE_PATH STREQUAL "")
+	MESSAGE(SEND_ERROR "TBB library release path must be specified")
+ENDIF(NLE_TBB_LIBRARY_RELEASE_PATH STREQUAL "")
+
+
+
+SET(NLE_BUILD_ENGINE_SAMPLES
+	ON CACHE BOOL "Build NLE Engine Samples")
+
+SET(NLE_BUILD_CORE_SAMPLES
+	ON CACHE BOOL "Build NLE Core Samples")
+
+IF(NOT NLE_BUILD_ENGINE_SAMPLES AND NOT NLE_BUILD_CORE_SAMPLES)
+	MESSAGE(SEND_ERROR "Nothing to build. Select desired samples to be built.")
+ENDIF(NOT NLE_BUILD_ENGINE_SAMPLES AND NOT NLE_BUILD_CORE_SAMPLES)
+
+# =====================================================================================
+
+SET(NLE_ROOT_DIR ${PROJECT_SOURCE_DIR})
 
 IF(NLE_BUILD_CORE_SAMPLES)
 	ADD_SUBDIRECTORY(CoreSamples)

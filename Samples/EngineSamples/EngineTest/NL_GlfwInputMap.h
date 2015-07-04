@@ -29,7 +29,7 @@ THE SOFTWARE.
 #ifndef NLE_GLFW_INPUT_MAP_
 #define NLE_GLFW_INPUT_MAP_
 
-#include "NLE\Engine\NL_InputEvents.h"
+#include "NLE\NL_InputEvents.h"
 
 namespace NLE
 {

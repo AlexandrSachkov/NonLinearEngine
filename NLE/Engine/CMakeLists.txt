@@ -1,18 +1,21 @@
 PROJECT(NLE)
 
 SET(HEADERS 
-	NL_InputEvents.h
-	NL_IInputProcessor.h
-	NL_InputProcessor.h
 	NL_DllApi.h
-	NL_Nle.h
+	NL_InputProcessor.h
+	NL_IInputProcessor.h	
 	NL_INle.h
+	NL_InputEvents.h
+	NL_Nle.h
+	NL_Renderer.h
+	NL_IRenderer.h
 	NL_Systems.h
 	)
 
 SET(SOURCES 
 	NL_InputProcessor.cpp
 	NL_Nle.cpp
+	NL_Renderer.cpp
 	)
 
 
@@ -57,7 +60,7 @@ TARGET_LINK_LIBRARIES(NLE
 
 set_target_properties(NLE PROPERTIES DEBUG_POSTFIX _d)
 install (
-	TARGETS NLE 
+	TARGETS NLE
 	RUNTIME DESTINATION ${NLE_SDK_INSTALL_PATH}/bin
 	LIBRARY DESTINATION ${NLE_SDK_INSTALL_PATH}/lib/shared
 	ARCHIVE DESTINATION ${NLE_SDK_INSTALL_PATH}/lib
