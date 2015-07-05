@@ -19,6 +19,7 @@ namespace NLE
 
 	namespace GRAPHICS
 	{
+		class RenderingEngine;
 		class Renderer : public Core::System, public IRenderer
 		{
 		public:
@@ -34,12 +35,14 @@ namespace NLE
 			void stop();
 			void makeContextCurrent();
 			void swapBuffers();
+			void configureVSync();
 
 			std::function<void()> const& getExecutionProcedure();
 			Core::ISystem& getInterface();
 
 			void attachMakeContextCurrent(std::function<void()> const& operation);
 			void attachSwapBuffers(std::function<void()> const& operation);
+			void attachConfigureVSync(std::function<void()> const& operation);
 
 		private:
 			bool _initialized;
@@ -47,7 +50,9 @@ namespace NLE
 			std::function<void()> _procedure;
 			std::function<void()> _makeContextCurrent;
 			std::function<void()> _swapBuffers;
+			std::function<void()> _configureVSync;
 			std::thread* _renderingThread;
+			std::unique_ptr<RenderingEngine> _renderingEngine;
 		};
 	}
 }

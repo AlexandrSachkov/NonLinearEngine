@@ -8,6 +8,7 @@ SET(HEADERS
 	NL_InputEvents.h
 	NL_Nle.h
 	NL_Renderer.h
+	NL_RenderingEngine.h
 	NL_IRenderer.h
 	NL_Systems.h
 	)
@@ -16,12 +17,36 @@ SET(SOURCES
 	NL_InputProcessor.cpp
 	NL_Nle.cpp
 	NL_Renderer.cpp
+	NL_RenderingEngine.cpp
 	)
+
+
+SET(NLE_GLEW_INCLUDE_PATH
+	"" CACHE PATH "NLE GLEW include path")
+
+IF(NLE_GLEW_INCLUDE_PATH STREQUAL "")
+	MESSAGE(SEND_ERROR "NLE GLEW include path must be specified")
+ENDIF(NLE_GLEW_INCLUDE_PATH STREQUAL "")
+
+SET(NLE_GLEW_LIBRARY_DEBUG_PATH
+	"" CACHE PATH "NLE GLEW library debug path")
+
+IF(NLE_GLEW_LIBRARY_DEBUG_PATH STREQUAL "")
+	MESSAGE(SEND_ERROR "NLE GLEW library debug path must be specified")
+ENDIF(NLE_GLEW_LIBRARY_DEBUG_PATH STREQUAL "")
+
+SET(NLE_GLEW_LIBRARY_RELEASE_PATH
+	"" CACHE PATH "NLE GLEW library release path")
+
+IF(NLE_GLEW_LIBRARY_RELEASE_PATH STREQUAL "")
+	MESSAGE(SEND_ERROR "NLE GLEW library release path must be specified")
+ENDIF(NLE_GLEW_LIBRARY_RELEASE_PATH STREQUAL "")
 
 
 INCLUDE_DIRECTORIES(
 	${NLE_SDK_INSTALL_PATH}/include/NLE
 	${NLE_TBB_INCLUDE_PATH}
+	${NLE_GLEW_INCLUDE_PATH}
 	)
 
 IF(NLE_HOST_OS STREQUAL "Windows")
@@ -35,6 +60,8 @@ LINK_DIRECTORIES(
 	${NLE_TBB_LIBRARY_DEBUG_PATH}
 	${NLE_TBB_LIBRARY_RELEASE_PATH}
 	${NLE_SDK_INSTALL_PATH}/lib
+	${NLE_GLEW_LIBRARY_DEBUG_PATH}
+	${NLE_GLEW_LIBRARY_RELEASE_PATH}
 	)
 
 add_library (NLE SHARED
@@ -56,6 +83,12 @@ TARGET_LINK_LIBRARIES(NLE
 	
 	debug NLCore_d
 	optimized NLCore
+	
+	debug glew32
+	optimized glew32
+	
+	debug opengl32.lib
+	optimized opengl32.lib
 	)
 
 set_target_properties(NLE PROPERTIES DEBUG_POSTFIX _d)

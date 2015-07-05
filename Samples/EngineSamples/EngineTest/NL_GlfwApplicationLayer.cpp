@@ -111,13 +111,6 @@ bool NLEGlfwApplicationLayer::initialize()
 	}
 	setWindowCallbacks(_window);
 
-	glfwMakeContextCurrent(_window); // Initialize GLEW 
-	glewExperimental = true;
-	if (glewInit() != GLEW_OK) {
-		printf("Failed to initialize GLEW\n");
-		return false;
-	}
-
 	_nle = NLE::instance();
 
 	_nle->attachPollEvents([&](){
@@ -134,6 +127,10 @@ bool NLEGlfwApplicationLayer::initialize()
 	_nle->attachMakeContextCurrent([&](){
 		glfwMakeContextCurrent(_window);
 	}); 
+
+	_nle->attachConfigureVSync([&](){
+		glfwSwapInterval(0);
+	});
 
 	_nle->attachSwapBuffers([&](){
 		glfwSwapBuffers(_window);

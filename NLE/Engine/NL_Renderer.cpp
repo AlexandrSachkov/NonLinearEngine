@@ -1,6 +1,7 @@
 #include "NL_Renderer.h"
 #include "NLCore\NL_ISystem.h"
 #include "NLCore\NL_IEngine.h"
+#include "NL_RenderingEngine.h"
 
 #include <assert.h>
 
@@ -12,6 +13,7 @@ namespace NLE
 			_initialized(false)
 		{
 			_running.fetch_and_store(false);
+			_renderingEngine = std::make_unique<RenderingEngine>();
 		}
 
 		Renderer::~Renderer()
@@ -21,24 +23,34 @@ namespace NLE
 
 		bool Renderer::initialize(Core::IEngine& engine)
 		{
-			assert(!_initialized && _makeContextCurrent && _swapBuffers);
+			assert(!_initialized && _makeContextCurrent && _swapBuffers && _configureVSync);
 
 			_procedure = [&](){
 				printf("Starting Rendering task\n");
 
 				_running.fetch_and_store(true);
-				_renderingThread = new std::thread([&](GRAPHICS::Renderer* renderer){
+				_renderingThread = new std::thread([&](Renderer& renderer, std::unique_ptr<RenderingEngine> const& renderingEngine){
 
-					printf("Rendering Thread running");			
-					renderer->makeContextCurrent();
-					while (renderer->isRunning())
+					printf("Rendering Thread running\n");			
+					renderer.makeContextCurrent();
+					renderer.configureVSync();
+
+					if (!renderingEngine->initializeOpenGL())
 					{
-						
-						renderer->swapBuffers();
+						printf("OpenGL failed to initialize");
+						return;
+					}						
+
+					while (renderer.isRunning())
+					{
+						renderingEngine->render();
+						renderer.swapBuffers();
 					}
-				}, this);
-				_renderingThread->detach();
+				}, std::ref(*this), std::ref(_renderingEngine));
 			};
+
+			if (!_renderingEngine->initialize())
+				return false;
 
 			_initialized = true;
 			return true;
@@ -64,9 +76,15 @@ namespace NLE
 			_swapBuffers();
 		}
 
+		void Renderer::configureVSync()
+		{
+			_configureVSync();
+		}
+
 		void Renderer::release()
 		{
 			stop();
+			_renderingEngine->release();
 			_initialized = false;
 		}
 
@@ -95,6 +113,12 @@ namespace NLE
 		{
 			assert(!_initialized);
 			_swapBuffers = operation;
+		}
+
+		void Renderer::attachConfigureVSync(std::function<void()> const& operation)
+		{
+			assert(!_initialized);
+			_configureVSync = operation;
 		}
 	}
 }

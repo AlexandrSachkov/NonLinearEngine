@@ -14,6 +14,7 @@ namespace NLE
 			virtual void stop() = 0;
 			virtual void attachMakeContextCurrent(std::function<void()> const& operation) = 0;
 			virtual void attachSwapBuffers(std::function<void()> const& operation) = 0;
+			virtual void attachConfigureVSync(std::function<void()> const& operation) = 0;
 		};
 	}
 }

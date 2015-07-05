@@ -98,4 +98,10 @@ namespace NLE
 		static_cast<GRAPHICS::IRenderer*>(&Core::DeviceCore::instance().getSystemInterface(SYS::SYS_RENDERER))
 			->attachSwapBuffers(operation);
 	}
+
+	void Nle::attachConfigureVSync(std::function<void()> const& operation)
+	{
+		static_cast<GRAPHICS::IRenderer*>(&Core::DeviceCore::instance().getSystemInterface(SYS::SYS_RENDERER))
+			->attachConfigureVSync(operation);
+	}
 }

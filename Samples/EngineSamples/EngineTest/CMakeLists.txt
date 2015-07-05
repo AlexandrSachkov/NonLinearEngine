@@ -74,7 +74,9 @@ LINK_DIRECTORIES(
 	${NLE_GLEW_LIBRARY_RELEASE_PATH}
 	)
 
-ADD_DEFINITIONS(-DNLE_DLL)
+ADD_DEFINITIONS(
+	-DNLE_DLL
+	)
 
 ADD_EXECUTABLE (EngineTest
   ${HEADERS}
@@ -95,6 +97,9 @@ TARGET_LINK_LIBRARIES(EngineTest
 	
 	debug glew32
 	optimized glew32
+	
+	debug opengl32.lib
+	optimized opengl32.lib
 	)
 
 set_target_properties(EngineTest PROPERTIES DEBUG_POSTFIX _d)
