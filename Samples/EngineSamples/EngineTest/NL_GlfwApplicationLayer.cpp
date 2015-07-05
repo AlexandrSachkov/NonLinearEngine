@@ -30,7 +30,10 @@ THE SOFTWARE.
 #include "NL_GlfwInputMap.h"
 #include "NLE\NL_Nle.h"
 
-#include "GL\glew.h"
+#define GLFW_INCLUDE_NONE
+#define GL_TRUE 1
+#define GL_FALSE 0
+
 #include "GLFW\glfw3.h"
 
 #include <assert.h>

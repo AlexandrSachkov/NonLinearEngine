@@ -30,7 +30,6 @@ THE SOFTWARE.
 #define NLE_GLFW_APPLICATION_LAYER_
 
 #include "NLE\NL_InputEvents.h"
-//#include "NLE\Engine\NL_INle.h"
 #include <string>
 #include <memory>
 
