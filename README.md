@@ -35,24 +35,19 @@ This section is created to track development progress and includes completed and
   </tr>
   
   <tr>
-    <td>8</td>
+    <td>7</td>
     <td>Build OpenGL 4.3 rendering system</td>
     <td>Pending</td>
   </tr>
   <tr>
-    <td>7</td>
-    <td>Build input system</td>
-    <td>Pending</td>
-  </tr>
-  <tr>
     <td>6</td>
-    <td>Build application system</td>
-    <td>Pending</td>
+    <td>Build basic input system</td>
+    <td>Complete</td>
   </tr>
   <tr>
     <td>5</td>
-    <td>Build basic engine</td>
-    <td>Pending</td>
+    <td>Build basic application system</td>
+    <td>Complete</td>
   </tr>
   <tr>
     <td>4</td>
