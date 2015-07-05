@@ -31,9 +31,6 @@ THE SOFTWARE.
 #include "NLE\NL_Nle.h"
 
 #define GLFW_INCLUDE_NONE
-#define GL_TRUE 1
-#define GL_FALSE 0
-
 #include "GLFW\glfw3.h"
 
 #include <assert.h>
@@ -93,7 +90,7 @@ bool NLEGlfwApplicationLayer::initialize()
 	glfwWindowHint(GLFW_SAMPLES, 4); // 4x antialiasing
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
+	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, true);
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
 
@@ -191,13 +188,13 @@ void NLEGlfwApplicationLayer::setFullscreenHint(bool option)
 //===========================================================================================================================
 void NLEGlfwApplicationLayer::setResizableHint(bool option)
 {
-	glfwWindowHint(GLFW_RESIZABLE, option == true ? GL_TRUE : GL_FALSE);
+	glfwWindowHint(GLFW_RESIZABLE, option);
 }
 
 //===========================================================================================================================
 void NLEGlfwApplicationLayer::setDecoratedHint(bool option)
 {
-	glfwWindowHint(GLFW_DECORATED, option == true ? GL_TRUE : GL_FALSE);
+	glfwWindowHint(GLFW_DECORATED, option);
 }
 
 //===========================================================================================================================
@@ -252,7 +249,7 @@ void NLEGlfwApplicationLayer::run()
 //===========================================================================================================================
 void NLEGlfwApplicationLayer::closeWindow()
 {
-	glfwSetWindowShouldClose(_window, GL_TRUE);
+	glfwSetWindowShouldClose(_window, true);
 }
 
 //===========================================================================================================================
@@ -329,7 +326,7 @@ void NLEGlfwApplicationLayer::onCursorEnterEvent(GLFWwindow *window, int entered
 {
 	NLE::INPUT::Event event;
 	event.eventType = NLE::INPUT::EVENT_TYPE::EVENT_CURSOR_ENTER;
-	event.eventData.cursorEnterEvent.entered = entered == GL_TRUE ? true : false;
+	event.eventData.cursorEnterEvent.entered = entered == 1 ? true : false;
 
 	_glfwAppLayer->getNLE()->processEvent(event);
 }
@@ -390,7 +387,7 @@ void NLEGlfwApplicationLayer::onWindowFocusEvent(GLFWwindow *window, int focused
 {
 	NLE::INPUT::Event event;
 	event.eventType = NLE::INPUT::EVENT_TYPE::EVENT_WINDOW_FOCUS;
-	event.eventData.windowFocusEvent.focused = focused == GL_TRUE ? true : false;
+	event.eventData.windowFocusEvent.focused = focused == 1 ? true : false;
 
 	_glfwAppLayer->getNLE()->processEvent(event);
 }
@@ -400,7 +397,7 @@ void NLEGlfwApplicationLayer::onWindowIconifyEvent(GLFWwindow *window, int iconi
 {
 	NLE::INPUT::Event event;
 	event.eventType = NLE::INPUT::EVENT_TYPE::EVENT_WINDOW_ICONIFY;
-	event.eventData.windowIconifyEvent.iconified = iconified == GL_TRUE ? true : false;
+	event.eventData.windowIconifyEvent.iconified = iconified == 1 ? true : false;
 
 	_glfwAppLayer->getNLE()->processEvent(event);
 }
