@@ -2,6 +2,8 @@
 #define NL_RENDERING_ENGINE_H_
 
 #include "GL\glew.h"
+#include <cstdint>
+#include <chrono>
 
 namespace NLE
 {
@@ -20,6 +22,8 @@ namespace NLE
 			void render();
 
 		private:
+			uint_fast32_t _frameCount;
+			std::chrono::time_point<std::chrono::high_resolution_clock, std::chrono::nanoseconds> _previousTime;
 			GLuint _program;
 			GLuint _vertexArray;
 		};

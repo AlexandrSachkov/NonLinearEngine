@@ -1,12 +1,15 @@
 #include "NL_RenderingEngine.h"
 
 #include <cstdio>
+#include <iostream>
 
 namespace NLE
 {
 	namespace GRAPHICS
 	{
-		RenderingEngine::RenderingEngine()
+		RenderingEngine::RenderingEngine() :
+			_frameCount(0),
+			_previousTime(std::chrono::nanoseconds(0L))
 		{
 			printf("Rendering Engine created\n");
 		}
@@ -55,7 +58,10 @@ namespace NLE
 				" \n"
 				"void main(void) \n"
 				"{ \n"
-				" color = vec4(0.0, 0.8, 1.0, 1.0); \n"
+				"color = vec4(sin(gl_FragCoord.x * 0.25) * 0.5 + 0.5,"
+				"cos(gl_FragCoord.y * 0.25) * 0.5 + 0.5,"
+				"sin(gl_FragCoord.x * 0.15) * cos(gl_FragCoord.y * 0.15),"
+				"1.0);"
 				"} \n"
 			};
 
@@ -82,6 +88,8 @@ namespace NLE
 			glGenVertexArrays(1, &_vertexArray);
 			glBindVertexArray(_vertexArray);
 
+			// Use the program object we created earlier for rendering
+			glUseProgram(_program);
 			return true;
 		}
 
@@ -97,10 +105,22 @@ namespace NLE
 			glClearBufferfv(GL_COLOR, 0, green);
 			
 			glPointSize(40.0f);
-			// Use the program object we created earlier for rendering
-			glUseProgram(_program);
+			
 			// Draw one point
 			glDrawArrays(GL_TRIANGLES, 0, 3);
+
+			++_frameCount;
+			if (_frameCount == 10000)
+			{
+				auto time = std::chrono::high_resolution_clock::now();
+				auto diff = std::chrono::duration_cast<std::chrono::nanoseconds>(time - _previousTime).count();
+				double fps = 1 / (diff / _frameCount * 0.000000001);
+				std::cout << fps << "\n";
+				_previousTime = time;
+				
+
+				_frameCount = 0;
+			}
 		}
 	}
 }
