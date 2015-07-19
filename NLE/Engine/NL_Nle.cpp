@@ -4,8 +4,12 @@
 #include "NLCore\NL_ExecutionDesc.h"
 #include "NL_InputEvents.h"
 #include "NL_InputProcessor.h"
+#include "NL_CameraController.h"
 #include "NL_Renderer.h"
 #include "NL_Systems.h"
+#include "NL_SharedContainers.h"
+
+#include "glm\mat4x4.hpp"
 
 #include <assert.h>
 #include <memory>
@@ -15,11 +19,19 @@ namespace NLE
 	Nle* Nle::_nle = nullptr;
 
 	Nle::Nle() :
-		_initialized(false)
+		_initialized(false),
+		_defaultGrainSize(6500)
 	{
 		Core::DeviceCore& core = Core::DeviceCore::instance();
 		core.setClockPeriodNs(1000000L);
 
+		// Install shared containers
+		core.installSContainer<char>(CAMERA_CONTROLLER_COMMANDS, CAMERA::COMMANDS::NUM_COMMANDS, _defaultGrainSize); //one slot for each command
+		core.installSContainer<double>(CURSOR_COORDINATES, 2, _defaultGrainSize);	// 2 slots for x and y components
+		core.installSContainer<double>(SCROLL_OFFSET, 2, _defaultGrainSize);	// 2 slots for x and y components
+		core.installSContainer<glm::mat4x4>(VIEW_PROJECTION, 2, _defaultGrainSize);
+
+		// Attach systems
 		Core::ExecutionDesc inputProcDesc(
 			Core::Priority::HIGH,
 			Core::Execution::RECURRING,
@@ -28,6 +40,7 @@ namespace NLE
 			16666666L	//60 FPS
 		);
 		core.attachSystem(SYS::SYS_INPUT_PROCESSOR, inputProcDesc, std::unique_ptr<INPUT::InputProcessor>(new INPUT::InputProcessor()));
+		core.attachSystem(SYS::SYS_CAMERA_CONTROLLER, inputProcDesc, std::unique_ptr<CAMERA::CameraController>(new CAMERA::CameraController()));
 
 		core.setNumThreads(core.getNumThreads() - 1); // Leave a hardware thread for graphics
 		Core::ExecutionDesc renderingProcDesc(
@@ -103,5 +116,11 @@ namespace NLE
 	{
 		static_cast<GRAPHICS::IRenderer*>(&Core::DeviceCore::instance().getSystemInterface(SYS::SYS_RENDERER))
 			->attachConfigureVSync(operation);
+	}
+
+	void Nle::setScreenDimensions(uint_fast32_t width, uint_fast32_t height)
+	{
+		static_cast<CAMERA::ICameraController*>(&Core::DeviceCore::instance().getSystemInterface(SYS::SYS_CAMERA_CONTROLLER))
+			->setScreenDimensions(width, height);
 	}
 }

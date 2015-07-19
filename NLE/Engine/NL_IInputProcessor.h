@@ -15,6 +15,8 @@ namespace NLE
 		public:
 			virtual void attachPollEvents(std::function<void()> const& operation) = 0;
 			virtual void processEvent(INPUT::Event& event) = 0;
+
+			virtual void enableTextInput(bool enable) = 0;
 		};
 	}
 }

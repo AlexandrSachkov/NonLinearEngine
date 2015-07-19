@@ -80,7 +80,7 @@ bool NLEGlfwApplicationLayer::initialize()
 
 	if (_fullscreen || _width == 0 || _height == 0)
 	{
-		const GLFWvidmode * mode = glfwGetVideoMode(glfwGetPrimaryMonitor());
+		const GLFWvidmode* mode = glfwGetVideoMode(glfwGetPrimaryMonitor());
 		_width = mode->width;
 		_height = mode->height;
 	}
@@ -110,6 +110,7 @@ bool NLEGlfwApplicationLayer::initialize()
 		return false;
 	}
 	setWindowCallbacks(_window);
+	glfwSetInputMode(_window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
 	_nle = NLE::instance();
 
@@ -135,6 +136,8 @@ bool NLEGlfwApplicationLayer::initialize()
 	_nle->attachSwapBuffers([&](){
 		glfwSwapBuffers(_window);
 	});
+	_nle->
+	_nle->setScreenDimensions(_width, _height);
 
 	if (!_nle->initialize()) return false;
 

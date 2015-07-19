@@ -1,0 +1,18 @@
+#ifndef NL_SHARED_CONTAINERS_H_
+#define NL_SHARED_CONTAINERS_H_
+
+namespace NLE
+{
+	enum SHARED_CONTAINERS
+	{
+		// Input
+		CAMERA_CONTROLLER_COMMANDS,
+		CURSOR_COORDINATES,
+		SCROLL_OFFSET,
+
+		// Camera
+		VIEW_PROJECTION
+	};
+}
+
+#endif

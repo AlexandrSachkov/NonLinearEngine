@@ -2,6 +2,8 @@ PROJECT(NLE)
 
 SET(HEADERS 
 	NL_DllApi.h
+	NL_CameraController.h
+	NL_ICameraController.h
 	NL_InputProcessor.h
 	NL_IInputProcessor.h	
 	NL_INle.h
@@ -10,17 +12,19 @@ SET(HEADERS
 	NL_Renderer.h
 	NL_RenderingEngine.h
 	NL_IRenderer.h
+	NL_SharedContainers.h
 	NL_Systems.h
 	)
 
 SET(SOURCES 
+	NL_CameraController.cpp
 	NL_InputProcessor.cpp
 	NL_Nle.cpp
 	NL_Renderer.cpp
 	NL_RenderingEngine.cpp
 	)
 
-
+# GLEW
 SET(NLE_GLEW_INCLUDE_PATH
 	"" CACHE PATH "NLE GLEW include path")
 
@@ -43,10 +47,21 @@ IF(NLE_GLEW_LIBRARY_RELEASE_PATH STREQUAL "")
 ENDIF(NLE_GLEW_LIBRARY_RELEASE_PATH STREQUAL "")
 
 
+# GLM
+
+SET(NLE_GLM_INCLUDE_PATH
+	"" CACHE PATH "NLE GLM include path")
+
+IF(NLE_GLM_INCLUDE_PATH STREQUAL "")
+	MESSAGE(SEND_ERROR "NLE GLM include path must be specified")
+ENDIF(NLE_GLM_INCLUDE_PATH STREQUAL "")
+
+
 INCLUDE_DIRECTORIES(
 	${NLE_SDK_INSTALL_PATH}/include/NLE
 	${NLE_TBB_INCLUDE_PATH}
 	${NLE_GLEW_INCLUDE_PATH}
+	${NLE_GLM_INCLUDE_PATH}
 	)
 
 IF(NLE_HOST_OS STREQUAL "Windows")

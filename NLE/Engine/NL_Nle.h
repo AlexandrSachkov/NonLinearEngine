@@ -3,6 +3,7 @@
 
 #include "NL_INle.h"
 #include "NL_DllApi.h"
+#include <cstdint>
 
 namespace NLE
 {
@@ -32,6 +33,7 @@ namespace NLE
 		void attachSwapBuffers(std::function<void()> const& operation);
 		void attachConfigureVSync(std::function<void()> const& operation);
 
+		void setScreenDimensions(uint_fast32_t width, uint_fast32_t height);
 	private:
 		Nle();
 		Nle(Nle const&) = delete;
@@ -39,6 +41,7 @@ namespace NLE
 
 		static Nle* _nle;
 		bool _initialized;
+		uint_fast32_t _defaultGrainSize;
 	};
 
 #if defined (NLE_DLL) && defined(NLE_DLL_EXPORT)
