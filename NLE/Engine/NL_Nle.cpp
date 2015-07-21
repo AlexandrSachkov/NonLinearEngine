@@ -29,7 +29,7 @@ namespace NLE
 		core.installSContainer<char>(CAMERA_CONTROLLER_COMMANDS, CAMERA::COMMANDS::NUM_COMMANDS, _defaultGrainSize); //one slot for each command
 		core.installSContainer<double>(CURSOR_COORDINATES, 2, _defaultGrainSize);	// 2 slots for x and y components
 		core.installSContainer<double>(SCROLL_OFFSET, 2, _defaultGrainSize);	// 2 slots for x and y components
-		core.installSContainer<glm::mat4x4>(VIEW_PROJECTION, 2, _defaultGrainSize);
+		core.installSContainer<glm::mat4x4>(VIEW_PROJECTION, 2, _defaultGrainSize); // 2 slots for view and projection matrices
 
 		// Attach systems
 		Core::ExecutionDesc inputProcDesc(

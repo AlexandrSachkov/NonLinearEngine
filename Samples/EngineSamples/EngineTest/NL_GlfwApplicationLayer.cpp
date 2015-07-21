@@ -136,7 +136,7 @@ bool NLEGlfwApplicationLayer::initialize()
 	_nle->attachSwapBuffers([&](){
 		glfwSwapBuffers(_window);
 	});
-	_nle->
+
 	_nle->setScreenDimensions(_width, _height);
 
 	if (!_nle->initialize()) return false;
