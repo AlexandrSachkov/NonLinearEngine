@@ -36,7 +36,7 @@ This section is created to track development progress and includes completed and
   
   <tr>
     <td>7</td>
-    <td>Build OpenGL 4.3 rendering system</td>
+    <td>Build Direct3D 11 rendering system</td>
     <td>Pending</td>
   </tr>
   <tr>
