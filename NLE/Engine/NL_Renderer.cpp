@@ -23,7 +23,10 @@ namespace NLE
 
 		bool Renderer::initialize(Core::IEngine& engine)
 		{
-			assert(!_initialized && _makeContextCurrent && _swapBuffers && _configureVSync);
+			assert(!_initialized);
+
+			if (!_renderingEngine->initialize())
+				return false;
 
 			_procedure = [&](){
 				printf("Starting Rendering task\n");
@@ -32,25 +35,12 @@ namespace NLE
 				_renderingThread = new std::thread([&](Renderer& renderer, std::unique_ptr<RenderingEngine> const& renderingEngine){
 
 					printf("Rendering Thread running\n");			
-					renderer.makeContextCurrent();
-					renderer.configureVSync();
-
-					if (!renderingEngine->initializeOpenGL())
-					{
-						printf("OpenGL failed to initialize");
-						return;
-					}						
-
 					while (renderer.isRunning())
 					{
 						renderingEngine->render();
-						renderer.swapBuffers();
 					}
 				}, std::ref(*this), std::ref(_renderingEngine));
 			};
-
-			if (!_renderingEngine->initialize())
-				return false;
 
 			_initialized = true;
 			return true;
@@ -64,21 +54,6 @@ namespace NLE
 		void Renderer::stop()
 		{
 			_running.fetch_and_store(false);
-		}
-		
-		void Renderer::makeContextCurrent()
-		{
-			_makeContextCurrent();
-		}
-
-		void Renderer::swapBuffers()
-		{
-			_swapBuffers();
-		}
-
-		void Renderer::configureVSync()
-		{
-			_configureVSync();
 		}
 
 		void Renderer::release()
@@ -103,22 +78,19 @@ namespace NLE
 			return *this;
 		}
 
-		void Renderer::attachMakeContextCurrent(std::function<void()> const& operation)
+		void Renderer::setWindowHandle(void* handle)
 		{
-			assert(!_initialized);
-			_makeContextCurrent = operation;
+			_renderingEngine->setWindowHandle(handle);
 		}
 
-		void Renderer::attachSwapBuffers(std::function<void()> const& operation)
+		void Renderer::setScreenDimensions(uint_fast32_t width, uint_fast32_t height)
 		{
-			assert(!_initialized);
-			_swapBuffers = operation;
+			_renderingEngine->setScreenDimensions(width, height);
 		}
 
-		void Renderer::attachConfigureVSync(std::function<void()> const& operation)
+		void Renderer::setFullscreen(bool fullscreen)
 		{
-			assert(!_initialized);
-			_configureVSync = operation;
+			_renderingEngine->setFullscreen(fullscreen);
 		}
 	}
 }

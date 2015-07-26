@@ -7,8 +7,6 @@
 #include "NLCore\NL_SContainer.h"
 
 #include <chrono>
-#include "glm\vec3.hpp"
-#include "glm\mat4x4.hpp"
 
 namespace NLE
 {
@@ -42,16 +40,16 @@ namespace NLE
 			NLE::Core::Data::SContainer<char>* _commands;
 			NLE::Core::Data::SContainer<double>* _cursorCoords;
 			NLE::Core::Data::SContainer<double>* _scrollOffset;
-			NLE::Core::Data::SContainer<glm::mat4x4>* _viewProjection;
+			//NLE::Core::Data::SContainer<glm::mat4x4>* _viewProjection;
 
 			std::chrono::time_point<std::chrono::high_resolution_clock, std::chrono::nanoseconds> _previousTime;
 			float _lastX;
 			float _lastY;
 			bool _firstMouse;
 
-			glm::vec3 _cameraPos;
+			/*glm::vec3 _cameraPos;
 			glm::vec3 _cameraFront;
-			glm::vec3 _cameraUp;
+			glm::vec3 _cameraUp;*/
 			float _cameraSpeedConst;
 			float _sensitivity;
 			float _yaw;

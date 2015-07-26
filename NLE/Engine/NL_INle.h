@@ -21,11 +21,10 @@ namespace NLE
 
 		virtual void attachPollEvents(std::function<void()> const& operation) = 0;
 		virtual void processEvent(INPUT::Event& event) = 0;
-		virtual void attachMakeContextCurrent(std::function<void()> const& operation) = 0;
-		virtual void attachSwapBuffers(std::function<void()> const& operation) = 0;
-		virtual void attachConfigureVSync(std::function<void()> const& operation) = 0;
 
+		virtual void setWindowHandle(void* handle) = 0;
 		virtual void setScreenDimensions(uint_fast32_t width, uint_fast32_t height) = 0;
+		virtual void setFullscreen(bool fullscreen) = 0;
 	};
 }
 #endif

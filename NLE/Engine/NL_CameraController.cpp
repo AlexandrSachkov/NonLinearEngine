@@ -5,9 +5,6 @@
 #include "NL_SharedContainers.h"
 #include "NL_Systems.h"
 
-#include "glm\glm.hpp"
-#include <glm/gtc/matrix_transform.hpp>
-
 #include <assert.h>
 
 namespace NLE
@@ -20,9 +17,9 @@ namespace NLE
 			_screenWidth(0),
 			_screenHeight(0)
 		{
-			_cameraPos = glm::vec3(0.0f, 0.0f, 3.0f);
+			/*_cameraPos = glm::vec3(0.0f, 0.0f, 3.0f);
 			_cameraFront = glm::vec3(0.0f, 0.0f, -1.0f);
-			_cameraUp = glm::vec3(0.0f, 1.0f, 0.0f);
+			_cameraUp = glm::vec3(0.0f, 1.0f, 0.0f);*/
 			_cameraSpeedConst = 0.00005f;
 			_sensitivity = 0.05f;
 			_yaw = 0;
@@ -43,10 +40,10 @@ namespace NLE
 			_commands = &static_cast<NLE::Core::Data::SDistributor<char>*>(&engine.getSDistributor(CAMERA_CONTROLLER_COMMANDS))->buildEndpoint(SYS::SYS_CAMERA_CONTROLLER);
 			_cursorCoords = &static_cast<NLE::Core::Data::SDistributor<double>*>(&engine.getSDistributor(CURSOR_COORDINATES))->buildEndpoint(SYS::SYS_CAMERA_CONTROLLER);
 			_scrollOffset = &static_cast<NLE::Core::Data::SDistributor<double>*>(&engine.getSDistributor(SCROLL_OFFSET))->buildEndpoint(SYS::SYS_CAMERA_CONTROLLER);
-			_viewProjection = &static_cast<NLE::Core::Data::SDistributor<glm::mat4x4>*>(&engine.getSDistributor(VIEW_PROJECTION))->buildEndpoint(SYS::SYS_CAMERA_CONTROLLER);
+			//_viewProjection = &static_cast<NLE::Core::Data::SDistributor<glm::mat4x4>*>(&engine.getSDistributor(VIEW_PROJECTION))->buildEndpoint(SYS::SYS_CAMERA_CONTROLLER);
 		
 			_procedure = [&](){
-				auto commands = *_commands;
+				/*auto commands = *_commands;
 				auto cursorCoords = *_cursorCoords;
 				auto scrollOffset = *_scrollOffset;
 				auto viewProjection = *_viewProjection;
@@ -110,7 +107,7 @@ namespace NLE
 					_aspect = 45.0f;
 
 				viewProjection.modify(0, glm::lookAt(_cameraPos, _cameraPos + _cameraFront, _cameraUp)); // set view matrix
-				viewProjection.modify(1, glm::perspective(_aspect, (float)_screenWidth / (float)_screenHeight, 0.1f, 100.0f)); //set projection matrix
+				viewProjection.modify(1, glm::perspective(_aspect, (float)_screenWidth / (float)_screenHeight, 0.1f, 100.0f)); //set projection matrix*/
 			};
 
 			_initialized = true;

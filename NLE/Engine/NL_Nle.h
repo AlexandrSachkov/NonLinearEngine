@@ -29,11 +29,10 @@ namespace NLE
 
 		void attachPollEvents(std::function<void()> const& operation);
 		void processEvent(INPUT::Event& event);
-		void attachMakeContextCurrent(std::function<void()> const& operation);
-		void attachSwapBuffers(std::function<void()> const& operation);
-		void attachConfigureVSync(std::function<void()> const& operation);
 
+		void setWindowHandle(void* handle);
 		void setScreenDimensions(uint_fast32_t width, uint_fast32_t height);
+		void setFullscreen(bool fullscreen);
 	private:
 		Nle();
 		Nle(Nle const&) = delete;

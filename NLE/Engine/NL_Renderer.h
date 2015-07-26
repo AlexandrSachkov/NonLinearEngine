@@ -30,27 +30,21 @@ namespace NLE
 			void release();
 
 			bool initialized();
-
 			bool isRunning();
+
+			void setWindowHandle(void* handle);
+			void setScreenDimensions(uint_fast32_t width, uint_fast32_t height);
+			void setFullscreen(bool fullscreen);
 			void stop();
-			void makeContextCurrent();
-			void swapBuffers();
-			void configureVSync();
 
 			std::function<void()> const& getExecutionProcedure();
 			Core::ISystem& getInterface();
-
-			void attachMakeContextCurrent(std::function<void()> const& operation);
-			void attachSwapBuffers(std::function<void()> const& operation);
-			void attachConfigureVSync(std::function<void()> const& operation);
 
 		private:
 			bool _initialized;
 			tbb::atomic<bool> _running;
 			std::function<void()> _procedure;
-			std::function<void()> _makeContextCurrent;
-			std::function<void()> _swapBuffers;
-			std::function<void()> _configureVSync;
+
 			std::thread* _renderingThread;
 			std::unique_ptr<RenderingEngine> _renderingEngine;
 		};

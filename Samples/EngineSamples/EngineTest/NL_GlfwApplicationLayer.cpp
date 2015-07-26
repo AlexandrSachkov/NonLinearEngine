@@ -30,8 +30,10 @@ THE SOFTWARE.
 #include "NL_GlfwInputMap.h"
 #include "NLE\NL_Nle.h"
 
-#define GLFW_INCLUDE_NONE
 #include "GLFW\glfw3.h"
+#define GLFW_EXPOSE_NATIVE_WIN32
+#define GLFW_EXPOSE_NATIVE_WGL
+#include "GLFW\glfw3native.h"
 
 #include <assert.h>
 
@@ -87,13 +89,6 @@ bool NLEGlfwApplicationLayer::initialize()
 
 	setResizableHint(false);
 
-	glfwWindowHint(GLFW_SAMPLES, 4); // 4x antialiasing
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, true);
-	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-
-
 	if (_fullscreen)
 	{
 		_window = glfwCreateWindow(_width, _height, _title.c_str(), glfwGetPrimaryMonitor(), NULL);
@@ -124,20 +119,10 @@ bool NLEGlfwApplicationLayer::initialize()
 			_nle->stop();
 		}					
 	});
-	
-	_nle->attachMakeContextCurrent([&](){
-		glfwMakeContextCurrent(_window);
-	}); 
 
-	_nle->attachConfigureVSync([&](){
-		glfwSwapInterval(0);
-	});
-
-	_nle->attachSwapBuffers([&](){
-		glfwSwapBuffers(_window);
-	});
-
+	_nle->setWindowHandle(glfwGetWin32Window(_window));
 	_nle->setScreenDimensions(_width, _height);
+	_nle->setFullscreen(_fullscreen);
 
 	if (!_nle->initialize()) return false;
 

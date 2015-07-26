@@ -1,4 +1,5 @@
 #include "NL_RenderingEngine.h"
+#include "NL_D3D11Device.h"
 
 #include <cstdio>
 #include <iostream>
@@ -8,106 +9,72 @@ namespace NLE
 	namespace GRAPHICS
 	{
 		RenderingEngine::RenderingEngine() :
+			_initialized(false),
 			_frameCount(0),
-			_previousTime(std::chrono::nanoseconds(0L))
+			_previousTime(std::chrono::nanoseconds(0L)),
+			_hwnd(nullptr),
+			_screenWidth(0),
+			_screenHeight(0),
+			_fullscreen(true)
 		{
+			_device = std::make_unique<D3D11Device>();
+			
 			printf("Rendering Engine created\n");
 		}
 
 		RenderingEngine::~RenderingEngine()
 		{
-
+			release();
 		}
 
 		bool RenderingEngine::initialize()
 		{
-			return true;
-		}
+			assert(!_initialized && _hwnd && _screenWidth > 0 && _screenHeight > 0);
 
-		bool RenderingEngine::initializeOpenGL()
-		{
-			glewExperimental = true;
-			if (glewInit() != GLEW_OK) {
+			if (!_device->createDeviceAndSwapChain(_hwnd, _screenWidth, _screenHeight, _fullscreen, _d3dDevice, _swapChain, _deviceContext))
 				return false;
-			}
+			if (!_device->createBackBufferRenderTargetView(_d3dDevice, _swapChain, _backBufferRenderTargetView))
+				return false;
 
-			GLuint vertex_shader;
-			GLuint fragment_shader;
-
-			// Source code for vertex shader
-			static const GLchar * vertex_shader_source[] =
-			{
-				"#version 430 core \n"
-				" \n"
-				"void main(void) \n"
-				"{ \n"
-				
-				"const vec4 vertices[3] = vec4[3](vec4(0.25, -0.25, 0.5, 1.0),"
-				"vec4(-0.25, -0.25, 0.5, 1.0),"
-				"vec4(0.25, 0.25, 0.5, 1.0));"
-				
-				"gl_Position = vertices[gl_VertexID];"
-				"} \n"
-			};
-			// Source code for fragment shader
-			static const GLchar * fragment_shader_source[] =
-			{
-				"#version 430 core \n"
-				" \n"
-				"out vec4 color; \n"
-				" \n"
-				"void main(void) \n"
-				"{ \n"
-				"color = vec4(sin(gl_FragCoord.x * 0.25) * 0.5 + 0.5,"
-				"cos(gl_FragCoord.y * 0.25) * 0.5 + 0.5,"
-				"sin(gl_FragCoord.x * 0.15) * cos(gl_FragCoord.y * 0.15),"
-				"1.0);"
-				"} \n"
-			};
-
-			// Create and compile vertex shader
-			vertex_shader = glCreateShader(GL_VERTEX_SHADER);
-			glShaderSource(vertex_shader, 1, vertex_shader_source, NULL);
-			glCompileShader(vertex_shader);
-
-			// Create and compile fragment shader
-			fragment_shader = glCreateShader(GL_FRAGMENT_SHADER);
-			glShaderSource(fragment_shader, 1, fragment_shader_source, NULL);
-			glCompileShader(fragment_shader);
-
-			// Create program, attach shaders to it, and link it
-			_program = glCreateProgram();
-			glAttachShader(_program, vertex_shader);
-			glAttachShader(_program, fragment_shader);
-			glLinkProgram(_program);
-
-			// Delete the shaders as the program has them now
-			glDeleteShader(vertex_shader);
-			glDeleteShader(fragment_shader);
-
-			glGenVertexArrays(1, &_vertexArray);
-			glBindVertexArray(_vertexArray);
-
-			// Use the program object we created earlier for rendering
-			glUseProgram(_program);
 			return true;
 		}
 
 		void RenderingEngine::release()
 		{
-			glDeleteVertexArrays(1, &_vertexArray);
-			glDeleteProgram(_program);
+			_swapChain->SetFullscreenState(FALSE, NULL);
+			SAFE_RELEASE(_swapChain);
+			SAFE_RELEASE(_deviceContext);
+			SAFE_RELEASE(_d3dDevice);
+		}
+
+		void RenderingEngine::setWindowHandle(void* handle)
+		{
+			assert(!_initialized);
+			_hwnd = (HWND)handle;
+		}
+
+		void RenderingEngine::setScreenDimensions(uint_fast32_t width, uint_fast32_t height)
+		{
+			assert(!_initialized);
+			_screenWidth = width;
+			_screenHeight = height;
+		}
+
+		void RenderingEngine::setFullscreen(bool fullscreen)
+		{
+			assert(!_initialized);
+			_fullscreen = fullscreen;
 		}
 
 		void RenderingEngine::render()
 		{
-			static const GLfloat green[] = { 0.0f, 1.0f, 0.0f, 1.0f };
-			glClearBufferfv(GL_COLOR, 0, green);
-			
-			glPointSize(40.0f);
-			
-			// Draw one point
-			glDrawArrays(GL_TRIANGLES, 0, 3);
+			//Clear our backbuffer to the updated color
+			const float bgColor[] = { 0.0f, 1.0f, 0.0f, 1.0f };
+
+			_deviceContext->ClearRenderTargetView(_backBufferRenderTargetView, bgColor);
+
+
+			_swapChain->Present(0, 0);
 
 			++_frameCount;
 			if (_frameCount == 10000)
@@ -115,9 +82,9 @@ namespace NLE
 				auto time = std::chrono::high_resolution_clock::now();
 				auto diff = std::chrono::duration_cast<std::chrono::nanoseconds>(time - _previousTime).count();
 				double fps = 1 / (diff / _frameCount * 0.000000001);
-				std::cout << fps << "\n";
+				std::cout << "FPS: " << fps << "\n";
 				_previousTime = time;
-				
+
 
 				_frameCount = 0;
 			}

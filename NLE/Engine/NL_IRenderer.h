@@ -2,7 +2,7 @@
 #define NL_I_RENDERER_H_
 
 #include "NLCore\NL_ISystem.h"
-#include <functional>
+#include <cstdint>
 
 namespace NLE
 {
@@ -11,10 +11,10 @@ namespace NLE
 		class IRenderer : public Core::ISystem
 		{
 		public:
+			virtual void setWindowHandle(void* handle) = 0;
+			virtual void setScreenDimensions(uint_fast32_t width, uint_fast32_t height) = 0;
+			virtual void setFullscreen(bool fullscreen) = 0;
 			virtual void stop() = 0;
-			virtual void attachMakeContextCurrent(std::function<void()> const& operation) = 0;
-			virtual void attachSwapBuffers(std::function<void()> const& operation) = 0;
-			virtual void attachConfigureVSync(std::function<void()> const& operation) = 0;
 		};
 	}
 }

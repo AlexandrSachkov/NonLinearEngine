@@ -9,8 +9,6 @@
 #include "NL_Systems.h"
 #include "NL_SharedContainers.h"
 
-#include "glm\mat4x4.hpp"
-
 #include <assert.h>
 #include <memory>
 
@@ -29,7 +27,7 @@ namespace NLE
 		core.installSContainer<char>(CAMERA_CONTROLLER_COMMANDS, CAMERA::COMMANDS::NUM_COMMANDS, _defaultGrainSize); //one slot for each command
 		core.installSContainer<double>(CURSOR_COORDINATES, 2, _defaultGrainSize);	// 2 slots for x and y components
 		core.installSContainer<double>(SCROLL_OFFSET, 2, _defaultGrainSize);	// 2 slots for x and y components
-		core.installSContainer<glm::mat4x4>(VIEW_PROJECTION, 2, _defaultGrainSize); // 2 slots for view and projection matrices
+		//core.installSContainer<glm::mat4x4>(VIEW_PROJECTION, 2, _defaultGrainSize); // 2 slots for view and projection matrices
 
 		// Attach systems
 		Core::ExecutionDesc inputProcDesc(
@@ -100,27 +98,23 @@ namespace NLE
 			->processEvent(event);
 	}
 
-	void Nle::attachMakeContextCurrent(std::function<void()> const& operation)
+	void Nle::setWindowHandle(void* handle)
 	{
 		static_cast<GRAPHICS::IRenderer*>(&Core::DeviceCore::instance().getSystemInterface(SYS::SYS_RENDERER))
-			->attachMakeContextCurrent(operation);
-	}
-
-	void Nle::attachSwapBuffers(std::function<void()> const& operation)
-	{
-		static_cast<GRAPHICS::IRenderer*>(&Core::DeviceCore::instance().getSystemInterface(SYS::SYS_RENDERER))
-			->attachSwapBuffers(operation);
-	}
-
-	void Nle::attachConfigureVSync(std::function<void()> const& operation)
-	{
-		static_cast<GRAPHICS::IRenderer*>(&Core::DeviceCore::instance().getSystemInterface(SYS::SYS_RENDERER))
-			->attachConfigureVSync(operation);
+			->setWindowHandle(handle);
 	}
 
 	void Nle::setScreenDimensions(uint_fast32_t width, uint_fast32_t height)
 	{
 		static_cast<CAMERA::ICameraController*>(&Core::DeviceCore::instance().getSystemInterface(SYS::SYS_CAMERA_CONTROLLER))
 			->setScreenDimensions(width, height);
+		static_cast<GRAPHICS::IRenderer*>(&Core::DeviceCore::instance().getSystemInterface(SYS::SYS_RENDERER))
+			->setScreenDimensions(width, height);
+	}
+
+	void Nle::setFullscreen(bool fullscreen)
+	{
+		static_cast<GRAPHICS::IRenderer*>(&Core::DeviceCore::instance().getSystemInterface(SYS::SYS_RENDERER))
+			->setFullscreen(fullscreen);
 	}
 }

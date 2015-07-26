@@ -1,6 +1,8 @@
 PROJECT(NLE)
 
 SET(HEADERS 
+	NL_D3D11Device.h
+	NL_D3D11Device.inl
 	NL_DllApi.h
 	NL_CameraController.h
 	NL_ICameraController.h
@@ -12,39 +14,49 @@ SET(HEADERS
 	NL_Renderer.h
 	NL_RenderingEngine.h
 	NL_IRenderer.h
+	NL_RenderingResources.h
 	NL_SharedContainers.h
 	NL_Systems.h
+	#NL_TextureLoader.h
+	
+	#DDSTextureLoader.h
+	#WICTextureLoader.h
 	)
 
 SET(SOURCES 
 	NL_CameraController.cpp
+	NL_D3D11Device.cpp
 	NL_InputProcessor.cpp
 	NL_Nle.cpp
 	NL_Renderer.cpp
 	NL_RenderingEngine.cpp
+	#NL_TextureLoader.cpp
+	
+	#DDSTextureLoader.cpp
+	#WICTextureLoader.cpp
 	)
 
-# GLEW
-SET(NLE_GLEW_INCLUDE_PATH
-	"" CACHE PATH "NLE GLEW include path")
+# DirectX SDK
+SET(NLE_DIRECT_X_SDK_INCLUDE_PATH
+	"" CACHE PATH "NLE DirectX SDK include path")
 
-IF(NLE_GLEW_INCLUDE_PATH STREQUAL "")
-	MESSAGE(SEND_ERROR "NLE GLEW include path must be specified")
-ENDIF(NLE_GLEW_INCLUDE_PATH STREQUAL "")
+IF(NLE_DIRECT_X_SDK_INCLUDE_PATH STREQUAL "")
+	MESSAGE(SEND_ERROR "NLE DirectX SDK include path must be specified")
+ENDIF(NLE_DIRECT_X_SDK_INCLUDE_PATH STREQUAL "")
 
-SET(NLE_GLEW_LIBRARY_DEBUG_PATH
-	"" CACHE PATH "NLE GLEW library debug path")
+SET(NLE_DIRECT_X_SDK_LIBRARY_DEBUG_PATH
+	"" CACHE PATH "NLE DirectX SDK library debug path")
 
-IF(NLE_GLEW_LIBRARY_DEBUG_PATH STREQUAL "")
-	MESSAGE(SEND_ERROR "NLE GLEW library debug path must be specified")
-ENDIF(NLE_GLEW_LIBRARY_DEBUG_PATH STREQUAL "")
+IF(NLE_DIRECT_X_SDK_LIBRARY_DEBUG_PATH STREQUAL "")
+	MESSAGE(SEND_ERROR "NLE DirectX SDK library debug path must be specified")
+ENDIF(NLE_DIRECT_X_SDK_LIBRARY_DEBUG_PATH STREQUAL "")
 
-SET(NLE_GLEW_LIBRARY_RELEASE_PATH
-	"" CACHE PATH "NLE GLEW library release path")
+SET(NLE_DIRECT_X_SDK_LIBRARY_RELEASE_PATH
+	"" CACHE PATH "NLE DirectX SDK library release path")
 
-IF(NLE_GLEW_LIBRARY_RELEASE_PATH STREQUAL "")
-	MESSAGE(SEND_ERROR "NLE GLEW library release path must be specified")
-ENDIF(NLE_GLEW_LIBRARY_RELEASE_PATH STREQUAL "")
+IF(NLE_DIRECT_X_SDK_LIBRARY_RELEASE_PATH STREQUAL "")
+	MESSAGE(SEND_ERROR "NLE DirectX SDK library release path must be specified")
+ENDIF(NLE_DIRECT_X_SDK_LIBRARY_RELEASE_PATH STREQUAL "")
 
 
 # GLM
@@ -60,8 +72,7 @@ ENDIF(NLE_GLM_INCLUDE_PATH STREQUAL "")
 INCLUDE_DIRECTORIES(
 	${NLE_SDK_INSTALL_PATH}/include/NLE
 	${NLE_TBB_INCLUDE_PATH}
-	${NLE_GLEW_INCLUDE_PATH}
-	${NLE_GLM_INCLUDE_PATH}
+	${NLE_DIRECT_X_SDK_INCLUDE_PATH}
 	)
 
 IF(NLE_HOST_OS STREQUAL "Windows")
@@ -75,8 +86,8 @@ LINK_DIRECTORIES(
 	${NLE_TBB_LIBRARY_DEBUG_PATH}
 	${NLE_TBB_LIBRARY_RELEASE_PATH}
 	${NLE_SDK_INSTALL_PATH}/lib
-	${NLE_GLEW_LIBRARY_DEBUG_PATH}
-	${NLE_GLEW_LIBRARY_RELEASE_PATH}
+	${NLE_DIRECT_X_SDK_LIBRARY_DEBUG_PATH}
+	${NLE_DIRECT_X_SDK_LIBRARY_RELEASE_PATH}
 	)
 
 add_library (NLE SHARED
@@ -99,11 +110,10 @@ TARGET_LINK_LIBRARIES(NLE
 	debug NLCore_d
 	optimized NLCore
 	
-	debug glew32
-	optimized glew32
-	
-	debug opengl32.lib
-	optimized opengl32.lib
+	debug d3d11.lib
+	optimized d3d11.lib
+	debug d3dcompiler.lib
+	optimized d3dcompiler.lib
 	)
 
 set_target_properties(NLE PROPERTIES DEBUG_POSTFIX _d)
