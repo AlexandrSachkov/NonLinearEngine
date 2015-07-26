@@ -358,13 +358,14 @@ namespace NLE
 
 		bool D3D11Device::createInputLayout(
 			ID3D11Device* device,
-			RESOURCES::InputLayoutDesc& ilDesc,
+			D3D11_INPUT_ELEMENT_DESC ilDesc[],
+			uint_fast32_t size,
 			RESOURCES::VertexShader& vShader,
 			ID3D11InputLayout*& inputLayout
 			)
 		{
 			HRESULT hr;
-			hr = device->CreateInputLayout(ilDesc.apiInputLayoutDesc, ilDesc.numberElements, vShader.blob->GetBufferPointer(),
+			hr = device->CreateInputLayout(ilDesc, size, vShader.blob->GetBufferPointer(),
 				vShader.blob->GetBufferSize(), &inputLayout);
 			if (FAILED(hr))
 			{
@@ -426,13 +427,42 @@ namespace NLE
 			return true;
 		}
 
+		bool D3D11Device::compileBlobFromFile(std::wstring path, LPCSTR entryPoint, LPCSTR profile, ID3DBlob*& blob)
+		{
+			UINT flags = D3DCOMPILE_ENABLE_STRICTNESS;
+#if defined( DEBUG ) || defined( _DEBUG )
+			flags |= D3DCOMPILE_DEBUG;
+#endif
+
+			ID3DBlob* shaderBlob = nullptr;
+			ID3DBlob* errorBlob = nullptr;
+			HRESULT hr = D3DCompileFromFile(path.c_str(), nullptr, D3D_COMPILE_STANDARD_FILE_INCLUDE,
+				entryPoint, profile,
+				flags, 0, &blob, &errorBlob);
+			if (FAILED(hr))
+			{
+				if (errorBlob)
+				{
+					OutputDebugStringA((char*)errorBlob->GetBufferPointer());
+					errorBlob->Release();
+					
+					printf("Failed to compile blob.\n");
+					return false;
+				}			
+			}
+			return true;
+		}
+
 		bool D3D11Device::loadBlobFromFile(std::wstring path, ID3DBlob*& blob)
 		{
 			HRESULT hr;
 
 			hr = D3DReadFileToBlob(path.c_str(), &blob);
-			if (FAILED(hr)) 
+			if (FAILED(hr))
+			{
+				printf("Failed to load blob.\n");
 				return false;
+			}			
 			return true;
 		}
 
@@ -441,9 +471,28 @@ namespace NLE
 		{
 			HRESULT hr;
 			//Load vertex shader from file
-			if (!loadBlobFromFile(path, vertexShader.blob))
+			std::wstring source(L".hlsl");
+			std::wstring binary(L".cso");
+
+			bool result;
+			if (path.rfind(source) != std::string::npos)
 			{
-				printf("Failed to load Vertex Shader: %s", path);
+				result = compileBlobFromFile(path, "VSMain", "vs_5_0", vertexShader.blob);
+			}
+			else if (path.rfind(binary) != std::string::npos)
+			{
+				result = loadBlobFromFile(path, vertexShader.blob);
+			}
+			else
+			{
+				printf("Invalid shader file extension: %s\n", path);
+				return false;
+			}
+
+			if (!result)
+			{
+				std::string stringPath(path.begin(), path.end());
+				printf("Failed to load Vertex Shader: %s\n", stringPath.c_str());
 				return false;
 			}
 
@@ -463,9 +512,28 @@ namespace NLE
 			HRESULT hr;
 
 			//Load pixel shader from file
-			if (!loadBlobFromFile(path, pixelShader.blob))
+			std::wstring source(L".hlsl");
+			std::wstring binary(L".cso");
+
+			bool result;
+			if (path.rfind(source) != std::string::npos)
 			{
-				printf("Failed to load Pixel Shader: %s", path);
+				result = compileBlobFromFile(path, "PSMain", "ps_5_0", pixelShader.blob);
+			}
+			else if (path.rfind(binary) != std::string::npos)
+			{
+				result = loadBlobFromFile(path, pixelShader.blob);
+			}
+			else
+			{
+				printf("Invalid shader file extension: %s\n", path);
+				return false;
+			}
+
+			if (!result)
+			{
+				std::string stringPath(path.begin(), path.end());
+				printf("Failed to load Pixel Shader: %s\n", stringPath.c_str());
 				return false;
 			}
 

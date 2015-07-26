@@ -116,7 +116,8 @@ namespace NLE
 
 			bool createInputLayout(
 				ID3D11Device* device, 
-				RESOURCES::InputLayoutDesc& ilDesc, 
+				D3D11_INPUT_ELEMENT_DESC ilDesc[],
+				uint_fast32_t size,
 				RESOURCES::VertexShader& vShader, 
 				ID3D11InputLayout*& inputLayout
 				);
@@ -130,8 +131,6 @@ namespace NLE
 				ID3D11RasterizerState*& rasterizerState
 				);
 				
-
-			bool loadBlobFromFile(std::wstring path, ID3DBlob*& blob);
 			bool loadVertexShader(ID3D11Device* device, std::wstring path, RESOURCES::VertexShader& vertexShader);
 			bool loadPixelShader(ID3D11Device* device, std::wstring path, RESOURCES::PixelShader& pixelShader);
 			
@@ -199,6 +198,16 @@ namespace NLE
 			void drawIndexed(const RESOURCES::Buffer& indexBuffer);
 			void draw(const RESOURCES::Buffer& vertexBuffer);
 			void display();*/
+
+			private:
+				bool compileBlobFromFile(
+					std::wstring path,
+					LPCSTR entryPoint,
+					LPCSTR profile,
+					ID3DBlob*& blob
+					);
+
+				bool loadBlobFromFile(std::wstring path, ID3DBlob*& blob);
 		};
 	}
 }

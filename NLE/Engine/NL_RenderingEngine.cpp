@@ -31,17 +31,58 @@ namespace NLE
 		{
 			assert(!_initialized && _hwnd && _screenWidth > 0 && _screenHeight > 0);
 
+			D3D11_INPUT_ELEMENT_DESC forwardPosNormTanTextDesc[] = {
+				{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+				{ "NORMAL", 0, DXGI_FORMAT_R32G32_FLOAT, 0, 12, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+				{ "TANGENT", 0, DXGI_FORMAT_R32G32_FLOAT, 0, 24, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+				{ "TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0, 36, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+			};
+
+			D3D11_INPUT_ELEMENT_DESC forwardPosNormTextDesc[] = {
+				{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+				{ "NORMAL", 0, DXGI_FORMAT_R32G32_FLOAT, 0, 12, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+				{ "TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0, 24, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+			};
+
+			D3D11_INPUT_ELEMENT_DESC forwardPosTextDesc[] = {
+				{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+				{ "TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0, 12, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+			};
+
+			D3D11_INPUT_ELEMENT_DESC forwardPosDesc[] = {
+				{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+			};
+
 			if (!_device->createDeviceAndSwapChain(_hwnd, _screenWidth, _screenHeight, _fullscreen, _d3dDevice, _swapChain, _deviceContext))
 				return false;
 			if (!_device->createBackBufferRenderTargetView(_d3dDevice, _swapChain, _backBufferRenderTargetView))
 				return false;
-
+			if (!_device->createBlendStates(_d3dDevice, false, false, 1, false, _noBlendState))
+				return false;
+			if (!_device->createDepthStencilView(_d3dDevice, _screenWidth, _screenHeight, _depthStencilView))
+				return false;			
+			if (!_device->loadVertexShader(_d3dDevice, L"D:\\Repositories\\NonLinearEngine\\NLE\\Engine\\Shaders\\Forward_Pos_VS.hlsl", _vertexShader))
+				return false;			
+			if (!_device->createInputLayout(_d3dDevice, forwardPosDesc, ARRAYSIZE(forwardPosDesc), _vertexShader, _inputLayout))
+				return false;
+			if (!_device->createRasterizerState(_d3dDevice, D3D11_CULL_BACK, D3D11_FILL_SOLID, _backFaceCull))
+				return false;
+			if (!_device->createRasterizerState(_d3dDevice, D3D11_CULL_FRONT, D3D11_FILL_SOLID, _frontFaceCull))
+				return false;
+			if (!_device->createTextureSamplerState(_d3dDevice, _textureSamplerState))
+				return false;
+			if (!_device->loadPixelShader(_d3dDevice, L"D:\\Repositories\\NonLinearEngine\\NLE\\Engine\\Shaders\\Forward_Pos_PS.hlsl", _pixelShader))
+				return false;
+			
 			return true;
 		}
 
 		void RenderingEngine::release()
 		{
 			_swapChain->SetFullscreenState(FALSE, NULL);
+
+			SAFE_RELEASE(_backBufferRenderTargetView);
+
 			SAFE_RELEASE(_swapChain);
 			SAFE_RELEASE(_deviceContext);
 			SAFE_RELEASE(_d3dDevice);

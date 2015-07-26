@@ -23,6 +23,17 @@ SET(HEADERS
 	#WICTextureLoader.h
 	)
 
+SET (SHADERS
+	Shaders/Forward_Pos_VS.hlsl
+	Shaders/Forward_Pos_PS.hlsl
+	Shaders/Forward_PosText_VS.hlsl
+	Shaders/Forward_PosText_PS.hlsl
+	Shaders/Forward_PosNormText_VS.hlsl
+	Shaders/Forward_PosNormText_PS.hlsl
+	Shaders/DeferredGBuff_TextNormal_BlinnPhong_VS.hlsl
+	Shaders/DeferredGBuff_TextNormal_BlinnPhong_PS.hlsl
+	)
+
 SET(SOURCES 
 	NL_CameraController.cpp
 	NL_D3D11Device.cpp
@@ -93,6 +104,7 @@ LINK_DIRECTORIES(
 add_library (NLE SHARED
   ${HEADERS}
   ${SOURCES}
+  ${SHADERS}
 )
 
 TARGET_LINK_LIBRARIES(NLE 
@@ -134,3 +146,9 @@ IF(MSVC)
     PATTERN *.pdb
     )
 ENDIF(MSVC)
+
+INSTALL ( DIRECTORY ${PROJECT_SOURCE_DIR}/Shaders/
+    DESTINATION ${NLE_SDK_INSTALL_PATH}/bin
+	FILES_MATCHING
+    PATTERN *.hlsl
+    )
