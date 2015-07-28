@@ -1,8 +1,9 @@
 PROJECT(NLE)
 
 SET(HEADERS 
-	NL_D3D11Device.h
-	NL_D3D11Device.inl
+	NL_AssetImporter.h
+	NL_D3D11Utility.h
+	NL_D3D11Utility.inl
 	NL_DllApi.h
 	NL_CameraController.h
 	NL_ICameraController.h
@@ -17,10 +18,24 @@ SET(HEADERS
 	NL_RenderingResources.h
 	NL_SharedContainers.h
 	NL_Systems.h
-	#NL_TextureLoader.h
+	NL_TextureLoader.h
 	
-	#DDSTextureLoader.h
-	#WICTextureLoader.h
+	DDSTextureLoader.h
+	WICTextureLoader.h
+	)
+
+SET(SOURCES 
+	NL_AssetImporter.cpp
+	NL_CameraController.cpp
+	NL_D3D11Utility.cpp
+	NL_InputProcessor.cpp
+	NL_Nle.cpp
+	NL_Renderer.cpp
+	NL_RenderingEngine.cpp
+	NL_TextureLoader.cpp
+	
+	DDSTextureLoader.cpp
+	WICTextureLoader.cpp
 	)
 
 SET (SHADERS
@@ -32,19 +47,6 @@ SET (SHADERS
 	Shaders/Forward_PosNormText_PS.hlsl
 	Shaders/DeferredGBuff_TextNormal_BlinnPhong_VS.hlsl
 	Shaders/DeferredGBuff_TextNormal_BlinnPhong_PS.hlsl
-	)
-
-SET(SOURCES 
-	NL_CameraController.cpp
-	NL_D3D11Device.cpp
-	NL_InputProcessor.cpp
-	NL_Nle.cpp
-	NL_Renderer.cpp
-	NL_RenderingEngine.cpp
-	#NL_TextureLoader.cpp
-	
-	#DDSTextureLoader.cpp
-	#WICTextureLoader.cpp
 	)
 
 # DirectX SDK
@@ -70,26 +72,42 @@ IF(NLE_DIRECT_X_SDK_LIBRARY_RELEASE_PATH STREQUAL "")
 ENDIF(NLE_DIRECT_X_SDK_LIBRARY_RELEASE_PATH STREQUAL "")
 
 
-# GLM
+# Assimp
+SET(NLE_ASSIMP_INCLUDE_PATH
+	"" CACHE PATH "NLE Assimp include path")
 
-SET(NLE_GLM_INCLUDE_PATH
-	"" CACHE PATH "NLE GLM include path")
+IF(NLE_ASSIMP_INCLUDE_PATH STREQUAL "")
+	MESSAGE(SEND_ERROR "NLE Assimp include path must be specified")
+ENDIF(NLE_ASSIMP_INCLUDE_PATH STREQUAL "")
 
-IF(NLE_GLM_INCLUDE_PATH STREQUAL "")
-	MESSAGE(SEND_ERROR "NLE GLM include path must be specified")
-ENDIF(NLE_GLM_INCLUDE_PATH STREQUAL "")
+SET(NLE_ASSIMP_LIBRARY_DEBUG_PATH
+	"" CACHE PATH "NLE Assimp library debug path")
+
+IF(NLE_ASSIMP_LIBRARY_DEBUG_PATH STREQUAL "")
+	MESSAGE(SEND_ERROR "NLE Assimp library debug path must be specified")
+ENDIF(NLE_ASSIMP_LIBRARY_DEBUG_PATH STREQUAL "")
+
+SET(NLE_ASSIMP_LIBRARY_RELEASE_PATH
+	"" CACHE PATH "NLE Assimp library release path")
+
+IF(NLE_ASSIMP_LIBRARY_RELEASE_PATH STREQUAL "")
+	MESSAGE(SEND_ERROR "NLE Assimp library release path must be specified")
+ENDIF(NLE_ASSIMP_LIBRARY_RELEASE_PATH STREQUAL "")
 
 
 INCLUDE_DIRECTORIES(
 	${NLE_SDK_INSTALL_PATH}/include/NLE
 	${NLE_TBB_INCLUDE_PATH}
 	${NLE_DIRECT_X_SDK_INCLUDE_PATH}
+	${NLE_ASSIMP_INCLUDE_PATH}
 	)
 
 IF(NLE_HOST_OS STREQUAL "Windows")
 	ADD_DEFINITIONS(
 	-DNLE_DLL
 	-DNLE_DLL_EXPORT
+	-D_WIN32_WINNT=0x0601
+	-DWINVER=0x0601
 	)
 ENDIF(NLE_HOST_OS STREQUAL "Windows")
 
@@ -99,6 +117,8 @@ LINK_DIRECTORIES(
 	${NLE_SDK_INSTALL_PATH}/lib
 	${NLE_DIRECT_X_SDK_LIBRARY_DEBUG_PATH}
 	${NLE_DIRECT_X_SDK_LIBRARY_RELEASE_PATH}
+	${NLE_ASSIMP_LIBRARY_DEBUG_PATH}
+	${NLE_ASSIMP_LIBRARY_RELEASE_PATH}
 	)
 
 add_library (NLE SHARED
@@ -126,6 +146,9 @@ TARGET_LINK_LIBRARIES(NLE
 	optimized d3d11.lib
 	debug d3dcompiler.lib
 	optimized d3dcompiler.lib
+	
+	debug assimpd.lib
+	optimized assimp.lib
 	)
 
 set_target_properties(NLE PROPERTIES DEBUG_POSTFIX _d)

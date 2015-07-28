@@ -26,14 +26,14 @@ THE SOFTWARE.
 -----------------------------------------------------------------------------
 */
 
-#ifdef NL_D3D11_DEVICE_H_
+#ifdef NL_D3D11_UTILITY_H_
 
 namespace NLE
 {
 	namespace GRAPHICS
 	{
 		template<class T>
-		bool D3D11Device::createBuffer(
+		bool D3D11Utility::createBuffer(
 			ID3D11Device* device,
 			D3D11_BIND_FLAG bindFlag,
 			D3D11_USAGE usage,
@@ -51,7 +51,7 @@ namespace NLE
 			bufferDesc.BindFlags = bindFlag;
 			bufferDesc.Usage = usage;
 			bufferDesc.CPUAccessFlags = usage == D3D11_USAGE_DYNAMIC ? D3D11_CPU_ACCESS_WRITE : 0;
-			bufferDesc.ByteWidth = sizeof(T)* dataLength;
+			bufferDesc.ByteWidth = (uint_fast32_t)(sizeof(T)* dataLength);
 			bufferDesc.MiscFlags = 0;
 
 			D3D11_SUBRESOURCE_DATA subresData;
@@ -71,12 +71,12 @@ namespace NLE
 			buffer.bindFlag = bindFlag;
 			buffer.usage = usage;
 			buffer.elementSize = sizeof(T);
-			buffer.numberElements = dataLength;
+			buffer.numberElements = (uint_fast32_t)dataLength;
 
 			return true;
 		}
 
-		inline void D3D11Device::setViewPort(
+		inline void D3D11Utility::setViewPort(
 			ID3D11DeviceContext*& deviceContext,
 			uint_fast32_t numViewports,
 			float x,
@@ -101,7 +101,7 @@ namespace NLE
 			deviceContext->RSSetViewports(numViewports, &viewport);
 		}
 
-		inline void D3D11Device::setViewPort(
+		inline void D3D11Utility::setViewPort(
 			ID3D11DeviceContext*& deviceContext,
 			float screenWidth,
 			float screenHeight
@@ -121,7 +121,7 @@ namespace NLE
 			deviceContext->RSSetViewports(1, &viewport);
 		}
 
-		inline void D3D11Device::updateBuffer(
+		inline void D3D11Utility::updateBuffer(
 			ID3D11DeviceContext*& deviceContext,
 			RESOURCES::Buffer& buffer,
 			void* data,

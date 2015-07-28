@@ -1,6 +1,8 @@
 #ifndef NL_RENDERING_ENGINE_H_
 #define NL_RENDERING_ENGINE_H_
 
+#include "NL_RenderingResources.h"
+
 #include <Windows.h>
 #include <d3d11.h>
 #include <memory>
@@ -12,7 +14,6 @@ namespace NLE
 {
 	namespace GRAPHICS
 	{
-		class D3D11Device;
 		class RenderingEngine
 		{
 		public:
@@ -31,7 +32,6 @@ namespace NLE
 			uint_fast32_t _frameCount;
 			std::chrono::time_point<std::chrono::high_resolution_clock, std::chrono::nanoseconds> _previousTime;
 
-			std::unique_ptr<D3D11Device> _device;
 			HWND _hwnd;
 			uint_fast32_t _screenWidth;
 			uint_fast32_t _screenHeight;
@@ -42,6 +42,14 @@ namespace NLE
 			ID3D11DeviceContext* _deviceContext;
 
 			ID3D11RenderTargetView* _backBufferRenderTargetView;
+			ID3D11BlendState* _noBlendState;
+			ID3D11DepthStencilView* _depthStencilView;
+			RESOURCES::VertexShader	_vertexShader;
+			ID3D11InputLayout* _inputLayout;
+			ID3D11RasterizerState* _backFaceCull;
+			ID3D11RasterizerState* _frontFaceCull;
+			ID3D11SamplerState*	_textureSamplerState;
+			RESOURCES::PixelShader _pixelShader;
 		};
 	}
 }

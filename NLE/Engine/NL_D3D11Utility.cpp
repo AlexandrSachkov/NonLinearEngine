@@ -27,7 +27,7 @@ THE SOFTWARE.
 */
 
 
-#include "NL_D3D11Device.h"
+#include "NL_D3D11Utility.h"
 #include <d3dcompiler.h>
 #include <assert.h>
 
@@ -35,15 +35,7 @@ namespace NLE
 {
 	namespace GRAPHICS
 	{
-		D3D11Device::D3D11Device()
-		{
-		}
-
-		D3D11Device::~D3D11Device()
-		{
-		}
-
-		bool D3D11Device::createDeviceAndSwapChain(
+		bool D3D11Utility::createDeviceAndSwapChain(
 			HWND windowHandle,
 			uint_fast32_t screenWidth,
 			uint_fast32_t screenHeight,
@@ -112,7 +104,7 @@ namespace NLE
 			return true;
 		}
 
-		bool D3D11Device::createBackBufferRenderTargetView(
+		bool D3D11Utility::createBackBufferRenderTargetView(
 			ID3D11Device* device,
 			IDXGISwapChain* swapChain,
 			ID3D11RenderTargetView*& renderTargetView
@@ -143,7 +135,7 @@ namespace NLE
 			return true;
 		}
 
-		bool D3D11Device::createBlendStates(
+		bool D3D11Utility::createBlendStates(
 			ID3D11Device* device,
 			bool enableBlend,
 			bool enableIndependentBlending,
@@ -195,7 +187,7 @@ namespace NLE
 			return true;
 		}
 
-		bool D3D11Device::createRenderTargetViews(
+		bool D3D11Utility::createRenderTargetViews(
 			ID3D11Device* device,
 			uint_fast32_t numViews,
 			uint_fast32_t width,
@@ -242,7 +234,7 @@ namespace NLE
 			return true;
 		}
 
-		bool D3D11Device::createDepthStencilView(
+		bool D3D11Utility::createDepthStencilView(
 			ID3D11Device* device,
 			uint_fast32_t width,
 			uint_fast32_t height,
@@ -286,7 +278,7 @@ namespace NLE
 			return true;
 		}
 
-		bool D3D11Device::createShaderResourceViewFromTexture2D(
+		bool D3D11Utility::createShaderResourceViewFromTexture2D(
 			ID3D11Device* device,
 			ID3D11Texture2D* texture,
 			ID3D11ShaderResourceView*& resourceView
@@ -309,7 +301,7 @@ namespace NLE
 			return true;
 		}
 
-		bool D3D11Device::createTexture2D(
+		bool D3D11Utility::createTexture2D(
 			ID3D11Device* device,
 			uint_fast32_t width,
 			uint_fast32_t height,
@@ -356,7 +348,7 @@ namespace NLE
 			return true;
 		}
 
-		bool D3D11Device::createInputLayout(
+		bool D3D11Utility::createInputLayout(
 			ID3D11Device* device,
 			D3D11_INPUT_ELEMENT_DESC ilDesc[],
 			uint_fast32_t size,
@@ -375,7 +367,7 @@ namespace NLE
 			return true;
 		}
 
-		bool D3D11Device::createTextureSamplerState(ID3D11Device* device, ID3D11SamplerState*& samplerState)
+		bool D3D11Utility::createTextureSamplerState(ID3D11Device* device, ID3D11SamplerState*& samplerState)
 		{
 			HRESULT hr;
 
@@ -402,7 +394,7 @@ namespace NLE
 
 
 
-		bool D3D11Device::createRasterizerState(
+		bool D3D11Utility::createRasterizerState(
 			ID3D11Device* device,
 			D3D11_CULL_MODE cullMode,
 			D3D11_FILL_MODE fillMode,
@@ -427,7 +419,7 @@ namespace NLE
 			return true;
 		}
 
-		bool D3D11Device::compileBlobFromFile(std::wstring path, LPCSTR entryPoint, LPCSTR profile, ID3DBlob*& blob)
+		bool D3D11Utility::compileBlobFromFile(std::wstring path, LPCSTR entryPoint, LPCSTR profile, ID3DBlob*& blob)
 		{
 			UINT flags = D3DCOMPILE_ENABLE_STRICTNESS;
 #if defined( DEBUG ) || defined( _DEBUG )
@@ -453,7 +445,7 @@ namespace NLE
 			return true;
 		}
 
-		bool D3D11Device::loadBlobFromFile(std::wstring path, ID3DBlob*& blob)
+		bool D3D11Utility::loadBlobFromFile(std::wstring path, ID3DBlob*& blob)
 		{
 			HRESULT hr;
 
@@ -467,7 +459,7 @@ namespace NLE
 		}
 
 
-		bool D3D11Device::loadVertexShader(ID3D11Device* device, std::wstring path, RESOURCES::VertexShader& vertexShader)
+		bool D3D11Utility::loadVertexShader(ID3D11Device* device, std::wstring path, RESOURCES::VertexShader& vertexShader)
 		{
 			HRESULT hr;
 			//Load vertex shader from file
@@ -507,7 +499,7 @@ namespace NLE
 			return true;
 		}
 
-		bool D3D11Device::loadPixelShader(ID3D11Device* device, std::wstring path, RESOURCES::PixelShader& pixelShader)
+		bool D3D11Utility::loadPixelShader(ID3D11Device* device, std::wstring path, RESOURCES::PixelShader& pixelShader)
 		{
 			HRESULT hr;
 
@@ -549,7 +541,7 @@ namespace NLE
 			return true;
 		}
 
-		void D3D11Device::setFullscreen(IDXGISwapChain*& swapChain, bool fullScreen)
+		void D3D11Utility::setFullscreen(IDXGISwapChain*& swapChain, bool fullScreen)
 		{
 			swapChain->SetFullscreenState(fullScreen, nullptr);
 		}

@@ -26,8 +26,8 @@ THE SOFTWARE.
 -----------------------------------------------------------------------------
 */
 
-#ifndef NL_D3D11_DEVICE_H_
-#define NL_D3D11_DEVICE_H_
+#ifndef NL_D3D11_UTILITY_H_
+#define NL_D3D11_UTILITY_H_
 
 #include "NL_RenderingResources.h"
 
@@ -39,13 +39,10 @@ namespace NLE
 {
 	namespace GRAPHICS
 	{
-		class D3D11Device
+		class D3D11Utility
 		{
 		public:
-			D3D11Device();
-			~D3D11Device();
-
-			bool createDeviceAndSwapChain(
+			static bool createDeviceAndSwapChain(
 				HWND windowHandle, 
 				uint_fast32_t screenWidth, 
 				uint_fast32_t screenHeight,
@@ -55,13 +52,13 @@ namespace NLE
 				ID3D11DeviceContext*& deviceContext
 				);
 			
-			bool createBackBufferRenderTargetView(
+			static bool createBackBufferRenderTargetView(
 				ID3D11Device* device, 
 				IDXGISwapChain* swapChain, 
 				ID3D11RenderTargetView*& renderTargetView
 				);
 
-			bool createBlendStates(
+			static bool createBlendStates(
 				ID3D11Device* device,
 				bool enableBlend, 
 				bool enableIndependentBlending, 
@@ -71,7 +68,7 @@ namespace NLE
 				);
 
 			template<class T>
-			bool createBuffer(
+			static bool createBuffer(
 				ID3D11Device* device,
 				D3D11_BIND_FLAG bindFlag,
 				D3D11_USAGE usage,
@@ -80,7 +77,7 @@ namespace NLE
 				RESOURCES::Buffer& buffer
 				);
 
-			bool createRenderTargetViews(
+			static bool createRenderTargetViews(
 				ID3D11Device* device,
 				uint_fast32_t numViews,
 				uint_fast32_t width,
@@ -88,20 +85,20 @@ namespace NLE
 				ID3D11RenderTargetView*& renderTargetViews
 				);
 
-			bool createDepthStencilView(
+			static bool createDepthStencilView(
 				ID3D11Device* device,
 				uint_fast32_t width,
 				uint_fast32_t height,
 				ID3D11DepthStencilView*& depthStencilView
 				);
 			
-			bool createShaderResourceViewFromTexture2D(
+			static bool createShaderResourceViewFromTexture2D(
 				ID3D11Device* device, 
 				ID3D11Texture2D* texture, 
 				ID3D11ShaderResourceView*& resourceView
 				);
 			
-			bool createTexture2D(
+			static bool createTexture2D(
 				ID3D11Device* device,
 				uint_fast32_t width,
 				uint_fast32_t height,
@@ -114,7 +111,7 @@ namespace NLE
 				ID3D11Texture2D*& texture
 				);
 
-			bool createInputLayout(
+			static bool createInputLayout(
 				ID3D11Device* device, 
 				D3D11_INPUT_ELEMENT_DESC ilDesc[],
 				uint_fast32_t size,
@@ -122,21 +119,21 @@ namespace NLE
 				ID3D11InputLayout*& inputLayout
 				);
 
-			bool createTextureSamplerState(ID3D11Device* device, ID3D11SamplerState*& samplerState);
+			static bool createTextureSamplerState(ID3D11Device* device, ID3D11SamplerState*& samplerState);
 
-			bool createRasterizerState(
+			static bool createRasterizerState(
 				ID3D11Device* device, 
 				D3D11_CULL_MODE cullMode, 
 				D3D11_FILL_MODE fillMode, 
 				ID3D11RasterizerState*& rasterizerState
 				);
 				
-			bool loadVertexShader(ID3D11Device* device, std::wstring path, RESOURCES::VertexShader& vertexShader);
-			bool loadPixelShader(ID3D11Device* device, std::wstring path, RESOURCES::PixelShader& pixelShader);
+			static bool loadVertexShader(ID3D11Device* device, std::wstring path, RESOURCES::VertexShader& vertexShader);
+			static bool loadPixelShader(ID3D11Device* device, std::wstring path, RESOURCES::PixelShader& pixelShader);
 			
-			void setFullscreen(IDXGISwapChain*& swapChain, bool fullScreen);
+			static void setFullscreen(IDXGISwapChain*& swapChain, bool fullScreen);
 
-			void setViewPort(
+			static void setViewPort(
 				ID3D11DeviceContext*& deviceContext, 
 				uint_fast32_t numViewports, 
 				float x, 
@@ -147,13 +144,13 @@ namespace NLE
 				float maxDepth
 				);
 
-			void setViewPort(
+			static void setViewPort(
 				ID3D11DeviceContext*& deviceContext, 
 				float screenWidth,
 				float screenHeight
 				);
 
-			void updateBuffer(
+			static void updateBuffer(
 				ID3D11DeviceContext*& deviceContext, 
 				RESOURCES::Buffer& buffer, 
 				void* data, 
@@ -200,18 +197,18 @@ namespace NLE
 			void display();*/
 
 			private:
-				bool compileBlobFromFile(
+				static bool compileBlobFromFile(
 					std::wstring path,
 					LPCSTR entryPoint,
 					LPCSTR profile,
 					ID3DBlob*& blob
 					);
 
-				bool loadBlobFromFile(std::wstring path, ID3DBlob*& blob);
+				static bool loadBlobFromFile(std::wstring path, ID3DBlob*& blob);
 		};
 	}
 }
 
-#include "NL_D3D11Device.inl"
+#include "NL_D3D11Utility.inl"
 
 #endif

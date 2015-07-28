@@ -69,6 +69,22 @@ if (resource)					\
 	resource = nullptr;			\
 }								
 
+			struct Vertex
+			{
+				Vertex() :
+					position(0.0f, 0.0f, 0.0f), 
+					normal(0.0f, 0.0f, 0.0f), 
+					textCoord(0.0f, 0.0f)
+				{
+				}
+
+				DirectX::XMFLOAT3 position;
+				DirectX::XMFLOAT3 normal;
+				DirectX::XMFLOAT2 textCoord;
+			};
+
+			typedef unsigned long Index;
+
 			struct Buffer
 			{
 				Buffer() :
@@ -120,20 +136,6 @@ if (resource)					\
 				}
 				ID3D11PixelShader* apiPixelShader;
 				ID3DBlob* blob;
-			};
-
-			struct InputLayoutDesc
-			{
-				InputLayoutDesc(
-					const D3D11_INPUT_ELEMENT_DESC* apiInputLayoutDesc,
-					const uint_fast32_t numberElements
-					) :
-					apiInputLayoutDesc(apiInputLayoutDesc),
-					numberElements(numberElements)
-				{
-				}
-				const D3D11_INPUT_ELEMENT_DESC* apiInputLayoutDesc;
-				const uint_fast32_t numberElements;
 			};
 
 			struct Mesh

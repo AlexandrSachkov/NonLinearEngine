@@ -5,6 +5,10 @@
 
 #include <assert.h>
 
+#include <iostream>  
+#include <thread>     
+#include <chrono>
+
 namespace NLE
 {
 	namespace GRAPHICS
@@ -26,7 +30,10 @@ namespace NLE
 			assert(!_initialized);
 
 			if (!_renderingEngine->initialize())
+			{
+				std::this_thread::sleep_for(std::chrono::seconds(10));
 				return false;
+			}
 
 			_procedure = [&](){
 				printf("Starting Rendering task\n");
