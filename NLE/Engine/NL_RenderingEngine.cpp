@@ -1,5 +1,7 @@
 #include "NL_RenderingEngine.h"
 #include "NL_D3D11Utility.h"
+#include "NL_AssetImporter.h"
+
 
 #include <cstdio>
 #include <iostream>
@@ -17,6 +19,7 @@ namespace NLE
 			_screenHeight(0),
 			_fullscreen(true)
 		{		
+			_assetImporter = std::make_unique<IMPORTER::AssetImporter>();
 			printf("Rendering Engine created\n");
 		}
 
@@ -83,12 +86,23 @@ namespace NLE
 			D3D11Utility::setViewPort(_deviceContext, (float)_screenWidth, (float)_screenHeight);
 			_deviceContext->PSSetSamplers(0, 1, &_textureSamplerState);
 			_deviceContext->RSSetState(_backFaceCull);
+
+			if (!_assetImporter->importAssets(_d3dDevice, L"D:\\3DModels\\cubes.dae", _renderables))
+			{
+				printf("Failed to load assets\n");
+				return false;
+			}
 			return true;
 		}
 
 		void RenderingEngine::release()
 		{
 			_swapChain->SetFullscreenState(FALSE, NULL);
+
+			for (auto renderable : _renderables)
+			{
+				renderable.release();
+			}
 
 			SAFE_RELEASE(_textureSamplerState);
 			SAFE_RELEASE(_frontFaceCull);
@@ -129,6 +143,28 @@ namespace NLE
 
 			_deviceContext->ClearRenderTargetView(_backBufferRenderTargetView, bgColor);
 			_deviceContext->ClearDepthStencilView(_depthStencilView, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
+
+			for (auto renderable : _renderables)
+			{
+				if (renderable.mesh.geomBuffer.apiBuffer)
+				{
+					unsigned int stride = 0;
+					_deviceContext->IASetVertexBuffers(0, 1, &(renderable.mesh.geomBuffer.apiBuffer), &(renderable.mesh.geomBuffer.elementSize), &stride);
+				}
+				if (renderable.mesh.indexBuffer.apiBuffer)
+				{
+					_deviceContext->IASetIndexBuffer(renderable.mesh.indexBuffer.apiBuffer, DXGI_FORMAT_R32_UINT, 0);
+				}
+				if (renderable.transformationBuffer.apiBuffer)
+				{
+					_deviceContext->VSSetConstantBuffers(0, 1, &(renderable.transformationBuffer.apiBuffer));
+				}
+				if (renderable.material.diffuseTextView)
+				{
+					_deviceContext->PSSetShaderResources(0, 1, &renderable.material.diffuseTextView);
+				}
+				_deviceContext->DrawIndexed(renderable.mesh.indexBuffer.numberElements, 0, 0);
+			}
 
 			_swapChain->Present(0, 0);
 

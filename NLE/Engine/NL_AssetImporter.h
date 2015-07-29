@@ -82,7 +82,6 @@ namespace NLE
 				std::vector<GRAPHICS::RESOURCES::Renderable>& assets
 				);
 			void setTextureResourcePath(std::wstring path);
-			void enableBuiltInTexturePath(bool status);
 
 		private:
 			void loadAsStatic(

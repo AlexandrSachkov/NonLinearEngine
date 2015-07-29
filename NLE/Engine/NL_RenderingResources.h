@@ -94,7 +94,8 @@ if (resource)					\
 					numberElements(0)
 				{
 				}
-				~Buffer()
+
+				void release()
 				{
 					SAFE_RELEASE(apiBuffer);
 				}
@@ -113,11 +114,13 @@ if (resource)					\
 					blob(nullptr)
 				{
 				}
-				~VertexShader()
+
+				void release()
 				{
 					SAFE_RELEASE(apiVertexShader);
 					SAFE_RELEASE(blob);
 				}
+
 				ID3D11VertexShader* apiVertexShader;
 				ID3DBlob* blob;
 			};
@@ -129,17 +132,24 @@ if (resource)					\
 					blob(nullptr)
 				{
 				}
-				~PixelShader()
+
+				void release()
 				{
 					SAFE_RELEASE(apiPixelShader);
-					SAFE_RELEASE(blob);		
+					SAFE_RELEASE(blob);
 				}
+
 				ID3D11PixelShader* apiPixelShader;
 				ID3DBlob* blob;
 			};
 
 			struct Mesh
 			{
+				void release()
+				{
+					geomBuffer.release();
+					indexBuffer.release();
+				}
 				Buffer geomBuffer;
 				Buffer indexBuffer;
 			};
@@ -208,7 +218,7 @@ if (resource)					\
 				{
 				}
 
-				~Material()
+				void release()
 				{
 					SAFE_RELEASE(diffuseText);
 					SAFE_RELEASE(specularText);
@@ -276,8 +286,11 @@ if (resource)					\
 
 			struct Renderable
 			{
-				Renderable()
+				void release()
 				{
+					transformationBuffer.release();
+					mesh.release();
+					material.release();
 				}
 
 				Transformation transform;

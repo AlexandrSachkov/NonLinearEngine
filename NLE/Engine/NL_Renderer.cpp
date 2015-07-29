@@ -36,17 +36,18 @@ namespace NLE
 			}
 
 			_procedure = [&](){
-				printf("Starting Rendering task\n");
-
-				_running.fetch_and_store(true);
-				_renderingThread = new std::thread([&](Renderer& renderer, std::unique_ptr<RenderingEngine> const& renderingEngine){
-
-					printf("Rendering Thread running\n");			
-					while (renderer.isRunning())
-					{
-						renderingEngine->render();
-					}
-				}, std::ref(*this), std::ref(_renderingEngine));
+				if (!_running)
+				{
+					printf("Starting Rendering task\n");
+					_running.fetch_and_store(true);
+					_renderingThread = new std::thread([&](Renderer& renderer, std::unique_ptr<RenderingEngine> const& renderingEngine){
+						printf("Rendering Thread running\n");			
+						while (renderer.isRunning())
+						{
+							renderingEngine->render();
+						}
+					}, std::ref(*this), std::ref(_renderingEngine));
+				}			
 			};
 
 			_initialized = true;

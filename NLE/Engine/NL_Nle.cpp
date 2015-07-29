@@ -43,7 +43,7 @@ namespace NLE
 		core.setNumThreads(core.getNumThreads() - 1); // Leave a hardware thread for graphics
 		Core::ExecutionDesc renderingProcDesc(
 			Core::Priority::STANDARD,
-			Core::Execution::SINGULAR,
+			Core::Execution::RECURRING,
 			Core::Mode::SYNC ,
 			Core::Startup::AUTOMATIC,
 			0

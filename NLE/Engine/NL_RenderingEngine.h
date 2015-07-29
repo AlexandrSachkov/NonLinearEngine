@@ -9,9 +9,14 @@
 #include <cstdint>
 #include <chrono>
 #include <string>
+#include <vector>
 
 namespace NLE
 {
+	namespace IMPORTER
+	{
+		class AssetImporter;
+	}
 	namespace GRAPHICS
 	{
 		class RenderingEngine
@@ -36,6 +41,9 @@ namespace NLE
 			uint_fast32_t _screenWidth;
 			uint_fast32_t _screenHeight;
 			bool _fullscreen;
+
+			std::unique_ptr<IMPORTER::AssetImporter> _assetImporter;
+			std::vector<RESOURCES::Renderable> _renderables;
 
 			ID3D11Device* _d3dDevice;
 			IDXGISwapChain* _swapChain;
