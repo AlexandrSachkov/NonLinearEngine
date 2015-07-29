@@ -157,45 +157,6 @@ namespace NLE
 				size_t dataSize
 				);
 
-			/*void setRenderTargets(
-				ID3D11DeviceContext*& deviceContext,
-				unsigned int numRenderTargets,
-				ID3D11RenderTargetView* renderTargerViews,
-				ID3D11DepthStencilView* depthStencilView
-				);
-
-			void VSSetShaderResources(unsigned int startSlot, unsigned int numViews, ID3D11ShaderResourceView* resourceViewArr);
-			void PSSetShaderResources(unsigned int startSlot, unsigned int numViews, ID3D11ShaderResourceView* resourceViewArr);
-			void GSSetShaderResources(unsigned int startSlot, unsigned int numViews, ID3D11ShaderResourceView* resourceViewArr);
-
-			void setVertexShader(const RESOURCES::VertexShader& vertexShader);
-			void setPixelShader(const RESOURCES::PixelShader& pixelShader);
-
-			void VSSetConstantBuffer(unsigned int startSlot, unsigned int numBuffers, const RESOURCES::Buffer& buffer);
-			void PSSetConstantBuffer(unsigned int startSlot, unsigned int numBuffers, const RESOURCES::Buffer& buffer);
-			void GSSetConstantBuffer(unsigned int startSlot, unsigned int numBuffers, const RESOURCES::Buffer& buffer);
-
-			void setVertexBuffer(const RESOURCES::Buffer& buffer, unsigned int slotNum);
-			void setIndexBuffer(const RESOURCES::Buffer& buffer);
-
-			
-
-			void setBlendState(ID3D11BlendState* blendState, float blendFactor[]);
-			void setInputLayout(ID3D11InputLayout* inputLayout);
-			void setPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY primitiveTopology);
-			void setRasterizerState(ID3D11RasterizerState* rasterizerState);
-			
-
-			void VSSetTextureSamplerState(unsigned int startSlot, unsigned int numStates, ID3D11SamplerState* samplerState);
-			void PSSetTextureSamplerState(unsigned int startSlot, unsigned int numStates, ID3D11SamplerState* samplerState);
-			void GSSetTextureSamplerState(unsigned int startSlot, unsigned int numStates, ID3D11SamplerState* samplerState);
-
-			void clearRenderTargetView(ID3D11RenderTargetView* renderTargetView, float colorRGBA[]);
-			void clearDepthStencilView(ID3D11DepthStencilView* depthStencilView);
-			void drawIndexed(const RESOURCES::Buffer& indexBuffer);
-			void draw(const RESOURCES::Buffer& vertexBuffer);
-			void display();*/
-
 			private:
 				static bool compileBlobFromFile(
 					std::wstring path,
