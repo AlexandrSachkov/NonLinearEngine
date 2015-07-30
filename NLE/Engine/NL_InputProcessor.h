@@ -48,7 +48,7 @@ namespace NLE
 			tbb::concurrent_queue<INPUT::Event> _events;
 			tbb::atomic<bool> _enableTextInput;
 
-			NLE::Core::Data::SContainer<char>* _cameraControllerCommands;
+			NLE::Core::Data::SContainer<char>* _cameraCommands;
 			NLE::Core::Data::SContainer<double>* _cursorCoords;
 			NLE::Core::Data::SContainer<double>* _scrollOffset;
 		};

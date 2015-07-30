@@ -279,11 +279,6 @@ if (resource)					\
 				ID3D11ShaderResourceView* reflectionTextView;
 			};
 
-			struct Transformation
-			{
-				DirectX::XMFLOAT4X4 transformation;
-			};
-
 			struct Renderable
 			{
 				void release()
@@ -293,7 +288,7 @@ if (resource)					\
 					material.release();
 				}
 
-				Transformation transform;
+				DirectX::XMFLOAT4X4 transformation;
 				Buffer transformationBuffer;
 				Mesh mesh;
 				Material material;

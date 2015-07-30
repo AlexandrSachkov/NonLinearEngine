@@ -5,6 +5,8 @@
 
 #include <Windows.h>
 #include <d3d11.h>
+#include <DirectXMath.h>
+
 #include <memory>
 #include <cstdint>
 #include <chrono>
@@ -27,7 +29,7 @@ namespace NLE
 
 			bool initialize();
 			void release();
-			void render();
+			void render(DirectX::XMMATRIX& viewProjection);
 
 			void setWindowHandle(void* handle);
 			void setScreenDimensions(uint_fast32_t width, uint_fast32_t height);

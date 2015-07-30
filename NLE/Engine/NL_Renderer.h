@@ -3,8 +3,11 @@
 
 #include "NL_IRenderer.h"
 #include "NLCore\NL_System.h"
+#include "NLCore\NL_SContainer.h"
 
+#include <DirectXMath.h>
 #include "tbb\atomic.h"
+#include "tbb\spin_mutex.h"
 
 #include <functional>
 #include <thread>
@@ -20,6 +23,7 @@ namespace NLE
 	namespace GRAPHICS
 	{
 		class RenderingEngine;
+		class Camera;
 		class Renderer : public Core::System, public IRenderer
 		{
 		public:
@@ -41,12 +45,47 @@ namespace NLE
 			Core::ISystem& getInterface();
 
 		private:
+			void computeViewProjection();
+			float toRadians(float degrees);
+			void setViewProjection(DirectX::XMMATRIX& viewProjection);
+			DirectX::XMMATRIX getViewProjection();
+
 			bool _initialized;
 			tbb::atomic<bool> _running;
 			std::function<void()> _procedure;
 
 			std::thread* _renderingThread;
 			std::unique_ptr<RenderingEngine> _renderingEngine;
+			std::unique_ptr<Camera> _camera;
+
+			NLE::Core::Data::SContainer<char>* _cameraCommands;
+			NLE::Core::Data::SContainer<double>* _cursorCoords;
+			NLE::Core::Data::SContainer<double>* _scrollOffset;
+
+			uint_fast32_t _screenWidth;
+			uint_fast32_t _screenHeight;
+
+			bool _firstCameraUpdate;
+			tbb::spin_mutex _viewProjectionLock;
+
+			std::chrono::time_point<std::chrono::high_resolution_clock, std::chrono::nanoseconds> _previousTime;
+			float _lastX;
+			float _lastY;
+			bool _firstMouse;
+
+			DirectX::XMVECTOR* _cameraPos;
+			DirectX::XMVECTOR* _cameraFront;
+			DirectX::XMVECTOR* _cameraUp;
+			DirectX::XMMATRIX* _viewProjection;
+
+			float _cameraSpeedConst;
+			float _sensitivity;
+			float _yaw;
+			float _pitch;
+			float _aspect;
+
+			float _lastCursorX;
+			float _lastCursorY;
 		};
 	}
 }

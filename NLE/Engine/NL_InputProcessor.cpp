@@ -4,7 +4,7 @@
 #include "NLCore\NL_SDistributor.h"
 
 #include "NL_SharedContainers.h"
-#include "NL_ICameraController.h"
+#include "NL_IRenderer.h"
 #include "NL_Systems.h"
 
 #include <assert.h>
@@ -28,7 +28,7 @@ namespace NLE
 		{
 			assert(!_initialized && _pollEvents);
 
-			_cameraControllerCommands = &static_cast<NLE::Core::Data::SDistributor<char>*>(&engine.getSDistributor(CAMERA_CONTROLLER_COMMANDS))->buildEndpoint(SYS::SYS_INPUT_PROCESSOR);
+			_cameraCommands = &static_cast<NLE::Core::Data::SDistributor<char>*>(&engine.getSDistributor(CAMERA_COMMANDS))->buildEndpoint(SYS::SYS_INPUT_PROCESSOR);
 			_cursorCoords = &static_cast<NLE::Core::Data::SDistributor<double>*>(&engine.getSDistributor(CURSOR_COORDINATES))->buildEndpoint(SYS::SYS_INPUT_PROCESSOR);
 			_scrollOffset = &static_cast<NLE::Core::Data::SDistributor<double>*>(&engine.getSDistributor(SCROLL_OFFSET))->buildEndpoint(SYS::SYS_INPUT_PROCESSOR);
 
@@ -120,27 +120,27 @@ namespace NLE
 			{
 			case KEY::KEY_A:
 				if (event.eventData.keyEvent.action == ACTION::ACTION_PRESS)
-					_cameraControllerCommands->modify(CAMERA::COMMANDS::LEFT, 1);
+					_cameraCommands->modify(GRAPHICS::COMMANDS::CAMERA::LEFT, 1);
 				else
-					_cameraControllerCommands->modify(CAMERA::COMMANDS::LEFT, 0);
+					_cameraCommands->modify(GRAPHICS::COMMANDS::CAMERA::LEFT, 0);
 				break;
 			case KEY::KEY_D:
 				if (event.eventData.keyEvent.action == ACTION::ACTION_PRESS)
-					_cameraControllerCommands->modify(CAMERA::COMMANDS::RIGHT, 1);
+					_cameraCommands->modify(GRAPHICS::COMMANDS::CAMERA::RIGHT, 1);
 				else
-					_cameraControllerCommands->modify(CAMERA::COMMANDS::RIGHT, 0);
+					_cameraCommands->modify(GRAPHICS::COMMANDS::CAMERA::RIGHT, 0);
 				break;
 			case KEY::KEY_W:
 				if (event.eventData.keyEvent.action == ACTION::ACTION_PRESS)
-					_cameraControllerCommands->modify(CAMERA::COMMANDS::FORWARD, 1);
+					_cameraCommands->modify(GRAPHICS::COMMANDS::CAMERA::FORWARD, 1);
 				else
-					_cameraControllerCommands->modify(CAMERA::COMMANDS::FORWARD, 0);
+					_cameraCommands->modify(GRAPHICS::COMMANDS::CAMERA::FORWARD, 0);
 				break;
 			case KEY::KEY_S:
 				if (event.eventData.keyEvent.action == ACTION::ACTION_PRESS)
-					_cameraControllerCommands->modify(CAMERA::COMMANDS::REVERSE, 1);
+					_cameraCommands->modify(GRAPHICS::COMMANDS::CAMERA::REVERSE, 1);
 				else
-					_cameraControllerCommands->modify(CAMERA::COMMANDS::REVERSE, 0);
+					_cameraCommands->modify(GRAPHICS::COMMANDS::CAMERA::REVERSE, 0);
 				break;
 			default:
 				break;

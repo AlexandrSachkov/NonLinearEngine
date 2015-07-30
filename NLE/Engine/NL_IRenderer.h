@@ -8,6 +8,18 @@ namespace NLE
 {
 	namespace GRAPHICS
 	{
+		namespace COMMANDS
+		{
+			enum CAMERA
+			{
+				FORWARD,
+				REVERSE,
+				LEFT,
+				RIGHT,
+				NUM_COMMANDS // used only to count commands
+			};
+		}
+		
 		class IRenderer : public Core::ISystem
 		{
 		public:

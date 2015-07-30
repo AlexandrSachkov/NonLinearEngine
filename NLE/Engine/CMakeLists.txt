@@ -1,12 +1,12 @@
 PROJECT(NLE)
 
 SET(HEADERS 
+	NL_Allocator.h
 	NL_AssetImporter.h
+	NL_Camera.h
 	NL_D3D11Utility.h
 	NL_D3D11Utility.inl
 	NL_DllApi.h
-	NL_CameraController.h
-	NL_ICameraController.h
 	NL_InputProcessor.h
 	NL_IInputProcessor.h	
 	NL_INle.h
@@ -26,7 +26,7 @@ SET(HEADERS
 
 SET(SOURCES 
 	NL_AssetImporter.cpp
-	NL_CameraController.cpp
+	NL_Camera.cpp
 	NL_D3D11Utility.cpp
 	NL_InputProcessor.cpp
 	NL_Nle.cpp

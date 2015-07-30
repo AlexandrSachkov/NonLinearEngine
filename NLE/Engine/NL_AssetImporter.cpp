@@ -155,12 +155,12 @@ namespace NLE
 			//NLE_MATRIX temp = NLEMath::NLEMatrixIdentity();
 			//NLEMath::NLEStoreFloat4x4(&asset->transformStruct.transformation, temp);
 			//asset->transformStruct.transformation = NLE_FLOAT4X4((const float*)(&transform.Transpose()));
-			asset.transform.transformation = DirectX::XMFLOAT4X4((const float*)(&transform));
-			GRAPHICS::D3D11Utility::createBuffer<GRAPHICS::RESOURCES::Transformation>(
+			asset.transformation = DirectX::XMFLOAT4X4((const float*)(&transform));
+			GRAPHICS::D3D11Utility::createBuffer<DirectX::XMFLOAT4X4>(
 				d3dDevice, 
 				D3D11_BIND_CONSTANT_BUFFER, 
 				D3D11_USAGE_DYNAMIC, 
-				&asset.transform, 
+				&asset.transformation,
 				1, 
 				asset.transformationBuffer
 				);

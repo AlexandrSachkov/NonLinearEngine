@@ -87,7 +87,7 @@ namespace NLE
 			_deviceContext->PSSetSamplers(0, 1, &_textureSamplerState);
 			_deviceContext->RSSetState(_backFaceCull);
 
-			if (!_assetImporter->importAssets(_d3dDevice, L"D:\\3DModels\\cubes.dae", _renderables))
+			if (!_assetImporter->importAssets(_d3dDevice, L"D:\\3DModels\\smallCube.dae", _renderables))
 			{
 				printf("Failed to load assets\n");
 				return false;
@@ -136,7 +136,7 @@ namespace NLE
 			_fullscreen = fullscreen;
 		}
 
-		void RenderingEngine::render()
+		void RenderingEngine::render(DirectX::XMMATRIX& viewProjection)
 		{
 			//Clear our backbuffer to the updated color
 			const float bgColor[] = { 0.0f, 1.0f, 0.0f, 1.0f };
@@ -157,6 +157,11 @@ namespace NLE
 				}
 				if (renderable.transformationBuffer.apiBuffer)
 				{
+					DirectX::XMMATRIX objWorld = DirectX::XMLoadFloat4x4(&renderable.transformation);
+					DirectX::XMMATRIX WVP = objWorld * viewProjection;
+					DirectX::XMFLOAT4X4 objTransform;
+					DirectX::XMStoreFloat4x4(&objTransform, DirectX::XMMatrixTranspose(WVP));
+					D3D11Utility::updateBuffer(_deviceContext, renderable.transformationBuffer, &objTransform, sizeof(objTransform));
 					_deviceContext->VSSetConstantBuffers(0, 1, &(renderable.transformationBuffer.apiBuffer));
 				}
 				if (renderable.material.diffuseTextView)

@@ -137,9 +137,10 @@ namespace NLE
 				memcpy(mappedResource.pData, data, dataSize);
 				deviceContext->Unmap(buffer.apiBuffer, 0);
 			}
-			else if (buffer.usage == D3D11_USAGE_DYNAMIC)
+			else if (buffer.usage == D3D11_USAGE_DEFAULT)
 			{
 				//UpdateSubresource goes here
+				assert(false);
 			}
 		}
 	}

@@ -24,10 +24,9 @@ namespace NLE
 		core.setClockPeriodNs(1000000L);
 
 		// Install shared containers
-		core.installSContainer<char>(CAMERA_CONTROLLER_COMMANDS, CAMERA::COMMANDS::NUM_COMMANDS, _defaultGrainSize); //one slot for each command
+		core.installSContainer<char>(CAMERA_COMMANDS, GRAPHICS::COMMANDS::CAMERA::NUM_COMMANDS, _defaultGrainSize); //one slot for each command
 		core.installSContainer<double>(CURSOR_COORDINATES, 2, _defaultGrainSize);	// 2 slots for x and y components
 		core.installSContainer<double>(SCROLL_OFFSET, 2, _defaultGrainSize);	// 2 slots for x and y components
-		//core.installSContainer<glm::mat4x4>(VIEW_PROJECTION, 2, _defaultGrainSize); // 2 slots for view and projection matrices
 
 		// Attach systems
 		Core::ExecutionDesc inputProcDesc(
@@ -38,7 +37,6 @@ namespace NLE
 			16666666L	//60 FPS
 		);
 		core.attachSystem(SYS::SYS_INPUT_PROCESSOR, inputProcDesc, std::unique_ptr<INPUT::InputProcessor>(new INPUT::InputProcessor()));
-		core.attachSystem(SYS::SYS_CAMERA_CONTROLLER, inputProcDesc, std::unique_ptr<CAMERA::CameraController>(new CAMERA::CameraController()));
 
 		core.setNumThreads(core.getNumThreads() - 1); // Leave a hardware thread for graphics
 		Core::ExecutionDesc renderingProcDesc(
@@ -46,7 +44,7 @@ namespace NLE
 			Core::Execution::RECURRING,
 			Core::Mode::SYNC ,
 			Core::Startup::AUTOMATIC,
-			0
+			16666666L	//60 FPS
 		);
 		core.attachSystem(SYS::SYS_RENDERER, renderingProcDesc, std::unique_ptr<GRAPHICS::Renderer>(new GRAPHICS::Renderer()));
 	}
@@ -106,8 +104,6 @@ namespace NLE
 
 	void Nle::setScreenDimensions(uint_fast32_t width, uint_fast32_t height)
 	{
-		static_cast<CAMERA::ICameraController*>(&Core::DeviceCore::instance().getSystemInterface(SYS::SYS_CAMERA_CONTROLLER))
-			->setScreenDimensions(width, height);
 		static_cast<GRAPHICS::IRenderer*>(&Core::DeviceCore::instance().getSystemInterface(SYS::SYS_RENDERER))
 			->setScreenDimensions(width, height);
 	}

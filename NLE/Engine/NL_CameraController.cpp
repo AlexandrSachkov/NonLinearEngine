@@ -37,7 +37,7 @@ namespace NLE
 			assert(!_initialized && _screenWidth != 0 && _screenHeight != 0);
 			_engine = &engine;
 
-			_commands = &static_cast<NLE::Core::Data::SDistributor<char>*>(&engine.getSDistributor(CAMERA_CONTROLLER_COMMANDS))->buildEndpoint(SYS::SYS_CAMERA_CONTROLLER);
+			_commands = &static_cast<NLE::Core::Data::SDistributor<char>*>(&engine.getSDistributor(CAMERA_COMMANDS))->buildEndpoint(SYS::SYS_CAMERA_CONTROLLER);
 			_cursorCoords = &static_cast<NLE::Core::Data::SDistributor<double>*>(&engine.getSDistributor(CURSOR_COORDINATES))->buildEndpoint(SYS::SYS_CAMERA_CONTROLLER);
 			_scrollOffset = &static_cast<NLE::Core::Data::SDistributor<double>*>(&engine.getSDistributor(SCROLL_OFFSET))->buildEndpoint(SYS::SYS_CAMERA_CONTROLLER);
 			//_viewProjection = &static_cast<NLE::Core::Data::SDistributor<glm::mat4x4>*>(&engine.getSDistributor(VIEW_PROJECTION))->buildEndpoint(SYS::SYS_CAMERA_CONTROLLER);

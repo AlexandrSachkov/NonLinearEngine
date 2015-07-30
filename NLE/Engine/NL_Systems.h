@@ -6,7 +6,6 @@ namespace NLE
 	enum SYS
 	{
 		SYS_INPUT_PROCESSOR,
-		SYS_CAMERA_CONTROLLER,
 		SYS_RENDERER
 	};
 }
