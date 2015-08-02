@@ -98,7 +98,7 @@ namespace NLE
 			GRAPHICS::RESOURCES::Mesh* meshArr = loadMeshes(d3dDevice, scene);
 			GRAPHICS::RESOURCES::Material* materialArr = loadMaterials(d3dDevice, scene);
 
-			nextNode(d3dDevice, scene, scene->mRootNode, scene->mRootNode->mTransformation, meshArr, materialArr, assets, 0);
+			nextNode(d3dDevice, scene, scene->mRootNode, scene->mRootNode->mTransformation, meshArr, materialArr, assets);
 
 			delete[] meshArr;
 			delete[] materialArr;
@@ -111,30 +111,21 @@ namespace NLE
 			aiMatrix4x4 accTransform,
 			GRAPHICS::RESOURCES::Mesh* meshArr,
 			GRAPHICS::RESOURCES::Material* materialArr,
-			std::vector<GRAPHICS::RESOURCES::Renderable>& assetArr,
-			int level)
+			std::vector<GRAPHICS::RESOURCES::Renderable>& assetArr)
 		{
 			aiMatrix4x4 transform;
-			if (level == 1)
-			{
-				printFloat4x4(transform);
-				printFloat4x4(accTransform);
-
-				accTransform = transform;
-			}
-
 			if (node->mNumMeshes > 0)
 			{
 				for (uint_fast32_t i = 0; i < node->mNumMeshes; i++)
 				{
-					assembleAsset(d3dDevice, scene, node->mMeshes[i], accTransform, meshArr, materialArr, assetArr, level);
+					assembleAsset(d3dDevice, scene, node->mMeshes[i], accTransform, meshArr, materialArr, assetArr);
 				}
 			}
 
 			for (uint_fast32_t i = 0; i < node->mNumChildren; i++)
 			{
-				transform = node->mChildren[i]->mTransformation * accTransform;
-				nextNode(d3dDevice, scene, node->mChildren[i], transform, meshArr, materialArr, assetArr, level + 1);
+				transform = accTransform * node->mChildren[i]->mTransformation;
+				nextNode(d3dDevice, scene, node->mChildren[i], transform, meshArr, materialArr, assetArr);
 			}
 		}
 
@@ -145,17 +136,17 @@ namespace NLE
 			aiMatrix4x4 transform,
 			GRAPHICS::RESOURCES::Mesh* meshArr,
 			GRAPHICS::RESOURCES::Material* materialArr,
-			std::vector<GRAPHICS::RESOURCES::Renderable>& assetArr,
-			int level)
+			std::vector<GRAPHICS::RESOURCES::Renderable>& assetArr
+			)
 		{
 			GRAPHICS::RESOURCES::Renderable asset;
 			asset.mesh = meshArr[meshIndex];
 			asset.material = materialArr[scene->mMeshes[meshIndex]->mMaterialIndex];
 
-			//NLE_MATRIX temp = NLEMath::NLEMatrixIdentity();
-			//NLEMath::NLEStoreFloat4x4(&asset->transformStruct.transformation, temp);
-			//asset->transformStruct.transformation = NLE_FLOAT4X4((const float*)(&transform.Transpose()));
-			asset.transformation = DirectX::XMFLOAT4X4((const float*)(&transform));
+			//DirectX::XMMATRIX temp = DirectX::XMMatrixIdentity();
+			//DirectX::XMStoreFloat4x4(&asset.transformation, temp);
+			asset.transformation = DirectX::XMFLOAT4X4((const float*)(&transform.Transpose()));
+			//asset.transformation = DirectX::XMFLOAT4X4((const float*)(&transform));
 			GRAPHICS::D3D11Utility::createBuffer<DirectX::XMFLOAT4X4>(
 				d3dDevice, 
 				D3D11_BIND_CONSTANT_BUFFER, 
@@ -177,7 +168,6 @@ namespace NLE
 			GRAPHICS::RESOURCES::Mesh* meshArr = new GRAPHICS::RESOURCES::Mesh[scene->mNumMeshes];
 			for (uint_fast32_t i = 0; i < scene->mNumMeshes; i++)
 			{
-				//meshArr[i].reset(new NLRE_Mesh());
 				GRAPHICS::RESOURCES::Vertex* vertexArr = nullptr;
 				unsigned int geomStreamLength = 0;
 				loadVertices(scene->mMeshes[i], vertexArr, geomStreamLength);
@@ -241,7 +231,6 @@ namespace NLE
 			GRAPHICS::RESOURCES::Material* materialArr = new GRAPHICS::RESOURCES::Material[scene->mNumMaterials];
 			for (uint_fast32_t i = 0; i < scene->mNumMaterials; i++)
 			{
-				//materialArr[i].reset(new NLRE_Material());
 				GRAPHICS::RESOURCES::MaterialBuffer materialBuff;
 				loadMaterialBuffer(scene->mMaterials[i], materialBuff);
 				GRAPHICS::D3D11Utility::createBuffer<GRAPHICS::RESOURCES::MaterialBuffer>(d3dDevice, D3D11_BIND_CONSTANT_BUFFER, D3D11_USAGE_IMMUTABLE, &materialBuff, 1, materialArr[i].materialBuffer);

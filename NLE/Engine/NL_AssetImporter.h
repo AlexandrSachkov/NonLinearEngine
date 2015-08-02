@@ -106,8 +106,8 @@ namespace NLE
 				aiMatrix4x4 accTransform,
 				GRAPHICS::RESOURCES::Mesh* meshArr,
 				GRAPHICS::RESOURCES::Material* materialArr,
-				std::vector<GRAPHICS::RESOURCES::Renderable>& assetArr,
-				int level);
+				std::vector<GRAPHICS::RESOURCES::Renderable>& assetArr
+				);
 
 			void assembleAsset(
 				ID3D11Device* d3dDevice,
@@ -116,8 +116,8 @@ namespace NLE
 				aiMatrix4x4 transform,
 				GRAPHICS::RESOURCES::Mesh* meshArr,
 				GRAPHICS::RESOURCES::Material* materialArr,
-				std::vector<GRAPHICS::RESOURCES::Renderable>& assetArr,
-				int level);
+				std::vector<GRAPHICS::RESOURCES::Renderable>& assetArr
+				);
 
 			std::wstring generateTextureResourcePath(aiString textureResourcePath);
 

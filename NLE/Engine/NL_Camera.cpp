@@ -35,13 +35,13 @@ namespace NLE
 	{
 		Camera::Camera(float x, float y, float z, int width, int height)
 		{
-			_fullRotation = 6.283f;
+			_fullRotation = 6.28318531f;
 
 			_initXPos = x;
 			_initYPos = y;
 			_initZPos = z;
 
-			_fov = _fullRotation / 4;
+			_fov = 1.13446401f;
 			_nearZ = 1.0f;
 			_farZ = 1000.0f;
 			_width = width;
