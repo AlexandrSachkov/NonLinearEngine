@@ -82,12 +82,11 @@ namespace NLE
 			_deviceContext->VSSetShader(_vertexShader.apiVertexShader, nullptr, 0);
 			_deviceContext->PSSetShader(_pixelShader.apiPixelShader, nullptr, 0);
 			_deviceContext->IASetInputLayout(_inputLayout);
-			_deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 			D3D11Utility::setViewPort(_deviceContext, (float)_screenWidth, (float)_screenHeight);
 			_deviceContext->PSSetSamplers(0, 1, &_textureSamplerState);
 			_deviceContext->RSSetState(_backFaceCull);
 
-			if (!_assetImporter->importAssets(_d3dDevice, L"D:\\3DModels\\smallCube.dae", _renderables))
+			if (!_assetImporter->importAssets(_d3dDevice, L"D:\\3DModels\\cubes.DAE", _renderables))
 			{
 				printf("Failed to load assets\n");
 				return false;
@@ -154,6 +153,7 @@ namespace NLE
 				if (renderable.mesh.indexBuffer.apiBuffer)
 				{
 					_deviceContext->IASetIndexBuffer(renderable.mesh.indexBuffer.apiBuffer, DXGI_FORMAT_R32_UINT, 0);
+					_deviceContext->IASetPrimitiveTopology(renderable.mesh.primitiveTopology);
 				}
 				if (renderable.transformationBuffer.apiBuffer)
 				{

@@ -143,10 +143,7 @@ namespace NLE
 			asset.mesh = meshArr[meshIndex];
 			asset.material = materialArr[scene->mMeshes[meshIndex]->mMaterialIndex];
 
-			//DirectX::XMMATRIX temp = DirectX::XMMatrixIdentity();
-			//DirectX::XMStoreFloat4x4(&asset.transformation, temp);
 			asset.transformation = DirectX::XMFLOAT4X4((const float*)(&transform.Transpose()));
-			//asset.transformation = DirectX::XMFLOAT4X4((const float*)(&transform));
 			GRAPHICS::D3D11Utility::createBuffer<DirectX::XMFLOAT4X4>(
 				d3dDevice, 
 				D3D11_BIND_CONSTANT_BUFFER, 
@@ -156,8 +153,6 @@ namespace NLE
 				asset.transformationBuffer
 				);
 
-			//printf("===\n");
-			//printFloat4x4(transform);
 			assetArr.push_back(asset);
 		}
 
@@ -175,7 +170,9 @@ namespace NLE
 
 				GRAPHICS::RESOURCES::Index* indexArr = nullptr;
 				unsigned int indexArrLength = 0;
-				loadIndices(scene->mMeshes[i], indexArr, indexArrLength);
+				D3D_PRIMITIVE_TOPOLOGY primitiveTopology;
+				loadIndices(scene->mMeshes[i], indexArr, indexArrLength, primitiveTopology);
+				meshArr[i].primitiveTopology = primitiveTopology;
 				GRAPHICS::D3D11Utility::createBuffer<GRAPHICS::RESOURCES::Index>(d3dDevice, D3D11_BIND_INDEX_BUFFER, D3D11_USAGE_IMMUTABLE, indexArr, indexArrLength, meshArr[i].indexBuffer);
 			}
 
@@ -206,17 +203,37 @@ namespace NLE
 			}
 		}
 
-		void AssetImporter::loadIndices(aiMesh* mesh, GRAPHICS::RESOURCES::Index*& indexArr, unsigned int& indexArrLength)
+		void AssetImporter::loadIndices(aiMesh* mesh, GRAPHICS::RESOURCES::Index*& indexArr, unsigned int& indexArrLength, D3D_PRIMITIVE_TOPOLOGY& primitiveTopology)
 		{
-			if (!mesh->HasFaces()) return;
+			if (!mesh->HasFaces()) 
+				return;
 
-			indexArrLength = mesh->mNumFaces * 3;
-			indexArr = new GRAPHICS::RESOURCES::Index[indexArrLength];
-			int counter = 0;
+			uint_fast32_t counter = 0;
+			uint_fast32_t numIndices = 0;
 			for (uint_fast32_t k = 0; k < mesh->mNumFaces; k++)
 			{
+				if (k == 0)
+				{
+					numIndices = mesh->mFaces[0].mNumIndices;
+					indexArrLength = mesh->mNumFaces * numIndices;
+					indexArr = new GRAPHICS::RESOURCES::Index[indexArrLength];
+					switch (numIndices)
+					{
+					case 1:
+						primitiveTopology = D3D11_PRIMITIVE_TOPOLOGY_POINTLIST;
+						break;
+					case 2:
+						primitiveTopology = D3D11_PRIMITIVE_TOPOLOGY_LINELIST;
+						break;
+					case 3:
+						primitiveTopology = D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
+						break;
+					default:
+						assert(false);
+					}
+				}
 				const aiFace& tempFace = mesh->mFaces[k];
-				for (uint_fast32_t m = 0; m < 3; m++)
+				for (uint_fast32_t m = 0; m < numIndices; m++)
 				{
 					indexArr[counter] = tempFace.mIndices[m];
 					counter++;

@@ -34,7 +34,6 @@ THE SOFTWARE.
 #pragma warning( push )
 #pragma warning( disable : 4005)
 
-#define AI_CONFIG_PP_SBP_REMOVE aiPrimitiveType_POINT | aiPrimitiveType_LINE
 #include <assimp\Importer.hpp>
 #include <assimp\scene.h> 
 #include <assimp\postprocess.h>  
@@ -92,7 +91,7 @@ namespace NLE
 
 			GRAPHICS::RESOURCES::Mesh* loadMeshes(ID3D11Device* d3dDevice, const aiScene* scene);
 			void loadVertices(aiMesh* mesh, GRAPHICS::RESOURCES::Vertex*& vertexArr, unsigned int& streamLength);
-			void loadIndices(aiMesh* mesh, GRAPHICS::RESOURCES::Index*& indexArr, unsigned int& length);
+			void loadIndices(aiMesh* mesh, GRAPHICS::RESOURCES::Index*& indexArr, unsigned int& length, D3D_PRIMITIVE_TOPOLOGY& primitiveTopology);
 
 			void loadMaterialBuffer(aiMaterial* material, GRAPHICS::RESOURCES::MaterialBuffer& materialBuffer);
 			void loadMaterialParams(aiMaterial* material, GRAPHICS::RESOURCES::Material& nleMaterial);

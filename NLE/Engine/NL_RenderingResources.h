@@ -152,6 +152,7 @@ if (resource)					\
 				}
 				Buffer geomBuffer;
 				Buffer indexBuffer;
+				D3D_PRIMITIVE_TOPOLOGY primitiveTopology;
 			};
 
 			__declspec(align(16))
