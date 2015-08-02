@@ -174,8 +174,8 @@ namespace NLE
 		void InputProcessor::onScrollEvent(Event& event)
 		{
 			printf("scroll event\n");
-			_cursorCoords->modify(0, event.eventData.scrollEvent.xOffset);
-			_cursorCoords->modify(1, event.eventData.scrollEvent.yOffset);
+			_scrollOffset->modify(0, event.eventData.scrollEvent.xOffset);
+			_scrollOffset->modify(1, event.eventData.scrollEvent.yOffset);
 		}
 	}
 }
