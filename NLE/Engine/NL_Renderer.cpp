@@ -168,6 +168,7 @@ namespace NLE
 		void Renderer::release()
 		{
 			stop();
+			_renderingThread->join();
 			_renderingEngine->release();
 			_initialized = false;
 		}
