@@ -73,16 +73,7 @@ namespace NLE
 			float _lastY;
 			bool _firstMouse;
 
-			DirectX::XMVECTOR* _cameraPos;
-			DirectX::XMVECTOR* _cameraFront;
-			DirectX::XMVECTOR* _cameraUp;
 			DirectX::XMMATRIX* _viewProjection;
-
-			float _cameraSpeedConst;
-			float _sensitivity;
-			float _yaw;
-			float _pitch;
-			float _aspect;
 
 			float _lastCursorX;
 			float _lastCursorY;

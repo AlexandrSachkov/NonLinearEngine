@@ -30,21 +30,8 @@ namespace NLE
 			_renderingEngine = std::make_unique<RenderingEngine>();
 			_camera = nullptr;
 
-			_cameraPos = alloc<DirectX::XMVECTOR>(16);
-			_cameraFront = alloc<DirectX::XMVECTOR>(16);
-			_cameraUp = alloc<DirectX::XMVECTOR>(16);
 			_viewProjection = alloc<DirectX::XMMATRIX>(16);
-
-			*_cameraPos = DirectX::XMVectorSet(0.0f, 0.0f, 3.0f, 0.0f);
-			*_cameraFront = DirectX::XMVectorSet(0.0f, 0.0f, -1.0f, 0.0f);
-			*_cameraUp = DirectX::XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f);
 			*_viewProjection = DirectX::XMMatrixIdentity();
-
-			_cameraSpeedConst = 0.00005f;
-			_sensitivity = 0.5f;
-			_yaw = 0;
-			_pitch = 0;
-			_aspect = 1.0f;
 
 			_lastCursorX = 0.0f;
 			_lastCursorY = 0.0f;
