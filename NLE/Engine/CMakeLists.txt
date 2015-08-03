@@ -7,6 +7,7 @@ SET(HEADERS
 	NL_D3D11Utility.h
 	NL_D3D11Utility.inl
 	NL_DllApi.h
+	NL_GScene.h
 	NL_InputProcessor.h
 	NL_IInputProcessor.h	
 	NL_INle.h
@@ -16,6 +17,8 @@ SET(HEADERS
 	NL_RenderingEngine.h
 	NL_IRenderer.h
 	NL_RenderingResources.h
+	NL_SceneManager.h
+	NL_ISceneManager.h
 	NL_SharedContainers.h
 	NL_Systems.h
 	NL_TextureLoader.h
@@ -28,10 +31,12 @@ SET(SOURCES
 	NL_AssetImporter.cpp
 	NL_Camera.cpp
 	NL_D3D11Utility.cpp
+	NL_GScene.cpp
 	NL_InputProcessor.cpp
 	NL_Nle.cpp
 	NL_Renderer.cpp
 	NL_RenderingEngine.cpp
+	NL_SceneManager.cpp
 	NL_TextureLoader.cpp
 	
 	DDSTextureLoader.cpp

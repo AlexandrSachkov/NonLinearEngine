@@ -124,7 +124,12 @@ bool NLEGlfwApplicationLayer::initialize()
 	_nle->setScreenDimensions(_width, _height);
 	_nle->setFullscreen(_fullscreen);
 
-	if (!_nle->initialize()) return false;
+	if (!_nle->initialize()) 
+		return false;
+
+	std::wstring path(L"D:\\3DModels\\sponza.DAE");
+	if (!_nle->importScene(path))
+		return false;
 
 	printf("======> Application Layer successfully initialized.\n");
 	return true;

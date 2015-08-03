@@ -29,6 +29,7 @@ THE SOFTWARE.
 #include "NL_AssetImporter.h"
 #include "NL_TextureLoader.h"
 #include "NL_D3D11Utility.h"
+#include "NL_SceneManager.h"
 
 #include <locale>
 #include <codecvt>
@@ -61,8 +62,8 @@ namespace NLE
 
 		bool AssetImporter::importAssets(
 			ID3D11Device* d3dDevice,
-			std::wstring path,
-			std::vector<GRAPHICS::RESOURCES::Renderable>& assets
+			std::wstring& path,
+			SceneManager* sceneManager
 			)
 		{
 			Assimp::Importer importer;
@@ -84,7 +85,7 @@ namespace NLE
 				return false;
 			}
 
-			loadAsStatic(d3dDevice, scene, assets);
+			loadAsStatic(d3dDevice, scene, sceneManager);
 
 			return true;
 		}
@@ -92,13 +93,13 @@ namespace NLE
 		void AssetImporter::loadAsStatic(
 			ID3D11Device* d3dDevice,
 			const aiScene* scene,
-			std::vector<GRAPHICS::RESOURCES::Renderable>& assets
+			SceneManager* sceneManager
 			)
 		{
 			GRAPHICS::RESOURCES::Mesh* meshArr = loadMeshes(d3dDevice, scene);
 			GRAPHICS::RESOURCES::Material* materialArr = loadMaterials(d3dDevice, scene);
 
-			nextNode(d3dDevice, scene, scene->mRootNode, scene->mRootNode->mTransformation, meshArr, materialArr, assets);
+			nextNode(d3dDevice, scene, scene->mRootNode, scene->mRootNode->mTransformation, meshArr, materialArr, sceneManager);
 
 			delete[] meshArr;
 			delete[] materialArr;
@@ -111,21 +112,21 @@ namespace NLE
 			aiMatrix4x4 accTransform,
 			GRAPHICS::RESOURCES::Mesh* meshArr,
 			GRAPHICS::RESOURCES::Material* materialArr,
-			std::vector<GRAPHICS::RESOURCES::Renderable>& assetArr)
+			SceneManager* sceneManager)
 		{
 			aiMatrix4x4 transform;
 			if (node->mNumMeshes > 0)
 			{
 				for (uint_fast32_t i = 0; i < node->mNumMeshes; i++)
 				{
-					assembleAsset(d3dDevice, scene, node->mMeshes[i], accTransform, meshArr, materialArr, assetArr);
+					assembleAsset(d3dDevice, scene, node->mMeshes[i], accTransform, meshArr, materialArr, sceneManager);
 				}
 			}
 
 			for (uint_fast32_t i = 0; i < node->mNumChildren; i++)
 			{
 				transform = accTransform * node->mChildren[i]->mTransformation;
-				nextNode(d3dDevice, scene, node->mChildren[i], transform, meshArr, materialArr, assetArr);
+				nextNode(d3dDevice, scene, node->mChildren[i], transform, meshArr, materialArr, sceneManager);
 			}
 		}
 
@@ -136,7 +137,7 @@ namespace NLE
 			aiMatrix4x4 transform,
 			GRAPHICS::RESOURCES::Mesh* meshArr,
 			GRAPHICS::RESOURCES::Material* materialArr,
-			std::vector<GRAPHICS::RESOURCES::Renderable>& assetArr
+			SceneManager* sceneManager
 			)
 		{
 			GRAPHICS::RESOURCES::Renderable asset;
@@ -153,7 +154,7 @@ namespace NLE
 				asset.transformationBuffer
 				);
 
-			assetArr.push_back(asset);
+			sceneManager->addStaticRenderable(asset);
 		}
 
 		GRAPHICS::RESOURCES::Mesh* AssetImporter::loadMeshes(ID3D11Device* d3dDevice, const aiScene* scene)

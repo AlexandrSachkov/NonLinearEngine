@@ -3,6 +3,7 @@
 
 #include <functional>
 #include <cstdint>
+#include <string>
 
 namespace NLE
 {
@@ -25,6 +26,8 @@ namespace NLE
 		virtual void setWindowHandle(void* handle) = 0;
 		virtual void setScreenDimensions(uint_fast32_t width, uint_fast32_t height) = 0;
 		virtual void setFullscreen(bool fullscreen) = 0;
+
+		virtual bool importScene(std::wstring& path) = 0;
 	};
 }
 #endif

@@ -4,7 +4,7 @@
 #include "NLCore\NL_ExecutionDesc.h"
 #include "NL_InputEvents.h"
 #include "NL_InputProcessor.h"
-#include "NL_CameraController.h"
+#include "NL_SceneManager.h"
 #include "NL_Renderer.h"
 #include "NL_Systems.h"
 #include "NL_SharedContainers.h"
@@ -42,11 +42,20 @@ namespace NLE
 		Core::ExecutionDesc renderingProcDesc(
 			Core::Priority::STANDARD,
 			Core::Execution::RECURRING,
-			Core::Mode::SYNC ,
+			Core::Mode::ASYNC ,
 			Core::Startup::AUTOMATIC,
 			16666666L	//60 FPS
 		);
 		core.attachSystem(SYS::SYS_RENDERER, renderingProcDesc, std::unique_ptr<GRAPHICS::Renderer>(new GRAPHICS::Renderer()));
+
+		Core::ExecutionDesc sceneMngrProcDesc(
+			Core::Priority::STANDARD,
+			Core::Execution::RECURRING,
+			Core::Mode::ASYNC,
+			Core::Startup::AUTOMATIC,
+			1000000000L	//1 FPS
+		);
+		core.attachSystem(SYS::SYS_SCENE_MANAGER, sceneMngrProcDesc, std::unique_ptr<SceneManager>(new SceneManager()));
 	}
 
 	Nle::~Nle()
@@ -112,5 +121,11 @@ namespace NLE
 	{
 		static_cast<GRAPHICS::IRenderer*>(&Core::DeviceCore::instance().getSystemInterface(SYS::SYS_RENDERER))
 			->setFullscreen(fullscreen);
+	}
+
+	bool Nle::importScene(std::wstring& path)
+	{
+		return static_cast<SceneManager*>(&Core::DeviceCore::instance().getSystemInterface(SYS::SYS_SCENE_MANAGER))
+			->importScene(path);
 	}
 }

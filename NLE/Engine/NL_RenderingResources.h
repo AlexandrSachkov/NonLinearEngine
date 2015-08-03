@@ -59,6 +59,13 @@ namespace NLE
 			NONE
 		};
 
+		enum LIGHT_TYPE
+		{
+			DIRECTIONAL,
+			POINT,
+			SPOT
+		};
+
 		namespace RESOURCES
 		{
 
@@ -293,6 +300,29 @@ if (resource)					\
 				Buffer transformationBuffer;
 				Mesh mesh;
 				Material material;
+			};
+
+
+			struct Light
+			{
+				LIGHT_TYPE type;
+				Buffer lightBuffer;
+			};
+
+			__declspec(align(16))
+			struct LightBuffer
+			{			
+				DirectX::XMFLOAT3 position;
+				DirectX::XMFLOAT3 direction;
+				DirectX::XMFLOAT3 ambientColor;
+				DirectX::XMFLOAT3 diffuseColor;
+				DirectX::XMFLOAT3 specularColor;
+
+				float innerConeAngle;
+				float outerConeAngle;
+				float constantAttenuation;
+				float linearAttenuation;
+				float quadraticAttenuation;
 			};
 		}
 	}

@@ -33,6 +33,8 @@ namespace NLE
 		void setWindowHandle(void* handle);
 		void setScreenDimensions(uint_fast32_t width, uint_fast32_t height);
 		void setFullscreen(bool fullscreen);
+
+		bool importScene(std::wstring& path);
 	private:
 		Nle();
 		Nle(Nle const&) = delete;

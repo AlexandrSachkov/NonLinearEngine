@@ -53,6 +53,7 @@ THE SOFTWARE.
 
 namespace NLE
 {
+	class SceneManager;
 	namespace IMPORTER
 	{
 		class TextureLoader;
@@ -77,8 +78,8 @@ namespace NLE
 
 			bool importAssets(
 				ID3D11Device* d3dDevice, 
-				std::wstring path, 
-				std::vector<GRAPHICS::RESOURCES::Renderable>& assets
+				std::wstring& path, 
+				SceneManager* sceneManager
 				);
 			void setTextureResourcePath(std::wstring path);
 
@@ -86,7 +87,7 @@ namespace NLE
 			void loadAsStatic(
 				ID3D11Device* d3dDevice, 
 				const aiScene* scene,
-				std::vector<GRAPHICS::RESOURCES::Renderable>& assets
+				SceneManager* sceneManager
 				);
 
 			GRAPHICS::RESOURCES::Mesh* loadMeshes(ID3D11Device* d3dDevice, const aiScene* scene);
@@ -105,7 +106,7 @@ namespace NLE
 				aiMatrix4x4 accTransform,
 				GRAPHICS::RESOURCES::Mesh* meshArr,
 				GRAPHICS::RESOURCES::Material* materialArr,
-				std::vector<GRAPHICS::RESOURCES::Renderable>& assetArr
+				SceneManager* sceneManager
 				);
 
 			void assembleAsset(
@@ -115,7 +116,7 @@ namespace NLE
 				aiMatrix4x4 transform,
 				GRAPHICS::RESOURCES::Mesh* meshArr,
 				GRAPHICS::RESOURCES::Material* materialArr,
-				std::vector<GRAPHICS::RESOURCES::Renderable>& assetArr
+				SceneManager* sceneManager
 				);
 
 			std::wstring generateTextureResourcePath(aiString textureResourcePath);

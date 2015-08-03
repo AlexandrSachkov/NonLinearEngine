@@ -21,6 +21,7 @@ namespace NLE
 	}
 	namespace GRAPHICS
 	{
+		class Scene;
 		class RenderingEngine
 		{
 		public:
@@ -29,11 +30,13 @@ namespace NLE
 
 			bool initialize();
 			void release();
-			void render(DirectX::XMMATRIX& viewProjection);
+			void render(std::unique_ptr<Scene> const& scene, DirectX::XMMATRIX& viewProjection);
 
 			void setWindowHandle(void* handle);
 			void setScreenDimensions(uint_fast32_t width, uint_fast32_t height);
 			void setFullscreen(bool fullscreen);
+
+			ID3D11Device* getDevice();
 		private:
 			bool _initialized;
 			uint_fast32_t _frameCount;
@@ -43,9 +46,6 @@ namespace NLE
 			uint_fast32_t _screenWidth;
 			uint_fast32_t _screenHeight;
 			bool _fullscreen;
-
-			std::unique_ptr<IMPORTER::AssetImporter> _assetImporter;
-			std::vector<RESOURCES::Renderable> _renderables;
 
 			ID3D11Device* _d3dDevice;
 			IDXGISwapChain* _swapChain;

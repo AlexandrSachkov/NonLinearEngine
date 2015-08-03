@@ -1,7 +1,6 @@
 #include "NL_RenderingEngine.h"
 #include "NL_D3D11Utility.h"
-#include "NL_AssetImporter.h"
-
+#include "NL_GScene.h"
 
 #include <cstdio>
 #include <iostream>
@@ -19,7 +18,6 @@ namespace NLE
 			_screenHeight(0),
 			_fullscreen(true)
 		{		
-			_assetImporter = std::make_unique<IMPORTER::AssetImporter>();
 			printf("Rendering Engine created\n");
 		}
 
@@ -86,22 +84,13 @@ namespace NLE
 			_deviceContext->PSSetSamplers(0, 1, &_textureSamplerState);
 			_deviceContext->RSSetState(_backFaceCull);
 
-			if (!_assetImporter->importAssets(_d3dDevice, L"D:\\3DModels\\cubes.DAE", _renderables))
-			{
-				printf("Failed to load assets\n");
-				return false;
-			}
+			_initialized = true;
 			return true;
 		}
 
 		void RenderingEngine::release()
 		{
 			_swapChain->SetFullscreenState(FALSE, NULL);
-
-			for (auto renderable : _renderables)
-			{
-				renderable.release();
-			}
 
 			SAFE_RELEASE(_textureSamplerState);
 			SAFE_RELEASE(_frontFaceCull);
@@ -114,6 +103,12 @@ namespace NLE
 			SAFE_RELEASE(_swapChain);
 			SAFE_RELEASE(_deviceContext);
 			SAFE_RELEASE(_d3dDevice);
+		}
+
+		ID3D11Device* RenderingEngine::getDevice()
+		{
+			assert(_initialized);
+			return _d3dDevice;
 		}
 
 		void RenderingEngine::setWindowHandle(void* handle)
@@ -135,7 +130,7 @@ namespace NLE
 			_fullscreen = fullscreen;
 		}
 
-		void RenderingEngine::render(DirectX::XMMATRIX& viewProjection)
+		void RenderingEngine::render(std::unique_ptr<Scene> const& scene, DirectX::XMMATRIX& viewProjection)
 		{
 			//Clear our backbuffer to the updated color
 			const float bgColor[] = { 0.0f, 1.0f, 0.0f, 1.0f };
@@ -143,7 +138,7 @@ namespace NLE
 			_deviceContext->ClearRenderTargetView(_backBufferRenderTargetView, bgColor);
 			_deviceContext->ClearDepthStencilView(_depthStencilView, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
 
-			for (auto renderable : _renderables)
+			for (auto renderable : scene->getStaticOpaqueRenderables())
 			{
 				if (renderable.mesh.geomBuffer.apiBuffer)
 				{

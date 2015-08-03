@@ -2,6 +2,7 @@
 #define NL_RENDERER_H_
 
 #include "NL_IRenderer.h"
+#include "NL_GScene.h"
 #include "NLCore\NL_System.h"
 #include "NLCore\NL_SContainer.h"
 
@@ -43,6 +44,10 @@ namespace NLE
 
 			std::function<void()> const& getExecutionProcedure();
 			Core::ISystem& getInterface();
+			ID3D11Device* getDevice();
+
+			void addStaticRenderable(RESOURCES::Renderable& renderable);
+			void addLight(RESOURCES::Light& light);
 
 		private:
 			void computeViewProjection();
@@ -56,6 +61,7 @@ namespace NLE
 
 			std::thread* _renderingThread;
 			std::unique_ptr<RenderingEngine> _renderingEngine;
+			std::unique_ptr<Scene> _scene;
 			std::unique_ptr<Camera> _camera;
 
 			NLE::Core::Data::SContainer<char>* _cameraCommands;
