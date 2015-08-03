@@ -114,7 +114,6 @@ namespace NLE
 
 		void InputProcessor::onKeyEvent(Event& event)
 		{
-			printf("key event\n");
 			// temporary hardcoded key mappings
 			switch (event.eventData.keyEvent.key)
 			{
@@ -149,7 +148,6 @@ namespace NLE
 
 		void InputProcessor::onMouseButtonEvent(Event& event)
 		{
-			printf("mouse button event\n");
 			//temporary hardcoded mouse mappings
 			switch (event.eventData.mouseButtonEvent.button)
 			{
@@ -166,14 +164,12 @@ namespace NLE
 
 		void InputProcessor::onCursorPositionChange(Event& event)
 		{
-			printf("cursor moved\n");
 			_cursorCoords->modify(0, event.eventData.cursorPositionEvent.xPos);
 			_cursorCoords->modify(1, event.eventData.cursorPositionEvent.yPos);
 		}
 
 		void InputProcessor::onScrollEvent(Event& event)
 		{
-			printf("scroll event\n");
 			_scrollOffset->modify(0, event.eventData.scrollEvent.xOffset);
 			_scrollOffset->modify(1, event.eventData.scrollEvent.yOffset);
 		}

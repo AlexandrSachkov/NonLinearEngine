@@ -9,7 +9,7 @@ namespace NLE
 	class ISceneManager : public Core::ISystem
 	{
 	public:
-		virtual bool importScene(std::wstring& path) = 0;
+		virtual void importScene(std::wstring& path) = 0;
 	};
 }
 

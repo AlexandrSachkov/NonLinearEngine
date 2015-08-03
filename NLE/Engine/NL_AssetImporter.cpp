@@ -60,7 +60,7 @@ namespace NLE
 			Assimp::DefaultLogger::kill();
 		}
 
-		bool AssetImporter::importAssets(
+		void AssetImporter::importAssets(
 			ID3D11Device* d3dDevice,
 			std::wstring& path,
 			SceneManager* sceneManager
@@ -82,12 +82,9 @@ namespace NLE
 			if (!scene)
 			{
 				printf("Failed to import asset: %s", assetPath.c_str());
-				return false;
 			}
 
 			loadAsStatic(d3dDevice, scene, sceneManager);
-
-			return true;
 		}
 
 		void AssetImporter::loadAsStatic(

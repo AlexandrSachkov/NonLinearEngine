@@ -6,6 +6,7 @@
 #include "NLCore\NL_System.h"
 
 #include <functional>
+#include <thread>
 
 namespace NLE
 {
@@ -31,13 +32,14 @@ namespace NLE
 		std::function<void()> const& getExecutionProcedure();
 		Core::ISystem& getInterface();
 
-		bool importScene(std::wstring& path);
+		void importScene(std::wstring& path);
 		void addStaticRenderable(GRAPHICS::RESOURCES::Renderable& renderable);
 		void addLight(GRAPHICS::RESOURCES::Light& light);
 
 	private:
 		bool _initialized;
 		std::function<void()> _procedure;
+		std::thread* _loadingThread;
 
 		std::unique_ptr<IMPORTER::AssetImporter> _assetImporter;
 	};

@@ -123,9 +123,9 @@ namespace NLE
 			->setFullscreen(fullscreen);
 	}
 
-	bool Nle::importScene(std::wstring& path)
+	void Nle::importScene(std::wstring& path)
 	{
-		return static_cast<SceneManager*>(&Core::DeviceCore::instance().getSystemInterface(SYS::SYS_SCENE_MANAGER))
+		static_cast<SceneManager*>(&Core::DeviceCore::instance().getSystemInterface(SYS::SYS_SCENE_MANAGER))
 			->importScene(path);
 	}
 }

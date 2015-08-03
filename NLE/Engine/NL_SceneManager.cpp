@@ -33,6 +33,7 @@ namespace NLE
 
 	void SceneManager::release()
 	{
+		_loadingThread->join();
 		_initialized = false;
 	}
 
@@ -51,12 +52,20 @@ namespace NLE
 		return *this;
 	}
 
-	bool SceneManager::importScene(std::wstring& path)
+	void SceneManager::importScene(std::wstring& path)
 	{
 		assert(_initialized);
-		auto device = static_cast<GRAPHICS::IRenderer*>(&Core::DeviceCore::instance().getSystemInterface(SYS::SYS_RENDERER))
-			->getDevice();
-		return _assetImporter->importAssets(device, path, this);
+
+		_loadingThread = new std::thread([&](
+			SceneManager& sceneManager,
+			std::wstring path){
+
+			printf("Loading Thread running\n");
+			auto device = static_cast<GRAPHICS::IRenderer*>(&Core::DeviceCore::instance().getSystemInterface(SYS::SYS_RENDERER))
+				->getDevice();
+			_assetImporter->importAssets(device, path, &sceneManager);
+			
+		}, std::ref(*this), path);
 	}
 
 	void SceneManager::addStaticRenderable(GRAPHICS::RESOURCES::Renderable& renderable)

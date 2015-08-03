@@ -27,7 +27,7 @@ namespace NLE
 		virtual void setScreenDimensions(uint_fast32_t width, uint_fast32_t height) = 0;
 		virtual void setFullscreen(bool fullscreen) = 0;
 
-		virtual bool importScene(std::wstring& path) = 0;
+		virtual void importScene(std::wstring& path) = 0;
 	};
 }
 #endif

@@ -34,7 +34,7 @@ namespace NLE
 		void setScreenDimensions(uint_fast32_t width, uint_fast32_t height);
 		void setFullscreen(bool fullscreen);
 
-		bool importScene(std::wstring& path);
+		void importScene(std::wstring& path);
 	private:
 		Nle();
 		Nle(Nle const&) = delete;

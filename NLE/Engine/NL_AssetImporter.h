@@ -76,7 +76,7 @@ namespace NLE
 			AssetImporter();
 			~AssetImporter();
 
-			bool importAssets(
+			void importAssets(
 				ID3D11Device* d3dDevice, 
 				std::wstring& path, 
 				SceneManager* sceneManager
