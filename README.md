@@ -14,7 +14,7 @@ NonLinear Engine is a completely free (MIT Licensed) experimental 3D game engine
 </p>
 
 <p>
-Borrowing ideas from Intel's Designing the Framework of a Parallel Game Engine, NonLinear Engine framework features free-step system execution with variable execution frequencies and lockless parallel data synchronization between systems. It is built on top of Intel TBB task scheduler and heavily utilizes its parallel containers and algorithms for efficient parallelization and minimization of memory contention. The framework is decoupled from the engine and can be built separately for uses in other projects.
+Borrowing ideas from Intel's <a href="https://software.intel.com/en-us/articles/designing-the-framework-of-a-parallel-game-engine">Designing the Framework of a Parallel Game Engine</a>, NonLinear Engine framework features free-step system execution with variable execution frequencies and lockless parallel data synchronization between systems. It is built on top of <a href="https://www.threadingbuildingblocks.org/">Intel TBB</a> task scheduler and heavily utilizes its parallel containers and algorithms for efficient parallelization and minimization of memory contention. The framework is decoupled from the engine and can be built separately for uses in other projects.
 </p>
 
 <p>
