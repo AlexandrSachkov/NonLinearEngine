@@ -3,7 +3,7 @@ NonLinear Engine
 
 <!--=====================================================================================-->
 <p>
-<b>Cross-Platform Data-Parallel 3D Game Engine</b>
+<b>Data-Parallel 3D Game Engine for Windows</b>
 </p>
 
 <hr width="100%">
