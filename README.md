@@ -10,16 +10,24 @@ NonLinear Engine
 
 <h3>About the Project</h3>
 <p>
-NonLinear Engine is a completely free cross-platform 3D game and simulation engine.
-The goal of this project is to create a very fast, scalable, and highly customizable platform that provides a solid foundation to independent game developers and hobbyists for their games. 
+NonLinear Engine is a completely free (MIT Licensed) experimental 3D game engine for Windows. The aim of this project is to develop a highly scalable game engine that fully utilizes processors with a large number of cores (6 cores +) through the use of its custom parallel framework, and then pushing it to see what is possible to achieve. Possible use cases include: achieving higher frame rates, more dynamic bodies and animations, smarter AI, higher graphical detail, approximated voxel terrain, real-time fluid simulations,  etc.
 </p>
 
 <p>
-I started this project as a means to practice what I am passionate about which is game and graphics development. I enjoy experimenting with modern game technologies and rendering techniques, and I think that you will find it being reflected in my design.
+Borrowing ideas from Intel's Designing the Framework of a Parallel Game Engine, NonLinear Engine framework features free-step system execution with variable execution frequencies and lockless parallel data synchronization between systems. It is built on top of Intel TBB task scheduler and heavily utilizes its parallel containers and algorithms for efficient parallelization and minimization of memory contention. The framework is decoupled from the engine and can be built separately for uses in other projects.
 </p>
 
 <p>
-I hope that some of you will find this project useful. All feedback is highly appreciated. 
+This engine if far from completion and is currently in an active state of development. Throughout the development, I will be posting working samples and tutorials and updating documentation for stable components. I started this project as a means to practice what I am passionate about which is game and graphics development. It has been an amazing learning experience working on this engine as I learned about engine architectures, rendering APIs and techniques, memory management, and parallelization techniques, and improved my C++ skills to a level far beyond what I could have through sheer university curriculum. 
+</p>
+<hr width="100%">
+
+<!--=====================================================================================-->
+<h3>Contact</h3>
+<p>
+If you are interested in this project and would like to contribute, feel free to contact me at: <br/>
+ale<b>k</b>sach<b>x</b>ov@hotmail.com <br/>
+(Anti-bot, flip the bold characters)
 </p>
 <hr width="100%">
 
