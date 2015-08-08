@@ -32,6 +32,55 @@ ale<b>k</b>sach<b>x</b>ov@hotmail.com <br/>
 <hr width="100%">
 
 <!--=====================================================================================-->
+<p>
+<h3>Current Features:</h3>
+<ul>
+  <li>
+    Written in modern C++ 14
+  </li>
+  <li>
+    CMake build system
+  </li>
+  <li>
+    Modular architecture
+  </li>
+  <li>
+    Decoupled from application layer (Embeddable)
+  </li>
+  <li>
+    Cross-platform (except for the rendering system)
+  </li>
+  <li>
+    Input system
+  </li>
+  <li>
+    DirectX 11 Rendering system
+  </li>
+  <li>
+    First-person camera
+  </li>
+  <li>
+    <a href="http://assimp.sourceforge.net/index.html">Assimp</a> scene importer supporting a large number of interchange        formats </br>
+    .dae, .blend, .3ds, .obj, .x, and <a href="http://assimp.sourceforge.net/main_features_formats.html">more…</a>
+  </li>
+  <li>
+    <a href="https://directxtex.codeplex.com/">DirectXTex</a> texture importer supporting mipmap generation and the following     texture formats: 
+	  DDS, BMP, JPEG, PNG, TIFF, GIF, HD Photo
+  </li>
+  <li>
+    Loading precompiled shaders from file and compiling on the fly
+  </li>
+  <li>
+    FPS counter
+  </li>
+  <li>
+    Windowed and fullscreen modes
+  </li>
+</ul>
+</p>
+<hr width="100%">
+
+<!--=====================================================================================-->
 <h3>Roadmap</h3>
 This section is created to track development progress and includes completed and pending tasks as well as future plans.
 
