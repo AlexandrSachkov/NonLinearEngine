@@ -64,7 +64,7 @@ ale<b>k</b>sach<b>x</b>ov@hotmail.com <br/>
     .dae, .blend, .3ds, .obj, .x, and <a href="http://assimp.sourceforge.net/main_features_formats.html">more…</a>
   </li>
   <li>
-    <a href="https://directxtex.codeplex.com/">DirectXTex</a> texture importer supporting mipmap generation and the following     texture formats: 
+    <a href="https://directxtex.codeplex.com/">DirectXTex</a> texture importer supporting mipmap generation and the following     texture formats: </br>
 	  DDS, BMP, JPEG, PNG, TIFF, GIF, HD Photo
   </li>
   <li>
@@ -92,9 +92,29 @@ This section is created to track development progress and includes completed and
   </tr>
   
   <tr>
-    <td>7</td>
-    <td>Build Direct3D 11 rendering system</td>
+    <td>11</td>
+    <td>Add shadows</td>
     <td>Pending</td>
+  </tr>
+  <tr>
+    <td>10</td>
+    <td>Add material support</td>
+    <td>Pending</td>
+  </tr>
+  <tr>
+    <td>9</td>
+    <td>Add support for blending</td>
+    <td>Pending</td>
+  </tr>
+  <tr>
+    <td>8</td>
+    <td>Add support for forward lighting</td>
+    <td>Pending</td>
+  </tr>
+  <tr>
+    <td>7</td>
+    <td>Build Simple Direct3D 11 rendering system</td>
+    <td>Complete</td>
   </tr>
   <tr>
     <td>6</td>
