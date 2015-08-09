@@ -45,7 +45,7 @@ ale<b>k</b>sach<b>x</b>ov@hotmail.com <br/>
     Modular architecture
   </li>
   <li>
-    Decoupled from application layer (Embeddable)
+    Decoupled from the presentation layer (Embeddable)
   </li>
   <li>
     Cross-platform (except for the rendering system)
@@ -54,7 +54,7 @@ ale<b>k</b>sach<b>x</b>ov@hotmail.com <br/>
     Input system
   </li>
   <li>
-    DirectX 11 Rendering system
+    Direct3D 11 Rendering system
   </li>
   <li>
     First-person camera
