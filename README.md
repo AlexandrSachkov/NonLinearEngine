@@ -10,7 +10,7 @@ NonLinear Engine
 
 <h3>About the Project</h3>
 <p>
-NonLinear Engine is a completely free (MIT Licensed) experimental 3D game engine for Windows. The aim of this project is to develop a highly scalable game engine that fully utilizes processors with a large number of cores (6 cores +) through the use of its custom parallel framework, and then pushing it to see what is possible to achieve. Possible use cases include: achieving higher frame rates, more dynamic bodies and animations, smarter AI, higher graphical detail, approximated voxel terrain, real-time fluid simulations,  etc.
+NonLinear Engine is a completely free (MIT Licensed) experimental 3D game engine for Windows. The aim of this project is to develop a highly scalable game engine that fully utilizes processors with a large number of cores (6 cores +) through the use of its custom parallel framework, and then push it to see what is possible to achieve. Possible use cases include: achieving higher frame rates, more dynamic bodies and animations, smarter AI, higher graphical detail, approximated voxel terrain, real-time fluid simulations,  etc.
 </p>
 
 <p>
