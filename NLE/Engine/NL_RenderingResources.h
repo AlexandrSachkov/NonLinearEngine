@@ -339,10 +339,18 @@ if (resource)					\
 			__declspec(align(16))
 			struct LightBuff
 			{
+				LightBuff() :
+					numDirLights(0),
+					numPointLights(0),
+					numSpotLights(0)
+				{
+				}
 				DirectionalLight directionalLights[MAX_NUM_LIGHTS];
 				PointLight pointLights[MAX_NUM_LIGHTS];
 				SpotLight spotLights[MAX_NUM_LIGHTS];
-				DirectX::XMFLOAT3 numLights;
+				unsigned int numDirLights;
+				unsigned int numPointLights;
+				unsigned int numSpotLights;
 			};
 		}
 	}

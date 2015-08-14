@@ -29,6 +29,29 @@ namespace NLE
 			_staticOpaqueRenderables.push_back(renderable);
 		}
 
+		void Scene::addDirectionalLight(RESOURCES::DirectionalLight& light)
+		{
+			if (_lights.numDirLights < RESOURCES::MAX_NUM_LIGHTS - 1)
+			{
+				_lights.directionalLights[_lights.numDirLights] = light;
+			}
+		}
+
+		void Scene::addSpotLight(RESOURCES::SpotLight& light)
+		{
+			if (_lights.numSpotLights < RESOURCES::MAX_NUM_LIGHTS - 1)
+			{
+				_lights.spotLights[_lights.numSpotLights] = light;
+			}
+		}
+
+		void Scene::addPointLight(RESOURCES::PointLight& light)
+		{
+			if (_lights.numPointLights < RESOURCES::MAX_NUM_LIGHTS - 1)
+			{
+				_lights.pointLights[_lights.numPointLights] = light;
+			}
+		}
 
 		tbb::concurrent_vector<RESOURCES::Renderable> const& Scene::getStaticOpaqueRenderables()
 		{

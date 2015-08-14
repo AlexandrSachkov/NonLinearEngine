@@ -28,6 +28,7 @@ namespace NLE
 			tbb::concurrent_vector<RESOURCES::Renderable> const& getStaticOpaqueRenderables();
 		private:
 			RESOURCES::Buffer _lightBuff;
+			RESOURCES::LightBuff _lights;
 			tbb::atomic<bool> _pendingUpdate;
 			tbb::concurrent_vector<RESOURCES::Renderable> _staticOpaqueRenderables;
 		};

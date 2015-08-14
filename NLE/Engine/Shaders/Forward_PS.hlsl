@@ -62,7 +62,9 @@ cbuffer cbLights : register(b1)
 	DirectionalLight directionalLights[32];
 	PointLight pointLights[32];
 	SpotLight spotLights[32];
-	float3 numLights;
+	uint numDirLights;
+	uint numPointLights;
+	uint numSpotLights;
 };
 
 struct PS_INPUT
