@@ -5,8 +5,8 @@ int main()
 {
 	NLEGlfwApplicationLayer& appLayer = NLEGlfwApplicationLayer::instance();
 
-	appLayer.setFullscreenHint(false);
-	appLayer.setWindowSizeHint(1440, 900);
+	appLayer.setFullscreenHint(true);
+	appLayer.setWindowSizeHint(1920, 1080);//(1440, 900);
 	if (!appLayer.initialize())
 	{
 		return 0;

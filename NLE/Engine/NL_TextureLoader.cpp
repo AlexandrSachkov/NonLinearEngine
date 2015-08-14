@@ -78,7 +78,7 @@ namespace NLE
 			if (FAILED(hr))
 			{
 				std::string stringPath(path.begin(), path.end());
-				printf("Texture \"%s\" failed to load", stringPath.c_str());
+				printf("Texture \"%s\" failed to load\n", stringPath.c_str());
 				return false;
 			}
 			return true;

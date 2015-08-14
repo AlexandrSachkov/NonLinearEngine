@@ -30,7 +30,7 @@ namespace NLE
 
 			bool initialize();
 			void release();
-			void render(std::unique_ptr<Scene> const& scene, DirectX::XMMATRIX& viewProjection);
+			void render(Scene* scene, DirectX::XMMATRIX& viewProjection);
 
 			void setWindowHandle(void* handle);
 			void setScreenDimensions(uint_fast32_t width, uint_fast32_t height);

@@ -17,7 +17,7 @@ namespace NLE
 			_screenWidth(0),
 			_screenHeight(0),
 			_fullscreen(true)
-		{		
+		{
 			printf("Rendering Engine created\n");
 		}
 
@@ -59,9 +59,9 @@ namespace NLE
 			if (!D3D11Utility::createBlendStates(_d3dDevice, false, false, 1, false, _noBlendState))
 				return false;
 			if (!D3D11Utility::createDepthStencilView(_d3dDevice, _screenWidth, _screenHeight, _depthStencilView))
-				return false;			
-			if (!D3D11Utility::loadVertexShader(_d3dDevice, L"D:\\Repositories\\NonLinearEngine\\NLE\\Engine\\Shaders\\Forward_PosNormText_VS.hlsl", _vertexShader))
-				return false;							
+				return false;
+			if (!D3D11Utility::loadVertexShader(_d3dDevice, L"D:\\Repositories\\NonLinearEngine\\NLE\\Engine\\Shaders\\Forward_VS.hlsl", _vertexShader))
+				return false;
 			if (!D3D11Utility::createInputLayout(_d3dDevice, forwardPosNormTextDesc, ARRAYSIZE(forwardPosNormTextDesc), _vertexShader, _inputLayout))
 				return false;
 			if (!D3D11Utility::createRasterizerState(_d3dDevice, D3D11_CULL_BACK, D3D11_FILL_SOLID, _backFaceCull))
@@ -70,9 +70,9 @@ namespace NLE
 				return false;
 			if (!D3D11Utility::createTextureSamplerState(_d3dDevice, _textureSamplerState))
 				return false;
-			if (!D3D11Utility::loadPixelShader(_d3dDevice, L"D:\\Repositories\\NonLinearEngine\\NLE\\Engine\\Shaders\\Forward_PosNormText_PS.hlsl", _pixelShader))
+			if (!D3D11Utility::loadPixelShader(_d3dDevice, L"D:\\Repositories\\NonLinearEngine\\NLE\\Engine\\Shaders\\Forward_PS.hlsl", _pixelShader))
 				return false;
-			
+
 			float blendFactor[] = { 0.0f, 0.0f, 0.0f, 0.0f };
 
 			_deviceContext->OMSetRenderTargets(1, &_backBufferRenderTargetView, _depthStencilView);
@@ -130,7 +130,7 @@ namespace NLE
 			_fullscreen = fullscreen;
 		}
 
-		void RenderingEngine::render(std::unique_ptr<Scene> const& scene, DirectX::XMMATRIX& viewProjection)
+		void RenderingEngine::render(Scene* scene, DirectX::XMMATRIX& viewProjection)
 		{
 			//Clear our backbuffer to the updated color
 			const float bgColor[] = { 0.0f, 1.0f, 0.0f, 1.0f };
@@ -138,33 +138,37 @@ namespace NLE
 			_deviceContext->ClearRenderTargetView(_backBufferRenderTargetView, bgColor);
 			_deviceContext->ClearDepthStencilView(_depthStencilView, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
 
-			for (auto renderable : scene->getStaticOpaqueRenderables())
+			if (scene)
 			{
-				if (renderable.mesh.geomBuffer.apiBuffer)
+				for (auto renderable : scene->getStaticOpaqueRenderables())
 				{
-					unsigned int stride = 0;
-					_deviceContext->IASetVertexBuffers(0, 1, &(renderable.mesh.geomBuffer.apiBuffer), &(renderable.mesh.geomBuffer.elementSize), &stride);
+					if (renderable.mesh.geomBuffer.apiBuffer)
+					{
+						unsigned int stride = 0;
+						_deviceContext->IASetVertexBuffers(0, 1, &(renderable.mesh.geomBuffer.apiBuffer), &(renderable.mesh.geomBuffer.elementSize), &stride);
+					}
+					if (renderable.mesh.indexBuffer.apiBuffer)
+					{
+						_deviceContext->IASetIndexBuffer(renderable.mesh.indexBuffer.apiBuffer, DXGI_FORMAT_R32_UINT, 0);
+						_deviceContext->IASetPrimitiveTopology(renderable.mesh.primitiveTopology);
+					}
+					if (renderable.transformationBuffer.apiBuffer)
+					{
+						DirectX::XMMATRIX objWorld = DirectX::XMLoadFloat4x4(&renderable.transformation);
+						DirectX::XMMATRIX WVP = objWorld * viewProjection;
+						DirectX::XMFLOAT4X4 objTransform;
+						DirectX::XMStoreFloat4x4(&objTransform, DirectX::XMMatrixTranspose(WVP));
+						D3D11Utility::updateBuffer(_deviceContext, renderable.transformationBuffer, &objTransform, sizeof(objTransform));
+						_deviceContext->VSSetConstantBuffers(0, 1, &(renderable.transformationBuffer.apiBuffer));
+					}
+					if (renderable.material.diffuseTextView)
+					{
+						_deviceContext->PSSetShaderResources(0, 1, &renderable.material.diffuseTextView);
+					}
+					_deviceContext->DrawIndexed(renderable.mesh.indexBuffer.numberElements, 0, 0);
 				}
-				if (renderable.mesh.indexBuffer.apiBuffer)
-				{
-					_deviceContext->IASetIndexBuffer(renderable.mesh.indexBuffer.apiBuffer, DXGI_FORMAT_R32_UINT, 0);
-					_deviceContext->IASetPrimitiveTopology(renderable.mesh.primitiveTopology);
-				}
-				if (renderable.transformationBuffer.apiBuffer)
-				{
-					DirectX::XMMATRIX objWorld = DirectX::XMLoadFloat4x4(&renderable.transformation);
-					DirectX::XMMATRIX WVP = objWorld * viewProjection;
-					DirectX::XMFLOAT4X4 objTransform;
-					DirectX::XMStoreFloat4x4(&objTransform, DirectX::XMMatrixTranspose(WVP));
-					D3D11Utility::updateBuffer(_deviceContext, renderable.transformationBuffer, &objTransform, sizeof(objTransform));
-					_deviceContext->VSSetConstantBuffers(0, 1, &(renderable.transformationBuffer.apiBuffer));
-				}
-				if (renderable.material.diffuseTextView)
-				{
-					_deviceContext->PSSetShaderResources(0, 1, &renderable.material.diffuseTextView);
-				}
-				_deviceContext->DrawIndexed(renderable.mesh.indexBuffer.numberElements, 0, 0);
 			}
+
 
 			_swapChain->Present(0, 0);
 

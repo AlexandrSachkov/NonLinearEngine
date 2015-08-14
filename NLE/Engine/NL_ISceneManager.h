@@ -6,10 +6,15 @@
 
 namespace NLE
 {
+	namespace GRAPHICS
+	{
+		class Scene;
+	}
 	class ISceneManager : public Core::ISystem
 	{
 	public:
 		virtual void importScene(std::wstring& path) = 0;
+		virtual GRAPHICS::Scene* getGScene() = 0;
 	};
 }
 

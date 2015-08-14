@@ -127,7 +127,7 @@ bool NLEGlfwApplicationLayer::initialize()
 	if (!_nle->initialize()) 
 		return false;
 
-	std::wstring path(L"D:\\3DModels\\sponza.DAE");
+	std::wstring path(L"D:\\3DModels\\sponzaLit.DAE");
 	_nle->importScene(path);
 
 	printf("======> Application Layer successfully initialized.\n");

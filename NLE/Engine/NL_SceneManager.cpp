@@ -13,6 +13,7 @@ namespace NLE
 		_procedure(nullptr)
 	{
 		_assetImporter = std::make_unique<IMPORTER::AssetImporter>();
+		_gScene.fetch_and_store(nullptr);
 	}
 
 	SceneManager::~SceneManager()
@@ -52,6 +53,16 @@ namespace NLE
 		return *this;
 	}
 
+	void SceneManager::setGScene(GRAPHICS::Scene* scene)
+	{
+		_gScene.fetch_and_store(scene);
+	}
+
+	GRAPHICS::Scene* SceneManager::getGScene()
+	{
+		return _gScene;
+	}
+
 	void SceneManager::importScene(std::wstring& path)
 	{
 		assert(_initialized);
@@ -63,20 +74,9 @@ namespace NLE
 			printf("Loading Thread running\n");
 			auto device = static_cast<GRAPHICS::IRenderer*>(&Core::DeviceCore::instance().getSystemInterface(SYS::SYS_RENDERER))
 				->getDevice();
-			_assetImporter->importAssets(device, path, &sceneManager);
-			
+			GRAPHICS::Scene* scene = new GRAPHICS::Scene();
+			_assetImporter->importScene(device, path, *scene);
+			sceneManager.setGScene(scene);
 		}, std::ref(*this), path);
-	}
-
-	void SceneManager::addStaticRenderable(GRAPHICS::RESOURCES::Renderable& renderable)
-	{
-		static_cast<GRAPHICS::IRenderer*>(&Core::DeviceCore::instance().getSystemInterface(SYS::SYS_RENDERER))
-			->addStaticRenderable(renderable);
-	}
-
-	void SceneManager::addLight(GRAPHICS::RESOURCES::Light& light)
-	{
-		static_cast<GRAPHICS::IRenderer*>(&Core::DeviceCore::instance().getSystemInterface(SYS::SYS_RENDERER))
-			->addLight(light);
 	}
 }

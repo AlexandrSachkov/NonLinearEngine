@@ -42,7 +42,7 @@ namespace NLE
 			_initZPos = z;
 
 			_fov = 1.13446401f;
-			_nearZ = 1.0f;
+			_nearZ = 0.1f;
 			_farZ = 1000.0f;
 			_width = width;
 			_height = height;

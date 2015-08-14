@@ -3,10 +3,13 @@
 
 #include "NL_ISceneManager.h"
 #include "NL_RenderingResources.h"
+#include "NL_GScene.h"
 #include "NLCore\NL_System.h"
 
 #include <functional>
 #include <thread>
+
+#include "tbb\atomic.h"
 
 namespace NLE
 {
@@ -33,14 +36,15 @@ namespace NLE
 		Core::ISystem& getInterface();
 
 		void importScene(std::wstring& path);
-		void addStaticRenderable(GRAPHICS::RESOURCES::Renderable& renderable);
-		void addLight(GRAPHICS::RESOURCES::Light& light);
 
+		void setGScene(GRAPHICS::Scene* scene);
+		GRAPHICS::Scene* getGScene();
 	private:
 		bool _initialized;
 		std::function<void()> _procedure;
 		std::thread* _loadingThread;
 
+		tbb::atomic<GRAPHICS::Scene*> _gScene;
 		std::unique_ptr<IMPORTER::AssetImporter> _assetImporter;
 	};
 }

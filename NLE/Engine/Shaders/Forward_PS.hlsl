@@ -26,6 +26,45 @@ THE SOFTWARE.
 -----------------------------------------------------------------------------
 */
 
+struct DirectionalLight
+{
+	float4 Ambient;
+	float4 Diffuse;
+	float4 Specular;
+	float3 Direction;
+	float pad;
+};
+struct PointLight
+{
+	float4 Ambient;
+	float4 Diffuse;
+	float4 Specular;
+	float3 Position;
+	float Range;
+	float3 Att;
+	float pad;
+};
+struct SpotLight
+{
+	float4 Ambient;
+	float4 Diffuse;
+	float4 Specular;
+	float3 Position;
+	float Range;
+	float3 Direction;
+	float Spot;
+	float3 Att;
+	float pad;
+};
+
+cbuffer cbLights : register(b1)
+{
+	DirectionalLight directionalLights[32];
+	PointLight pointLights[32];
+	SpotLight spotLights[32];
+	float3 numLights;
+};
+
 struct PS_INPUT
 {
 	float4 Pos : SV_POSITION;

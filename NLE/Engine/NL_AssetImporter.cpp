@@ -29,7 +29,7 @@ THE SOFTWARE.
 #include "NL_AssetImporter.h"
 #include "NL_TextureLoader.h"
 #include "NL_D3D11Utility.h"
-#include "NL_SceneManager.h"
+#include "NL_GScene.h"
 
 #include <locale>
 #include <codecvt>
@@ -60,10 +60,10 @@ namespace NLE
 			Assimp::DefaultLogger::kill();
 		}
 
-		void AssetImporter::importAssets(
+		void AssetImporter::importScene(
 			ID3D11Device* d3dDevice,
 			std::wstring& path,
-			SceneManager* sceneManager
+			GRAPHICS::Scene& outScene
 			)
 		{
 			Assimp::Importer importer;
@@ -75,8 +75,7 @@ namespace NLE
 				aiProcess_JoinIdenticalVertices |
 				aiProcess_FlipWindingOrder |
 				aiProcess_GenUVCoords |
-				aiProcess_GenNormals |
-				aiProcess_RemoveComponent |
+				aiProcess_GenSmoothNormals |
 				aiProcess_SortByPType);
 
 			if (!scene)
@@ -84,19 +83,12 @@ namespace NLE
 				printf("Failed to import asset: %s", assetPath.c_str());
 			}
 
-			loadAsStatic(d3dDevice, scene, sceneManager);
-		}
-
-		void AssetImporter::loadAsStatic(
-			ID3D11Device* d3dDevice,
-			const aiScene* scene,
-			SceneManager* sceneManager
-			)
-		{
 			GRAPHICS::RESOURCES::Mesh* meshArr = loadMeshes(d3dDevice, scene);
 			GRAPHICS::RESOURCES::Material* materialArr = loadMaterials(d3dDevice, scene);
 
-			nextNode(d3dDevice, scene, scene->mRootNode, scene->mRootNode->mTransformation, meshArr, materialArr, sceneManager);
+			nextNode(d3dDevice, scene, scene->mRootNode, scene->mRootNode->mTransformation, meshArr, materialArr, outScene);
+
+			loadLights(d3dDevice, outScene, scene);
 
 			delete[] meshArr;
 			delete[] materialArr;
@@ -109,21 +101,21 @@ namespace NLE
 			aiMatrix4x4 accTransform,
 			GRAPHICS::RESOURCES::Mesh* meshArr,
 			GRAPHICS::RESOURCES::Material* materialArr,
-			SceneManager* sceneManager)
+			GRAPHICS::Scene& outScene)
 		{
 			aiMatrix4x4 transform;
 			if (node->mNumMeshes > 0)
 			{
-				for (uint_fast32_t i = 0; i < node->mNumMeshes; i++)
+				for (uint_fast32_t i = 0; i < node->mNumMeshes; ++i)
 				{
-					assembleAsset(d3dDevice, scene, node->mMeshes[i], accTransform, meshArr, materialArr, sceneManager);
+					assembleAsset(d3dDevice, scene, node->mMeshes[i], accTransform, meshArr, materialArr, outScene);
 				}
 			}
 
-			for (uint_fast32_t i = 0; i < node->mNumChildren; i++)
+			for (uint_fast32_t i = 0; i < node->mNumChildren; ++i)
 			{
 				transform = accTransform * node->mChildren[i]->mTransformation;
-				nextNode(d3dDevice, scene, node->mChildren[i], transform, meshArr, materialArr, sceneManager);
+				nextNode(d3dDevice, scene, node->mChildren[i], transform, meshArr, materialArr, outScene);
 			}
 		}
 
@@ -134,7 +126,7 @@ namespace NLE
 			aiMatrix4x4 transform,
 			GRAPHICS::RESOURCES::Mesh* meshArr,
 			GRAPHICS::RESOURCES::Material* materialArr,
-			SceneManager* sceneManager
+			GRAPHICS::Scene& outScene
 			)
 		{
 			GRAPHICS::RESOURCES::Renderable asset;
@@ -151,7 +143,7 @@ namespace NLE
 				asset.transformationBuffer
 				);
 
-			sceneManager->addStaticRenderable(asset);
+			outScene.addStaticRenderable(asset);
 		}
 
 		GRAPHICS::RESOURCES::Mesh* AssetImporter::loadMeshes(ID3D11Device* d3dDevice, const aiScene* scene)
@@ -159,7 +151,7 @@ namespace NLE
 			if (!scene->HasMeshes()) return nullptr;
 
 			GRAPHICS::RESOURCES::Mesh* meshArr = new GRAPHICS::RESOURCES::Mesh[scene->mNumMeshes];
-			for (uint_fast32_t i = 0; i < scene->mNumMeshes; i++)
+			for (uint_fast32_t i = 0; i < scene->mNumMeshes; ++i)
 			{
 				GRAPHICS::RESOURCES::Vertex* vertexArr = nullptr;
 				unsigned int geomStreamLength = 0;
@@ -183,7 +175,7 @@ namespace NLE
 
 			streamLength = mesh->mNumVertices;
 			vertexArr = new GRAPHICS::RESOURCES::Vertex[streamLength];
-			for (uint_fast32_t i = 0; i < streamLength; i++)
+			for (uint_fast32_t i = 0; i < streamLength; ++i)
 			{
 				const aiVector3D* pos = &(mesh->mVertices[i]);
 				const aiVector3D* normal = &(mesh->mNormals[i]);
@@ -208,7 +200,7 @@ namespace NLE
 
 			uint_fast32_t counter = 0;
 			uint_fast32_t numIndices = 0;
-			for (uint_fast32_t k = 0; k < mesh->mNumFaces; k++)
+			for (uint_fast32_t k = 0; k < mesh->mNumFaces; ++k)
 			{
 				if (k == 0)
 				{
@@ -244,7 +236,7 @@ namespace NLE
 			if (!scene->HasMaterials()) return nullptr;
 
 			GRAPHICS::RESOURCES::Material* materialArr = new GRAPHICS::RESOURCES::Material[scene->mNumMaterials];
-			for (uint_fast32_t i = 0; i < scene->mNumMaterials; i++)
+			for (uint_fast32_t i = 0; i < scene->mNumMaterials; ++i)
 			{
 				GRAPHICS::RESOURCES::MaterialBuffer materialBuff;
 				loadMaterialBuffer(scene->mMaterials[i], materialBuff);
@@ -407,6 +399,7 @@ namespace NLE
 					D3D11_USAGE_IMMUTABLE,
 					nleMaterial.opacityText,
 					nleMaterial.opacityTextView);
+				printf("Opacity texture\n");
 			}
 
 			if (material->GetTextureCount(aiTextureType_DISPLACEMENT) > 0
@@ -443,6 +436,31 @@ namespace NLE
 					D3D11_USAGE_IMMUTABLE,
 					nleMaterial.reflectionText,
 					nleMaterial.reflectionTextView);
+			}
+		}
+
+		void AssetImporter::loadLights(ID3D11Device* d3dDevice, GRAPHICS::Scene& outScene, const aiScene* scene)
+		{
+			printf("Number of lights: %i\n", scene->mNumLights);
+			for (uint_fast32_t i = 0; i < scene->mNumLights; ++i)
+			{
+				switch (scene->mLights[i]->mType)
+				{
+				case aiLightSource_DIRECTIONAL:
+					printf("Directional Light\n");
+					//light.type = GRAPHICS::LIGHT_TYPE::DIRECTIONAL;
+					break;
+				case aiLightSource_POINT:
+					printf("Point Light\n");
+					//light.type = GRAPHICS::LIGHT_TYPE::POINT;
+					break;
+				case aiLightSource_SPOT:
+					printf("Spot Light\n");
+					//light.type = GRAPHICS::LIGHT_TYPE::SPOT;
+					break;
+				default:
+					assert(false);
+				}
 			}
 		}
 

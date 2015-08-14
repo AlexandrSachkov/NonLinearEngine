@@ -53,7 +53,10 @@ THE SOFTWARE.
 
 namespace NLE
 {
-	class SceneManager;
+	namespace GRAPHICS
+	{
+		class Scene;
+	}
 	namespace IMPORTER
 	{
 		class TextureLoader;
@@ -76,23 +79,18 @@ namespace NLE
 			AssetImporter();
 			~AssetImporter();
 
-			void importAssets(
+			void importScene(
 				ID3D11Device* d3dDevice, 
 				std::wstring& path, 
-				SceneManager* sceneManager
+				GRAPHICS::Scene& scene
 				);
 			void setTextureResourcePath(std::wstring path);
 
 		private:
-			void loadAsStatic(
-				ID3D11Device* d3dDevice, 
-				const aiScene* scene,
-				SceneManager* sceneManager
-				);
-
 			GRAPHICS::RESOURCES::Mesh* loadMeshes(ID3D11Device* d3dDevice, const aiScene* scene);
 			void loadVertices(aiMesh* mesh, GRAPHICS::RESOURCES::Vertex*& vertexArr, unsigned int& streamLength);
 			void loadIndices(aiMesh* mesh, GRAPHICS::RESOURCES::Index*& indexArr, unsigned int& length, D3D_PRIMITIVE_TOPOLOGY& primitiveTopology);
+			void loadLights(ID3D11Device* d3dDevice, GRAPHICS::Scene& outScene, const aiScene* scene);
 
 			void loadMaterialBuffer(aiMaterial* material, GRAPHICS::RESOURCES::MaterialBuffer& materialBuffer);
 			void loadMaterialParams(aiMaterial* material, GRAPHICS::RESOURCES::Material& nleMaterial);
@@ -106,7 +104,7 @@ namespace NLE
 				aiMatrix4x4 accTransform,
 				GRAPHICS::RESOURCES::Mesh* meshArr,
 				GRAPHICS::RESOURCES::Material* materialArr,
-				SceneManager* sceneManager
+				GRAPHICS::Scene& outScene
 				);
 
 			void assembleAsset(
@@ -116,7 +114,7 @@ namespace NLE
 				aiMatrix4x4 transform,
 				GRAPHICS::RESOURCES::Mesh* meshArr,
 				GRAPHICS::RESOURCES::Material* materialArr,
-				SceneManager* sceneManager
+				GRAPHICS::Scene& outScene
 				);
 
 			std::wstring generateTextureResourcePath(aiString textureResourcePath);

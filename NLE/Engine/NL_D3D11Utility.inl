@@ -128,20 +128,12 @@ namespace NLE
 			size_t dataSize
 			)
 		{
-			if (buffer.usage == D3D11_USAGE_DYNAMIC)
-			{
-				D3D11_MAPPED_SUBRESOURCE mappedResource;
-				ZeroMemory(&mappedResource, sizeof(D3D11_MAPPED_SUBRESOURCE));
+			D3D11_MAPPED_SUBRESOURCE mappedResource;
+			ZeroMemory(&mappedResource, sizeof(D3D11_MAPPED_SUBRESOURCE));
 
-				deviceContext->Map(buffer.apiBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
-				memcpy(mappedResource.pData, data, dataSize);
-				deviceContext->Unmap(buffer.apiBuffer, 0);
-			}
-			else if (buffer.usage == D3D11_USAGE_DEFAULT)
-			{
-				//UpdateSubresource goes here
-				assert(false);
-			}
+			deviceContext->Map(buffer.apiBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
+			memcpy(mappedResource.pData, data, dataSize);
+			deviceContext->Unmap(buffer.apiBuffer, 0);
 		}
 	}
 }

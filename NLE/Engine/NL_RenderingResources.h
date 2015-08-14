@@ -302,27 +302,47 @@ if (resource)					\
 				Material material;
 			};
 
-
-			struct Light
+			struct DirectionalLight
 			{
-				LIGHT_TYPE type;
-				Buffer lightBuffer;
+				DirectX::XMFLOAT4 ambient;
+				DirectX::XMFLOAT4 diffuse;
+				DirectX::XMFLOAT4 specular;
+				DirectX::XMFLOAT3 direction;
+				float pad;
 			};
 
-			__declspec(align(16))
-			struct LightBuffer
-			{			
+			struct PointLight
+			{
+				DirectX::XMFLOAT4 ambient;
+				DirectX::XMFLOAT4 diffuse;
+				DirectX::XMFLOAT4 specular;
 				DirectX::XMFLOAT3 position;
-				DirectX::XMFLOAT3 direction;
-				DirectX::XMFLOAT3 ambientColor;
-				DirectX::XMFLOAT3 diffuseColor;
-				DirectX::XMFLOAT3 specularColor;
+				float range;
+				DirectX::XMFLOAT3 att;
+			};
 
-				float innerConeAngle;
-				float outerConeAngle;
-				float constantAttenuation;
-				float linearAttenuation;
-				float quadraticAttenuation;
+			struct SpotLight
+			{
+				DirectX::XMFLOAT4 ambient;
+				DirectX::XMFLOAT4 diffuse;
+				DirectX::XMFLOAT4 specular;
+				DirectX::XMFLOAT3 position;
+				float range;
+				DirectX::XMFLOAT3 direction;
+				float spot;
+				DirectX::XMFLOAT3 att;
+				float pad; 
+			};
+
+
+			const uint_fast32_t MAX_NUM_LIGHTS = 32;
+			__declspec(align(16))
+			struct LightBuff
+			{
+				DirectionalLight directionalLights[MAX_NUM_LIGHTS];
+				PointLight pointLights[MAX_NUM_LIGHTS];
+				SpotLight spotLights[MAX_NUM_LIGHTS];
+				DirectX::XMFLOAT3 numLights;
 			};
 		}
 	}

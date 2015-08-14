@@ -30,9 +30,6 @@ namespace NLE
 			virtual void setFullscreen(bool fullscreen) = 0;
 			virtual void stop() = 0;
 			virtual ID3D11Device* getDevice() = 0;
-
-			virtual void addStaticRenderable(RESOURCES::Renderable& renderable) = 0;
-			virtual void addLight(RESOURCES::Light& light) = 0;
 		};
 	}
 }

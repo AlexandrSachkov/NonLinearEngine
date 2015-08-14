@@ -7,6 +7,9 @@
 #include "NL_Systems.h"
 #include "NL_Allocator.h"
 #include "NL_Camera.h"
+#include "NL_ISceneManager.h"
+#include "NL_Systems.h"
+#include "NLCore\NL_DeviceCore.h"
 
 #include <assert.h>
 #include <iostream>  
@@ -28,7 +31,6 @@ namespace NLE
 		{
 			_running.fetch_and_store(false);
 			_renderingEngine = std::make_unique<RenderingEngine>();
-			_scene = std::make_unique<Scene>();
 			_camera = nullptr;
 
 			_viewProjection = alloc<DirectX::XMMATRIX>(16);
@@ -65,17 +67,19 @@ namespace NLE
 				{
 					printf("Starting Rendering task\n");
 					_running.fetch_and_store(true);
+					
 					_renderingThread = new std::thread([&](
 						Renderer& renderer, 
-						std::unique_ptr<RenderingEngine> const& renderingEngine,
-						std::unique_ptr<Scene> const& scene
+						std::unique_ptr<RenderingEngine> const& renderingEngine
 					){
 						printf("Rendering Thread running\n");			
 						while (renderer.isRunning())
 						{
+							Scene* scene = static_cast<ISceneManager*>(&Core::DeviceCore::instance().getSystemInterface(SYS::SYS_SCENE_MANAGER))
+								->getGScene();
 							renderingEngine->render(scene, renderer.getViewProjection());
 						}
-					}, std::ref(*this), std::ref(_renderingEngine), std::ref(_scene));
+					}, std::ref(*this), std::ref(_renderingEngine));
 				}	
 				computeViewProjection();
 			};
@@ -201,16 +205,6 @@ namespace NLE
 		ID3D11Device* Renderer::getDevice()
 		{
 			return _renderingEngine->getDevice();
-		}
-
-		void Renderer::addStaticRenderable(RESOURCES::Renderable& renderable)
-		{
-			_scene->addStaticRenderable(renderable);
-		}
-
-		void Renderer::addLight(RESOURCES::Light& light)
-		{
-			_scene->addLight(light);
 		}
 	}
 }

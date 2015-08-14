@@ -44,14 +44,8 @@ SET(SOURCES
 	)
 
 SET (SHADERS
-	Shaders/Forward_Pos_VS.hlsl
-	Shaders/Forward_Pos_PS.hlsl
-	Shaders/Forward_PosText_VS.hlsl
-	Shaders/Forward_PosText_PS.hlsl
-	Shaders/Forward_PosNormText_VS.hlsl
-	Shaders/Forward_PosNormText_PS.hlsl
-	Shaders/DeferredGBuff_TextNormal_BlinnPhong_VS.hlsl
-	Shaders/DeferredGBuff_TextNormal_BlinnPhong_PS.hlsl
+	Shaders/Forward_VS.hlsl
+	Shaders/Forward_PS.hlsl
 	)
 
 # DirectX SDK
