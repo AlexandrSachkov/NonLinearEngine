@@ -18,7 +18,7 @@ int main(){
 		0
 		);
 
-	printf("Data size: %i", sizeof(Data));
+	printf("Data size: %i", (int)sizeof(Data));
 	for (unsigned int i = 0; i < devCore.getNumThreads(); ++i)
 	{
 		devCore.installSContainer<Data>(i, 25000, 65);

@@ -477,7 +477,8 @@ namespace NLE
 			}
 			else
 			{
-				printf("Invalid shader file extension: %s\n", path);
+				std::string stringPath(path.begin(), path.end());
+				printf("Invalid shader file extension: %s\n", stringPath.c_str());
 				return false;
 			}
 
@@ -518,7 +519,8 @@ namespace NLE
 			}
 			else
 			{
-				printf("Invalid shader file extension: %s\n", path);
+				std::string stringPath(path.begin(), path.end());
+				printf("Invalid shader file extension: %s\n", stringPath.c_str());
 				return false;
 			}
 
