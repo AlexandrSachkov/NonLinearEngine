@@ -166,11 +166,11 @@ if (resource)					\
 			struct MaterialBuffer
 			{
 				MaterialBuffer() :
-					diffuseColor(DirectX::XMFLOAT3(1.0f, 0.0f, 1.0f)),
-					ambientColor(DirectX::XMFLOAT3(1.0f, 0.0f, 1.0f)),
-					specularColor(DirectX::XMFLOAT3(1.0f, 0.0f, 1.0f)),
-					emissiveColor(DirectX::XMFLOAT3(1.0f, 0.0f, 1.0f)),
-					transparentColor(DirectX::XMFLOAT3(1.0f, 0.0f, 1.0f)),
+					diffuseColor(DirectX::XMFLOAT4(0.0f, 0.0f, 0.0f, 1.0f)),
+					ambientColor(DirectX::XMFLOAT4(0.0f, 0.0f, 0.0f, 1.0f)),
+					specularColor(DirectX::XMFLOAT4(0.0f, 0.0f, 0.0f, 1.0f)),
+					emissiveColor(DirectX::XMFLOAT4(0.0f, 0.0f, 0.0f, 1.0f)),
+					transparentColor(DirectX::XMFLOAT4(0.0f, 0.0f, 0.0f, 1.0f)),
 					opacity(1.0f),
 					shininess(0.0f),
 					shininess_str(0.0f),
@@ -178,11 +178,11 @@ if (resource)					\
 				{
 				}
 
-				DirectX::XMFLOAT3 diffuseColor;
-				DirectX::XMFLOAT3 ambientColor;
-				DirectX::XMFLOAT3 specularColor;
-				DirectX::XMFLOAT3 emissiveColor;
-				DirectX::XMFLOAT3 transparentColor;
+				DirectX::XMFLOAT4 diffuseColor;
+				DirectX::XMFLOAT4 ambientColor;
+				DirectX::XMFLOAT4 specularColor;
+				DirectX::XMFLOAT4 emissiveColor;
+				DirectX::XMFLOAT4 transparentColor;
 
 				float opacity;
 				float shininess;
@@ -287,17 +287,35 @@ if (resource)					\
 				ID3D11ShaderResourceView* reflectionTextView;
 			};
 
+			__declspec(align(16))
+			struct TransformationBuff
+			{
+				DirectX::XMFLOAT4X4 world;
+				DirectX::XMFLOAT4X4 worldInverseTranspose;
+				DirectX::XMFLOAT4X4 WVP;
+			};
+
+			__declspec(align(16))
+			struct EyeBuff
+			{
+				DirectX::XMFLOAT3 eye;
+			};
+
+			struct Transformation
+			{
+				DirectX::XMFLOAT4X4 world;
+				DirectX::XMFLOAT4X4 worldInverseTranspose;
+			};
+
 			struct Renderable
 			{
 				void release()
 				{
-					transformationBuffer.release();
 					mesh.release();
 					material.release();
 				}
 
-				DirectX::XMFLOAT4X4 transformation;
-				Buffer transformationBuffer;
+				Transformation transformation;
 				Mesh mesh;
 				Material material;
 			};
@@ -319,6 +337,7 @@ if (resource)					\
 				DirectX::XMFLOAT3 position;
 				float range;
 				DirectX::XMFLOAT3 att;
+				float pad;
 			};
 
 			struct SpotLight

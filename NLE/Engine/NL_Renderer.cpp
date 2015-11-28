@@ -35,6 +35,8 @@ namespace NLE
 
 			_viewProjection = alloc<DirectX::XMMATRIX>(16);
 			*_viewProjection = DirectX::XMMatrixIdentity();
+			_eye = NLE::alloc<DirectX::XMVECTOR>(16);
+			*_eye = DirectX::XMVectorSet(0.0f, 0.0f, 0.0f, 0.0f);
 
 			_lastCursorX = 0.0f;
 			_lastCursorY = 0.0f;
@@ -77,7 +79,7 @@ namespace NLE
 						{
 							Scene* scene = static_cast<ISceneManager*>(&Core::DeviceCore::instance().getSystemInterface(SYS::SYS_SCENE_MANAGER))
 								->getGScene();
-							renderingEngine->render(scene, renderer.getViewProjection());
+							renderingEngine->render(scene, renderer.getViewProjection(), renderer.getEye());
 						}
 					}, std::ref(*this), std::ref(_renderingEngine));
 				}	
@@ -131,6 +133,7 @@ namespace NLE
 			
 			_camera->update();
 			setViewProjection(_camera->getViewProjection());
+			setEye(_camera->getEye());
 		}
 
 		void Renderer::setViewProjection(DirectX::XMMATRIX& viewProjection)
@@ -143,6 +146,18 @@ namespace NLE
 		{
 			tbb::spin_mutex::scoped_lock lock(_viewProjectionLock);
 			return *_viewProjection;
+		}
+
+		void Renderer::setEye(DirectX::XMVECTOR& eye)
+		{
+			tbb::spin_mutex::scoped_lock lock(_eyeLock);
+			*_eye = eye;
+		}
+
+		DirectX::XMVECTOR Renderer::getEye()
+		{
+			tbb::spin_mutex::scoped_lock lock(_eyeLock);
+			return *_eye;
 		}
 
 		float Renderer::toRadians(float degrees)

@@ -84,6 +84,28 @@ namespace NLE
 			_deviceContext->PSSetSamplers(0, 1, &_textureSamplerState);
 			_deviceContext->RSSetState(_backFaceCull);
 
+			RESOURCES::TransformationBuff transformBuff;
+			if (!GRAPHICS::D3D11Utility::createBuffer<RESOURCES::TransformationBuff>(
+				_d3dDevice,
+				D3D11_BIND_CONSTANT_BUFFER,
+				D3D11_USAGE_DYNAMIC,
+				&transformBuff,
+				1,
+				_transformationBuff
+				))
+				return false;
+
+			RESOURCES::EyeBuff eyeBuff;
+			if (!GRAPHICS::D3D11Utility::createBuffer<RESOURCES::EyeBuff>(
+				_d3dDevice,
+				D3D11_BIND_CONSTANT_BUFFER,
+				D3D11_USAGE_DYNAMIC,
+				&eyeBuff,
+				1,
+				_eyeBuff
+				))
+				return false;
+
 			_initialized = true;
 			return true;
 		}
@@ -130,7 +152,7 @@ namespace NLE
 			_fullscreen = fullscreen;
 		}
 
-		void RenderingEngine::render(Scene* scene, DirectX::XMMATRIX& viewProjection)
+		void RenderingEngine::render(Scene* scene, DirectX::XMMATRIX& viewProjection, DirectX::XMVECTOR& eye)
 		{
 			//Clear our backbuffer to the updated color
 			const float bgColor[] = { 0.0f, 1.0f, 0.0f, 1.0f };
@@ -140,6 +162,18 @@ namespace NLE
 
 			if (scene)
 			{
+				scene->recompileBuffers(_d3dDevice, _deviceContext);
+				auto lightBuff = scene->getLightBuffer();
+				_deviceContext->PSSetConstantBuffers(0, 1, &lightBuff.apiBuffer);
+
+				RESOURCES::EyeBuff eyeBuff;
+				DirectX::XMFLOAT4 eyeTemp;
+				DirectX::XMStoreFloat4(&eyeTemp, eye);
+
+				eyeBuff.eye = DirectX::XMFLOAT3(eyeTemp.x, eyeTemp.y, eyeTemp.z);
+				D3D11Utility::updateBuffer(_deviceContext, _eyeBuff, &eyeBuff, sizeof(eyeBuff));
+				_deviceContext->PSSetConstantBuffers(2, 1, &_transformationBuff.apiBuffer);
+
 				for (auto renderable : scene->getStaticOpaqueRenderables())
 				{
 					if (renderable.mesh.geomBuffer.apiBuffer)
@@ -152,15 +186,19 @@ namespace NLE
 						_deviceContext->IASetIndexBuffer(renderable.mesh.indexBuffer.apiBuffer, DXGI_FORMAT_R32_UINT, 0);
 						_deviceContext->IASetPrimitiveTopology(renderable.mesh.primitiveTopology);
 					}
-					if (renderable.transformationBuffer.apiBuffer)
-					{
-						DirectX::XMMATRIX objWorld = DirectX::XMLoadFloat4x4(&renderable.transformation);
-						DirectX::XMMATRIX WVP = objWorld * viewProjection;
-						DirectX::XMFLOAT4X4 objTransform;
-						DirectX::XMStoreFloat4x4(&objTransform, DirectX::XMMatrixTranspose(WVP));
-						D3D11Utility::updateBuffer(_deviceContext, renderable.transformationBuffer, &objTransform, sizeof(objTransform));
-						_deviceContext->VSSetConstantBuffers(0, 1, &(renderable.transformationBuffer.apiBuffer));
-					}
+
+					RESOURCES::TransformationBuff transformBuff;
+					transformBuff.world = renderable.transformation.world;
+					transformBuff.worldInverseTranspose = renderable.transformation.worldInverseTranspose;
+
+					DirectX::XMMATRIX objWorld = DirectX::XMLoadFloat4x4(&renderable.transformation.world);
+					DirectX::XMMATRIX WVP = objWorld * viewProjection;
+					DirectX::XMStoreFloat4x4(&transformBuff.WVP, DirectX::XMMatrixTranspose(WVP));
+
+					D3D11Utility::updateBuffer(_deviceContext, _transformationBuff, &transformBuff, sizeof(transformBuff));
+					_deviceContext->VSSetConstantBuffers(0, 1, &_transformationBuff.apiBuffer);
+
+					_deviceContext->PSSetConstantBuffers(1, 1, &renderable.material.materialBuffer.apiBuffer);
 					if (renderable.material.diffuseTextView)
 					{
 						_deviceContext->PSSetShaderResources(0, 1, &renderable.material.diffuseTextView);

@@ -133,15 +133,9 @@ namespace NLE
 			asset.mesh = meshArr[meshIndex];
 			asset.material = materialArr[scene->mMeshes[meshIndex]->mMaterialIndex];
 
-			asset.transformation = DirectX::XMFLOAT4X4((const float*)(&transform.Transpose()));
-			GRAPHICS::D3D11Utility::createBuffer<DirectX::XMFLOAT4X4>(
-				d3dDevice, 
-				D3D11_BIND_CONSTANT_BUFFER, 
-				D3D11_USAGE_DYNAMIC, 
-				&asset.transformation,
-				1, 
-				asset.transformationBuffer
-				);
+			auto worldTransform = transform.Transpose();
+			asset.transformation.world = DirectX::XMFLOAT4X4((const float*)(&worldTransform));
+			asset.transformation.worldInverseTranspose = DirectX::XMFLOAT4X4((const float*)(&worldTransform.Inverse().Transpose()));
 
 			outScene.addStaticRenderable(asset);
 		}
@@ -451,9 +445,19 @@ namespace NLE
 					//light.type = GRAPHICS::LIGHT_TYPE::DIRECTIONAL;
 					break;
 				case aiLightSource_POINT:
+				{
 					printf("Point Light\n");
-					//light.type = GRAPHICS::LIGHT_TYPE::POINT;
+					auto currLight = scene->mLights[i];
+					GRAPHICS::RESOURCES::PointLight light;
+					light.ambient = DirectX::XMFLOAT4(currLight->mColorAmbient[0], currLight->mColorAmbient[1], currLight->mColorAmbient[2], 1.0f);
+					light.diffuse = DirectX::XMFLOAT4(currLight->mColorDiffuse[0], currLight->mColorDiffuse[1], currLight->mColorDiffuse[2], 1.0f);
+					light.specular = DirectX::XMFLOAT4(currLight->mColorSpecular[0], currLight->mColorSpecular[1], currLight->mColorSpecular[2], 1.0f);
+					light.position = DirectX::XMFLOAT3((const float*)(&scene->mLights[i]->mPosition));
+					light.att = DirectX::XMFLOAT3((const float*)(&scene->mLights[i]->mAttenuationLinear));
+					light.range = 100.0f;
+					outScene.addPointLight(light);
 					break;
+				}				
 				case aiLightSource_SPOT:
 					printf("Spot Light\n");
 					//light.type = GRAPHICS::LIGHT_TYPE::SPOT;

@@ -26,30 +26,37 @@ THE SOFTWARE.
 -----------------------------------------------------------------------------
 */
 
-cbuffer cbPerObject : register(b0)
+cbuffer cbTransformation : register(b0)
 {
+	float4x4 world;
+	float4x4 worldInverseTranspose;
 	float4x4 WVP;
 };
 
 struct VS_INPUT
 {
-	float4 inPos : POSITION;
-	float4 inNorm: NORMAL;
-	float2 inTexCoord : TEXCOORD;
+	float3 Pos : POSITION;
+	float3 Normal: NORMAL;
+	float2 TexCoord : TEXCOORD;
 };
 
 struct VS_OUTPUT
 {
 	float4 Pos : SV_POSITION;
+	float3 PosW : POSITION; 
+	float3 NormalW : NORMAL;
 	float2 TexCoord : TEXCOORD;
 };
 
 VS_OUTPUT VSMain(in VS_INPUT input)
 {
 	VS_OUTPUT output;
+	// Transform to world space space. 
+	output.PosW = mul(float4(input.Pos, 1.0f), world).xyz;
+	output.NormalW = mul(input.Normal, (float3x3)worldInverseTranspose);
 
-	output.Pos = mul(input.inPos, WVP);
-	output.TexCoord = input.inTexCoord;
+	output.Pos = mul(float4(input.Pos, 1.0f), WVP);
+	output.TexCoord = input.TexCoord;
 
 	return output;
 }

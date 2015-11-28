@@ -45,6 +45,7 @@ namespace NLE
 			void changeViewport(unsigned int width, unsigned int height);
 			void changeViewDistance(float nearZ, float farZ);
 			DirectX::XMMATRIX getViewProjection();
+			DirectX::XMVECTOR getEye();
 			void reset();
 			void setSensitivity(float movementSensitivity, float rotationSensitivity);
 			void update();

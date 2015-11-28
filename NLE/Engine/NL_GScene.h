@@ -2,8 +2,6 @@
 #define NL_GSCENE_H_
 
 #include "NL_RenderingResources.h"
-
-#include "tbb\concurrent_vector.h"
 #include "tbb\atomic.h"
 #include <vector>
 
@@ -23,14 +21,15 @@ namespace NLE
 			void addDirectionalLight(RESOURCES::DirectionalLight& light);
 			void addSpotLight(RESOURCES::SpotLight& light);
 			void addPointLight(RESOURCES::PointLight& light);
-			void update(ID3D11Device* device, ID3D11DeviceContext* deviceContext);
+			void recompileBuffers(ID3D11Device* device, ID3D11DeviceContext* deviceContext);
 
-			tbb::concurrent_vector<RESOURCES::Renderable> const& getStaticOpaqueRenderables();
+			std::vector<RESOURCES::Renderable> const& getStaticOpaqueRenderables();
+			RESOURCES::Buffer getLightBuffer();
 		private:
 			RESOURCES::Buffer _lightBuff;
 			RESOURCES::LightBuff _lights;
 			tbb::atomic<bool> _pendingUpdate;
-			tbb::concurrent_vector<RESOURCES::Renderable> _staticOpaqueRenderables;
+			std::vector<RESOURCES::Renderable> _staticOpaqueRenderables;
 		};
 	}
 }

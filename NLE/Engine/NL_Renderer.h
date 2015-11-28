@@ -50,6 +50,8 @@ namespace NLE
 			float toRadians(float degrees);
 			void setViewProjection(DirectX::XMMATRIX& viewProjection);
 			DirectX::XMMATRIX getViewProjection();
+			void setEye(DirectX::XMVECTOR& eye);
+			DirectX::XMVECTOR getEye();
 
 			bool _initialized;
 			tbb::atomic<bool> _running;
@@ -68,6 +70,7 @@ namespace NLE
 
 			bool _firstCameraUpdate;
 			tbb::spin_mutex _viewProjectionLock;
+			tbb::spin_mutex _eyeLock;
 
 			std::chrono::time_point<std::chrono::high_resolution_clock, std::chrono::nanoseconds> _previousTime;
 			float _lastX;
@@ -75,6 +78,7 @@ namespace NLE
 			bool _firstMouse;
 
 			DirectX::XMMATRIX* _viewProjection;
+			DirectX::XMVECTOR* _eye;
 
 			float _lastCursorX;
 			float _lastCursorY;

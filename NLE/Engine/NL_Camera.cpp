@@ -175,6 +175,11 @@ namespace NLE
 			return *_viewProjection;
 		}
 
+		DirectX::XMVECTOR Camera::getEye()
+		{
+			return *_target;
+		}
+
 		void Camera::setSensitivity(float movementSensitivity, float rotationSensitivity)
 		{
 			_movementSensitivity = movementSensitivity;

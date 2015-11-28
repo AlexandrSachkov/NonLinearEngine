@@ -30,7 +30,7 @@ namespace NLE
 
 			bool initialize();
 			void release();
-			void render(Scene* scene, DirectX::XMMATRIX& viewProjection);
+			void render(Scene* scene, DirectX::XMMATRIX& viewProjection, DirectX::XMVECTOR& eye);
 
 			void setWindowHandle(void* handle);
 			void setScreenDimensions(uint_fast32_t width, uint_fast32_t height);
@@ -60,6 +60,9 @@ namespace NLE
 			ID3D11RasterizerState* _frontFaceCull;
 			ID3D11SamplerState*	_textureSamplerState;
 			RESOURCES::PixelShader _pixelShader;
+
+			RESOURCES::Buffer _transformationBuff;
+			RESOURCES::Buffer _eyeBuff;
 		};
 	}
 }
