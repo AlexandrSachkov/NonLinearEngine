@@ -92,13 +92,18 @@ This section is created to track development progress and includes completed and
   </tr>
   
   <tr>
-    <td>11</td>
+    <td>...</td>
     <td>Add shadows</td>
     <td>Pending</td>
   </tr>
   <tr>
-    <td>10</td>
+    <td>...</td>
     <td>Add material support</td>
+    <td>Pending</td>
+  </tr>
+  <tr>
+    <td>10</td>
+    <td>Create a basic QT editor</td>
     <td>Pending</td>
   </tr>
   <tr>
