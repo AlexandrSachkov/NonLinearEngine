@@ -27,14 +27,14 @@ namespace NLE
 		void run();
 		void stop();
 
-		void attachPollEvents(std::function<void()> const& operation);
+		void attachPollEvents(void(*pollEvents)(void));
 		void processEvent(INPUT::Event& event);
 
 		void setWindowHandle(void* handle);
 		void setScreenDimensions(uint_fast32_t width, uint_fast32_t height);
 		void setFullscreen(bool fullscreen);
 
-		void importScene(std::wstring& path);
+		void importScene(const char* path);
 	private:
 		Nle();
 		Nle(Nle const&) = delete;

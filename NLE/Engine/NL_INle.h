@@ -20,14 +20,14 @@ namespace NLE
 		virtual void run() = 0;
 		virtual void stop() = 0;
 
-		virtual void attachPollEvents(std::function<void()> const& operation) = 0;
+		virtual void attachPollEvents(void(*pollEvents)(void)) = 0;
 		virtual void processEvent(INPUT::Event& event) = 0;
 
 		virtual void setWindowHandle(void* handle) = 0;
 		virtual void setScreenDimensions(uint_fast32_t width, uint_fast32_t height) = 0;
 		virtual void setFullscreen(bool fullscreen) = 0;
 
-		virtual void importScene(std::wstring& path) = 0;
+		virtual void importScene(const char* path) = 0;
 	};
 }
 #endif

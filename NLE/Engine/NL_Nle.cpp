@@ -11,6 +11,8 @@
 
 #include <assert.h>
 #include <memory>
+#include <locale>
+#include <codecvt>
 
 namespace NLE
 {
@@ -93,10 +95,10 @@ namespace NLE
 		Core::DeviceCore::instance().stop();
 	}
 
-	void Nle::attachPollEvents(std::function<void()> const& operation)
+	void Nle::attachPollEvents(void(*pollEvents)(void))
 	{
 		static_cast<INPUT::IInputProcessor*>(&Core::DeviceCore::instance().getSystemInterface(SYS::SYS_INPUT_PROCESSOR))
-			->attachPollEvents(operation);
+			->attachPollEvents(pollEvents);
 	}
 
 	void Nle::processEvent(INPUT::Event& event)
@@ -123,9 +125,12 @@ namespace NLE
 			->setFullscreen(fullscreen);
 	}
 
-	void Nle::importScene(std::wstring& path)
+	void Nle::importScene(const char* path)
 	{
+		std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
+		std::string strPath(path);
+		std::wstring wStrPath = converter.from_bytes(strPath);
 		static_cast<SceneManager*>(&Core::DeviceCore::instance().getSystemInterface(SYS::SYS_SCENE_MANAGER))
-			->importScene(path);
+			->importScene(wStrPath);
 	}
 }

@@ -31,7 +31,7 @@ namespace NLE
 			std::function<void()> const& getExecutionProcedure();
 			Core::ISystem& getInterface();
 
-			void attachPollEvents(std::function<void()> const& operation);
+			void attachPollEvents(void(*pollEvents)(void));
 			void processEvent(INPUT::Event& event);
 			void enableTextInput(bool enable);
 
@@ -43,7 +43,7 @@ namespace NLE
 
 			bool _initialized;
 			std::function<void()> _procedure;
-			std::function<void()> _pollEvents;
+			void(*_pollEvents)(void);
 
 			tbb::concurrent_queue<INPUT::Event> _events;
 			tbb::atomic<bool> _enableTextInput;

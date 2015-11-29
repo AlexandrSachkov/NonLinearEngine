@@ -38,6 +38,10 @@ THE SOFTWARE.
 #include <assert.h>
 
 NLEGlfwApplicationLayer* NLEGlfwApplicationLayer::_glfwAppLayer = nullptr;
+NLE::INle* NLEGlfwApplicationLayer::_nle = nullptr;
+GLFWwindow* NLEGlfwApplicationLayer::_window = nullptr;
+
+void pollEvents();
 
 //===========================================================================================================================
 NLEGlfwApplicationLayer& NLEGlfwApplicationLayer::instance()
@@ -52,12 +56,10 @@ NLEGlfwApplicationLayer& NLEGlfwApplicationLayer::instance()
 //===========================================================================================================================
 NLEGlfwApplicationLayer::NLEGlfwApplicationLayer()
 {
-	_nle = NULL;
 	_title = "NonLinear Engine";
 
 	_width = 0;
 	_height = 0;
-	_window = NULL;
 	_fullscreen = true;
 }
 
@@ -108,17 +110,7 @@ bool NLEGlfwApplicationLayer::initialize()
 	glfwSetInputMode(_window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
 	_nle = NLE::instance();
-
-	_nle->attachPollEvents([&](){
-		if (!glfwWindowShouldClose(_window))
-		{
-			glfwPollEvents();
-		}
-		else
-		{
-			_nle->stop();
-		}					
-	});
+	_nle->attachPollEvents(NLEGlfwApplicationLayer::pollEvents);
 
 	_nle->setWindowHandle(glfwGetWin32Window(_window));
 	_nle->setScreenDimensions(_width, _height);
@@ -127,7 +119,7 @@ bool NLEGlfwApplicationLayer::initialize()
 	if (!_nle->initialize()) 
 		return false;
 
-	std::wstring path(L"D:\\3DModels\\sponzaLit.DAE");
+	char* path = "D:\\3DModels\\sponzaLit.DAE";
 	_nle->importScene(path);
 
 	printf("======> Application Layer successfully initialized.\n");
@@ -419,4 +411,17 @@ void NLEGlfwApplicationLayer::onClipboardPasteEvent()
 	event.eventType = NLE::INPUT::EVENT_TYPE::EVENT_CLIPBOARD_PASTE;
 
 	_glfwAppLayer->getNLE()->processEvent(event);
+}
+
+//===========================================================================================================================
+void NLEGlfwApplicationLayer::pollEvents()
+{
+	if (!glfwWindowShouldClose(_window))
+	{
+		glfwPollEvents();
+	}
+	else
+	{
+		_nle->stop();
+	}
 }

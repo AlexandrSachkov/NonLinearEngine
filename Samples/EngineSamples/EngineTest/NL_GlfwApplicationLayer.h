@@ -97,15 +97,17 @@ private:
 	static void onClipboardCutEvent();
 	static void onClipboardPasteEvent();
 
+	static void pollEvents();
+
 	static NLEGlfwApplicationLayer* _glfwAppLayer;
 
-	NLE::INle* _nle;
+	static NLE::INle* _nle;
 	std::string _title;
 	int _width;
 	int _height;
 	bool _fullscreen;
 
-	GLFWwindow* _window;
+	static GLFWwindow* _window;
 };
 
 #endif
