@@ -30,6 +30,7 @@ THE SOFTWARE.
 #define NL_ASSET_IMPORTER_H_
 
 #include "NL_RenderingResources.h"
+#include "NL_Console.h"
 
 #pragma warning( push )
 #pragma warning( disable : 4005)
@@ -69,7 +70,8 @@ namespace NLE
 
 			void write(const char* message)
 			{
-				printf("Assimp error: %s\n", message);
+				std::string msg(message);
+				CONSOLE::out(CONSOLE::DEBUG, "Assimp error: " + msg);
 			}
 		};
 

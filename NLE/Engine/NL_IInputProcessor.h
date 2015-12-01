@@ -2,7 +2,6 @@
 #define NL_I_INPUT_PROCESSOR_H_
 
 #include "NLCore\NL_ISystem.h"
-#include <functional>
 
 namespace NLE
 {

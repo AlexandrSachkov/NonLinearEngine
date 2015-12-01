@@ -28,6 +28,8 @@ THE SOFTWARE.
 
 
 #include "NL_D3D11Utility.h"
+#include "NL_Console.h"
+
 #include <d3dcompiler.h>
 #include <assert.h>
 
@@ -97,7 +99,7 @@ namespace NLE
 
 			if (FAILED(hr))
 			{
-				printf("Failed to create DX11 device and swap chain.");
+				CONSOLE::out(CONSOLE::ERR, L"Failed to create DX11 device and swap chain.");
 				return false;
 			}
 
@@ -118,7 +120,7 @@ namespace NLE
 
 			if (FAILED(hr))
 			{
-				printf("Failed to get Back Buffer");
+				CONSOLE::out(CONSOLE::ERR, L"Failed to get Back Buffer");
 				return false;
 			}
 
@@ -128,7 +130,7 @@ namespace NLE
 
 			if (FAILED(hr))
 			{
-				printf("Failed to create Back Buffer Render Target View");
+				CONSOLE::out(CONSOLE::ERR, L"Failed to create Back Buffer Render Target View");
 				return false;
 			}
 
@@ -181,7 +183,7 @@ namespace NLE
 			hr = device->CreateBlendState(&blendDesc, &blendState);
 			if (FAILED(hr))
 			{
-				printf("Failed to create blend state");
+				CONSOLE::out(CONSOLE::ERR, L"Failed to create blend state");
 				return false;
 			}
 			return true;
@@ -217,7 +219,7 @@ namespace NLE
 			hr = device->CreateTexture2D(&textDesc, NULL, &buffer);
 			if (FAILED(hr))
 			{
-				printf("Failed to create Render Target Buffer");
+				CONSOLE::out(CONSOLE::ERR, L"Failed to create Render Target Buffer");
 				return false;
 			}
 
@@ -227,7 +229,7 @@ namespace NLE
 
 			if (FAILED(hr))
 			{
-				printf("Failed to create Back Buffer Render Target View");
+				CONSOLE::out(CONSOLE::ERR, L"Failed to create Back Buffer Render Target View");
 				return false;
 			}
 
@@ -263,7 +265,7 @@ namespace NLE
 			hr = device->CreateTexture2D(&depthStencilDesc, NULL, &buffer);
 			if (FAILED(hr))
 			{
-				printf("Failed to create depthStencilBuffer");
+				CONSOLE::out(CONSOLE::ERR, L"Failed to create depthStencilBuffer");
 				return false;
 			}
 			hr = device->CreateDepthStencilView(buffer, NULL, &depthStencilView);
@@ -271,7 +273,7 @@ namespace NLE
 
 			if (FAILED(hr))
 			{
-				printf("Failed to create DepthStencilView");
+				CONSOLE::out(CONSOLE::ERR, L"Failed to create DepthStencilView");
 				return false;
 			}
 
@@ -295,7 +297,7 @@ namespace NLE
 			hr = device->CreateShaderResourceView(texture, &srvDesc, &resourceView);
 			if (FAILED(hr))
 			{
-				printf("Failed to create Shader Resource View from Texture2D");
+				CONSOLE::out(CONSOLE::ERR, L"Failed to create Shader Resource View from Texture2D");
 				return false;
 			}
 			return true;
@@ -342,7 +344,7 @@ namespace NLE
 			hr = device->CreateTexture2D(&textDesc, &subresData, &texture);
 			if (FAILED(hr))
 			{
-				printf("Failed to create texture");
+				CONSOLE::out(CONSOLE::ERR, L"Failed to create texture");
 				return false;
 			}
 			return true;
@@ -361,7 +363,7 @@ namespace NLE
 				vShader.blob->GetBufferSize(), &inputLayout);
 			if (FAILED(hr))
 			{
-				printf("Failed to create Input Layout");
+				CONSOLE::out(CONSOLE::ERR, L"Failed to create Input Layout");
 				return false;
 			}
 			return true;
@@ -385,7 +387,7 @@ namespace NLE
 			hr = device->CreateSamplerState(&sampDesc, &samplerState);
 			if (FAILED(hr))
 			{
-				printf("Failed to create texture sampler state");
+				CONSOLE::out(CONSOLE::ERR, L"Failed to create texture sampler state");
 				return false;
 			}
 
@@ -412,7 +414,7 @@ namespace NLE
 			hr = device->CreateRasterizerState(&cmdesc, &rasterizerState);
 			if (FAILED(hr))
 			{
-				printf("Failed to create rasterizer state");
+				CONSOLE::out(CONSOLE::ERR, L"Failed to create rasterizer state");
 				return false;
 			}
 
@@ -438,7 +440,7 @@ namespace NLE
 					OutputDebugStringA((char*)errorBlob->GetBufferPointer());
 					errorBlob->Release();
 					
-					printf("Failed to compile blob.\n");
+					CONSOLE::out(CONSOLE::ERR, L"Failed to compile blob.\n");
 					return false;
 				}			
 			}
@@ -452,7 +454,7 @@ namespace NLE
 			hr = D3DReadFileToBlob(path.c_str(), &blob);
 			if (FAILED(hr))
 			{
-				printf("Failed to load blob.\n");
+				CONSOLE::out(CONSOLE::ERR, L"Failed to load blob.\n");
 				return false;
 			}			
 			return true;
@@ -477,15 +479,13 @@ namespace NLE
 			}
 			else
 			{
-				std::string stringPath(path.begin(), path.end());
-				printf("Invalid shader file extension: %s\n", stringPath.c_str());
+				CONSOLE::out(CONSOLE::ERR, L"Invalid shader file extension: " + path);
 				return false;
 			}
 
 			if (!result)
 			{
-				std::string stringPath(path.begin(), path.end());
-				printf("Failed to load Vertex Shader: %s\n", stringPath.c_str());
+				CONSOLE::out(CONSOLE::ERR, L"Failed to load Vertex Shader: " + path);
 				return false;
 			}
 
@@ -493,7 +493,7 @@ namespace NLE
 			hr = device->CreateVertexShader(vertexShader.blob->GetBufferPointer(), vertexShader.blob->GetBufferSize(), NULL, &vertexShader.apiVertexShader);
 			if (FAILED(hr))
 			{
-				printf("Failed to create Vertex Shader");
+				CONSOLE::out(CONSOLE::ERR, L"Failed to create Vertex Shader");
 				return false;
 			}
 
@@ -519,15 +519,13 @@ namespace NLE
 			}
 			else
 			{
-				std::string stringPath(path.begin(), path.end());
-				printf("Invalid shader file extension: %s\n", stringPath.c_str());
+				CONSOLE::out(CONSOLE::ERR, L"Invalid shader file extension: " + path);
 				return false;
 			}
 
 			if (!result)
 			{
-				std::string stringPath(path.begin(), path.end());
-				printf("Failed to load Pixel Shader: %s\n", stringPath.c_str());
+				CONSOLE::out(CONSOLE::ERR, L"Failed to load Pixel Shader: " + path);
 				return false;
 			}
 
@@ -536,7 +534,7 @@ namespace NLE
 			hr = device->CreatePixelShader(pixelShader.blob->GetBufferPointer(), pixelShader.blob->GetBufferSize(), NULL, &pixelShader.apiPixelShader);
 			if (FAILED(hr))
 			{
-				printf( "Failed to create Pixel Shader");
+				CONSOLE::out(CONSOLE::ERR, L"Failed to create Pixel Shader");
 				return false;
 			}
 

@@ -1,9 +1,8 @@
 #ifndef NL_IENGINE_H_
 #define NL_IENGINE_H_
 
-#include <functional>
+#include "NL_ConsoleOutType.h"
 #include <cstdint>
-#include <string>
 
 namespace NLE
 {
@@ -21,6 +20,7 @@ namespace NLE
 		virtual void stop() = 0;
 
 		virtual void attachPollEvents(void(*pollEvents)(void)) = 0;
+		virtual void attachPrintConsole(void(*printConsole)(CONSOLE::OUTPUT_TYPE, const char*)) = 0;
 		virtual void processEvent(INPUT::Event& event) = 0;
 
 		virtual void setWindowHandle(void* handle) = 0;

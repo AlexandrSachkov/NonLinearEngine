@@ -1,9 +1,8 @@
 #include "NL_RenderingEngine.h"
 #include "NL_D3D11Utility.h"
 #include "NL_GScene.h"
+#include "NL_Console.h"
 
-#include <cstdio>
-#include <iostream>
 
 namespace NLE
 {
@@ -18,7 +17,7 @@ namespace NLE
 			_screenHeight(0),
 			_fullscreen(true)
 		{
-			printf("Rendering Engine created\n");
+			CONSOLE::out(CONSOLE::STANDARD, L"Rendering Engine created");
 		}
 
 		RenderingEngine::~RenderingEngine()
@@ -222,7 +221,8 @@ namespace NLE
 				auto time = std::chrono::high_resolution_clock::now();
 				auto diff = std::chrono::duration_cast<std::chrono::nanoseconds>(time - _previousTime).count();
 				double fps = 1 / (diff / _frameCount * 0.000000001);
-				std::cout << "FPS: " << fps << "\n";
+
+				CONSOLE::out(CONSOLE::STANDARD, "FPS: " + std::to_string(fps));
 				_previousTime = time;
 
 

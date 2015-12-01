@@ -30,6 +30,7 @@ THE SOFTWARE.
 #include "NL_TextureLoader.h"
 #include "NL_D3D11Utility.h"
 #include "NL_GScene.h"
+#include "NL_Console.h"
 
 #include <locale>
 #include <codecvt>
@@ -52,7 +53,7 @@ namespace NLE
 #endif
 			Assimp::DefaultLogger::get()->attachStream(new AssimpLogStream(), severity);
 
-			printf("Asset importer created");
+			CONSOLE::out(CONSOLE::STANDARD, L"Asset importer created.");
 		}
 
 		AssetImporter::~AssetImporter()
@@ -80,7 +81,8 @@ namespace NLE
 
 			if (!scene)
 			{
-				printf("Failed to import asset: %s", assetPath.c_str());
+				CONSOLE::out(CONSOLE::ERR, "Failed to import asset: " + assetPath);
+				return;
 			}
 
 			GRAPHICS::RESOURCES::Mesh* meshArr = loadMeshes(d3dDevice, scene);
@@ -393,7 +395,6 @@ namespace NLE
 					D3D11_USAGE_IMMUTABLE,
 					nleMaterial.opacityText,
 					nleMaterial.opacityTextView);
-				printf("Opacity texture\n");
 			}
 
 			if (material->GetTextureCount(aiTextureType_DISPLACEMENT) > 0
@@ -435,18 +436,18 @@ namespace NLE
 
 		void AssetImporter::loadLights(ID3D11Device* d3dDevice, GRAPHICS::Scene& outScene, const aiScene* scene)
 		{
-			printf("Number of lights: %i\n", scene->mNumLights);
+			CONSOLE_DEBUG("Number of lights: " + std::to_string(scene->mNumLights));
 			for (uint_fast32_t i = 0; i < scene->mNumLights; ++i)
 			{
 				switch (scene->mLights[i]->mType)
 				{
 				case aiLightSource_DIRECTIONAL:
-					printf("Directional Light\n");
+					CONSOLE_DEBUG(L"Directional Light");
 					//light.type = GRAPHICS::LIGHT_TYPE::DIRECTIONAL;
 					break;
 				case aiLightSource_POINT:
 				{
-					printf("Point Light\n");
+					CONSOLE_DEBUG(L"Point Light");
 					auto currLight = scene->mLights[i];
 					GRAPHICS::RESOURCES::PointLight light;
 					light.ambient = DirectX::XMFLOAT4(currLight->mColorAmbient[0], currLight->mColorAmbient[1], currLight->mColorAmbient[2], 1.0f);
@@ -459,7 +460,7 @@ namespace NLE
 					break;
 				}				
 				case aiLightSource_SPOT:
-					printf("Spot Light\n");
+					CONSOLE_DEBUG(L"Spot Light");
 					//light.type = GRAPHICS::LIGHT_TYPE::SPOT;
 					break;
 				default:
@@ -481,18 +482,20 @@ namespace NLE
 
 		void AssetImporter::printFloat4x4(DirectX::XMFLOAT4X4& matrix)
 		{
-			printf("%f %f %f %f\n", matrix._11, matrix._12, matrix._13, matrix._14);
-			printf("%f %f %f %f\n", matrix._21, matrix._22, matrix._23, matrix._24);
-			printf("%f %f %f %f\n", matrix._31, matrix._32, matrix._33, matrix._34);
-			printf("%f %f %f %f\n\n", matrix._41, matrix._42, matrix._43, matrix._44);
+			CONSOLE::out(CONSOLE::STANDARD,
+				std::to_string(matrix._11) + std::to_string(matrix._12) + std::to_string(matrix._13) + std::to_string(matrix._14) + "\n"
+				+ std::to_string(matrix._21) + std::to_string(matrix._22) + std::to_string(matrix._23) + std::to_string(matrix._24) + "\nl"
+				+ std::to_string(matrix._31) + std::to_string(matrix._32) + std::to_string(matrix._33) + std::to_string(matrix._34) + "\nl"
+				+ std::to_string(matrix._41) + std::to_string(matrix._42) + std::to_string(matrix._43) + std::to_string(matrix._44));
 		}
 
 		void AssetImporter::printFloat4x4(aiMatrix4x4& matrix)
 		{
-			printf("%f %f %f %f\n", matrix.a1, matrix.a2, matrix.a3, matrix.a4);
-			printf("%f %f %f %f\n", matrix.b1, matrix.b2, matrix.b3, matrix.b4);
-			printf("%f %f %f %f\n", matrix.c1, matrix.c2, matrix.c3, matrix.c4);
-			printf("%f %f %f %f\n\n", matrix.d1, matrix.d2, matrix.d3, matrix.d4);
+			CONSOLE::out(CONSOLE::STANDARD,
+				std::to_string(matrix.a1) + std::to_string(matrix.a2) + std::to_string(matrix.a3) + std::to_string(matrix.a4) + "\n"
+				+ std::to_string(matrix.b1) + std::to_string(matrix.b2) + std::to_string(matrix.b3) + std::to_string(matrix.b4) + "\nl"
+				+ std::to_string(matrix.c1) + std::to_string(matrix.c2) + std::to_string(matrix.c3) + std::to_string(matrix.c4) + "\nl"
+				+ std::to_string(matrix.d1) + std::to_string(matrix.d2) + std::to_string(matrix.d3) + std::to_string(matrix.d4));
 		}
 	}
 }

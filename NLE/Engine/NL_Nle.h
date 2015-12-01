@@ -28,6 +28,7 @@ namespace NLE
 		void stop();
 
 		void attachPollEvents(void(*pollEvents)(void));
+		void attachPrintConsole(void(*printConsole)(CONSOLE::OUTPUT_TYPE, const char*));
 		void processEvent(INPUT::Event& event);
 
 		void setWindowHandle(void* handle);

@@ -4,6 +4,10 @@ SET(HEADERS
 	NL_Allocator.h
 	NL_AssetImporter.h
 	NL_Camera.h
+	NL_Console.h
+	NL_ConsolePump.h
+	NL_IConsolePump.h
+	NL_ConsoleOutType.h
 	NL_D3D11Utility.h
 	NL_D3D11Utility.inl
 	NL_DllApi.h
@@ -22,6 +26,7 @@ SET(HEADERS
 	NL_SharedContainers.h
 	NL_Systems.h
 	NL_TextureLoader.h
+	NL_ThreadLocal.h
 	
 	DDSTextureLoader.h
 	WICTextureLoader.h
@@ -30,6 +35,8 @@ SET(HEADERS
 SET(SOURCES 
 	NL_AssetImporter.cpp
 	NL_Camera.cpp
+	NL_Console.cpp
+	NL_ConsolePump.cpp
 	NL_D3D11Utility.cpp
 	NL_GScene.cpp
 	NL_InputProcessor.cpp

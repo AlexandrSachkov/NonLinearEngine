@@ -10,6 +10,7 @@
 #include "NL_ISceneManager.h"
 #include "NL_Systems.h"
 #include "NLCore\NL_DeviceCore.h"
+#include "NL_Console.h"
 
 #include <assert.h>
 #include <iostream>  
@@ -67,14 +68,14 @@ namespace NLE
 			_procedure = [&](){
 				if (!_running)
 				{
-					printf("Starting Rendering task\n");
+					CONSOLE::out(CONSOLE::STANDARD, L"Starting Rendering task");
 					_running.fetch_and_store(true);
 					
 					_renderingThread = std::thread([&](
 						Renderer& renderer, 
 						std::unique_ptr<RenderingEngine> const& renderingEngine
 					){
-						printf("Rendering Thread running\n");			
+						CONSOLE::out(CONSOLE::STANDARD, L"Rendering Thread running");
 						while (renderer.isRunning())
 						{
 							Scene* scene = static_cast<ISceneManager*>(&Core::DeviceCore::instance().getSystemInterface(SYS::SYS_SCENE_MANAGER))

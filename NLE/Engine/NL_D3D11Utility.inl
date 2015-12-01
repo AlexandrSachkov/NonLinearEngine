@@ -28,6 +28,8 @@ THE SOFTWARE.
 
 #ifdef NL_D3D11_UTILITY_H_
 
+#include "NL_Console.h"
+
 namespace NLE
 {
 	namespace GRAPHICS
@@ -63,7 +65,7 @@ namespace NLE
 
 			if (FAILED(hr))
 			{
-				printf("Failed to create Buffer Type: %i%s%i", bindFlag, ", Usage: ", usage);
+				CONSOLE::out(CONSOLE::ERR, "Failed to create Buffer Type:" + std::to_string(bindFlag) + ", Usage: " + std::to_string(usage));
 				return false;
 			}
 

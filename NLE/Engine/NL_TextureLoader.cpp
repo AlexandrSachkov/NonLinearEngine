@@ -27,6 +27,7 @@ THE SOFTWARE.
 */
 
 #include "NL_TextureLoader.h"
+#include "NL_Console.h"
 
 #include "DDSTextureLoader.h"
 #include "WICTextureLoader.h"
@@ -77,8 +78,7 @@ namespace NLE
 
 			if (FAILED(hr))
 			{
-				std::string stringPath(path.begin(), path.end());
-				printf("Texture \"%s\" failed to load\n", stringPath.c_str());
+				CONSOLE::out(CONSOLE::ERR, L"Texture " + path + L" failed to load");
 				return false;
 			}
 			return true;

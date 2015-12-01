@@ -1,5 +1,6 @@
 #include "NL_Nle.h"
 
+#include "NL_ThreadLocal.h"
 #include "NLCore\NL_DeviceCore.h"
 #include "NLCore\NL_ExecutionDesc.h"
 #include "NL_InputEvents.h"
@@ -8,6 +9,9 @@
 #include "NL_Renderer.h"
 #include "NL_Systems.h"
 #include "NL_SharedContainers.h"
+#include "NL_Console.h"
+#include "NL_ConsolePump.h"
+
 
 #include <assert.h>
 #include <memory>
@@ -31,6 +35,15 @@ namespace NLE
 		core.installSContainer<double>(SCROLL_OFFSET, 2, _defaultGrainSize);	// 2 slots for x and y components
 
 		// Attach systems
+		Core::ExecutionDesc consoleProcDesc(
+			Core::Priority::LOW,
+			Core::Execution::RECURRING,
+			Core::Mode::ASYNC,
+			Core::Startup::AUTOMATIC,
+			100000000L	//10 FPS
+			);
+		core.attachSystem(SYS::SYS_CONSOLE_PUMP, consoleProcDesc, std::unique_ptr<CONSOLE::ConsolePump>(new CONSOLE::ConsolePump()));
+
 		Core::ExecutionDesc inputProcDesc(
 			Core::Priority::HIGH,
 			Core::Execution::RECURRING,
@@ -72,6 +85,14 @@ namespace NLE
 			return false;
 
 		_initialized = true;
+		CONSOLE::out(CONSOLE::STANDARD, L"NLE successfully initialized.");
+
+		
+		/*std::pair<CONSOLE::OUTPUT_TYPE, std::wstring> data;
+		while (CONSOLE::Console::instance().pullData(data))
+		{
+			printf("\nFrom Console: %ls\n", data.second.c_str());
+		}*/
 		return true;
 	}
 
@@ -82,6 +103,8 @@ namespace NLE
 
 		Core::DeviceCore::instance().release();
 		_initialized = false;
+		CONSOLE::out(CONSOLE::STANDARD, L"NLE released.");
+
 		delete this;
 	}
 
@@ -89,6 +112,12 @@ namespace NLE
 	{
 		assert(_initialized);
 		Core::DeviceCore::instance().run();
+	}
+
+	void Nle::attachPrintConsole(void(*printConsole)(CONSOLE::OUTPUT_TYPE, const char*))
+	{
+		static_cast<CONSOLE::IConsolePump*>(&Core::DeviceCore::instance().getSystemInterface(SYS::SYS_CONSOLE_PUMP))
+			->attachPrintConsole(printConsole);
 	}
 
 	void Nle::stop()

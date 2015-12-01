@@ -111,6 +111,7 @@ bool NLEGlfwApplicationLayer::initialize()
 
 	_nle = NLE::instance();
 	_nle->attachPollEvents(NLEGlfwApplicationLayer::pollEvents);
+	_nle->attachPrintConsole(NLEGlfwApplicationLayer::printConsole);
 
 	_nle->setWindowHandle(glfwGetWin32Window(_window));
 	_nle->setScreenDimensions(_width, _height);
@@ -424,4 +425,10 @@ void NLEGlfwApplicationLayer::pollEvents()
 	{
 		_nle->stop();
 	}
+}
+
+//===========================================================================================================================
+void NLEGlfwApplicationLayer::printConsole(NLE::CONSOLE::OUTPUT_TYPE outputType, const char* data)
+{
+	printf("%s\n", data);
 }

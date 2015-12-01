@@ -30,6 +30,7 @@ THE SOFTWARE.
 #define NLE_GLFW_APPLICATION_LAYER_
 
 #include "NLE\NL_InputEvents.h"
+#include "NLE\NL_ConsoleOutType.h"
 #include <string>
 #include <memory>
 
@@ -98,6 +99,7 @@ private:
 	static void onClipboardPasteEvent();
 
 	static void pollEvents();
+	static void printConsole(NLE::CONSOLE::OUTPUT_TYPE outputType, const char* data);
 
 	static NLEGlfwApplicationLayer* _glfwAppLayer;
 

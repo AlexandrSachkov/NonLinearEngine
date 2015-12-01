@@ -3,6 +3,7 @@
 #include "NL_IRenderer.h"
 #include "NL_Systems.h"
 #include "NLCore\NL_DeviceCore.h"
+#include "NL_Console.h"
 
 #include <assert.h>
 
@@ -72,7 +73,7 @@ namespace NLE
 			SceneManager& sceneManager,
 			std::wstring path){
 
-			printf("Loading Thread running\n");
+			CONSOLE::out(CONSOLE::STANDARD, L"Loading Thread running");
 			auto device = static_cast<GRAPHICS::IRenderer*>(&Core::DeviceCore::instance().getSystemInterface(SYS::SYS_RENDERER))
 				->getDevice();
 			GRAPHICS::Scene* scene = new GRAPHICS::Scene();
