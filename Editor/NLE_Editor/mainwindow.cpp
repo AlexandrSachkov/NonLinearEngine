@@ -31,7 +31,7 @@ MainWindow::~MainWindow()
 
 bool MainWindow::eventFilter(QObject *obj, QEvent *event)
 {
-    if(event->type() == QEvent::Close)
+    if(obj == this && event->type() == QEvent::Close)
     {
         _running = false;
         printf("closing");
