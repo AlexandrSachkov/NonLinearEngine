@@ -38,7 +38,7 @@ namespace NLE
 		Core::ExecutionDesc consoleProcDesc(
 			Core::Priority::LOW,
 			Core::Execution::RECURRING,
-			Core::Mode::ASYNC,
+			Core::Mode::SYNC,
 			Core::Startup::AUTOMATIC,
 			100000000L	//10 FPS
 			);
