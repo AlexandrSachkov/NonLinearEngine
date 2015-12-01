@@ -102,19 +102,24 @@ This section is created to track development progress and includes completed and
     <td>Pending</td>
   </tr>
   <tr>
+    <td>...</td>
+    <td>Add support for blending</td>
+    <td>Pending</td>
+  </tr>
+  <tr>
     <td>10</td>
     <td>Create a basic QT editor</td>
     <td>Pending</td>
   </tr>
   <tr>
     <td>9</td>
-    <td>Add support for blending</td>
+    <td>Add support for forward lighting</td>
     <td>Pending</td>
   </tr>
   <tr>
     <td>8</td>
-    <td>Add support for forward lighting</td>
-    <td>Pending</td>
+    <td>Build console</td>
+    <td>Complete</td>
   </tr>
   <tr>
     <td>7</td>
