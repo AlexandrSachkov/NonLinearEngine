@@ -18,6 +18,9 @@ public:
     explicit MainWindow(NLE::INle* nle, bool& running, QWidget *parent = 0);
     ~MainWindow();
 
+private slots:
+    void on_actionScene_triggered();
+
 private:
     Ui::MainWindow *ui;
     DisplayWindow* _display;

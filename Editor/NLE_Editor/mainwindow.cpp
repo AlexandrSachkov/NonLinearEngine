@@ -39,3 +39,8 @@ bool MainWindow::eventFilter(QObject *obj, QEvent *event)
 
     return QObject::eventFilter(obj, event);
 }
+
+void MainWindow::on_actionScene_triggered()
+{
+
+}

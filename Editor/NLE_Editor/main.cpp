@@ -22,7 +22,7 @@ int main(int argc, char *argv[])
     w = new MainWindow(nle, running);
     a->installEventFilter(w);
 
-    w->setStyleSheet("background-color: rgba(71,71,71, 1);");
+    //w->setStyleSheet("background-color: rgba(71,71,71, 1);");
     w->setWindowTitle("NLE Editor");
     w->showMaximized();
 
@@ -32,7 +32,7 @@ int main(int argc, char *argv[])
     }
 
     char* path = "D:\\3DModels\\sponzaLit.DAE";
-    nle->importScene(path);
+    //nle->importScene(path);
 
     nle->run();
     qDebug() << "Releasing\n";
