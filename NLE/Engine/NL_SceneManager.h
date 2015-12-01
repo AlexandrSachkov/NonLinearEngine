@@ -42,7 +42,7 @@ namespace NLE
 	private:
 		bool _initialized;
 		std::function<void()> _procedure;
-		std::thread* _loadingThread;
+		std::thread _loadingThread;
 
 		tbb::atomic<GRAPHICS::Scene*> _gScene;
 		std::unique_ptr<IMPORTER::AssetImporter> _assetImporter;

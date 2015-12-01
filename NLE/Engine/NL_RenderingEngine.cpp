@@ -112,7 +112,11 @@ namespace NLE
 
 		void RenderingEngine::release()
 		{
-			_swapChain->SetFullscreenState(FALSE, NULL);
+			if (!_initialized)
+				return;
+
+			if(_swapChain)
+				_swapChain->SetFullscreenState(FALSE, NULL);
 
 			SAFE_RELEASE(_textureSamplerState);
 			SAFE_RELEASE(_frontFaceCull);
@@ -125,6 +129,8 @@ namespace NLE
 			SAFE_RELEASE(_swapChain);
 			SAFE_RELEASE(_deviceContext);
 			SAFE_RELEASE(_d3dDevice);
+
+			_initialized = false;
 		}
 
 		ID3D11Device* RenderingEngine::getDevice()
@@ -155,7 +161,7 @@ namespace NLE
 		void RenderingEngine::render(Scene* scene, DirectX::XMMATRIX& viewProjection, DirectX::XMVECTOR& eye)
 		{
 			//Clear our backbuffer to the updated color
-			const float bgColor[] = { 0.0f, 1.0f, 0.0f, 1.0f };
+			const float bgColor[] = { 0.4f, 0.4f, 0.4f, 1.0f };
 
 			_deviceContext->ClearRenderTargetView(_backBufferRenderTargetView, bgColor);
 			_deviceContext->ClearDepthStencilView(_depthStencilView, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);

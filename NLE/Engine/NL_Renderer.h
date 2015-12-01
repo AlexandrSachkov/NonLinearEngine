@@ -57,7 +57,7 @@ namespace NLE
 			tbb::atomic<bool> _running;
 			std::function<void()> _procedure;
 
-			std::thread* _renderingThread;
+			std::thread _renderingThread;
 			std::unique_ptr<RenderingEngine> _renderingEngine;
 			std::unique_ptr<Camera> _camera;
 

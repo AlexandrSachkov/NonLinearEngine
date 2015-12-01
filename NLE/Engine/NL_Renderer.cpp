@@ -70,7 +70,7 @@ namespace NLE
 					printf("Starting Rendering task\n");
 					_running.fetch_and_store(true);
 					
-					_renderingThread = new std::thread([&](
+					_renderingThread = std::thread([&](
 						Renderer& renderer, 
 						std::unique_ptr<RenderingEngine> const& renderingEngine
 					){
@@ -179,7 +179,8 @@ namespace NLE
 		void Renderer::release()
 		{
 			stop();
-			_renderingThread->join();
+			if(_renderingThread.joinable())
+				_renderingThread.join();
 			_renderingEngine->release();
 			_initialized = false;
 		}

@@ -77,6 +77,9 @@ namespace NLE
 
 	void Nle::release()
 	{
+		if (_initialized)
+			return;
+
 		Core::DeviceCore::instance().release();
 		_initialized = false;
 		delete this;

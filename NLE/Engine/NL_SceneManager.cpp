@@ -34,7 +34,8 @@ namespace NLE
 
 	void SceneManager::release()
 	{
-		_loadingThread->join();
+		if(_loadingThread.joinable())
+			_loadingThread.join();
 		_initialized = false;
 	}
 
@@ -67,7 +68,7 @@ namespace NLE
 	{
 		assert(_initialized);
 
-		_loadingThread = new std::thread([&](
+		_loadingThread = std::thread([&](
 			SceneManager& sceneManager,
 			std::wstring path){
 

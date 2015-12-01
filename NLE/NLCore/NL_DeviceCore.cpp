@@ -54,6 +54,9 @@ namespace NLE
 
 		void DeviceCore::release()
 		{		
+			if (!_initialized)
+				return;
+
 			if (_sysManager)
 				_sysManager->release();
 			if (_stateManager)

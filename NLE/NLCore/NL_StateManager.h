@@ -41,11 +41,17 @@ namespace NLE
 				{
 					mapDistributor(distributor);
 				}
+
+				_initialized = true;
+
 				return true;
 			}
 
 			void release()
 			{
+				if (!_initialized)
+					return;
+
 				for (auto& i : _sDistributors)
 				{
 					delete i;
@@ -62,7 +68,7 @@ namespace NLE
 					delete it->second;
 				}
 				_sdMap.clear();
-				_initialized = true;
+				_initialized = false;
 			}
 
 			void processRequests()

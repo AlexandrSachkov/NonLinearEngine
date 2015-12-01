@@ -46,6 +46,9 @@ namespace NLE
 
 		void SysManager::release()
 		{
+			if (!_initialized)
+				return;
+
 			for (auto& system : _systems)
 			{
 				system.second->release();
