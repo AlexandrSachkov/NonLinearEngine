@@ -4,6 +4,7 @@
 
 #define NLE_DLL
 #include "NLE/NL_Nle.h"
+#include "NLE/NL_ConsoleOutType.h"
 
 QApplication* a = nullptr;
 bool running = true;
@@ -11,6 +12,7 @@ MainWindow* w = nullptr;
 NLE::INle* nle = nullptr;
 
 void processEvents();
+void printConsole(NLE::CONSOLE::OUTPUT_TYPE type, const char* data);
 
 int main(int argc, char *argv[])
 {
@@ -18,6 +20,7 @@ int main(int argc, char *argv[])
 
     nle = NLE::instance();
     nle->attachPollEvents(processEvents);
+    nle->attachPrintConsole(printConsole);
 
     w = new MainWindow(nle, running);
     a->installEventFilter(w);
@@ -58,4 +61,9 @@ void processEvents()
     {
         nle->stop();
     }
+}
+
+void printConsole(NLE::CONSOLE::OUTPUT_TYPE type, const char* data)
+{
+    w->printConsole(type, data);
 }

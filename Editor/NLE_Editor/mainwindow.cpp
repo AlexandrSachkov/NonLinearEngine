@@ -40,6 +40,11 @@ bool MainWindow::eventFilter(QObject *obj, QEvent *event)
     return QObject::eventFilter(obj, event);
 }
 
+void  MainWindow::printConsole(NLE::CONSOLE::OUTPUT_TYPE type, const char* data)
+{
+    ui->console->append(data);
+}
+
 void MainWindow::on_actionScene_triggered()
 {
 

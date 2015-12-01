@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include "NLE/NL_INle.h"
+#include "NLE/NL_ConsoleOutType.h"
 
 #include <QMainWindow>
 #include "displaywindow.h"
@@ -18,11 +19,13 @@ public:
     explicit MainWindow(NLE::INle* nle, bool& running, QWidget *parent = 0);
     ~MainWindow();
 
+    void printConsole(NLE::CONSOLE::OUTPUT_TYPE type, const char* data);
+
 private slots:
     void on_actionScene_triggered();
 
 private:
-    Ui::MainWindow *ui;
+    Ui::MainWindow* ui;
     DisplayWindow* _display;
 
     bool eventFilter(QObject *obj, QEvent *event);
