@@ -6,7 +6,6 @@ SET(HEADERS
 	NL_Camera.h
 	NL_Console.h
 	NL_ConsolePump.h
-	NL_IConsolePump.h
 	NL_ConsoleOutType.h
 	NL_D3D11Utility.h
 	NL_D3D11Utility.inl

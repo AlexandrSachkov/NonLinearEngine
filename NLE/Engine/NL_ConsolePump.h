@@ -14,7 +14,7 @@ namespace NLE
 
 	namespace CONSOLE
 	{
-		class ConsolePump : public Core::System, public IConsolePump
+		class ConsolePump : public Core::System, public Core::ISystem
 		{
 		public:
 			ConsolePump();
@@ -27,8 +27,6 @@ namespace NLE
 
 			std::function<void()> const& getExecutionProcedure();
 			Core::ISystem& getInterface();
-
-			void attachPrintConsole(void(*printConsole)(OUTPUT_TYPE, const char*));
 
 		private:
 			bool _initialized;

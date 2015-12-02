@@ -29,8 +29,10 @@ namespace NLE
 			};
 
 			~Console();
+			void release();
 			void queueData(OUTPUT_TYPE outType, const std::wstring& data);
-			bool pullData(std::pair<OUTPUT_TYPE, std::wstring>& data);
+			void outputConsole();
+			void attachPrintConsole(void(*printConsole)(OUTPUT_TYPE, const char*));
 
 		private:
 			Console();
@@ -40,6 +42,7 @@ namespace NLE
 			static Console* _console;
 			tbb::concurrent_queue <std::pair<OUTPUT_TYPE, std::wstring>> _dataQueue;
 			std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> _converter;
+			void(*_printConsole)(OUTPUT_TYPE, const char*);
 		};
 		
 		static void out(OUTPUT_TYPE outType, const std::wstring& data)

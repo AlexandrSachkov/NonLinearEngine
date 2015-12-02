@@ -87,12 +87,6 @@ namespace NLE
 		_initialized = true;
 		CONSOLE::out(CONSOLE::STANDARD, L"NLE successfully initialized.");
 
-		
-		/*std::pair<CONSOLE::OUTPUT_TYPE, std::wstring> data;
-		while (CONSOLE::Console::instance().pullData(data))
-		{
-			printf("\nFrom Console: %ls\n", data.second.c_str());
-		}*/
 		return true;
 	}
 
@@ -104,6 +98,9 @@ namespace NLE
 		Core::DeviceCore::instance().release();
 		_initialized = false;
 		CONSOLE::out(CONSOLE::STANDARD, L"NLE released.");
+		
+		CONSOLE::Console::instance().outputConsole(); //output all the remaining console data, after ConsolePump has been released
+		CONSOLE::Console::instance().release();
 
 		delete this;
 	}
@@ -116,8 +113,8 @@ namespace NLE
 
 	void Nle::attachPrintConsole(void(*printConsole)(CONSOLE::OUTPUT_TYPE, const char*))
 	{
-		static_cast<CONSOLE::IConsolePump*>(&Core::DeviceCore::instance().getSystemInterface(SYS::SYS_CONSOLE_PUMP))
-			->attachPrintConsole(printConsole);
+		assert(!_initialized);
+		CONSOLE::Console::instance().attachPrintConsole(printConsole);
 	}
 
 	void Nle::stop()

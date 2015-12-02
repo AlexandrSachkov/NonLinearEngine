@@ -38,13 +38,7 @@ namespace NLE
 		std::function<void()> const& ConsolePump::getExecutionProcedure()
 		{
 			_procedure = [&]() {
-				TLS::StringConverter::reference converter = TLS::strConverter.local();
-
-				std::pair<OUTPUT_TYPE, std::wstring> data;
-				while (Console::instance().pullData(data))
-				{
-					_printConsole(data.first, converter.to_bytes(data.second).c_str());
-				}
+				CONSOLE::Console::instance().outputConsole();
 			};
 
 			return _procedure;
@@ -53,12 +47,6 @@ namespace NLE
 		Core::ISystem& ConsolePump::getInterface()
 		{
 			return *this;
-		}
-
-		void ConsolePump::attachPrintConsole(void(*printConsole)(OUTPUT_TYPE, const char*))
-		{
-			assert(!_initialized);
-			_printConsole = printConsole;
 		}
 	}
 }
