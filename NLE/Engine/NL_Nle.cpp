@@ -71,6 +71,7 @@ namespace NLE
 			1000000000L	//1 FPS
 		);
 		core.attachSystem(SYS::SYS_SCENE_MANAGER, sceneMngrProcDesc, std::unique_ptr<SceneManager>(new SceneManager()));
+
 	}
 
 	Nle::~Nle()
@@ -92,14 +93,14 @@ namespace NLE
 
 	void Nle::release()
 	{
-		if (_initialized)
+		if (!_initialized)
 			return;
 
 		Core::DeviceCore::instance().release();
 		_initialized = false;
 		CONSOLE::out(CONSOLE::STANDARD, L"NLE released.");
 		
-		CONSOLE::Console::instance().outputConsole(); //output all the remaining console data, after ConsolePump has been released
+		CONSOLE::Console::instance().outputConsole(); //output all the remaining console data after ConsolePump has been released
 		CONSOLE::Console::instance().release();
 
 		delete this;
