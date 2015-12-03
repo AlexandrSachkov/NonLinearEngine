@@ -12,11 +12,14 @@
 #include "NL_Console.h"
 #include "NL_ConsolePump.h"
 
+#include "lua.hpp"
 
 #include <assert.h>
 #include <memory>
 #include <locale>
 #include <codecvt>
+#include <thread>
+#include <chrono>
 
 namespace NLE
 {
@@ -50,17 +53,17 @@ namespace NLE
 			Core::Mode::SYNC,
 			Core::Startup::AUTOMATIC,
 			16666666L	//60 FPS
-		);
+			);
 		core.attachSystem(SYS::SYS_INPUT_PROCESSOR, inputProcDesc, std::unique_ptr<INPUT::InputProcessor>(new INPUT::InputProcessor()));
 
 		core.setNumThreads(core.getNumThreads() - 1); // Leave a hardware thread for graphics
 		Core::ExecutionDesc renderingProcDesc(
 			Core::Priority::STANDARD,
 			Core::Execution::RECURRING,
-			Core::Mode::ASYNC ,
+			Core::Mode::ASYNC,
 			Core::Startup::AUTOMATIC,
 			16666666L	//60 FPS
-		);
+			);
 		core.attachSystem(SYS::SYS_RENDERER, renderingProcDesc, std::unique_ptr<GRAPHICS::Renderer>(new GRAPHICS::Renderer()));
 
 		Core::ExecutionDesc sceneMngrProcDesc(
@@ -69,14 +72,40 @@ namespace NLE
 			Core::Mode::ASYNC,
 			Core::Startup::AUTOMATIC,
 			1000000000L	//1 FPS
-		);
+			);
 		core.attachSystem(SYS::SYS_SCENE_MANAGER, sceneMngrProcDesc, std::unique_ptr<SceneManager>(new SceneManager()));
 
+		lua_State* luaState;
+		luaState = luaL_newstate();
+		luaL_openlibs(luaState);
+
+		char* luaScript =
+			"x = 8 "
+			"return x";
+
+		int status = luaL_loadstring(luaState, luaScript);
+		if (status)
+		{
+			auto error = std::string(lua_tostring(luaState, -1));
+			CONSOLE::out(CONSOLE::ERR, "LUA failed to load script: " + error);
+			return;
+		}
+
+		status = lua_pcall(luaState, 0, LUA_MULTRET, 0);
+		if (status)
+		{
+			auto error = std::string(lua_tostring(luaState, -1));
+			CONSOLE::out(CONSOLE::ERR, "LUA failed to run script: " + error);
+			return;
+		}
+
+		int returnVal = (int)lua_tointeger(luaState, -1);
+		CONSOLE::out(CONSOLE::STANDARD, "LUA return value: " + std::to_string(returnVal));
+		lua_close(luaState);
 	}
 
 	Nle::~Nle()
 	{
-		release();
 	}
 
 	bool Nle::initialize()
@@ -99,7 +128,7 @@ namespace NLE
 		Core::DeviceCore::instance().release();
 		_initialized = false;
 		CONSOLE::out(CONSOLE::STANDARD, L"NLE released.");
-		
+
 		CONSOLE::Console::instance().outputConsole(); //output all the remaining console data after ConsolePump has been released
 		CONSOLE::Console::instance().release();
 
@@ -120,9 +149,10 @@ namespace NLE
 
 	void Nle::stop()
 	{
+		Core::DeviceCore::instance().stop();
+		std::this_thread::sleep_for(std::chrono::microseconds(200));
 		static_cast<GRAPHICS::IRenderer*>(&Core::DeviceCore::instance().getSystemInterface(SYS::SYS_RENDERER))
 			->stop();
-		Core::DeviceCore::instance().stop();
 	}
 
 	void Nle::attachPollEvents(void(*pollEvents)(void))

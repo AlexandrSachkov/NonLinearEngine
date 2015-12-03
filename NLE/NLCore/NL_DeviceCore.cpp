@@ -29,7 +29,6 @@ namespace NLE
 
 		DeviceCore::~DeviceCore()
 		{
-			release();
 		}
 
 		bool DeviceCore::initialize()
