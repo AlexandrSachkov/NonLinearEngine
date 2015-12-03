@@ -66,10 +66,6 @@ NLEGlfwApplicationLayer::NLEGlfwApplicationLayer()
 //===========================================================================================================================
 NLEGlfwApplicationLayer::~NLEGlfwApplicationLayer()
 {
-	if (_nle)
-		_nle->release();
-	glfwDestroyWindow(_window);
-	glfwTerminate();
 }
 
 //===========================================================================================================================
@@ -235,6 +231,15 @@ void NLEGlfwApplicationLayer::run()
 void NLEGlfwApplicationLayer::closeWindow()
 {
 	glfwSetWindowShouldClose(_window, true);
+}
+
+//===========================================================================================================================
+void NLEGlfwApplicationLayer::release()
+{
+	if (_nle)
+		_nle->release();
+	glfwDestroyWindow(_window);
+	glfwTerminate();
 }
 
 //===========================================================================================================================

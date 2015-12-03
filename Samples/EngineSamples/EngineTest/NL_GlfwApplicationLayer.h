@@ -64,6 +64,7 @@ public:
 	void hide();
 	void run();
 	void closeWindow();
+	void release();
 
 	void copyText(std::wstring text);
 	std::wstring pasteText();

@@ -12,6 +12,7 @@ int main()
 		return 0;
 	}
 	appLayer.run();
+	appLayer.release();
 
 	return 0;
 }
