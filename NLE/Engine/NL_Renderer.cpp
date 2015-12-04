@@ -61,29 +61,22 @@ namespace NLE
 
 			if (!_renderingEngine->initialize())
 			{
-				std::this_thread::sleep_for(std::chrono::seconds(10));
 				return false;
 			}
 
+			_renderingThread.setProcedure([&]() {
+				Scene* scene = static_cast<ISceneManager*>(&Core::DeviceCore::instance().getSystemInterface(SYS::SYS_SCENE_MANAGER))
+					->getGScene();
+				_renderingEngine->render(scene, getViewProjection(), getEye());
+			});
+
+			_running.fetch_and_store(true);
 			_procedure = [&](){
-				if (!_running)
+				if (_running && !_renderingThread.isRunning())
 				{
-					CONSOLE::out(CONSOLE::STANDARD, L"Starting Rendering task");
-					_running.fetch_and_store(true);
-					
-					_renderingThread = std::thread([&](
-						Renderer& renderer, 
-						std::unique_ptr<RenderingEngine> const& renderingEngine
-					){
-						CONSOLE::out(CONSOLE::STANDARD, L"Rendering Thread running");
-						while (renderer.isRunning())
-						{
-							Scene* scene = static_cast<ISceneManager*>(&Core::DeviceCore::instance().getSystemInterface(SYS::SYS_SCENE_MANAGER))
-								->getGScene();
-							renderingEngine->render(scene, renderer.getViewProjection(), renderer.getEye());
-						}
-					}, std::ref(*this), std::ref(_renderingEngine));
-				}	
+					CONSOLE::out(CONSOLE::STANDARD, L"Starting Rendering thread");
+					_renderingThread.start();
+				}
 				computeViewProjection();
 			};
 
@@ -175,13 +168,11 @@ namespace NLE
 		void Renderer::stop()
 		{
 			_running.fetch_and_store(false);
+			_renderingThread.stopAndJoin();
 		}
 
 		void Renderer::release()
 		{
-			stop();
-			if(_renderingThread.joinable())
-				_renderingThread.join();
 			_renderingEngine->release();
 			_initialized = false;
 		}

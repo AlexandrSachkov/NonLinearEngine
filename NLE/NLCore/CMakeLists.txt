@@ -1,6 +1,7 @@
 PROJECT(NLCore)
 
-SET(HEADERS 
+SET(HEADERS
+	NL_AsyncTask.h 
 	NL_Clock.h
 	NL_DataRequest.h
 	NL_DeviceCore.h
@@ -24,15 +25,16 @@ SET(HEADERS
 	NL_Scheduler.h
 	NL_StateManager.h
 	NL_SyncTask.h
-	NL_SysManager.h
-	NL_AsyncTask.h
+	NL_SysManager.h	
 	NL_System.h
+	NL_Thread.h
 	)
 SET(SOURCES 
 	NL_Clock.cpp
 	NL_DeviceCore.cpp
 	NL_Scheduler.cpp		
 	NL_SysManager.cpp
+	NL_Thread.cpp
 	)
 
 INCLUDE_DIRECTORIES(${NLE_TBB_INCLUDE_PATH})

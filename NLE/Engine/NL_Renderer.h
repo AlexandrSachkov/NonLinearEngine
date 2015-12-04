@@ -4,6 +4,7 @@
 #include "NL_IRenderer.h"
 #include "NLCore\NL_System.h"
 #include "NLCore\NL_SContainer.h"
+#include "NLCore\NL_Thread.h"
 
 #include <DirectXMath.h>
 #include "tbb\atomic.h"
@@ -57,7 +58,7 @@ namespace NLE
 			tbb::atomic<bool> _running;
 			std::function<void()> _procedure;
 
-			std::thread _renderingThread;
+			Core::Thread _renderingThread;
 			std::unique_ptr<RenderingEngine> _renderingEngine;
 			std::unique_ptr<Camera> _camera;
 

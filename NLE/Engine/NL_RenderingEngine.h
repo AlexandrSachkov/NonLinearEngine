@@ -28,8 +28,8 @@ namespace NLE
 			RenderingEngine();
 			~RenderingEngine();
 
-			bool initialize();
-			void release();
+			bool initialize();	
+			void release();	
 			void render(Scene* scene, DirectX::XMMATRIX& viewProjection, DirectX::XMVECTOR& eye);
 
 			void setWindowHandle(void* handle);
@@ -37,7 +37,7 @@ namespace NLE
 			void setFullscreen(bool fullscreen);
 
 			ID3D11Device* getDevice();
-		private:
+		private:		
 			bool _initialized;
 			uint_fast32_t _frameCount;
 			std::chrono::time_point<std::chrono::high_resolution_clock, std::chrono::nanoseconds> _previousTime;

@@ -22,7 +22,6 @@ namespace NLE
 
 		RenderingEngine::~RenderingEngine()
 		{
-			release();
 		}
 
 		bool RenderingEngine::initialize()
