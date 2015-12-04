@@ -11,7 +11,8 @@ namespace NLE
 {
 	SceneManager::SceneManager() :
 		_initialized(false),
-		_procedure(nullptr)
+		_procedure(nullptr),
+		_loadingThread(100000L)
 	{
 		_assetImporter = std::make_unique<IMPORTER::AssetImporter>();
 		_gScene.fetch_and_store(nullptr);

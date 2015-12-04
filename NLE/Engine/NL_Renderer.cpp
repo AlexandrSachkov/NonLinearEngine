@@ -28,7 +28,8 @@ namespace NLE
 			_initialized(false),
 			_firstMouse(true),
 			_screenWidth(0),
-			_screenHeight(0)
+			_screenHeight(0),
+			_renderingThread(100000L)
 		{
 			_running.fetch_and_store(false);
 			_renderingEngine = std::make_unique<RenderingEngine>();

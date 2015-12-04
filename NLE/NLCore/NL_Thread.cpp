@@ -1,13 +1,13 @@
 #include "NL_Thread.h"
 
 #include <assert.h>
-#include <chrono>
 
 namespace NLE
 {
 	namespace Core
 	{
-		Thread::Thread()
+		Thread::Thread(unsigned long long sleepPeriodNs) :
+			_sleepPeriodNs(std::chrono::nanoseconds(sleepPeriodNs))
 		{
 			_running.fetch_and_store(false);
 			_releasing.fetch_and_store(false);
@@ -15,6 +15,7 @@ namespace NLE
 			_procedure = []() {};
 
 			_thread = std::thread([&](
+				std::chrono::duration<unsigned long long, std::nano>& sleepPeriod,
 				tbb::atomic<bool>& running,
 				tbb::atomic<bool>& releasing,
 				tbb::atomic<bool>& stopped,
@@ -24,7 +25,7 @@ namespace NLE
 				{
 					while (!running && !releasing)
 					{
-						std::this_thread::sleep_for(std::chrono::microseconds(10));
+						std::this_thread::sleep_for(sleepPeriod);
 					}
 					stopped.fetch_and_store(false);
 					while (running)
@@ -33,13 +34,13 @@ namespace NLE
 					}
 					stopped.fetch_and_store(true);
 				}
-			}, std::ref(_running), std::ref(_releasing), std::ref(_stopped), std::ref(_procedure));
+			}, std::ref(_sleepPeriodNs), std::ref(_running), std::ref(_releasing), std::ref(_stopped), std::ref(_procedure));
 		}
 
 		Thread::~Thread()
 		{
 			_running.fetch_and_store(false);
-			_releasing.fetch_and_store(true);
+			_releasing.fetch_and_store(true);				
 			if (_thread.joinable())
 				_thread.join();
 		}
@@ -70,7 +71,7 @@ namespace NLE
 
 		bool Thread::isRunning()
 		{
-			return _running.load() || !_stopped.load();
+			return _running.load();
 		}
 	}
 }

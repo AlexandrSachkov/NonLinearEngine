@@ -4,6 +4,7 @@
 #include "tbb\atomic.h"
 #include <thread>
 #include <functional>
+#include <chrono>
 
 namespace NLE
 {
@@ -12,7 +13,7 @@ namespace NLE
 		class Thread
 		{
 		public:
-			Thread();
+			Thread(unsigned long long sleepPeriodNs);
 			~Thread();
 
 			void setProcedure(std::function<void()> operation);
@@ -22,6 +23,7 @@ namespace NLE
 			bool isRunning();
 
 		private:
+			std::chrono::duration<unsigned long long, std::nano> _sleepPeriodNs;
 			std::thread _thread;
 			std::function<void()> _procedure;
 			tbb::atomic<bool> _running;
