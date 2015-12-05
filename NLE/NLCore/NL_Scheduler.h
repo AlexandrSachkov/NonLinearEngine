@@ -28,7 +28,12 @@ namespace NLE
 
 			void setNumThreads(uint_fast32_t numThreads);
 			uint_fast32_t getNumThreads();
-			void requestExecution(uint_fast32_t sysId);
+			void startSystem(
+				ExecutionDesc& execDesc,
+				uint_fast32_t sysId);
+			void stopSystem(
+				ExecutionDesc& execDesc,
+				uint_fast32_t sysId);
 			void signalFinished(uint_fast32_t sysId);
 			void manageExecution(
 				std::unique_ptr<SysManager> const& sysManager,
@@ -37,7 +42,7 @@ namespace NLE
 
 		private:
 			tbb::task_scheduler_init* _taskSchedulerInit;		
-			tbb::concurrent_queue<uint_fast32_t> _toSchedule;
+			tbb::concurrent_queue<uint_fast32_t> _starting;
 			tbb::concurrent_queue<uint_fast32_t> _finished;
 		
 			Data::PContainer<uint_fast32_t> _scheduledSystems;

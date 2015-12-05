@@ -98,17 +98,21 @@ namespace NLE
 		void DeviceCore::stopAndJoin()
 		{
 			_clock->stop();
-			auto numRunningTasks = _scheduler->getNumRunningTasks();
-			while (numRunningTasks != 0)
+			while (_scheduler->getNumRunningTasks() > 0)
 			{
 			}
 		}
 
-		// Interface Methods
 
+		//Interface Methods
 		void DeviceCore::startSystem(uint_fast32_t sysId)
 		{
-			_scheduler->requestExecution(sysId);
+			_scheduler->startSystem(_sysManager->getExecutionDesc(sysId), sysId);
+		}
+
+		void DeviceCore::stopSystem(uint_fast32_t sysId)
+		{
+			_scheduler->stopSystem(_sysManager->getExecutionDesc(sysId), sysId);
 		}
 
 		uint_fast32_t DeviceCore::getNumThreads()

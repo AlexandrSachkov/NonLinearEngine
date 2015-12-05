@@ -17,6 +17,7 @@ namespace NLE
 		{
 		public:
 			virtual void startSystem(uint_fast32_t sysId) = 0;
+			virtual void stopSystem(uint_fast32_t sysId) = 0;
 			virtual uint_fast32_t getNumThreads() = 0;
 			virtual uint_fast32_t getNumSystems() = 0;
 			virtual ISystem& getSystemInterface(uint_fast32_t sysId) = 0;

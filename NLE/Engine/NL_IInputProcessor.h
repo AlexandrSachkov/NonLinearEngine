@@ -16,6 +16,7 @@ namespace NLE
 			virtual void processEvent(INPUT::Event& event) = 0;
 
 			virtual void enableTextInput(bool enable) = 0;
+			virtual void enableInputProcessing(bool enable) = 0;
 		};
 	}
 }

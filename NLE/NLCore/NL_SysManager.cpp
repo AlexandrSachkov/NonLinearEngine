@@ -36,7 +36,7 @@ namespace NLE
 					return false;
 				if (_executionDesc.at(sysId).getStartup() == Startup::AUTOMATIC)
 				{
-					scheduler->requestExecution(sysId);
+					scheduler->startSystem(getExecutionDesc(sysId),sysId);
 				}
 			}
 

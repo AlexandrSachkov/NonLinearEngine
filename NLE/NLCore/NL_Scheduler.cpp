@@ -65,9 +65,19 @@ namespace NLE
 			_numRunningTasks.fetch_and_decrement();
 		}
 
-		void Scheduler::requestExecution(uint_fast32_t sysId)
+		void Scheduler::startSystem(
+			ExecutionDesc& execDesc,
+			uint_fast32_t sysId)
 		{
-			_toSchedule.push(sysId);
+			execDesc.enable(true);
+			_starting.push(sysId);
+		}
+
+		void Scheduler::stopSystem(
+			ExecutionDesc& execDesc,
+			uint_fast32_t sysId)
+		{
+			execDesc.enable(false);
 		}
 
 		void Scheduler::manageExecution(
@@ -85,16 +95,16 @@ namespace NLE
 				{
 					stateManager->distributeFrom(sysId);
 					execDesc = &sysManager->getExecutionDesc(sysId);
-					if (execDesc->getExecution() == Execution::RECURRING)
+					if (execDesc->enabled() && execDesc->getExecution() == Execution::RECURRING)
 					{
 						_scheduledSystems.add(sysId);
 					}				
 				}
 			}
 
-			if (!_toSchedule.empty())
+			if (!_starting.empty())
 			{
-				while (_toSchedule.try_pop(sysId))
+				while (_starting.try_pop(sysId))
 				{
 					_scheduledSystems.add(sysId);
 				}

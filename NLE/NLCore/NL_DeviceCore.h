@@ -55,8 +55,9 @@ namespace NLE
 			void stop();
 			void stopAndJoin();
 			
-			// Interface Methods
+			//Interface Methods
 			void startSystem(uint_fast32_t sysId);
+			void stopSystem(uint_fast32_t sysId);
 			uint_fast32_t getNumThreads();	
 			uint_fast32_t getNumSystems();
 			ISystem& getSystemInterface(uint_fast32_t sysId);

@@ -3,6 +3,7 @@
 
 #include <cstdint>
 #include <chrono>
+#include "tbb\atomic.h"
 
 namespace NLE
 {
@@ -24,6 +25,7 @@ namespace NLE
 				_startup(Startup::AUTOMATIC),
 				_periodNs(0L)
 			{
+				_enabled.fetch_and_store(true);
 			}
 
 			ExecutionDesc(
@@ -39,6 +41,7 @@ namespace NLE
 				_startup(startup),
 				_periodNs(std::chrono::nanoseconds(periodNs))
 			{
+				_enabled.fetch_and_store(true);
 			}
 
 			Priority getPriority()
@@ -60,6 +63,12 @@ namespace NLE
 			{
 				return _startup;
 			}
+			
+			bool enabled()
+			{
+				return _enabled.load();
+			}
+			
 
 		private:
 			bool isTimeToStart()
@@ -70,7 +79,12 @@ namespace NLE
 			void resetStartTime()
 			{
 				_startTime = std::chrono::high_resolution_clock::now() + _periodNs;
-			}
+			}	
+			
+			void enable(bool enable)
+			{
+				_enabled.fetch_and_store(enable);
+			}	
 
 			Priority _priority;
 			Execution _execution;
@@ -78,6 +92,7 @@ namespace NLE
 			Startup _startup;
 			std::chrono::duration<unsigned long long, std::nano> _periodNs;
 			std::chrono::time_point<std::chrono::high_resolution_clock, std::chrono::nanoseconds> _startTime;
+			tbb::atomic<bool> _enabled;
 		};
 	}
 }

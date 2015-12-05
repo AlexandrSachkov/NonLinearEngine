@@ -27,13 +27,14 @@ namespace NLE
 			void release();
 
 			bool initialized();
-
+			
 			std::function<void()> const& getExecutionProcedure();
 			Core::ISystem& getInterface();
 
 			void attachPollEvents(void(*pollEvents)(void));
 			void processEvent(INPUT::Event& event);
 			void enableTextInput(bool enable);
+			void enableInputProcessing(bool enable);
 
 		private:
 			void onKeyEvent(Event& event);
@@ -47,6 +48,7 @@ namespace NLE
 
 			tbb::concurrent_queue<INPUT::Event> _events;
 			tbb::atomic<bool> _enableTextInput;
+			tbb::atomic<bool> _enableInputProcessing;
 
 			NLE::Core::Data::SContainer<char>* _cameraCommands;
 			NLE::Core::Data::SContainer<double>* _cursorCoords;

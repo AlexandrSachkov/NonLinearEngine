@@ -17,6 +17,7 @@ namespace NLE
 			_initialized(false)
 		{
 			_enableTextInput.fetch_and_store(false);
+			_enableInputProcessing.fetch_and_store(true);
 		}
 
 		InputProcessor::~InputProcessor()
@@ -34,6 +35,9 @@ namespace NLE
 
 			_procedure = [&](){
 				_pollEvents();
+
+				if (!_enableInputProcessing)
+					return;
 
 				if (!_events.empty())
 				{
@@ -110,6 +114,11 @@ namespace NLE
 		void InputProcessor::enableTextInput(bool enable)
 		{
 			_enableTextInput.fetch_and_store(enable);
+		}
+
+		void InputProcessor::enableInputProcessing(bool enable)
+		{
+			_enableInputProcessing.fetch_and_store(enable);
 		}
 
 		void InputProcessor::onKeyEvent(Event& event)
