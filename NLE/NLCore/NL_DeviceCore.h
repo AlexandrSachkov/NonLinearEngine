@@ -53,6 +53,7 @@ namespace NLE
 			
 			void run();
 			void stop();
+			void stopAndJoin();
 			
 			// Interface Methods
 			void startSystem(uint_fast32_t sysId);

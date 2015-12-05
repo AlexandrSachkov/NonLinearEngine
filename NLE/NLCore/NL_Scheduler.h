@@ -6,6 +6,7 @@
 #include "tbb\concurrent_queue.h"
 #include "tbb/task_scheduler_init.h"
 #include "tbb\scalable_allocator.h"
+#include "tbb/atomic.h"
 
 namespace NLE 
 {
@@ -32,6 +33,7 @@ namespace NLE
 			void manageExecution(
 				std::unique_ptr<SysManager> const& sysManager,
 				std::unique_ptr<StateManager> const& stateManager);
+			int_fast32_t getNumRunningTasks();
 
 		private:
 			tbb::task_scheduler_init* _taskSchedulerInit;		
@@ -42,6 +44,7 @@ namespace NLE
 			std::vector<uint_fast32_t, tbb::scalable_allocator<uint_fast32_t>> _syncSystemsToRun;
 			uint_fast32_t _numThreads;
 			bool _initialized;
+			tbb::atomic<int_fast32_t> _numRunningTasks;
 		};
 	}
 }

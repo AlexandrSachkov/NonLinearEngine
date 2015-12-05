@@ -18,6 +18,7 @@ namespace NLE
 			_initialized(false)
 		{
 			_numThreads = tbb::task_scheduler_init::default_num_threads();
+			_numRunningTasks.fetch_and_store(0);
 		}
 
 		Scheduler::~Scheduler()
@@ -53,9 +54,15 @@ namespace NLE
 			return _numThreads;
 		}
 
+		int_fast32_t Scheduler::getNumRunningTasks()
+		{
+			return _numRunningTasks.load();
+		}
+
 		void Scheduler::signalFinished(uint_fast32_t sysId)
 		{
 			_finished.push(sysId);
+			_numRunningTasks.fetch_and_decrement();
 		}
 
 		void Scheduler::requestExecution(uint_fast32_t sysId)
@@ -101,6 +108,7 @@ namespace NLE
 				if (execDesc->isTimeToStart())
 				{
 					stateManager->distributeTo(sysId);
+					_numRunningTasks.fetch_and_increment();
 
 					if (execDesc->getMode() == Mode::ASYNC)
 					{
@@ -123,7 +131,7 @@ namespace NLE
 							//should never be reached
 							assert(false);
 						}
-
+						
 					} else {
 						_syncSystemsToRun.push_back(sysId);
 					}

@@ -240,6 +240,7 @@ void NLEGlfwApplicationLayer::release()
 		_nle->release();
 	glfwDestroyWindow(_window);
 	glfwTerminate();
+	delete this;
 }
 
 //===========================================================================================================================

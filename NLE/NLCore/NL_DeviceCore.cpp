@@ -56,6 +56,7 @@ namespace NLE
 			if (!_initialized)
 				return;
 
+			stopAndJoin();
 			if (_sysManager)
 				_sysManager->release();
 			if (_stateManager)
@@ -92,6 +93,15 @@ namespace NLE
 		void DeviceCore::stop()
 		{
 			_clock->stop();
+		}
+
+		void DeviceCore::stopAndJoin()
+		{
+			_clock->stop();
+			auto numRunningTasks = _scheduler->getNumRunningTasks();
+			while (numRunningTasks != 0)
+			{
+			}
 		}
 
 		// Interface Methods

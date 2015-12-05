@@ -149,10 +149,9 @@ namespace NLE
 
 	void Nle::stop()
 	{
-		Core::DeviceCore::instance().stop();	
-		std::this_thread::sleep_for(std::chrono::microseconds(300));
 		static_cast<GRAPHICS::IRenderer*>(&Core::DeviceCore::instance().getSystemInterface(SYS::SYS_RENDERER))
-			->stop();		
+			->stop();
+		Core::DeviceCore::instance().stop();				
 	}
 
 	void Nle::attachPollEvents(void(*pollEvents)(void))
