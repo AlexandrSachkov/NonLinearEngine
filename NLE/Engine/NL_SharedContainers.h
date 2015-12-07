@@ -8,7 +8,11 @@ namespace NLE
 		// Input
 		CAMERA_COMMANDS,
 		CURSOR_COORDINATES,
-		SCROLL_OFFSET
+		SCROLL_OFFSET,
+
+		//Camera Manager
+		VIEW_PROJECTION_MATRIX,
+		EYE_VECTOR
 	};
 }
 

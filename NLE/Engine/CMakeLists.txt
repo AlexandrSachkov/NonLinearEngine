@@ -4,6 +4,8 @@ SET(HEADERS
 	NL_Allocator.h
 	NL_AssetImporter.h
 	NL_Camera.h
+	NL_CameraManager.h
+	NL_ICameraManager.h
 	NL_Console.h
 	NL_ConsolePump.h
 	NL_ConsoleOutType.h
@@ -16,9 +18,8 @@ SET(HEADERS
 	NL_INle.h
 	NL_InputEvents.h
 	NL_Nle.h
-	NL_Renderer.h
 	NL_RenderingEngine.h
-	NL_IRenderer.h
+	NL_IRenderingEngine.h
 	NL_RenderingResources.h
 	NL_SceneManager.h
 	NL_ISceneManager.h
@@ -34,13 +35,13 @@ SET(HEADERS
 SET(SOURCES 
 	NL_AssetImporter.cpp
 	NL_Camera.cpp
+	NL_CameraManager.cpp
 	NL_Console.cpp
 	NL_ConsolePump.cpp
 	NL_D3D11Utility.cpp
 	NL_GScene.cpp
 	NL_InputProcessor.cpp
 	NL_Nle.cpp
-	NL_Renderer.cpp
 	NL_RenderingEngine.cpp
 	NL_SceneManager.cpp
 	NL_TextureLoader.cpp

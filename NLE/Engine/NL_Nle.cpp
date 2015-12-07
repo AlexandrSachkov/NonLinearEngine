@@ -6,11 +6,12 @@
 #include "NL_InputEvents.h"
 #include "NL_InputProcessor.h"
 #include "NL_SceneManager.h"
-#include "NL_Renderer.h"
+#include "NL_CameraManager.h"
 #include "NL_Systems.h"
 #include "NL_SharedContainers.h"
 #include "NL_Console.h"
 #include "NL_ConsolePump.h"
+#include "NL_RenderingEngine.h"
 
 #include "lua.hpp"
 
@@ -20,6 +21,7 @@
 #include <codecvt>
 #include <thread>
 #include <chrono>
+#include "DirectXMath.h"
 
 namespace NLE
 {
@@ -36,6 +38,8 @@ namespace NLE
 		core.installSContainer<char>(CAMERA_COMMANDS, GRAPHICS::COMMANDS::CAMERA::NUM_COMMANDS, _defaultGrainSize); //one slot for each command
 		core.installSContainer<double>(CURSOR_COORDINATES, 2, _defaultGrainSize);	// 2 slots for x and y components
 		core.installSContainer<double>(SCROLL_OFFSET, 2, _defaultGrainSize);	// 2 slots for x and y components
+		core.installSContainer<DirectX::XMFLOAT4X4>(VIEW_PROJECTION_MATRIX, 1, _defaultGrainSize);
+		core.installSContainer<DirectX::XMFLOAT4>(EYE_VECTOR, 1, _defaultGrainSize);
 
 		// Attach systems
 		Core::ExecutionDesc consoleProcDesc(
@@ -56,15 +60,23 @@ namespace NLE
 			);
 		core.attachSystem(SYS::SYS_INPUT_PROCESSOR, inputProcDesc, std::unique_ptr<INPUT::InputProcessor>(new INPUT::InputProcessor()));
 
-		core.setNumThreads(core.getNumThreads() - 1); // Leave a hardware thread for graphics
-		Core::ExecutionDesc renderingProcDesc(
+		Core::ExecutionDesc cameraMngrProcDesc(
 			Core::Priority::STANDARD,
 			Core::Execution::RECURRING,
 			Core::Mode::ASYNC,
 			Core::Startup::AUTOMATIC,
 			16666666L	//60 FPS
 			);
-		core.attachSystem(SYS::SYS_RENDERER, renderingProcDesc, std::unique_ptr<GRAPHICS::Renderer>(new GRAPHICS::Renderer()));
+		core.attachSystem(SYS::SYS_CAMERA_MANAGER, cameraMngrProcDesc, std::unique_ptr<GRAPHICS::CameraManager>(new GRAPHICS::CameraManager()));
+
+		Core::ExecutionDesc renderingEngineProcDesc(
+			Core::Priority::STANDARD,
+			Core::Execution::RECURRING,
+			Core::Mode::ASYNC,
+			Core::Startup::AUTOMATIC,
+			14285714L	//70 FPS
+			);
+		core.attachSystem(SYS::SYS_RENDERING_ENGINE, renderingEngineProcDesc, std::unique_ptr<GRAPHICS::RenderingEngine>(new GRAPHICS::RenderingEngine()));
 
 		Core::ExecutionDesc sceneMngrProcDesc(
 			Core::Priority::STANDARD,
@@ -149,8 +161,6 @@ namespace NLE
 
 	void Nle::stop()
 	{
-		static_cast<GRAPHICS::IRenderer*>(&Core::DeviceCore::instance().getSystemInterface(SYS::SYS_RENDERER))
-			->stop();
 		Core::DeviceCore::instance().stop();				
 	}
 
@@ -168,19 +178,21 @@ namespace NLE
 
 	void Nle::setWindowHandle(void* handle)
 	{
-		static_cast<GRAPHICS::IRenderer*>(&Core::DeviceCore::instance().getSystemInterface(SYS::SYS_RENDERER))
+		static_cast<GRAPHICS::IRenderingEngine*>(&Core::DeviceCore::instance().getSystemInterface(SYS::SYS_RENDERING_ENGINE))
 			->setWindowHandle(handle);
 	}
 
 	void Nle::setScreenDimensions(uint_fast32_t width, uint_fast32_t height)
 	{
-		static_cast<GRAPHICS::IRenderer*>(&Core::DeviceCore::instance().getSystemInterface(SYS::SYS_RENDERER))
+		static_cast<GRAPHICS::ICameraManager*>(&Core::DeviceCore::instance().getSystemInterface(SYS::SYS_CAMERA_MANAGER))
+			->setScreenDimensions(width, height);
+		static_cast<GRAPHICS::IRenderingEngine*>(&Core::DeviceCore::instance().getSystemInterface(SYS::SYS_RENDERING_ENGINE))
 			->setScreenDimensions(width, height);
 	}
 
 	void Nle::setFullscreen(bool fullscreen)
 	{
-		static_cast<GRAPHICS::IRenderer*>(&Core::DeviceCore::instance().getSystemInterface(SYS::SYS_RENDERER))
+		static_cast<GRAPHICS::IRenderingEngine*>(&Core::DeviceCore::instance().getSystemInterface(SYS::SYS_RENDERING_ENGINE))
 			->setFullscreen(fullscreen);
 	}
 

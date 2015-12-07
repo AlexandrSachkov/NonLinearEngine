@@ -1,6 +1,6 @@
 #include "NL_SceneManager.h"
 #include "NL_AssetImporter.h"
-#include "NL_IRenderer.h"
+#include "NL_IRenderingEngine.h"
 #include "NL_Systems.h"
 #include "NLCore\NL_DeviceCore.h"
 #include "NL_Console.h"
@@ -71,7 +71,7 @@ namespace NLE
 		_path = path;
 		_loadingThread.setProcedure([&](){
 			CONSOLE::out(CONSOLE::STANDARD, L"Loading Thread running");
-			auto device = static_cast<GRAPHICS::IRenderer*>(&Core::DeviceCore::instance().getSystemInterface(SYS::SYS_RENDERER))
+			auto device = static_cast<GRAPHICS::IRenderingEngine*>(&Core::DeviceCore::instance().getSystemInterface(SYS::SYS_RENDERING_ENGINE))
 				->getDevice();
 			GRAPHICS::Scene* scene = new GRAPHICS::Scene();
 			_assetImporter->importScene(device, _path, *scene);

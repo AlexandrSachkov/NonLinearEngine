@@ -1,6 +1,9 @@
 #ifndef NL_RENDERING_ENGINE_H_
 #define NL_RENDERING_ENGINE_H_
 
+#include "NL_IRenderingEngine.h"
+#include "NLCore\NL_System.h"
+#include "NLCore\NL_SContainer.h"
 #include "NL_RenderingResources.h"
 
 #include <Windows.h>
@@ -15,6 +18,11 @@
 
 namespace NLE
 {
+	namespace Core
+	{
+		class IEngine;
+		class ISystem;
+	}
 	namespace IMPORTER
 	{
 		class AssetImporter;
@@ -22,25 +30,33 @@ namespace NLE
 	namespace GRAPHICS
 	{
 		class Scene;
-		class RenderingEngine
+		class RenderingEngine : public Core::System, public IRenderingEngine
 		{
 		public:
 			RenderingEngine();
 			~RenderingEngine();
 
-			bool initialize();	
-			void release();	
-			void render(Scene* scene, DirectX::XMMATRIX& viewProjection, DirectX::XMVECTOR& eye);
+			bool initialize(Core::IEngine& engine);
+			void release();
+			bool initialized();
+			std::function<void()> const& getExecutionProcedure();
+			Core::ISystem& getInterface();
 
 			void setWindowHandle(void* handle);
 			void setScreenDimensions(uint_fast32_t width, uint_fast32_t height);
 			void setFullscreen(bool fullscreen);
-
 			ID3D11Device* getDevice();
-		private:		
+
+		private:
+			void render();		
+
 			bool _initialized;
+			std::function<void()> _procedure;
 			uint_fast32_t _frameCount;
 			std::chrono::time_point<std::chrono::high_resolution_clock, std::chrono::nanoseconds> _previousTime;
+
+			NLE::Core::Data::SContainer<DirectX::XMFLOAT4X4>* _viewProjection;
+			NLE::Core::Data::SContainer<DirectX::XMFLOAT4>* _eye;
 
 			HWND _hwnd;
 			uint_fast32_t _screenWidth;

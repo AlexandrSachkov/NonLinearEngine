@@ -71,7 +71,7 @@ namespace NLE
 			swapChainDesc.SampleDesc.Count = 1;
 			swapChainDesc.SampleDesc.Quality = 0;
 			swapChainDesc.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
-			swapChainDesc.BufferCount = 1;
+			swapChainDesc.BufferCount = 2;
 			swapChainDesc.OutputWindow = windowHandle;
 			swapChainDesc.Windowed = fullScreen == true ? FALSE : TRUE;
 			swapChainDesc.SwapEffect = DXGI_SWAP_EFFECT_DISCARD;

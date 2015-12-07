@@ -1,4 +1,13 @@
 #include "NL_RenderingEngine.h"
+
+#include "NLCore\NL_ISystem.h"
+#include "NLCore\NL_IEngine.h"
+#include "NLCore\NL_SDistributor.h"
+#include "NL_SharedContainers.h"
+#include "NL_Systems.h"
+#include "NL_ISceneManager.h"
+#include "NLCore\NL_DeviceCore.h"
+
 #include "NL_D3D11Utility.h"
 #include "NL_GScene.h"
 #include "NL_Console.h"
@@ -24,9 +33,16 @@ namespace NLE
 		{
 		}
 
-		bool RenderingEngine::initialize()
+		bool RenderingEngine::initialize(Core::IEngine& engine)
 		{
 			assert(!_initialized && _hwnd && _screenWidth > 0 && _screenHeight > 0);
+
+			_viewProjection = &static_cast<NLE::Core::Data::SDistributor<DirectX::XMFLOAT4X4>*>(&engine.getSDistributor(VIEW_PROJECTION_MATRIX))->buildEndpoint(SYS::SYS_RENDERING_ENGINE);
+			_eye = &static_cast<NLE::Core::Data::SDistributor<DirectX::XMFLOAT4>*>(&engine.getSDistributor(EYE_VECTOR))->buildEndpoint(SYS::SYS_RENDERING_ENGINE);
+
+			_procedure = [&]() {
+				render();
+			};
 
 			D3D11_INPUT_ELEMENT_DESC forwardPosNormTanTextDesc[] = {
 				{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
@@ -131,6 +147,21 @@ namespace NLE
 			_initialized = false;
 		}
 
+		std::function<void()> const& RenderingEngine::getExecutionProcedure()
+		{
+			return _procedure;
+		}
+
+		Core::ISystem& RenderingEngine::getInterface()
+		{
+			return *this;
+		}
+
+		bool RenderingEngine::initialized()
+		{
+			return _initialized;
+		}
+
 		ID3D11Device* RenderingEngine::getDevice()
 		{
 			assert(_initialized);
@@ -156,8 +187,14 @@ namespace NLE
 			_fullscreen = fullscreen;
 		}
 
-		void RenderingEngine::render(Scene* scene, DirectX::XMMATRIX& viewProjection, DirectX::XMVECTOR& eye)
+		void RenderingEngine::render()
 		{
+			Scene* scene = static_cast<ISceneManager*>(&Core::DeviceCore::instance().getSystemInterface(SYS::SYS_SCENE_MANAGER))
+				->getGScene();
+
+			DirectX::XMMATRIX viewProjection = DirectX::XMLoadFloat4x4(&(*_viewProjection)[0]);			
+			DirectX::XMVECTOR eye = DirectX::XMLoadFloat4(&(*_eye)[0]);
+
 			//Clear our backbuffer to the updated color
 			const float bgColor[] = { 0.4f, 0.4f, 0.4f, 1.0f };
 
@@ -212,10 +249,10 @@ namespace NLE
 			}
 
 
-			_swapChain->Present(0, 0);
+			_swapChain->Present(1, 0);
 
 			++_frameCount;
-			if (_frameCount == 10000)
+			if (_frameCount == 10)
 			{
 				auto time = std::chrono::high_resolution_clock::now();
 				auto diff = std::chrono::duration_cast<std::chrono::nanoseconds>(time - _previousTime).count();
