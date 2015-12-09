@@ -6,6 +6,10 @@
 #include <cstdint>
 
 struct lua_State;
+namespace tbb
+{
+	class spin_mutex;
+}
 namespace NLE
 {
 	class Nle :public INle
@@ -27,6 +31,7 @@ namespace NLE
 
 		void run();
 		void stop();
+		bool isRunning;
 
 		void attachPollEvents(void(*pollEvents)(void));
 		void attachPrintConsole(void(*printConsole)(CONSOLE::OUTPUT_TYPE, const char*));
@@ -42,7 +47,9 @@ namespace NLE
 
 		static Nle* _nle;
 		bool _initialized;
+		bool _running;
 		uint_fast32_t _defaultGrainSize;
+		tbb::spin_mutex* _runningLock;
 	};
 
 #if defined (NLE_DLL) && defined(NLE_DLL_EXPORT)

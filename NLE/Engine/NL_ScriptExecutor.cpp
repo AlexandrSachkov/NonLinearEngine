@@ -14,6 +14,7 @@ namespace NLE
 			lua_register(_state, "NLE_importScene", Callback::importScene);
 			lua_register(_state, "NLE_setScreenDimensions", Callback::setScreenDimensions);
 			lua_register(_state, "NLE_setFullscreen", Callback::setFullscreen);
+			lua_register(_state, "NLE_cout", Callback::printConsole);
 		}
 
 		ScriptExecutor::~ScriptExecutor()

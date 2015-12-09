@@ -260,7 +260,7 @@ namespace NLE
 				auto diff = std::chrono::duration_cast<std::chrono::nanoseconds>(time - _previousTime).count();
 				double fps = 1 / (diff / _frameCount * 0.000000001);
 
-				CONSOLE::out(CONSOLE::STANDARD, "FPS: " + std::to_string(fps));
+				//CONSOLE::out(CONSOLE::STANDARD, "FPS: " + std::to_string(fps));
 				_previousTime = time;
 
 

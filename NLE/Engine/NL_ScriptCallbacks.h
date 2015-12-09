@@ -13,6 +13,8 @@ namespace NLE
 			static int setFullscreen(lua_State* state);
 
 			static int importScene(lua_State* state);
+
+			static int printConsole(lua_State* state);
 		};		
 	}
 }

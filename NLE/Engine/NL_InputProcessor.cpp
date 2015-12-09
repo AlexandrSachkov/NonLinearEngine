@@ -22,7 +22,7 @@ namespace NLE
 
 		InputProcessor::~InputProcessor()
 		{
-
+			
 		}
 
 		bool InputProcessor::initialize(Core::IEngine& engine)
@@ -71,7 +71,7 @@ namespace NLE
 
 		void InputProcessor::release()
 		{
-
+			_initialized = false;
 		}
 
 		bool InputProcessor::initialized()

@@ -12,8 +12,10 @@
 #include "NL_Console.h"
 #include "NL_ConsolePump.h"
 #include "NL_RenderingEngine.h"
+#include "NL_ScriptEngine.h"
 
 #include "lua.hpp"
+#include "tbb\spin_mutex.h"
 
 #include <assert.h>
 #include <memory>
@@ -29,8 +31,10 @@ namespace NLE
 
 	Nle::Nle() :
 		_initialized(false),
+		_running(false),
 		_defaultGrainSize(6500)
 	{
+		_runningLock = new tbb::spin_mutex();
 		Core::DeviceCore& core = Core::DeviceCore::instance();
 		core.setClockPeriodNs(1000000L);
 
@@ -86,6 +90,15 @@ namespace NLE
 			1000000000L	//1 FPS
 			);
 		core.attachSystem(SYS::SYS_SCENE_MANAGER, sceneMngrProcDesc, std::unique_ptr<SceneManager>(new SceneManager()));
+
+		Core::ExecutionDesc scriptEngineProcDesc(
+			Core::Priority::STANDARD,
+			Core::Execution::RECURRING,
+			Core::Mode::ASYNC,
+			Core::Startup::AUTOMATIC,
+			100000000L	//10 FPS
+			);
+		core.attachSystem(SYS::SYS_SCRIPT_ENGINE, scriptEngineProcDesc, std::unique_ptr<SCRIPT::ScriptEngine>(new SCRIPT::ScriptEngine()));
 	}
 
 	Nle::~Nle()
@@ -122,6 +135,9 @@ namespace NLE
 	void Nle::run()
 	{
 		assert(_initialized);
+		_runningLock->lock();
+		_running = true;
+		_runningLock->unlock();
 		Core::DeviceCore::instance().run();
 	}
 
@@ -133,7 +149,10 @@ namespace NLE
 
 	void Nle::stop()
 	{
-		Core::DeviceCore::instance().stop();				
+		Core::DeviceCore::instance().stop();
+		_runningLock->lock();
+		_running = false;
+		_runningLock->unlock();
 	}
 
 	void Nle::attachPollEvents(void(*pollEvents)(void))
@@ -156,8 +175,20 @@ namespace NLE
 
 	void Nle::executeScript(const char* script)
 	{
-		TLS::ScriptExecutor::reference executor = TLS::scriptExecutor.local();
-		executor.executeScript(script);
-	}
+		bool running;
+		_runningLock->lock();
+		running = _running;
+		_runningLock->unlock();
 
+		if (running)
+		{
+			static_cast<SCRIPT::IScriptEngine*>(&Core::DeviceCore::instance().getSystemInterface(SYS::SYS_SCRIPT_ENGINE))
+				->executeScript(script);
+		}
+		else
+		{
+			TLS::ScriptExecutor::reference executor = TLS::scriptExecutor.local();
+			executor.executeScript(script);
+		}	
+	}
 }

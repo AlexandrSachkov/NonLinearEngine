@@ -24,6 +24,8 @@ SET(HEADERS
 	NL_SceneManager.h
 	NL_ISceneManager.h
 	NL_ScriptCallbacks.h
+	NL_ScriptEngine.h
+	NL_IScriptEngine.h
 	NL_ScriptExecutor.h
 	NL_SharedContainers.h
 	NL_Systems.h
@@ -47,6 +49,7 @@ SET(SOURCES
 	NL_RenderingEngine.cpp
 	NL_SceneManager.cpp
 	NL_ScriptCallbacks.cpp
+	NL_ScriptEngine.cpp
 	NL_ScriptExecutor.cpp
 	NL_TextureLoader.cpp
 	
