@@ -13,8 +13,8 @@ DisplayWindow::DisplayWindow(NLE::INle* nle, QWidget *parent) :
     ui(new Ui::DisplayWindow)
 {
     _nle = nle;
-    nle->setScreenDimensions(1920, 1080);
-    nle->setFullscreen(false);
+    nle->executeScript("NLE_setScreenDimensions(1920, 1080)");
+    nle->executeScript("NLE_setFullscreen(false)");
 
     ui->setupUi(this);
 }

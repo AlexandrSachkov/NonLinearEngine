@@ -49,3 +49,14 @@ void MainWindow::on_actionScene_triggered()
 {
 
 }
+
+void MainWindow::on_scriptExecuteBtn_clicked()
+{
+    QString script = ui->scriptEditBox->toPlainText();
+    _nle->executeScript(script.toStdString().c_str());
+}
+
+void MainWindow::on_clearScriptConsoleButton_clicked()
+{
+    ui->scriptEditBox->clear();
+}

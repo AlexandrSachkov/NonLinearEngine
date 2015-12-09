@@ -24,6 +24,10 @@ public:
 private slots:
     void on_actionScene_triggered();
 
+    void on_scriptExecuteBtn_clicked();
+
+    void on_clearScriptConsoleButton_clicked();
+
 private:
     Ui::MainWindow* ui;
     DisplayWindow* _display;
