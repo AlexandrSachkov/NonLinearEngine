@@ -7,6 +7,8 @@
 #include <QCloseEvent>
 #include <QKeyEvent>
 #include <QMouseEvent>
+#include <QFont>
+#include <QFontMetrics>
 
 MainWindow::MainWindow(NLE::INle* nle, bool& running, QWidget *parent) :
     QMainWindow(parent),
@@ -22,6 +24,19 @@ MainWindow::MainWindow(NLE::INle* nle, bool& running, QWidget *parent) :
     setCentralWidget(_display);
     nle->setWindowHandle((HWND)_display->winId());
 
+    QFont font;
+    font.setFamily("Courier");
+    font.setStyleHint(QFont::Monospace);
+    font.setFixedPitch(true);
+    font.setPointSize(12);
+
+    QTextEdit* editor = new QTextEdit();
+    ui->scriptEditBox->setFont(font);
+
+    const int tabStop = 4;  // 4 characters
+
+    QFontMetrics metrics(font);
+    ui->scriptEditBox->setTabStopWidth(tabStop * metrics.width(' '));
 }
 
 MainWindow::~MainWindow()
