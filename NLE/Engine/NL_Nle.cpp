@@ -86,34 +86,6 @@ namespace NLE
 			1000000000L	//1 FPS
 			);
 		core.attachSystem(SYS::SYS_SCENE_MANAGER, sceneMngrProcDesc, std::unique_ptr<SceneManager>(new SceneManager()));
-
-		lua_State* luaState;
-		luaState = luaL_newstate();
-		luaL_openlibs(luaState);
-
-		char* luaScript =
-			"x = 8 "
-			"return x";
-
-		int status = luaL_loadstring(luaState, luaScript);
-		if (status)
-		{
-			auto error = std::string(lua_tostring(luaState, -1));
-			CONSOLE::out(CONSOLE::ERR, "LUA failed to load script: " + error);
-			return;
-		}
-
-		status = lua_pcall(luaState, 0, LUA_MULTRET, 0);
-		if (status)
-		{
-			auto error = std::string(lua_tostring(luaState, -1));
-			CONSOLE::out(CONSOLE::ERR, "LUA failed to run script: " + error);
-			return;
-		}
-
-		int returnVal = (int)lua_tointeger(luaState, -1);
-		CONSOLE::out(CONSOLE::STANDARD, "LUA return value: " + std::to_string(returnVal));
-		lua_close(luaState);
 	}
 
 	Nle::~Nle()
@@ -182,26 +154,10 @@ namespace NLE
 			->setWindowHandle(handle);
 	}
 
-	void Nle::setScreenDimensions(uint_fast32_t width, uint_fast32_t height)
+	void Nle::executeScript(const char* script)
 	{
-		static_cast<GRAPHICS::ICameraManager*>(&Core::DeviceCore::instance().getSystemInterface(SYS::SYS_CAMERA_MANAGER))
-			->setScreenDimensions(width, height);
-		static_cast<GRAPHICS::IRenderingEngine*>(&Core::DeviceCore::instance().getSystemInterface(SYS::SYS_RENDERING_ENGINE))
-			->setScreenDimensions(width, height);
+		TLS::ScriptExecutor::reference executor = TLS::scriptExecutor.local();
+		executor.executeScript(script);
 	}
 
-	void Nle::setFullscreen(bool fullscreen)
-	{
-		static_cast<GRAPHICS::IRenderingEngine*>(&Core::DeviceCore::instance().getSystemInterface(SYS::SYS_RENDERING_ENGINE))
-			->setFullscreen(fullscreen);
-	}
-
-	void Nle::importScene(const char* path)
-	{
-		std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
-		std::string strPath(path);
-		std::wstring wStrPath = converter.from_bytes(strPath);
-		static_cast<SceneManager*>(&Core::DeviceCore::instance().getSystemInterface(SYS::SYS_SCENE_MANAGER))
-			->importScene(wStrPath);
-	}
 }

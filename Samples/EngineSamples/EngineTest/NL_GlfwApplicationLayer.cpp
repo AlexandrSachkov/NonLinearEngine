@@ -110,14 +110,15 @@ bool NLEGlfwApplicationLayer::initialize()
 	_nle->attachPrintConsole(NLEGlfwApplicationLayer::printConsole);
 
 	_nle->setWindowHandle(glfwGetWin32Window(_window));
-	_nle->setScreenDimensions(_width, _height);
-	_nle->setFullscreen(_fullscreen);
+
+	std::string script = "NLE_setScreenDimensions(" + std::to_string(_width) + "," + std::to_string(_height) + ")";
+	_nle->executeScript(script.c_str());
+	_nle->executeScript("NLE_setFullscreen(false)");
 
 	if (!_nle->initialize()) 
 		return false;
 
-	char* path = "D:\\3DModels\\sponzaLit.DAE";
-	_nle->importScene(path);
+	_nle->executeScript("NLE_importScene(\"D:/3DModels/sponzaLit.DAE\")");
 
 	printf("======> Application Layer successfully initialized.\n");
 	return true;

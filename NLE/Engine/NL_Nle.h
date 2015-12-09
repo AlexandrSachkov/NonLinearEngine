@@ -5,6 +5,7 @@
 #include "NL_DllApi.h"
 #include <cstdint>
 
+struct lua_State;
 namespace NLE
 {
 	class Nle :public INle
@@ -30,12 +31,10 @@ namespace NLE
 		void attachPollEvents(void(*pollEvents)(void));
 		void attachPrintConsole(void(*printConsole)(CONSOLE::OUTPUT_TYPE, const char*));
 		void processEvent(INPUT::Event& event);
-
 		void setWindowHandle(void* handle);
-		void setScreenDimensions(uint_fast32_t width, uint_fast32_t height);
-		void setFullscreen(bool fullscreen);
 
-		void importScene(const char* path);
+		void executeScript(const char* script);
+
 	private:
 		Nle();
 		Nle(Nle const&) = delete;

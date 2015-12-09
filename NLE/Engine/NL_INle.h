@@ -22,12 +22,9 @@ namespace NLE
 		virtual void attachPollEvents(void(*pollEvents)(void)) = 0;
 		virtual void attachPrintConsole(void(*printConsole)(CONSOLE::OUTPUT_TYPE, const char*)) = 0;
 		virtual void processEvent(INPUT::Event& event) = 0;
-
 		virtual void setWindowHandle(void* handle) = 0;
-		virtual void setScreenDimensions(uint_fast32_t width, uint_fast32_t height) = 0;
-		virtual void setFullscreen(bool fullscreen) = 0;
 
-		virtual void importScene(const char* path) = 0;
+		virtual void executeScript(const char* script) = 0;
 	};
 }
 #endif

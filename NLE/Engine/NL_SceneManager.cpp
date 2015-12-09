@@ -4,6 +4,7 @@
 #include "NL_Systems.h"
 #include "NLCore\NL_DeviceCore.h"
 #include "NL_Console.h"
+#include "NL_ThreadLocal.h"
 
 #include <assert.h>
 

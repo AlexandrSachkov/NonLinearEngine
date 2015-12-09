@@ -11,6 +11,7 @@
 
 #include "tbb\atomic.h"
 
+struct lua_State;
 namespace NLE
 {
 	namespace GRAPHICS

@@ -7,10 +7,12 @@
 #include "NL_Systems.h"
 #include "NL_ISceneManager.h"
 #include "NLCore\NL_DeviceCore.h"
+#include "NL_ThreadLocal.h"
 
 #include "NL_D3D11Utility.h"
 #include "NL_GScene.h"
 #include "NL_Console.h"
+#include "lua.hpp"
 
 
 namespace NLE

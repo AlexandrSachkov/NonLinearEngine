@@ -16,6 +16,7 @@
 #include <string>
 #include <vector>
 
+struct lua_State;
 namespace NLE
 {
 	namespace Core
