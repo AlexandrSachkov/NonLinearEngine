@@ -9,6 +9,7 @@
 #include <QMouseEvent>
 #include <QFont>
 #include <QFontMetrics>
+#include <QString>
 
 MainWindow::MainWindow(NLE::INle* nle, bool& running, QWidget *parent) :
     QMainWindow(parent),
@@ -29,14 +30,14 @@ MainWindow::MainWindow(NLE::INle* nle, bool& running, QWidget *parent) :
     font.setStyleHint(QFont::Monospace);
     font.setFixedPitch(true);
     font.setPointSize(12);
-
     QTextEdit* editor = new QTextEdit();
-    ui->scriptEditBox->setFont(font);
 
     const int tabStop = 4;  // 4 characters
-
     QFontMetrics metrics(font);
+
+    ui->scriptEditBox->setFont(font);
     ui->scriptEditBox->setTabStopWidth(tabStop * metrics.width(' '));
+    ui->console->setFont(font);
 }
 
 MainWindow::~MainWindow()
