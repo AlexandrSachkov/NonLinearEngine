@@ -111,9 +111,10 @@ bool NLEGlfwApplicationLayer::initialize()
 
 	_nle->setWindowHandle(glfwGetWin32Window(_window));
 
-	std::string script = "NLE_setScreenDimensions(" + std::to_string(_width) + "," + std::to_string(_height) + ")";
+	std::string script = 
+		"NLE_setScreenDimensions(" + std::to_string(_width) + "," + std::to_string(_height) + ")" +
+		"NLE_setFullscreen(false)";
 	_nle->executeScript(script.c_str());
-	_nle->executeScript("NLE_setFullscreen(false)");
 
 	if (!_nle->initialize()) 
 		return false;
