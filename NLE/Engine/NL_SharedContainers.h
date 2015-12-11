@@ -12,7 +12,11 @@ namespace NLE
 
 		//Camera Manager
 		VIEW_PROJECTION_MATRIX,
-		EYE_VECTOR
+		EYE_VECTOR,
+
+		//RenderingEngine
+		FPS,
+		CANVAS_BG_COLOR
 	};
 }
 

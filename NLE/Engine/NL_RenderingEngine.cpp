@@ -41,6 +41,9 @@ namespace NLE
 
 			_viewProjection = &static_cast<NLE::Core::Data::SDistributor<DirectX::XMFLOAT4X4>*>(&engine.getSDistributor(VIEW_PROJECTION_MATRIX))->buildEndpoint(SYS::SYS_RENDERING_ENGINE);
 			_eye = &static_cast<NLE::Core::Data::SDistributor<DirectX::XMFLOAT4>*>(&engine.getSDistributor(EYE_VECTOR))->buildEndpoint(SYS::SYS_RENDERING_ENGINE);
+			_fps = &static_cast<NLE::Core::Data::SDistributor<double>*>(&engine.getSDistributor(FPS))->buildEndpoint(SYS::SYS_RENDERING_ENGINE);
+			_canvasBgColor = &static_cast<NLE::Core::Data::SDistributor<DirectX::XMFLOAT4>*>(&engine.getSDistributor(CANVAS_BG_COLOR))->buildEndpoint(SYS::SYS_RENDERING_ENGINE);
+			_canvasBgColor->modify(0, DirectX::XMFLOAT4(0.4f, 0.4f, 0.4f, 1.0f));
 
 			_procedure = [&]() {
 				render();
@@ -197,10 +200,7 @@ namespace NLE
 			DirectX::XMMATRIX viewProjection = DirectX::XMLoadFloat4x4(&(*_viewProjection)[0]);			
 			DirectX::XMVECTOR eye = DirectX::XMLoadFloat4(&(*_eye)[0]);
 
-			//Clear our backbuffer to the updated color
-			const float bgColor[] = { 0.4f, 0.4f, 0.4f, 1.0f };
-
-			_deviceContext->ClearRenderTargetView(_backBufferRenderTargetView, bgColor);
+			_deviceContext->ClearRenderTargetView(_backBufferRenderTargetView, &(*_canvasBgColor)[0].x);
 			_deviceContext->ClearDepthStencilView(_depthStencilView, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
 
 			if (scene)
@@ -259,11 +259,9 @@ namespace NLE
 				auto time = std::chrono::high_resolution_clock::now();
 				auto diff = std::chrono::duration_cast<std::chrono::nanoseconds>(time - _previousTime).count();
 				double fps = 1 / (diff / _frameCount * 0.000000001);
+				_fps->modify(0, fps);
 
-				//CONSOLE::out(CONSOLE::STANDARD, "FPS: " + std::to_string(fps));
 				_previousTime = time;
-
-
 				_frameCount = 0;
 			}
 		}

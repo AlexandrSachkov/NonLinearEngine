@@ -7,7 +7,6 @@ SET(HEADERS
 	NL_CameraManager.h
 	NL_ICameraManager.h
 	NL_Console.h
-	NL_ConsolePump.h
 	NL_ConsoleOutType.h
 	NL_D3D11Utility.h
 	NL_D3D11Utility.inl
@@ -24,13 +23,13 @@ SET(HEADERS
 	NL_SceneManager.h
 	NL_ISceneManager.h
 	NL_ScriptCallbacks.h
-	NL_ScriptEngine.h
-	NL_IScriptEngine.h
 	NL_ScriptExecutor.h
 	NL_SharedContainers.h
 	NL_Systems.h
 	NL_TextureLoader.h
 	NL_ThreadLocal.h
+	NL_UiManager.h
+	NL_IUiManager.h
 	
 	DDSTextureLoader.h
 	WICTextureLoader.h
@@ -41,7 +40,6 @@ SET(SOURCES
 	NL_Camera.cpp
 	NL_CameraManager.cpp
 	NL_Console.cpp
-	NL_ConsolePump.cpp
 	NL_D3D11Utility.cpp
 	NL_GScene.cpp
 	NL_InputProcessor.cpp
@@ -49,9 +47,9 @@ SET(SOURCES
 	NL_RenderingEngine.cpp
 	NL_SceneManager.cpp
 	NL_ScriptCallbacks.cpp
-	NL_ScriptEngine.cpp
 	NL_ScriptExecutor.cpp
 	NL_TextureLoader.cpp
+	NL_UiManager.cpp
 	
 	DDSTextureLoader.cpp
 	WICTextureLoader.cpp

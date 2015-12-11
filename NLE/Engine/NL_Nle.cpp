@@ -10,9 +10,8 @@
 #include "NL_Systems.h"
 #include "NL_SharedContainers.h"
 #include "NL_Console.h"
-#include "NL_ConsolePump.h"
+#include "NL_UiManager.h"
 #include "NL_RenderingEngine.h"
-#include "NL_ScriptEngine.h"
 
 #include "lua.hpp"
 #include "tbb\spin_mutex.h"
@@ -35,6 +34,7 @@ namespace NLE
 		_defaultGrainSize(6500)
 	{
 		_runningLock = new tbb::spin_mutex();
+
 		Core::DeviceCore& core = Core::DeviceCore::instance();
 		core.setClockPeriodNs(1000000L);
 
@@ -44,16 +44,18 @@ namespace NLE
 		core.installSContainer<double>(SCROLL_OFFSET, 2, _defaultGrainSize);	// 2 slots for x and y components
 		core.installSContainer<DirectX::XMFLOAT4X4>(VIEW_PROJECTION_MATRIX, 1, _defaultGrainSize);
 		core.installSContainer<DirectX::XMFLOAT4>(EYE_VECTOR, 1, _defaultGrainSize);
+		core.installSContainer<double>(FPS, 1, _defaultGrainSize);
+		core.installSContainer<DirectX::XMFLOAT4>(CANVAS_BG_COLOR, 1, _defaultGrainSize);
 
 		// Attach systems
-		Core::ExecutionDesc consoleProcDesc(
+		Core::ExecutionDesc uiManagerProcDesc(
 			Core::Priority::LOW,
 			Core::Execution::RECURRING,
 			Core::Mode::SYNC,
 			Core::Startup::AUTOMATIC,
-			100000000L	//10 FPS
+			33333333L	//30 FPS
 			);
-		core.attachSystem(SYS::SYS_CONSOLE_PUMP, consoleProcDesc, std::unique_ptr<CONSOLE::ConsolePump>(new CONSOLE::ConsolePump()));
+		core.attachSystem(SYS::SYS_UI_MANAGER, uiManagerProcDesc, std::unique_ptr<UI::UiManager>(new UI::UiManager()));
 
 		Core::ExecutionDesc inputProcDesc(
 			Core::Priority::HIGH,
@@ -90,15 +92,6 @@ namespace NLE
 			1000000000L	//1 FPS
 			);
 		core.attachSystem(SYS::SYS_SCENE_MANAGER, sceneMngrProcDesc, std::unique_ptr<SceneManager>(new SceneManager()));
-
-		Core::ExecutionDesc scriptEngineProcDesc(
-			Core::Priority::STANDARD,
-			Core::Execution::RECURRING,
-			Core::Mode::ASYNC,
-			Core::Startup::AUTOMATIC,
-			100000000L	//10 FPS
-			);
-		core.attachSystem(SYS::SYS_SCRIPT_ENGINE, scriptEngineProcDesc, std::unique_ptr<SCRIPT::ScriptEngine>(new SCRIPT::ScriptEngine()));
 	}
 
 	Nle::~Nle()
@@ -126,7 +119,7 @@ namespace NLE
 		_initialized = false;
 		CONSOLE::out(CONSOLE::STANDARD, L"NLE released.");
 
-		CONSOLE::Console::instance().outputConsole(); //output all the remaining console data after ConsolePump has been released
+		CONSOLE::Console::instance().outputConsole(); //output all the remaining console data after UiManager has been released
 		CONSOLE::Console::instance().release();
 
 		delete this;
@@ -179,16 +172,17 @@ namespace NLE
 		_runningLock->lock();
 		running = _running;
 		_runningLock->unlock();
+		static_cast<UI::UiManager*>(&Core::DeviceCore::instance().getSystemInterface(SYS::SYS_UI_MANAGER))
+			->executeScript(script, running);
+	}
 
-		if (running)
-		{
-			static_cast<SCRIPT::IScriptEngine*>(&Core::DeviceCore::instance().getSystemInterface(SYS::SYS_SCRIPT_ENGINE))
-				->executeScript(script);
-		}
-		else
-		{
-			TLS::ScriptExecutor::reference executor = TLS::scriptExecutor.local();
-			executor.executeScript(script);
-		}	
+	void Nle::bindScriptCallback(const char* name, int(*callback)(lua_State* state))
+	{
+		bool running;
+		_runningLock->lock();
+		running = _running;
+		_runningLock->unlock();
+		static_cast<UI::UiManager*>(&Core::DeviceCore::instance().getSystemInterface(SYS::SYS_UI_MANAGER))
+			->bindScriptCallback(name, callback, running);
 	}
 }

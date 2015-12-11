@@ -31,13 +31,13 @@ namespace NLE
 
 		void run();
 		void stop();
-		bool isRunning;
 
 		void attachPollEvents(void(*pollEvents)(void));
 		void attachPrintConsole(void(*printConsole)(CONSOLE::OUTPUT_TYPE, const char*));
 		void processEvent(INPUT::Event& event);
 		void setWindowHandle(void* handle);
 
+		void bindScriptCallback(const char* name, int(*)(lua_State* state));
 		void executeScript(const char* script);
 
 	private:
@@ -47,9 +47,10 @@ namespace NLE
 
 		static Nle* _nle;
 		bool _initialized;
-		bool _running;
 		uint_fast32_t _defaultGrainSize;
+
 		tbb::spin_mutex* _runningLock;
+		bool _running;
 	};
 
 #if defined (NLE_DLL) && defined(NLE_DLL_EXPORT)

@@ -27,6 +27,11 @@ namespace NLE
 			return _state;
 		}
 
+		void ScriptExecutor::registerCallback(std::string name, int(*callback)(lua_State* state))
+		{
+			lua_register(_state, name.c_str(), callback);
+		}
+
 		bool ScriptExecutor::executeScript(const char* script)
 		{
 			lua_settop(_state, 0);

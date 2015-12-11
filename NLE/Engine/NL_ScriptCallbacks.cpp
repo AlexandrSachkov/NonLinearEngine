@@ -8,6 +8,7 @@
 #include "NL_CameraManager.h"
 #include "NL_SceneManager.h"
 #include "NL_Console.h"
+#include <string>
 
 namespace NLE
 {
@@ -15,6 +16,7 @@ namespace NLE
 	{
 		int Callback::setScreenDimensions(lua_State* state)
 		{
+			lua_settop(state, 2);
 			if (lua_isnumber(state, 1) && lua_isnumber(state, 2))
 			{
 				auto width = lua_tointeger(state, 1);
@@ -31,6 +33,7 @@ namespace NLE
 
 		int Callback::setFullscreen(lua_State* state)
 		{
+			lua_settop(state, 1);
 			if (lua_isboolean(state, 1))
 			{
 				static_cast<GRAPHICS::RenderingEngine*>(&Core::DeviceCore::instance().getSystemInterface(SYS::SYS_RENDERING_ENGINE))
@@ -42,6 +45,7 @@ namespace NLE
 
 		int Callback::importScene(lua_State* state)
 		{
+			lua_settop(state, 1);
 			if (lua_isstring(state, 1))
 			{
 				TLS::StringConverter::reference converter = TLS::strConverter.local();
@@ -54,11 +58,23 @@ namespace NLE
 
 		int Callback::printConsole(lua_State* state)
 		{
+			lua_settop(state, 1);
 			if (lua_isstring(state, 1))
 			{
 				CONSOLE::out(CONSOLE::STANDARD, lua_tostring(state, 1));
 				return 0;
 			}
+			return 0;
+		}
+
+		int Callback::getCanvasBgColor(lua_State* state)
+		{
+
+			return 0;
+		}
+
+		int Callback::setCanvasBgColor(lua_State* state)
+		{
 			return 0;
 		}
 	}

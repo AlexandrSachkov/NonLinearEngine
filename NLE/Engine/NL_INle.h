@@ -4,6 +4,7 @@
 #include "NL_ConsoleOutType.h"
 #include <cstdint>
 
+struct lua_State;
 namespace NLE
 {
 	namespace INPUT
@@ -24,6 +25,7 @@ namespace NLE
 		virtual void processEvent(INPUT::Event& event) = 0;
 		virtual void setWindowHandle(void* handle) = 0;
 
+		virtual void bindScriptCallback(const char* name, int(*)(lua_State* state)) = 0;
 		virtual void executeScript(const char* script) = 0;
 	};
 }

@@ -58,6 +58,8 @@ namespace NLE
 
 			NLE::Core::Data::SContainer<DirectX::XMFLOAT4X4>* _viewProjection;
 			NLE::Core::Data::SContainer<DirectX::XMFLOAT4>* _eye;
+			NLE::Core::Data::SContainer<double>* _fps;
+			NLE::Core::Data::SContainer<DirectX::XMFLOAT4>* _canvasBgColor;
 
 			HWND _hwnd;
 			uint_fast32_t _screenWidth;

@@ -55,8 +55,7 @@ namespace NLE
 			DirectX::XMStoreFloat4x4(&viewProjection, DirectX::XMMatrixIdentity());
 			_viewProjection->modify(0, viewProjection);
 
-			DirectX::XMFLOAT4 eye;
-			DirectX::XMStoreFloat4(&eye, DirectX::XMVectorSet(0.0f, 0.0f, 0.0f, 0.0f));
+			DirectX::XMFLOAT4 eye(0.0f, 0.0f, 0.0f, 0.0f);
 			_eye->modify(0, eye);
 
 			_procedure = [&](){
