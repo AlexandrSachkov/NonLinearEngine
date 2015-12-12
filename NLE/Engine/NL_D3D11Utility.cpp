@@ -32,6 +32,7 @@ THE SOFTWARE.
 
 #include <d3dcompiler.h>
 #include <assert.h>
+#include "comdef.h"
 
 namespace NLE
 {
@@ -79,7 +80,7 @@ namespace NLE
 
 			UINT creationFlags = 0;
 #if defined(_DEBUG) || defined(DEBUG)
-			creationFlags |= D3D11_CREATE_DEVICE_DEBUG;
+			//creationFlags |= D3D11_CREATE_DEVICE_DEBUG;
 #endif
 
 			//Create our SwapChain
@@ -99,7 +100,8 @@ namespace NLE
 
 			if (FAILED(hr))
 			{
-				CONSOLE::out(CONSOLE::ERR, L"Failed to create DX11 device and swap chain.");
+				_com_error err(hr);
+				CONSOLE::out(CONSOLE::ERR, err.ErrorMessage());
 				return false;
 			}
 
