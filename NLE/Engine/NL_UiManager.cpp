@@ -1,6 +1,9 @@
 #include "NL_UiManager.h"
 #include "NL_Console.h"
 #include "NL_ThreadLocal.h"
+#include "NLCore\NL_DeviceCore.h"
+#include "NL_Systems.h"
+#include "NL_SharedContainers.h"
 
 #include "lua.hpp"
 
@@ -24,22 +27,13 @@ namespace NLE
 		{
 			assert(!_initialized && _printConsole);
 
-			_initialized = true;
-			return _initialized;
-		}
+			TLS::ScriptExecutor::reference executor = TLS::scriptExecutor.local();
+			executor.registerCallback("NLE_ui_getData", uiGetData);
+			executor.registerCallback("NLE_ui_setData", uiSetData);
 
-		void UiManager::release()
-		{
-			_initialized = false;
-		}
+			_fps = &static_cast<NLE::Core::Data::SDistributor<double>*>(&engine.getSDistributor(FPS))->buildEndpoint(SYS::SYS_UI_MANAGER);
+			_canvasBgColor = &static_cast<NLE::Core::Data::SDistributor<DirectX::XMFLOAT4>*>(&engine.getSDistributor(CANVAS_BG_COLOR))->buildEndpoint(SYS::SYS_UI_MANAGER);
 
-		bool UiManager::initialized()
-		{
-			return _initialized;
-		}
-
-		std::function<void()> const& UiManager::getExecutionProcedure()
-		{
 			_procedure = [&]() {
 				CONSOLE::Console::instance().outputConsole();
 
@@ -58,12 +52,94 @@ namespace NLE
 				}			
 			};
 
+			_initialized = true;
+			return _initialized;
+		}
+
+		void UiManager::release()
+		{
+			_initialized = false;
+		}
+
+		bool UiManager::initialized()
+		{
+			return _initialized;
+		}
+
+		std::function<void()> const& UiManager::getExecutionProcedure()
+		{
 			return _procedure;
 		}
 
 		Core::ISystem& UiManager::getInterface()
 		{
 			return *this;
+		}
+
+		int UiManager::uiGetData(lua_State* state)
+		{
+			return static_cast<UI::UiManager*>(&Core::DeviceCore::instance().getSystemInterface(SYS::SYS_UI_MANAGER))
+				->getData(state);
+		}
+
+		int UiManager::uiSetData(lua_State* state)
+		{
+			return static_cast<UI::UiManager*>(&Core::DeviceCore::instance().getSystemInterface(SYS::SYS_UI_MANAGER))
+				->setData(state);
+		}
+
+		int UiManager::getData(lua_State* state)
+		{
+			lua_settop(state, 1);
+			if (lua_isstring(state, 1))
+			{
+				std::string dataId = lua_tostring(state, 1);
+				if (dataId.compare("fps") == 0)
+				{
+					lua_pushnumber(state, (*_fps)[0]);
+					return 1;
+				}
+				else if (dataId.compare("canvasBgColor") == 0)
+				{
+					DirectX::XMFLOAT4 canvasColor = (*_canvasBgColor)[0];
+					lua_pushnumber(state, canvasColor.x);
+					lua_pushnumber(state, canvasColor.y);
+					lua_pushnumber(state, canvasColor.z);
+					lua_pushnumber(state, canvasColor.w);
+					return 4;
+				}
+				else
+				{
+					CONSOLE::out(CONSOLE::ERR, "Data ID not supported: " + dataId);
+					return 0;
+				}				
+			}
+			return 0;
+		}
+
+		int UiManager::setData(lua_State* state)
+		{
+			if (lua_isstring(state, 1))
+			{
+				std::string dataId = lua_tostring(state, 1);
+				if (dataId.compare("canvasBgColor") == 0)
+				{			
+					DirectX::XMFLOAT4 canvasColor = DirectX::XMFLOAT4(
+						(float)lua_tonumber(state, 2),
+						(float)lua_tonumber(state, 3),
+						(float)lua_tonumber(state, 4),
+						(float)lua_tonumber(state, 5)
+						);
+					_canvasBgColor->modify(0, canvasColor);
+					return 0;
+				}
+				else
+				{
+					CONSOLE::out(CONSOLE::ERR, "Data ID not supported: " + dataId);
+					return 0;
+				}
+			}
+			return 0;
 		}
 
 		void UiManager::bindScriptCallback(const char* name, int(*callback)(lua_State* state), bool async)

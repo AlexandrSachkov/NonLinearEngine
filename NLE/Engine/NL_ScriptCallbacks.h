@@ -17,9 +17,6 @@ namespace NLE
 			static int importScene(lua_State* state);
 
 			static int printConsole(lua_State* state);
-
-			static int getCanvasBgColor(lua_State* state);
-			static int setCanvasBgColor(lua_State* state);
 		};		
 	}
 }

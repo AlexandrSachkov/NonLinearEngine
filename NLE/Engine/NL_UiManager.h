@@ -4,8 +4,10 @@
 #include "NL_IUiManager.h"
 #include "NLCore\NL_System.h"
 #include "NL_IConsolePump.h"
+#include "NLCore\NL_SContainer.h"
 
 #include "tbb\concurrent_queue.h"
+#include "DirectXMath.h"
 
 namespace NLE
 {
@@ -29,18 +31,26 @@ namespace NLE
 			bool initialized();
 
 			std::function<void()> const& getExecutionProcedure();
-			Core::ISystem& getInterface();
-
+			Core::ISystem& getInterface();		
+			
 			void bindScriptCallback(const char* name, int(*)(lua_State* state), bool async);
 			void executeScript(const char* script, bool async);
 
-		private:
+		private:			
+			int getData(lua_State* state);
+			int setData(lua_State* state);
+			static int uiGetData(lua_State* state);
+			static int uiSetData(lua_State* state);
+
 			bool _initialized;
 			std::function<void()> _procedure;
 			void(*_printConsole)(CONSOLE::OUTPUT_TYPE, const char*);
 
 			tbb::concurrent_queue<std::string> _scripts;
 			tbb::concurrent_queue<std::pair<std::string, int(*)(lua_State* state)>> _callbacks;
+
+			NLE::Core::Data::SContainer<double>* _fps;
+			NLE::Core::Data::SContainer<DirectX::XMFLOAT4>* _canvasBgColor;
 		};
 	}
 }

@@ -66,16 +66,5 @@ namespace NLE
 			}
 			return 0;
 		}
-
-		int Callback::getCanvasBgColor(lua_State* state)
-		{
-
-			return 0;
-		}
-
-		int Callback::setCanvasBgColor(lua_State* state)
-		{
-			return 0;
-		}
 	}
 }
