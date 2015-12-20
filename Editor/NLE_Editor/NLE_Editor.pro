@@ -29,3 +29,8 @@ else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../../bin64/NonLinearEn
 
 INCLUDEPATH += $$PWD/../../bin64/NonLinearEngine/include
 DEPENDPATH += $$PWD/../../bin64/NonLinearEngine/include
+
+win32: LIBS += -L$$PWD/../../../../"C++ Libraries"/luajit/lib/ -llua51
+
+INCLUDEPATH += $$PWD/../../../../"C++ Libraries"/luajit/include
+DEPENDPATH += $$PWD/../../../../"C++ Libraries"/luajit/include

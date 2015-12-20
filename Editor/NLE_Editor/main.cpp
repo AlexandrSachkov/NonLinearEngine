@@ -5,6 +5,9 @@
 #define NLE_DLL
 #include "NLE/NL_Nle.h"
 #include "NLE/NL_ConsoleOutType.h"
+#include <QString>
+#include "lua.hpp"
+#include <QLayout>
 
 QApplication* a = nullptr;
 bool running = true;
@@ -13,6 +16,7 @@ NLE::INle* nle = nullptr;
 
 void processEvents();
 void printConsole(NLE::CONSOLE::OUTPUT_TYPE type, const char* data);
+int setData(lua_State* state);
 
 int main(int argc, char *argv[])
 {
@@ -25,24 +29,21 @@ int main(int argc, char *argv[])
     w = new MainWindow(nle, running);
     a->installEventFilter(w);
 
+    w->layout()->setSpacing(0);
     //w->setStyleSheet("background-color: rgba(71,71,71, 1);");
     w->setWindowTitle("NLE Editor");
     w->showMaximized();
 
-    if (!nle->initialize())
+    nle->bindScriptCallback("NLE_editor_setData", setData);
+    if (nle->initialize())
+    {
+        nle->run();
+    }
+    else
     {
         printf("NLE failed to initialize.\n");
     }
-
-    char* path = "D:\\3DModels\\sponzaLit.DAE";
-    //nle->importScene(path);
-
-    nle->run();
-    qDebug() << "Releasing\n";
-
     nle->release();
-
-    qDebug() << "\n\nReleased!\n";
 
     delete w;
     delete a;
@@ -56,6 +57,7 @@ void processEvents()
     {
         a->sendPostedEvents();
         a->processEvents();
+        w->updateUI();
     }
     else
     {
@@ -66,4 +68,9 @@ void processEvents()
 void printConsole(NLE::CONSOLE::OUTPUT_TYPE type, const char* data)
 {
     w->printConsole(type, data);
+}
+
+int setData(lua_State* state)
+{
+    return w->setData(state);
 }

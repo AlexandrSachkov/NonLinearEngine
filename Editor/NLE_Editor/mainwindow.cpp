@@ -50,7 +50,6 @@ bool MainWindow::eventFilter(QObject *obj, QEvent *event)
     if(obj == this && event->type() == QEvent::Close)
     {
         _running = false;
-        printf("closing");
     }
 
     return QObject::eventFilter(obj, event);
@@ -75,4 +74,29 @@ void MainWindow::on_scriptExecuteBtn_clicked()
 void MainWindow::on_clearScriptConsoleButton_clicked()
 {
     ui->scriptEditBox->clear();
+}
+
+void MainWindow::updateUI()
+{
+    _nle->executeScript("NLE_editor_setData(\"fps\", NLE_ui_getData(\"fps\"))");
+}
+
+int MainWindow::setData(lua_State* state)
+{
+    if (lua_isstring(state, 1))
+    {
+        std::string dataId = lua_tostring(state, 1);
+        if (dataId.compare("fps") == 0)
+        {
+            ui->fpsDisplay->setText(QString::number(lua_tonumber(state, 2)));
+            return 0;
+        }
+        else
+        {
+            std::string msg("Data ID not supported: " + dataId);
+            printConsole(NLE::CONSOLE::ERR, msg.c_str());
+            return 0;
+        }
+    }
+    return 0;
 }

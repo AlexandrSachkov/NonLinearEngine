@@ -4,6 +4,7 @@
 #include "NLE/NL_INle.h"
 #include "NLE/NL_ConsoleOutType.h"
 
+#include "lua.hpp"
 #include <QMainWindow>
 #include "displaywindow.h"
 
@@ -20,6 +21,8 @@ public:
     ~MainWindow();
 
     void printConsole(NLE::CONSOLE::OUTPUT_TYPE type, const char* data);
+    void updateUI();
+    int setData(lua_State* state);
 
 private slots:
     void on_actionScene_triggered();
@@ -27,7 +30,6 @@ private slots:
     void on_scriptExecuteBtn_clicked();
 
     void on_clearScriptConsoleButton_clicked();
-
 private:
     Ui::MainWindow* ui;
     DisplayWindow* _display;
