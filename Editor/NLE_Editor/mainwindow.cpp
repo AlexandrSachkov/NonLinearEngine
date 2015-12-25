@@ -38,6 +38,8 @@ MainWindow::MainWindow(NLE::INle* nle, bool& running, QWidget *parent) :
     ui->scriptEditBox->setFont(font);
     ui->scriptEditBox->setTabStopWidth(tabStop * metrics.width(' '));
     ui->console->setFont(font);
+
+    this->tabifyDockWidget(ui->sceneGraphDock, ui->workspaceDock);
 }
 
 MainWindow::~MainWindow()
