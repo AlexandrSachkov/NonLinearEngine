@@ -36,7 +36,6 @@ namespace NLE
 		_runningLock = new tbb::spin_mutex();
 
 		Core::DeviceCore& core = Core::DeviceCore::instance();
-		core.setClockPeriodNs(1000000L);
 
 		// Install shared containers
 		core.installSContainer<char>(CAMERA_COMMANDS, GRAPHICS::COMMANDS::CAMERA::NUM_COMMANDS, _defaultGrainSize); //one slot for each command

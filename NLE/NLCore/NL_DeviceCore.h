@@ -7,6 +7,10 @@
 #include <cstdint>
 #include <functional>
 
+namespace tbb
+{
+	class spin_mutex;
+}
 namespace NLE
 {
 	namespace Core
@@ -16,7 +20,6 @@ namespace NLE
 			class Distributor;
 		}
 
-		class Clock;
 		class Scheduler;
 		class System;
 		class SysManager;
@@ -48,7 +51,6 @@ namespace NLE
 			template <typename T>
 			void installSContainer(uint_fast32_t id, uint_fast32_t size, uint_fast32_t grainSize);
 
-			void setClockPeriodNs(unsigned long long periodNs);
 			void setNumThreads(uint_fast32_t numThreads);
 			
 			void run();
@@ -70,8 +72,9 @@ namespace NLE
 			void operator=(DeviceCore const&) = delete;
 
 			static DeviceCore* _deviceCore;
+			tbb::spin_mutex* _runningLock;
+			bool _running;
 
-			std::unique_ptr<Clock> _clock;
 			std::unique_ptr<SysManager> _sysManager;
 			std::unique_ptr<Scheduler> _scheduler;
 			std::unique_ptr<StateManager> _stateManager;

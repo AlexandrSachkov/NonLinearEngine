@@ -2,7 +2,6 @@ PROJECT(NLCore)
 
 SET(HEADERS
 	NL_AsyncTask.h 
-	NL_Clock.h
 	NL_DataRequest.h
 	NL_DeviceCore.h
 	NL_DeviceCore.inl
@@ -30,7 +29,6 @@ SET(HEADERS
 	NL_Thread.h
 	)
 SET(SOURCES 
-	NL_Clock.cpp
 	NL_DeviceCore.cpp
 	NL_Scheduler.cpp		
 	NL_SysManager.cpp

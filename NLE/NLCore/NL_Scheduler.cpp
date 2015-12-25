@@ -1,7 +1,6 @@
 #include "NL_Scheduler.h"
 #include "NL_SysManager.h"
 #include "tbb/tbb.h"
-#include "NL_Clock.h"
 #include "NL_System.h"
 #include "NL_AsyncTask.h"
 #include "NL_SyncTask.h"
@@ -30,8 +29,7 @@ namespace NLE
 		{
 			assert(!_initialized);
 
-			uint_fast32_t _numHardwareThreads = getNumThreads();
-			_taskSchedulerInit = new tbb::task_scheduler_init(_numHardwareThreads + 1);
+			_taskSchedulerInit = new tbb::task_scheduler_init(_numThreads);
 			_initialized = true;	
 			return true;
 		}

@@ -1,6 +1,5 @@
 #include "NL_DeviceCore.h"
 
-#include "NL_Clock.h"
 #include "NL_System.h"
 #include "NL_SysManager.h"
 #include "NL_Scheduler.h"
@@ -11,6 +10,7 @@
 #include "NL_StateManager.h"
 
 #include <cassert>
+#include "tbb\spin_mutex.h"
 
 namespace NLE 
 {
@@ -19,9 +19,11 @@ namespace NLE
 		DeviceCore* DeviceCore::_deviceCore = nullptr;
 
 		DeviceCore::DeviceCore() :
-			_initialized(false)
+			_initialized(false),
+			_running(false)
 		{ 
-			_clock = std::make_unique<Clock>();
+			_runningLock = new tbb::spin_mutex();
+
 			_sysManager = std::make_unique<SysManager>();
 			_scheduler = std::make_unique<Scheduler>();
 			_stateManager = std::make_unique<StateManager>();
@@ -34,11 +36,6 @@ namespace NLE
 		bool DeviceCore::initialize()
 		{
 			assert(!_initialized);
-
-			if (!_clock->initialize([&](){
-				_scheduler->manageExecution(_sysManager, _stateManager);
-			}))
-				return false;
 				
 			if (!_scheduler->initialize())
 				return false;
@@ -63,8 +60,6 @@ namespace NLE
 				_stateManager->release();
 			if (_scheduler)
 				_scheduler->release();
-			if (_clock)
-				_clock->release();
 
 			_initialized = false;
 		}
@@ -72,11 +67,6 @@ namespace NLE
 		void DeviceCore::attachSystem(uint_fast32_t sysId, ExecutionDesc& executionDesc, std::unique_ptr<System> system)
 		{
 			_sysManager->attachSystem(sysId, executionDesc, std::move(system));
-		}
-
-		void DeviceCore::setClockPeriodNs(unsigned long long periodNs)
-		{
-			_clock->setPeriodNs(periodNs);
 		}
 
 		void DeviceCore::setNumThreads(uint_fast32_t numThreads)
@@ -87,17 +77,26 @@ namespace NLE
 		void DeviceCore::run()
 		{
 			assert(_initialized);
-			_clock->run();
+			_runningLock->lock();
+			_running = true;
+			_runningLock->unlock();
+
+			while (_running == true)
+			{
+				_scheduler->manageExecution(_sysManager, _stateManager);
+			}
 		}
 
 		void DeviceCore::stop()
 		{
-			_clock->stop();
+			_runningLock->lock();
+			_running = false;
+			_runningLock->unlock();
 		}
 
 		void DeviceCore::stopAndJoin()
 		{
-			_clock->stop();
+			stop();
 			while (_scheduler->getNumRunningTasks() > 0)
 			{
 			}

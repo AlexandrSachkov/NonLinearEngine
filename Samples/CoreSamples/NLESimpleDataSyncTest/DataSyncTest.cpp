@@ -8,7 +8,6 @@
 
 int main(){
 	NLE::Core::DeviceCore& devCore = NLE::Core::DeviceCore::instance();
-	devCore.setClockPeriodNs(1000000000L);
 
 	NLE::Core::ExecutionDesc execDesc
 		(
