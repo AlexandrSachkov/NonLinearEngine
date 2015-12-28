@@ -8,6 +8,7 @@
 #include "tbb\scalable_allocator.h"
 #include "tbb/atomic.h"
 
+
 namespace NLE 
 {
 	namespace Core 
@@ -23,7 +24,7 @@ namespace NLE
 			Scheduler();
 			~Scheduler();
 
-			bool initialize();
+			bool initialize(uint_fast32_t numSysThreads);
 			void release();
 
 			void setNumThreads(uint_fast32_t numThreads);

@@ -11,9 +11,6 @@ namespace NLE
 		class Callback
 		{
 		public:
-			static int setScreenDimensions(lua_State* state);
-			static int setFullscreen(lua_State* state);
-
 			static int importScene(lua_State* state);
 
 			static int printConsole(lua_State* state);

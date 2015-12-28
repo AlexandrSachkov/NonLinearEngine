@@ -12,9 +12,9 @@
 #include "NL_Console.h"
 #include "NL_UiManager.h"
 #include "NL_RenderingEngine.h"
+#include "NL_WindowManager.h"
 
 #include "lua.hpp"
-#include "tbb\spin_mutex.h"
 
 #include <assert.h>
 #include <memory>
@@ -30,10 +30,9 @@ namespace NLE
 
 	Nle::Nle() :
 		_initialized(false),
-		_running(false),
 		_defaultGrainSize(6500)
 	{
-		_runningLock = new tbb::spin_mutex();
+		_running.store(false);
 
 		Core::DeviceCore& core = Core::DeviceCore::instance();
 
@@ -47,20 +46,32 @@ namespace NLE
 		core.installSContainer<DirectX::XMFLOAT4>(CANVAS_BG_COLOR, 1, _defaultGrainSize);
 
 		// Attach systems
+		Core::ExecutionDesc windowProcDesc(
+			Core::Priority::STANDARD,
+			Core::Execution::RECURRING,
+			Core::Mode::SYNC,
+			Core::Startup::AUTOMATIC,
+			Core::Method::TASK,
+			16666666L	//60 FPS,
+			);
+		core.attachSystem(SYS::SYS_WINDOW_MANAGER, windowProcDesc, std::unique_ptr<WINDOW::WindowManager>(new WINDOW::WindowManager()));
+
 		Core::ExecutionDesc uiManagerProcDesc(
 			Core::Priority::LOW,
 			Core::Execution::RECURRING,
 			Core::Mode::SYNC,
 			Core::Startup::AUTOMATIC,
+			Core::Method::TASK,
 			33333333L	//30 FPS
 			);
 		core.attachSystem(SYS::SYS_UI_MANAGER, uiManagerProcDesc, std::unique_ptr<UI::UiManager>(new UI::UiManager()));
 
 		Core::ExecutionDesc inputProcDesc(
-			Core::Priority::HIGH,
+			Core::Priority::STANDARD,
 			Core::Execution::RECURRING,
-			Core::Mode::SYNC,
+			Core::Mode::ASYNC,
 			Core::Startup::AUTOMATIC,
+			Core::Method::TASK,
 			16666666L	//60 FPS
 			);
 		core.attachSystem(SYS::SYS_INPUT_PROCESSOR, inputProcDesc, std::unique_ptr<INPUT::InputProcessor>(new INPUT::InputProcessor()));
@@ -70,16 +81,20 @@ namespace NLE
 			Core::Execution::RECURRING,
 			Core::Mode::ASYNC,
 			Core::Startup::AUTOMATIC,
+			Core::Method::TASK,
 			16666666L	//60 FPS
 			);
 		core.attachSystem(SYS::SYS_CAMERA_MANAGER, cameraMngrProcDesc, std::unique_ptr<GRAPHICS::CameraManager>(new GRAPHICS::CameraManager()));
 
 		Core::ExecutionDesc renderingEngineProcDesc(
 			Core::Priority::STANDARD,
-			Core::Execution::RECURRING,
+			Core::Execution::SINGULAR,
 			Core::Mode::ASYNC,
 			Core::Startup::AUTOMATIC,
-			14285714L	//70 FPS
+			Core::Method::THREAD,
+			0L
+			//16393443L
+			//1666666L	//60 FPS		
 			);
 		core.attachSystem(SYS::SYS_RENDERING_ENGINE, renderingEngineProcDesc, std::unique_ptr<GRAPHICS::RenderingEngine>(new GRAPHICS::RenderingEngine()));
 
@@ -88,6 +103,7 @@ namespace NLE
 			Core::Execution::RECURRING,
 			Core::Mode::ASYNC,
 			Core::Startup::AUTOMATIC,
+			Core::Method::TASK,
 			1000000000L	//1 FPS
 			);
 		core.attachSystem(SYS::SYS_SCENE_MANAGER, sceneMngrProcDesc, std::unique_ptr<SceneManager>(new SceneManager()));
@@ -97,9 +113,26 @@ namespace NLE
 	{
 	}
 
-	bool Nle::initialize()
+	bool Nle::initialize(Size2D screenSize, bool fullscreen, bool decorated, std::wstring title)
 	{
 		assert(!_initialized);
+
+		static_cast<GRAPHICS::ICameraManager*>(&Core::DeviceCore::instance().getSystemInterface(SYS::SYS_CAMERA_MANAGER))
+			->setScreenDimensions(screenSize.width, screenSize.height);
+
+		std::unique_ptr<WINDOW::Initializer> windowInit = std::make_unique<WINDOW::Initializer>();
+		windowInit->screenSize = screenSize;
+		windowInit->fullscreen = fullscreen;
+		windowInit->decorated = decorated;
+		windowInit->title = title;
+		windowInit->openglMajorVersion = 4;
+		windowInit->openglMinorVersion = 5;
+		Core::DeviceCore::instance().setSystemInitializer(SYS::SYS_WINDOW_MANAGER, std::move(windowInit));
+
+		std::unique_ptr<GRAPHICS::CameraManagerInitializer> camInit = std::make_unique<GRAPHICS::CameraManagerInitializer>();
+		camInit->screenSize = screenSize;
+		Core::DeviceCore::instance().setSystemInitializer(SYS::SYS_CAMERA_MANAGER, std::move(camInit));
+
 		if (!Core::DeviceCore::instance().initialize())
 			return false;
 
@@ -127,61 +160,23 @@ namespace NLE
 	void Nle::run()
 	{
 		assert(_initialized);
-		_runningLock->lock();
-		_running = true;
-		_runningLock->unlock();
+		_running.store(true);
 		Core::DeviceCore::instance().run();
-	}
-
-	void Nle::attachPrintConsole(void(*printConsole)(CONSOLE::OUTPUT_TYPE, const char*))
-	{
-		assert(!_initialized);
-		CONSOLE::Console::instance().attachPrintConsole(printConsole);
 	}
 
 	void Nle::stop()
 	{
 		Core::DeviceCore::instance().stop();
-		_runningLock->lock();
-		_running = false;
-		_runningLock->unlock();
-	}
-
-	void Nle::attachPollEvents(void(*pollEvents)(void))
-	{
-		static_cast<INPUT::IInputProcessor*>(&Core::DeviceCore::instance().getSystemInterface(SYS::SYS_INPUT_PROCESSOR))
-			->attachPollEvents(pollEvents);
-	}
-
-	void Nle::processEvent(INPUT::Event& event)
-	{
-		static_cast<INPUT::IInputProcessor*>(&Core::DeviceCore::instance().getSystemInterface(SYS::SYS_INPUT_PROCESSOR))
-			->processEvent(event);
-	}
-
-	void Nle::setWindowHandle(void* handle)
-	{
-		static_cast<GRAPHICS::IRenderingEngine*>(&Core::DeviceCore::instance().getSystemInterface(SYS::SYS_RENDERING_ENGINE))
-			->setWindowHandle(handle);
-	}
-
-	void Nle::executeScript(const char* script)
-	{
-		bool running;
-		_runningLock->lock();
-		running = _running;
-		_runningLock->unlock();
-		static_cast<UI::UiManager*>(&Core::DeviceCore::instance().getSystemInterface(SYS::SYS_UI_MANAGER))
-			->executeScript(script, running);
-	}
-
-	void Nle::bindScriptCallback(const char* name, int(*callback)(lua_State* state))
-	{
-		bool running;
-		_runningLock->lock();
-		running = _running;
-		_runningLock->unlock();
-		static_cast<UI::UiManager*>(&Core::DeviceCore::instance().getSystemInterface(SYS::SYS_UI_MANAGER))
-			->bindScriptCallback(name, callback, running);
+		_running.store(false);
 	}
 }
+
+int main(void)
+{
+	NLE::Nle& nle = NLE::Nle::instance();
+	nle.initialize(NLE::Size2D(800, 600), false, true, L"NonLinear Engine");
+	nle.run();
+	nle.release();
+	return 0;
+}
+

@@ -8,8 +8,8 @@ set (NLE_VERSION_PATCH 0)
 
 
 IF(MSVC)
-	set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} /MT /WX /arch:AVX /Ox /Ob2 /Ot /Gt /Zc:implicitNoexcept-")
-	set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} /MTd /WX /arch:AVX /Od /Ob0 /Zc:implicitNoexcept-")
+	set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} /MD /WX /arch:AVX /Ox /Ob2 /Ot /Gt /Zc:implicitNoexcept-")
+	set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} /MDd /WX /arch:AVX /Od /Ob0 /Zc:implicitNoexcept-")
 ENDIF(MSVC)
 
 # Configuration GUI goes here

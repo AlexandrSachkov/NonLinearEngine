@@ -9,6 +9,7 @@ class SysTask;
 class Scheduler;
 class StateManager;
 class SysInterface;
+struct SysInitializer;
 
 class TestSystem : public NLE::Core::System, public NLE::Core::ISystem
 {
@@ -16,7 +17,7 @@ public:
 	TestSystem(uint_fast32_t id);
 	~TestSystem();
 
-	bool initialize(NLE::Core::IEngine& iEngine);
+	bool initialize(NLE::Core::IEngine& iEngine, std::unique_ptr<NLE::Core::SysInitializer> const& initializer);
 	bool initialized();
 	void release();
 	uint_fast32_t getID();

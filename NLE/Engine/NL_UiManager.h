@@ -15,6 +15,7 @@ namespace NLE
 	{
 		class IEngine;
 		class ISystem;
+		struct SysInitializer;
 	}
 
 	namespace UI
@@ -25,7 +26,7 @@ namespace NLE
 			UiManager();
 			~UiManager();
 
-			bool initialize(Core::IEngine& engine);
+			bool initialize(Core::IEngine& engine, std::unique_ptr<Core::SysInitializer> const& initializer);
 			void release();
 
 			bool initialized();

@@ -12,6 +12,7 @@ int main(){
 			NLE::Core::Execution::RECURRING,
 			NLE::Core::Mode::ASYNC,
 			NLE::Core::Startup::AUTOMATIC,
+			NLE::Core::Method::TASK,
 			0
 		);
 

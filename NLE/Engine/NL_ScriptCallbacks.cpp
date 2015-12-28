@@ -14,35 +14,6 @@ namespace NLE
 {
 	namespace SCRIPT
 	{
-		int Callback::setScreenDimensions(lua_State* state)
-		{
-			lua_settop(state, 2);
-			if (lua_isnumber(state, 1) && lua_isnumber(state, 2))
-			{
-				auto width = lua_tointeger(state, 1);
-				auto height = lua_tointeger(state, 2);
-
-				static_cast<GRAPHICS::RenderingEngine*>(&Core::DeviceCore::instance().getSystemInterface(SYS::SYS_RENDERING_ENGINE))
-					->setScreenDimensions((uint_fast32_t)width, (uint_fast32_t)height);
-				static_cast<GRAPHICS::ICameraManager*>(&Core::DeviceCore::instance().getSystemInterface(SYS::SYS_CAMERA_MANAGER))
-					->setScreenDimensions((uint_fast32_t)width, (uint_fast32_t)height);
-				return 0;
-			}
-			return 0;
-		}
-
-		int Callback::setFullscreen(lua_State* state)
-		{
-			lua_settop(state, 1);
-			if (lua_isboolean(state, 1))
-			{
-				static_cast<GRAPHICS::RenderingEngine*>(&Core::DeviceCore::instance().getSystemInterface(SYS::SYS_RENDERING_ENGINE))
-					->setFullscreen(lua_toboolean(state, 1) == 1);
-				return 0;
-			}
-			return 0;
-		}
-
 		int Callback::importScene(lua_State* state)
 		{
 			lua_settop(state, 1);

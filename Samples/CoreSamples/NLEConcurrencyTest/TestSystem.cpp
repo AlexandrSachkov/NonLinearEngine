@@ -1,5 +1,6 @@
 #include "TestSystem.h"
 #include "NLE\NLCore\NL_IEngine.h"
+#include "NLE\NLCore\NL_SysInitializer.h"
 
 TestSystem::TestSystem(uint_fast32_t id) :
 _id(id),
@@ -13,7 +14,7 @@ TestSystem::~TestSystem()
 
 }
 
-bool TestSystem::initialize(NLE::Core::IEngine& iEngine)
+bool TestSystem::initialize(NLE::Core::IEngine& iEngine, std::unique_ptr<NLE::Core::SysInitializer> const& initializer)
 {
 	_procedure = [&](){
 		printf("Running task for system %i\n", getID());

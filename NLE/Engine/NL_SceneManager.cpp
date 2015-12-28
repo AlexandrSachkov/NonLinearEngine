@@ -5,6 +5,7 @@
 #include "NLCore\NL_DeviceCore.h"
 #include "NL_Console.h"
 #include "NL_ThreadLocal.h"
+#include "NLCore\NL_SysInitializer.h"
 
 #include <assert.h>
 
@@ -24,7 +25,7 @@ namespace NLE
 
 	}
 
-	bool SceneManager::initialize(Core::IEngine& engine)
+	bool SceneManager::initialize(Core::IEngine& engine, std::unique_ptr<Core::SysInitializer> const& initializer)
 	{
 		assert(!_initialized);
 

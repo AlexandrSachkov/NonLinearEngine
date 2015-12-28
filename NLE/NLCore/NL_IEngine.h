@@ -11,7 +11,6 @@ namespace NLE
 		{
 			class Distributor;
 		}
-
 		class ISystem;
 		class IEngine
 		{
@@ -23,7 +22,6 @@ namespace NLE
 			virtual ISystem& getSystemInterface(uint_fast32_t sysId) = 0;
 			virtual Data::Distributor& getSDistributor(uint_fast32_t id) = 0;
 			virtual Data::Distributor& getMSDistributor(uint_fast32_t id) = 0;
-
 		};
 	}
 }

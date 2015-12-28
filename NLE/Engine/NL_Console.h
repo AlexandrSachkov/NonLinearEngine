@@ -6,6 +6,8 @@
 
 #include "tbb\concurrent_queue.h"
 
+#include <functional>
+
 #if defined(DEBUG) || defined(_DEBUG)
 #define CONSOLE_DEBUG(data) do { NLE::CONSOLE::out(NLE::CONSOLE::DEBUG, data); } while( false )
 #else
@@ -42,7 +44,7 @@ namespace NLE
 			static Console* _console;
 			tbb::concurrent_queue <std::pair<OUTPUT_TYPE, std::wstring>> _dataQueue;
 			std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> _converter;
-			void(*_printConsole)(OUTPUT_TYPE, const char*);
+			std::function<void(OUTPUT_TYPE, const char*)> _printConsole;
 		};
 		
 		static void out(OUTPUT_TYPE outType, const std::wstring& data)

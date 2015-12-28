@@ -47,8 +47,16 @@ namespace NLE
 
 		void Thread::setProcedure(std::function<void()> operation)
 		{
-			assert(!_running && !_releasing && _stopped);
-			_procedure = operation;
+			if (_running)
+			{
+				stopAndJoin();
+				_procedure = operation;
+				start();
+			}
+			else
+			{
+				_procedure = operation;
+			}			
 		}
 
 		void Thread::start()

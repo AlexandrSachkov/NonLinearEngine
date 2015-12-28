@@ -4,6 +4,8 @@
 #include "NL_ICameraManager.h"
 #include "NLCore\NL_System.h"
 #include "NLCore\NL_SContainer.h"
+#include "NLCore\NL_SysInitializer.h"
+#include "NL_CommonTypes.h"
 
 #include <DirectXMath.h>
 #include "tbb\atomic.h"
@@ -18,19 +20,28 @@ namespace NLE
 	{
 		class IEngine;
 		class ISystem;
+		struct SysInitializer;
 	}
 
 	namespace GRAPHICS
 	{
 		class RenderingEngine;
 		class Camera;
+
+		struct CameraManagerInitializer : public Core::SysInitializer
+		{
+			CameraManagerInitializer() :
+				screenSize(Size2D(0, 0)) {}
+			Size2D screenSize;
+		};
+
 		class CameraManager : public Core::System, public ICameraManager
 		{
 		public:
 			CameraManager();
 			~CameraManager();
 
-			bool initialize(Core::IEngine& engine);
+			bool initialize(Core::IEngine& engine, std::unique_ptr<Core::SysInitializer> const& initializer);
 			void release();
 			bool initialized();
 

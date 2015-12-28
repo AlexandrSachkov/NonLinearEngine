@@ -1,9 +1,14 @@
 #ifndef NL_NLE_H_
 #define NL_NLE_H_
 
-#include "NL_INle.h"
-#include "NL_DllApi.h"
+#include "NL_CommonTypes.h"
+#include "NL_ConsoleOutType.h"
+
+#include "tbb/atomic.h"
+
 #include <cstdint>
+#include <memory>
+#include <string>
 
 struct lua_State;
 namespace tbb
@@ -12,10 +17,10 @@ namespace tbb
 }
 namespace NLE
 {
-	class Nle :public INle
+	class Nle
 	{
 	public:
-		static INle& instance()
+		static Nle& instance()
 		{
 			if (!_nle)
 			{
@@ -26,19 +31,11 @@ namespace NLE
 
 		~Nle();
 
-		bool initialize();
+		bool initialize(Size2D screenSize, bool fullscreen, bool decorated, std::wstring title);
 		void release();
 
 		void run();
 		void stop();
-
-		void attachPollEvents(void(*pollEvents)(void));
-		void attachPrintConsole(void(*printConsole)(CONSOLE::OUTPUT_TYPE, const char*));
-		void processEvent(INPUT::Event& event);
-		void setWindowHandle(void* handle);
-
-		void bindScriptCallback(const char* name, int(*)(lua_State* state));
-		void executeScript(const char* script);
 
 	private:
 		Nle();
@@ -49,18 +46,8 @@ namespace NLE
 		bool _initialized;
 		uint_fast32_t _defaultGrainSize;
 
-		tbb::spin_mutex* _runningLock;
-		bool _running;
+		tbb::atomic<bool> _running;
 	};
-
-#if defined (NLE_DLL) && defined(NLE_DLL_EXPORT)
-	extern "C" NLE_API INle* APIENTRY instance()
-	{
-		return &Nle::instance();
-	}
-#elif defined(NLE_DLL)
-	extern "C" NLE_API INle* instance();
-#endif
 }
 
 

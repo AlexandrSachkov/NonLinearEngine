@@ -12,9 +12,6 @@ namespace NLE
 		class IRenderingEngine : public Core::ISystem
 		{
 		public:
-			virtual void setWindowHandle(void* handle) = 0;
-			virtual void setScreenDimensions(uint_fast32_t width, uint_fast32_t height) = 0;
-			virtual void setFullscreen(bool fullscreen) = 0;
 			virtual ID3D11Device* getDevice() = 0;
 		};
 	}

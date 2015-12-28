@@ -29,7 +29,7 @@ namespace NLE
 		SceneManager();
 		~SceneManager();
 
-		bool initialize(Core::IEngine& engine);
+		bool initialize(Core::IEngine& engine, std::unique_ptr<Core::SysInitializer> const& initializer);
 		void release();
 
 		bool initialized();

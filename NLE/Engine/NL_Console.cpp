@@ -8,6 +8,9 @@ namespace NLE
 
 		Console::Console()
 		{
+			_printConsole = [&](OUTPUT_TYPE, const char* text) {
+				printf("%s\n",text);
+			};
 		}
 
 		Console::~Console()
@@ -26,7 +29,7 @@ namespace NLE
 
 		void Console::attachPrintConsole(void(*printConsole)(OUTPUT_TYPE, const char*))
 		{
-			_printConsole = printConsole;
+
 		}
 
 		void Console::outputConsole()

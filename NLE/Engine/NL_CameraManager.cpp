@@ -8,6 +8,7 @@
 #include "NL_Camera.h"
 #include "NL_Systems.h"
 #include "NL_Console.h"
+#include "NLCore\NL_SysInitializer.h"
 
 #include <assert.h>
 #include <iostream>  
@@ -39,7 +40,7 @@ namespace NLE
 
 		}
 
-		bool CameraManager::initialize(Core::IEngine& engine)
+		bool CameraManager::initialize(Core::IEngine& engine, std::unique_ptr<Core::SysInitializer> const& initializer)
 		{
 			assert(!_initialized && _screenWidth > 0 && _screenHeight > 0);
 

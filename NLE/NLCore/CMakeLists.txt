@@ -24,7 +24,9 @@ SET(HEADERS
 	NL_Scheduler.h
 	NL_StateManager.h
 	NL_SyncTask.h
+	NL_SysInitializer.h
 	NL_SysManager.h	
+	NL_SysThread.h
 	NL_System.h
 	NL_Thread.h
 	)
@@ -32,6 +34,7 @@ SET(SOURCES
 	NL_DeviceCore.cpp
 	NL_Scheduler.cpp		
 	NL_SysManager.cpp
+	NL_SysThread.cpp
 	NL_Thread.cpp
 	)
 

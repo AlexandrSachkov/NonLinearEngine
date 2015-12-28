@@ -4,6 +4,7 @@
 #include "NLCore\NL_DeviceCore.h"
 #include "NL_Systems.h"
 #include "NL_SharedContainers.h"
+#include "NLCore\NL_SysInitializer.h"
 
 #include "lua.hpp"
 
@@ -23,7 +24,7 @@ namespace NLE
 		{
 		}
 
-		bool UiManager::initialize(Core::IEngine& engine)
+		bool UiManager::initialize(Core::IEngine& engine, std::unique_ptr<Core::SysInitializer> const& initializer)
 		{
 			assert(!_initialized && _printConsole);
 

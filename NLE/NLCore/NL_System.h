@@ -11,12 +11,13 @@ namespace NLE
 	{
 		class IEngine;
 		class ISystem;
+		struct SysInitializer;
 		class System
 		{
 		public:
 			virtual ~System(){}
 
-			virtual bool initialize(IEngine& engine) = 0;
+			virtual bool initialize(IEngine& engine, std::unique_ptr<SysInitializer> const& initializer) = 0;
 			virtual void release() = 0;
 			virtual std::function<void()> const& getExecutionProcedure() = 0;	
 			virtual ISystem& getInterface() = 0;

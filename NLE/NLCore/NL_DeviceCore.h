@@ -26,6 +26,7 @@ namespace NLE
 		class StateManager;
 		class ExecutionDesc;
 		class ISystem;
+		struct SysInitializer;
 
 		class DeviceCore : public IEngine
 		{
@@ -65,6 +66,7 @@ namespace NLE
 			ISystem& getSystemInterface(uint_fast32_t sysId);
 			Data::Distributor& getSDistributor(uint_fast32_t id);
 			Data::Distributor& getMSDistributor(uint_fast32_t id);
+			void setSystemInitializer(uint_fast32_t sysId, std::unique_ptr<SysInitializer> initializer);
 
 		private:
 			DeviceCore();

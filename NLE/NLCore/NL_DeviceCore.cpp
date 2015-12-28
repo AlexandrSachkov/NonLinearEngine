@@ -8,6 +8,7 @@
 #include "NL_ISystem.h"
 #include "NL_Distributor.h"
 #include "NL_StateManager.h"
+#include "NL_SysInitializer.h"
 
 #include <cassert>
 #include "tbb\spin_mutex.h"
@@ -37,7 +38,7 @@ namespace NLE
 		{
 			assert(!_initialized);
 				
-			if (!_scheduler->initialize())
+			if (!_scheduler->initialize(_sysManager->getNumSysThreads()))
 				return false;
 			if (!_sysManager->initialize(_scheduler, *this))
 				return false;
@@ -137,6 +138,11 @@ namespace NLE
 		Data::Distributor& DeviceCore::getMSDistributor(uint_fast32_t id)
 		{
 			return _stateManager->getMSDistributor(id);
+		}
+
+		void DeviceCore::setSystemInitializer(uint_fast32_t sysId, std::unique_ptr<SysInitializer> initializer)
+		{
+			_sysManager->setSystemInitializer(sysId, std::move(initializer));
 		}
 	}
 }

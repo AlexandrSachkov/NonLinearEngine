@@ -7,6 +7,7 @@
 
 #include "tbb\concurrent_queue.h"
 #include "tbb\atomic.h"
+#include "NL_Atomic.h"
 
 namespace NLE
 {
@@ -14,6 +15,7 @@ namespace NLE
 	{
 		class IEngine;
 		class ISystem;
+		struct SysInitializer;
 	}
 	namespace INPUT
 	{
@@ -23,7 +25,7 @@ namespace NLE
 			InputProcessor();
 			~InputProcessor();
 
-			bool initialize(Core::IEngine& engine);
+			bool initialize(Core::IEngine& engine, std::unique_ptr<Core::SysInitializer> const& initializer);
 			void release();
 
 			bool initialized();
@@ -31,7 +33,7 @@ namespace NLE
 			std::function<void()> const& getExecutionProcedure();
 			Core::ISystem& getInterface();
 
-			void attachPollEvents(void(*pollEvents)(void));
+			void attachPollEvents(std::function<void()> pollEvents);
 			void processEvent(INPUT::Event& event);
 			void enableTextInput(bool enable);
 			void enableInputProcessing(bool enable);
@@ -44,7 +46,7 @@ namespace NLE
 
 			bool _initialized;
 			std::function<void()> _procedure;
-			void(*_pollEvents)(void);
+			Atomic<std::function<void()>> _pollEvents;
 
 			tbb::concurrent_queue<INPUT::Event> _events;
 			tbb::atomic<bool> _enableTextInput;

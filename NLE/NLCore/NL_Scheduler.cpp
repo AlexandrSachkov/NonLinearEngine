@@ -25,10 +25,10 @@ namespace NLE
 
 		}
 
-		bool Scheduler::initialize()
+		bool Scheduler::initialize(uint_fast32_t numSysThreads)
 		{
 			assert(!_initialized);
-
+			_numThreads -= numSysThreads + 1;
 			_taskSchedulerInit = new tbb::task_scheduler_init(_numThreads);
 			_initialized = true;	
 			return true;
@@ -67,8 +67,11 @@ namespace NLE
 			ExecutionDesc& execDesc,
 			uint_fast32_t sysId)
 		{
-			execDesc.enable(true);
-			_starting.push(sysId);
+			if (execDesc.getExecution() != Execution::NONE)
+			{
+				execDesc.enable(true);
+				_starting.push(sysId);
+			}			
 		}
 
 		void Scheduler::stopSystem(
@@ -93,10 +96,27 @@ namespace NLE
 				{
 					stateManager->distributeFrom(sysId);
 					execDesc = &sysManager->getExecutionDesc(sysId);
-					if (execDesc->enabled() && execDesc->getExecution() == Execution::RECURRING)
+					if (execDesc->getMethod() == Method::THREAD)
 					{
-						_scheduledSystems.add(sysId);
-					}				
+						if (execDesc->enabled())
+						{
+							stateManager->distributeTo(sysId);
+							auto& sysThread = sysManager->getSystemThread(sysId);
+							sysThread->resume();
+							_numRunningTasks.fetch_and_increment();
+						}
+						else
+						{
+							sysManager->getSystemThread(sysId)->stop();
+						}
+					}
+					else
+					{
+						if (execDesc->enabled() && execDesc->getExecution() == Execution::RECURRING)
+						{
+							_scheduledSystems.add(sysId);
+						}
+					}
 				}
 			}
 
@@ -104,7 +124,19 @@ namespace NLE
 			{
 				while (_starting.try_pop(sysId))
 				{
-					_scheduledSystems.add(sysId);
+					execDesc = &sysManager->getExecutionDesc(sysId);
+					if (execDesc->getMethod() == Method::THREAD)
+					{
+						stateManager->distributeTo(sysId);
+						auto& sysThread = sysManager->getSystemThread(sysId);
+						sysThread->setProcedure(this, sysManager->getSystem(sysId)->getExecutionProcedure());
+						sysThread->start();
+						_numRunningTasks.fetch_and_increment();
+					}
+					else
+					{
+						_scheduledSystems.add(sysId);
+					}				
 				}
 			}
 	
