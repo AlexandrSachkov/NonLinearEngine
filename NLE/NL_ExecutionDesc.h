@@ -14,21 +14,22 @@ namespace NLE
 		enum Execution	{ NONE, SINGULAR, RECURRING };
 		enum Mode		{ SYNC, ASYNC };
 		enum Startup	{ MANUAL, AUTOMATIC };
-		enum Method		{ TASK, THREAD };
+		enum State		{ CREATED, INITIALIZED, RUNNING, STOPPED, RELEASED };
 
 		class ExecutionDesc
 		{
 			friend class Scheduler;
+			friend class DeviceCore;
 		public:
 			ExecutionDesc() :
 				_priority(Priority::STANDARD),
 				_execution(Execution::RECURRING),
 				_mode(Mode::ASYNC),
 				_startup(Startup::AUTOMATIC),
-				_method(Method::TASK),
 				_periodNs(0L)
 			{
 				_enabled.fetch_and_store(true);
+				_state = State::CREATED;
 			}
 
 			ExecutionDesc(
@@ -36,17 +37,16 @@ namespace NLE
 				Execution execution,
 				Mode mode,
 				Startup startup,
-				Method method,
 				unsigned long long periodNs
 				) :
 				_priority(priority),
 				_execution(execution),
 				_mode(mode),
 				_startup(startup),
-				_method(method),
 				_periodNs(std::chrono::nanoseconds(periodNs))
 			{
 				_enabled.fetch_and_store(true);
+				_state = State::CREATED;
 			}
 
 			Priority getPriority()
@@ -68,15 +68,15 @@ namespace NLE
 			{
 				return _startup;
 			}
-
-			Method getMethod()
-			{
-				return _method;
-			}
 			
 			bool enabled()
 			{
 				return _enabled.load();
+			}
+
+			State getState()
+			{
+				return _state;
 			}
 
 		private:
@@ -95,12 +95,16 @@ namespace NLE
 				_enabled.fetch_and_store(enable);
 			}	
 
+			void setState(State state)
+			{
+				_state = state;
+			}
+
 			Priority _priority;
 			Execution _execution;
 			Mode _mode;
 			Startup _startup;
-			Method _method;
-			bool _noteAffinity;
+			State _state;
 			std::chrono::duration<unsigned long long, std::nano> _periodNs;
 			std::chrono::time_point<std::chrono::high_resolution_clock, std::chrono::nanoseconds> _startTime;
 			tbb::atomic<bool> _enabled;

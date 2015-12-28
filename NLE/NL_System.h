@@ -18,6 +18,8 @@ namespace NLE
 			virtual ~System(){}
 
 			virtual bool initialize(IEngine& engine, std::unique_ptr<SysInitializer> const& initializer) = 0;
+			virtual void start() = 0;
+			virtual void stop() = 0;
 			virtual void release() = 0;
 			virtual std::function<void()> const& getExecutionProcedure() = 0;	
 			virtual ISystem& getInterface() = 0;

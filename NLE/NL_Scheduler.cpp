@@ -25,10 +25,10 @@ namespace NLE
 
 		}
 
-		bool Scheduler::initialize(uint_fast32_t numSysThreads)
+		bool Scheduler::initialize(uint_fast32_t numAllocatedThreads)
 		{
 			assert(!_initialized);
-			_numThreads -= numSysThreads + 1;
+			_numThreads -= numAllocatedThreads + 1;
 			_taskSchedulerInit = new tbb::task_scheduler_init(_numThreads);
 			_initialized = true;	
 			return true;
@@ -63,30 +63,15 @@ namespace NLE
 			_numRunningTasks.fetch_and_decrement();
 		}
 
-		void Scheduler::startSystem(
-			ExecutionDesc& execDesc,
-			uint_fast32_t sysId)
+		void Scheduler::scheduleExecution(uint_fast32_t sysId)
 		{
-			if (execDesc.getExecution() != Execution::NONE)
-			{
-				execDesc.enable(true);
-				_starting.push(sysId);
-			}			
-		}
-
-		void Scheduler::stopSystem(
-			ExecutionDesc& execDesc,
-			uint_fast32_t sysId)
-		{
-			execDesc.enable(false);
+			_starting.push(sysId);
 		}
 
 		void Scheduler::manageExecution(
-			std::unique_ptr<SysManager> const& sysManager,
-			std::unique_ptr<StateManager> const& stateManager)
+			std::unordered_map<uint_fast32_t, std::unique_ptr<System>>& systems,
+			std::unordered_map<uint_fast32_t, ExecutionDesc>& executionDesc)
 		{
-			stateManager->processRequests();
-
 			uint_fast32_t sysId;
 			ExecutionDesc* execDesc;
 
@@ -94,28 +79,18 @@ namespace NLE
 			{
 				while (_finished.try_pop(sysId))
 				{
-					stateManager->distributeFrom(sysId);
-					execDesc = &sysManager->getExecutionDesc(sysId);
-					if (execDesc->getMethod() == Method::THREAD)
+					execDesc = &executionDesc.at(sysId);
+					if (execDesc->enabled())
 					{
-						if (execDesc->enabled())
+						if (execDesc->getExecution() == Execution::RECURRING)
 						{
-							stateManager->distributeTo(sysId);
-							auto& sysThread = sysManager->getSystemThread(sysId);
-							sysThread->resume();
-							_numRunningTasks.fetch_and_increment();
-						}
-						else
-						{
-							sysManager->getSystemThread(sysId)->stop();
+							_scheduledSystems.add(sysId);
 						}
 					}
 					else
 					{
-						if (execDesc->enabled() && execDesc->getExecution() == Execution::RECURRING)
-						{
-							_scheduledSystems.add(sysId);
-						}
+						systems.at(sysId)->stop();
+						execDesc->setState(State::STOPPED);
 					}
 				}
 			}
@@ -124,37 +99,25 @@ namespace NLE
 			{
 				while (_starting.try_pop(sysId))
 				{
-					execDesc = &sysManager->getExecutionDesc(sysId);
-					if (execDesc->getMethod() == Method::THREAD)
-					{
-						stateManager->distributeTo(sysId);
-						auto& sysThread = sysManager->getSystemThread(sysId);
-						sysThread->setProcedure(this, sysManager->getSystem(sysId)->getExecutionProcedure());
-						sysThread->start();
-						_numRunningTasks.fetch_and_increment();
-					}
-					else
-					{
-						_scheduledSystems.add(sysId);
-					}				
+					execDesc = &executionDesc.at(sysId);
+					_scheduledSystems.add(sysId);			
 				}
 			}
 	
 			for (uint_fast32_t i = 0; i < _scheduledSystems.size(); ++i)
 			{
 				sysId = _scheduledSystems[i];
-				execDesc = &sysManager->getExecutionDesc(sysId);
+				execDesc = &executionDesc.at(sysId);
 
 				if (execDesc->isTimeToStart())
 				{
-					stateManager->distributeTo(sysId);
 					_numRunningTasks.fetch_and_increment();
 
 					if (execDesc->getMode() == Mode::ASYNC)
 					{
 						execDesc->resetStartTime();
 						
-						std::function<void()> const& procedure = sysManager->getSystem(sysId)->getExecutionProcedure();
+						std::function<void()> const& procedure = systems.at(sysId)->getExecutionProcedure();
 						AsyncTask* task = new (tbb::task::allocate_root())NLE::Core::AsyncTask(*this, sysId, procedure);
 						switch (execDesc->getPriority())
 						{
@@ -184,10 +147,10 @@ namespace NLE
 			{
 				for (uint_fast32_t sysId : _syncSystemsToRun)
 				{
-					execDesc = &sysManager->getExecutionDesc(sysId);
+					execDesc = &executionDesc.at(sysId);
 					execDesc->resetStartTime();
 
-					std::function<void()> const& procedure = sysManager->getSystem(sysId)->getExecutionProcedure();
+					std::function<void()> const& procedure = systems.at(sysId)->getExecutionProcedure();
 					SyncTask task(*this, sysId, procedure);
 					task.execute();
 				}

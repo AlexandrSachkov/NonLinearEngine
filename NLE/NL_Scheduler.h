@@ -24,21 +24,17 @@ namespace NLE
 			Scheduler();
 			~Scheduler();
 
-			bool initialize(uint_fast32_t numSysThreads);
+			bool initialize(uint_fast32_t numAllocatedThreads);
 			void release();
 
 			void setNumThreads(uint_fast32_t numThreads);
 			uint_fast32_t getNumThreads();
-			void startSystem(
-				ExecutionDesc& execDesc,
-				uint_fast32_t sysId);
-			void stopSystem(
-				ExecutionDesc& execDesc,
-				uint_fast32_t sysId);
+			void scheduleExecution(uint_fast32_t sysId);
+
 			void signalFinished(uint_fast32_t sysId);
 			void manageExecution(
-				std::unique_ptr<SysManager> const& sysManager,
-				std::unique_ptr<StateManager> const& stateManager);
+				std::unordered_map<uint_fast32_t, std::unique_ptr<System>>& systems,
+				std::unordered_map<uint_fast32_t, ExecutionDesc>& executionDesc);
 			int_fast32_t getNumRunningTasks();
 
 		private:
