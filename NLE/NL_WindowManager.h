@@ -33,8 +33,8 @@ THE SOFTWARE.
 
 #include "NL_CommonTypes.h"
 #include "NL_InputEvents.h"
-#include "NLCore\NL_System.h"
-#include "NLCore\NL_SysInitializer.h"
+#include "NL_System.h"
+#include "NL_SysInitializer.h"
 #include "NL_Timer.h"
 
 #include <string>
@@ -72,6 +72,8 @@ namespace NLE
 			~WindowManager();
 
 			bool initialize(Core::IEngine& engine, std::unique_ptr<Core::SysInitializer> const& initializer);
+			void start();
+			void stop();
 			void release();
 
 			bool initialized();

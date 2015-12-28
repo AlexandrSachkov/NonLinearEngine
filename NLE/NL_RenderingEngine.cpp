@@ -1,13 +1,11 @@
 #include "NL_RenderingEngine.h"
 
-#include "NLCore\NL_ISystem.h"
-#include "NLCore\NL_IEngine.h"
-#include "NLCore\NL_SDistributor.h"
-#include "NL_SharedContainers.h"
+#include "NL_ISystem.h"
+#include "NL_IEngine.h"
 #include "NL_Systems.h"
 #include "NL_ISceneManager.h"
 #include "NL_IInputProcessor.h"
-#include "NLCore\NL_DeviceCore.h"
+#include "NL_DeviceCore.h"
 #include "NL_ThreadLocal.h"
 #include "NL_WindowManager.h"
 
@@ -38,12 +36,6 @@ namespace NLE
 		{
 			assert(!_initialized);
 
-			_viewProjection = &static_cast<NLE::Core::Data::SDistributor<DirectX::XMFLOAT4X4>*>(&engine.getSDistributor(VIEW_PROJECTION_MATRIX))->buildEndpoint(SYS::SYS_RENDERING_ENGINE);
-			_eye = &static_cast<NLE::Core::Data::SDistributor<DirectX::XMFLOAT4>*>(&engine.getSDistributor(EYE_VECTOR))->buildEndpoint(SYS::SYS_RENDERING_ENGINE);
-			_fps = &static_cast<NLE::Core::Data::SDistributor<double>*>(&engine.getSDistributor(FPS))->buildEndpoint(SYS::SYS_RENDERING_ENGINE);
-			_canvasBgColor = &static_cast<NLE::Core::Data::SDistributor<DirectX::XMFLOAT4>*>(&engine.getSDistributor(CANVAS_BG_COLOR))->buildEndpoint(SYS::SYS_RENDERING_ENGINE);
-			_canvasBgColor->modify(0, DirectX::XMFLOAT4(0.4f, 0.4f, 0.4f, 1.0f));
-
 			_windowManager = static_cast<WINDOW::IWindowManager*>(&Core::DeviceCore::instance().getSystemInterface(SYS::SYS_WINDOW_MANAGER));
 			
 			_procedure = [&]() {
@@ -66,6 +58,16 @@ namespace NLE
 
 			_initialized = true;
 			return true;
+		}
+
+		void RenderingEngine::start()
+		{
+			printf("start\n");
+		}
+
+		void RenderingEngine::stop()
+		{
+			printf("stop\n");
 		}
 
 		void RenderingEngine::release()
@@ -102,22 +104,13 @@ namespace NLE
 			Scene* scene = static_cast<ISceneManager*>(&Core::DeviceCore::instance().getSystemInterface(SYS::SYS_SCENE_MANAGER))
 				->getGScene();
 
-			DirectX::XMMATRIX viewProjection = DirectX::XMLoadFloat4x4(&(*_viewProjection)[0]);
-			DirectX::XMVECTOR eye = DirectX::XMLoadFloat4(&(*_eye)[0]);
-
-			const GLfloat bgColor[] = { 
-				(*_canvasBgColor)[0].x,
-				(*_canvasBgColor)[0].y,
-				(*_canvasBgColor)[0].z,
-				(*_canvasBgColor)[0].w 
-			};
+			const GLfloat bgColor[] = {0.0f,0.5f,0.6f,1.0f};
 			glClearBufferfv(GL_COLOR, 0, bgColor);
 
 			_timer.sample();
 			if (_timer.fpsChanged())
 			{
 				CONSOLE::out(CONSOLE::STANDARD, std::to_string(_timer.getFps()));
-				_fps->modify(0, _timer.getFps());
 				_timer.reset();
 			}
 		}

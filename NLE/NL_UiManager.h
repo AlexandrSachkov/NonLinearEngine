@@ -2,9 +2,8 @@
 #define NL_UI_MANAGER_H_
 
 #include "NL_IUiManager.h"
-#include "NLCore\NL_System.h"
+#include "NL_System.h"
 #include "NL_IConsolePump.h"
-#include "NLCore\NL_SContainer.h"
 
 #include "tbb\concurrent_queue.h"
 #include "DirectXMath.h"
@@ -27,6 +26,8 @@ namespace NLE
 			~UiManager();
 
 			bool initialize(Core::IEngine& engine, std::unique_ptr<Core::SysInitializer> const& initializer);
+			void start();
+			void stop();
 			void release();
 
 			bool initialized();
@@ -49,9 +50,6 @@ namespace NLE
 
 			tbb::concurrent_queue<std::string> _scripts;
 			tbb::concurrent_queue<std::pair<std::string, int(*)(lua_State* state)>> _callbacks;
-
-			NLE::Core::Data::SContainer<double>* _fps;
-			NLE::Core::Data::SContainer<DirectX::XMFLOAT4>* _canvasBgColor;
 		};
 	}
 }

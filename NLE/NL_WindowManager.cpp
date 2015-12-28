@@ -30,10 +30,10 @@ THE SOFTWARE.
 #include "NL_GlfwInputMap.h"
 #include "NL_Console.h"
 #include "NL_ThreadLocal.h"
-#include "NLCore\NL_DeviceCore.h"
+#include "NL_DeviceCore.h"
 #include "NL_Systems.h"
 #include "NL_InputProcessor.h"
-#include "NLCore\NL_SysInitializer.h"
+#include "NL_SysInitializer.h"
 
 #include "gl/glew.h"
 #define GLFW_INCLUDE_NONE
@@ -138,6 +138,16 @@ namespace NLE
 			if (_window)
 				glfwDestroyWindow(_window);
 			glfwTerminate();
+		}
+
+		void WindowManager::start()
+		{
+
+		}
+
+		void WindowManager::stop()
+		{
+
 		}
 
 		bool WindowManager::initialized()

@@ -1,14 +1,13 @@
 #include "NL_Nle.h"
 
 #include "NL_ThreadLocal.h"
-#include "NLCore\NL_DeviceCore.h"
-#include "NLCore\NL_ExecutionDesc.h"
+#include "NL_DeviceCore.h"
+#include "NL_ExecutionDesc.h"
 #include "NL_InputEvents.h"
 #include "NL_InputProcessor.h"
 #include "NL_SceneManager.h"
 #include "NL_CameraManager.h"
 #include "NL_Systems.h"
-#include "NL_SharedContainers.h"
 #include "NL_Console.h"
 #include "NL_UiManager.h"
 #include "NL_RenderingEngine.h"
@@ -36,22 +35,12 @@ namespace NLE
 
 		Core::DeviceCore& core = Core::DeviceCore::instance();
 
-		// Install shared containers
-		core.installSContainer<char>(CAMERA_COMMANDS, GRAPHICS::COMMANDS::CAMERA::NUM_COMMANDS, _defaultGrainSize); //one slot for each command
-		core.installSContainer<double>(CURSOR_COORDINATES, 2, _defaultGrainSize);	// 2 slots for x and y components
-		core.installSContainer<double>(SCROLL_OFFSET, 2, _defaultGrainSize);	// 2 slots for x and y components
-		core.installSContainer<DirectX::XMFLOAT4X4>(VIEW_PROJECTION_MATRIX, 1, _defaultGrainSize);
-		core.installSContainer<DirectX::XMFLOAT4>(EYE_VECTOR, 1, _defaultGrainSize);
-		core.installSContainer<double>(FPS, 1, _defaultGrainSize);
-		core.installSContainer<DirectX::XMFLOAT4>(CANVAS_BG_COLOR, 1, _defaultGrainSize);
-
 		// Attach systems
 		Core::ExecutionDesc windowProcDesc(
 			Core::Priority::STANDARD,
 			Core::Execution::RECURRING,
 			Core::Mode::SYNC,
 			Core::Startup::AUTOMATIC,
-			Core::Method::TASK,
 			16666666L	//60 FPS,
 			);
 		core.attachSystem(SYS::SYS_WINDOW_MANAGER, windowProcDesc, std::unique_ptr<WINDOW::WindowManager>(new WINDOW::WindowManager()));
@@ -61,7 +50,6 @@ namespace NLE
 			Core::Execution::RECURRING,
 			Core::Mode::SYNC,
 			Core::Startup::AUTOMATIC,
-			Core::Method::TASK,
 			33333333L	//30 FPS
 			);
 		core.attachSystem(SYS::SYS_UI_MANAGER, uiManagerProcDesc, std::unique_ptr<UI::UiManager>(new UI::UiManager()));
@@ -71,7 +59,6 @@ namespace NLE
 			Core::Execution::RECURRING,
 			Core::Mode::ASYNC,
 			Core::Startup::AUTOMATIC,
-			Core::Method::TASK,
 			16666666L	//60 FPS
 			);
 		core.attachSystem(SYS::SYS_INPUT_PROCESSOR, inputProcDesc, std::unique_ptr<INPUT::InputProcessor>(new INPUT::InputProcessor()));
@@ -81,20 +68,18 @@ namespace NLE
 			Core::Execution::RECURRING,
 			Core::Mode::ASYNC,
 			Core::Startup::AUTOMATIC,
-			Core::Method::TASK,
 			16666666L	//60 FPS
 			);
 		core.attachSystem(SYS::SYS_CAMERA_MANAGER, cameraMngrProcDesc, std::unique_ptr<GRAPHICS::CameraManager>(new GRAPHICS::CameraManager()));
 
 		Core::ExecutionDesc renderingEngineProcDesc(
 			Core::Priority::STANDARD,
-			Core::Execution::SINGULAR,
+			Core::Execution::RECURRING,
 			Core::Mode::ASYNC,
 			Core::Startup::AUTOMATIC,
-			Core::Method::THREAD,
-			0L
+			//0L
 			//16393443L
-			//1666666L	//60 FPS		
+			16666666L	//60 FPS		
 			);
 		core.attachSystem(SYS::SYS_RENDERING_ENGINE, renderingEngineProcDesc, std::unique_ptr<GRAPHICS::RenderingEngine>(new GRAPHICS::RenderingEngine()));
 
@@ -103,7 +88,6 @@ namespace NLE
 			Core::Execution::RECURRING,
 			Core::Mode::ASYNC,
 			Core::Startup::AUTOMATIC,
-			Core::Method::TASK,
 			1000000000L	//1 FPS
 			);
 		core.attachSystem(SYS::SYS_SCENE_MANAGER, sceneMngrProcDesc, std::unique_ptr<SceneManager>(new SceneManager()));

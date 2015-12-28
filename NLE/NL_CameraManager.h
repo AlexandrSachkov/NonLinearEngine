@@ -2,9 +2,8 @@
 #define NL_RENDERER_H_
 
 #include "NL_ICameraManager.h"
-#include "NLCore\NL_System.h"
-#include "NLCore\NL_SContainer.h"
-#include "NLCore\NL_SysInitializer.h"
+#include "NL_System.h"
+#include "NL_SysInitializer.h"
 #include "NL_CommonTypes.h"
 
 #include <DirectXMath.h>
@@ -42,6 +41,8 @@ namespace NLE
 			~CameraManager();
 
 			bool initialize(Core::IEngine& engine, std::unique_ptr<Core::SysInitializer> const& initializer);
+			void start();
+			void stop();
 			void release();
 			bool initialized();
 
@@ -56,14 +57,7 @@ namespace NLE
 
 			bool _initialized;
 			std::function<void()> _procedure;
-
 			std::unique_ptr<Camera> _camera;
-
-			NLE::Core::Data::SContainer<char>* _cameraCommands;
-			NLE::Core::Data::SContainer<double>* _cursorCoords;
-			NLE::Core::Data::SContainer<double>* _scrollOffset;
-			NLE::Core::Data::SContainer<DirectX::XMFLOAT4X4>* _viewProjection;
-			NLE::Core::Data::SContainer<DirectX::XMFLOAT4>* _eye;
 
 			uint_fast32_t _screenWidth;
 			uint_fast32_t _screenHeight;

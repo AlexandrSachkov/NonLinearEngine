@@ -2,11 +2,10 @@
 #define NL_RENDERING_ENGINE_H_
 
 #include "NL_IRenderingEngine.h"
-#include "NLCore\NL_System.h"
-#include "NLCore\NL_SContainer.h"
+#include "NL_System.h"
 #include "NL_RenderingResources.h"
 #include "NL_Timer.h"
-#include "NLCore\NL_Thread.h"
+#include "NL_Thread.h"
 
 #include <Windows.h>
 #include <d3d11.h>
@@ -49,6 +48,8 @@ namespace NLE
 			~RenderingEngine();
 
 			bool initialize(Core::IEngine& engine, std::unique_ptr<Core::SysInitializer> const& initializer);
+			void start();
+			void stop();
 			void release();
 			bool initialized();
 			std::function<void()> const& getExecutionProcedure();
@@ -61,11 +62,6 @@ namespace NLE
 
 			bool _initialized;
 			std::function<void()> _procedure;
-
-			NLE::Core::Data::SContainer<DirectX::XMFLOAT4X4>* _viewProjection;
-			NLE::Core::Data::SContainer<DirectX::XMFLOAT4>* _eye;
-			NLE::Core::Data::SContainer<double>* _fps;
-			NLE::Core::Data::SContainer<DirectX::XMFLOAT4>* _canvasBgColor;
 
 			WINDOW::IWindowManager* _windowManager;
 			Timer _timer;

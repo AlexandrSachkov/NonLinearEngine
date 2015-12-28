@@ -46,18 +46,12 @@ namespace NLE
 
 			_camera = std::make_unique<Camera>(0.0f, 0.5f, -10.0f, _screenWidth, _screenHeight);
 
-			_cameraCommands = &static_cast<NLE::Core::Data::SDistributor<char>*>(&engine.getSDistributor(CAMERA_COMMANDS))->buildEndpoint(SYS::SYS_CAMERA_MANAGER);
-			_cursorCoords = &static_cast<NLE::Core::Data::SDistributor<double>*>(&engine.getSDistributor(CURSOR_COORDINATES))->buildEndpoint(SYS::SYS_CAMERA_MANAGER);
-			_scrollOffset = &static_cast<NLE::Core::Data::SDistributor<double>*>(&engine.getSDistributor(SCROLL_OFFSET))->buildEndpoint(SYS::SYS_CAMERA_MANAGER);
-			_viewProjection = &static_cast<NLE::Core::Data::SDistributor<DirectX::XMFLOAT4X4>*>(&engine.getSDistributor(VIEW_PROJECTION_MATRIX))->buildEndpoint(SYS::SYS_CAMERA_MANAGER);
-			_eye = &static_cast<NLE::Core::Data::SDistributor<DirectX::XMFLOAT4>*>(&engine.getSDistributor(EYE_VECTOR))->buildEndpoint(SYS::SYS_CAMERA_MANAGER);
-
-			DirectX::XMFLOAT4X4 viewProjection;
+			/*DirectX::XMFLOAT4X4 viewProjection;
 			DirectX::XMStoreFloat4x4(&viewProjection, DirectX::XMMatrixIdentity());
 			_viewProjection->modify(0, viewProjection);
 
 			DirectX::XMFLOAT4 eye(0.0f, 0.0f, 0.0f, 0.0f);
-			_eye->modify(0, eye);
+			_eye->modify(0, eye);*/
 
 			_procedure = [&](){
 				computeViewProjection();
@@ -69,7 +63,7 @@ namespace NLE
 
 		void CameraManager::computeViewProjection()
 		{
-			auto cameraCommands = *_cameraCommands;
+			/*auto cameraCommands = *_cameraCommands;
 			auto cursorCoords = *_cursorCoords;
 			auto scrollOffset = *_scrollOffset;
 
@@ -115,13 +109,23 @@ namespace NLE
 
 			DirectX::XMFLOAT4 eye;
 			DirectX::XMStoreFloat4(&eye, _camera->getEye());
-			_eye->modify(0, eye);
+			_eye->modify(0, eye);*/
 		}
 
 		float CameraManager::toRadians(float degrees)
 		{
 			const double halfC = M_PI / 180;
 			return (float)((double)degrees * halfC);
+		}
+
+		void CameraManager::start()
+		{
+
+		}
+
+		void CameraManager::stop()
+		{
+
 		}
 
 		void CameraManager::release()

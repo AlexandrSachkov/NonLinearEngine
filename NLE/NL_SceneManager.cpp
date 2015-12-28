@@ -2,10 +2,10 @@
 #include "NL_AssetImporter.h"
 #include "NL_IRenderingEngine.h"
 #include "NL_Systems.h"
-#include "NLCore\NL_DeviceCore.h"
+#include "NL_DeviceCore.h"
 #include "NL_Console.h"
 #include "NL_ThreadLocal.h"
-#include "NLCore\NL_SysInitializer.h"
+#include "NL_SysInitializer.h"
 
 #include <assert.h>
 
@@ -34,6 +34,16 @@ namespace NLE
 		};
 		_initialized = true;
 		return true;
+	}
+
+	void SceneManager::start()
+	{
+
+	}
+
+	void SceneManager::stop()
+	{
+
 	}
 
 	void SceneManager::release()

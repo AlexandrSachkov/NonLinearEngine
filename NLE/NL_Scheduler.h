@@ -7,6 +7,7 @@
 #include "tbb/task_scheduler_init.h"
 #include "tbb\scalable_allocator.h"
 #include "tbb/atomic.h"
+#include <unordered_map>
 
 
 namespace NLE 
@@ -17,6 +18,7 @@ namespace NLE
 		class StateManager;
 		class SysTask;
 		class Clock;
+		class System;
 
 		class Scheduler 
 		{

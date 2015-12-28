@@ -1,9 +1,8 @@
 #ifndef NL_INPUT_PROCESSOR_H_
 #define NL_INPUT_PROCESSOR_H_
 
-#include "NLCore\NL_System.h"
+#include "NL_System.h"
 #include "NL_IInputProcessor.h"
-#include "NLCore\NL_SContainer.h"
 
 #include "tbb\concurrent_queue.h"
 #include "tbb\atomic.h"
@@ -26,6 +25,8 @@ namespace NLE
 			~InputProcessor();
 
 			bool initialize(Core::IEngine& engine, std::unique_ptr<Core::SysInitializer> const& initializer);
+			void start();
+			void stop();
 			void release();
 
 			bool initialized();
@@ -51,10 +52,6 @@ namespace NLE
 			tbb::concurrent_queue<INPUT::Event> _events;
 			tbb::atomic<bool> _enableTextInput;
 			tbb::atomic<bool> _enableInputProcessing;
-
-			NLE::Core::Data::SContainer<char>* _cameraCommands;
-			NLE::Core::Data::SContainer<double>* _cursorCoords;
-			NLE::Core::Data::SContainer<double>* _scrollOffset;
 		};
 	}
 }

@@ -1,13 +1,11 @@
 #include "NL_InputProcessor.h"
 #include "NL_InputEvents.h"
-#include "NLCore\NL_IEngine.h"
-#include "NLCore\NL_SDistributor.h"
+#include "NL_IEngine.h"
 #include "NL_Nle.h"
-#include "NL_SharedContainers.h"
 #include "NL_IRenderer.h"
 #include "NL_Systems.h"
 #include "NL_UiManager.h"
-#include "NLCore\NL_DeviceCore.h"
+#include "NL_DeviceCore.h"
 
 #include <assert.h>
 
@@ -31,10 +29,6 @@ namespace NLE
 		bool InputProcessor::initialize(Core::IEngine& engine, std::unique_ptr<Core::SysInitializer> const& initializer)
 		{
 			assert(!_initialized);
-
-			_cameraCommands = &static_cast<NLE::Core::Data::SDistributor<char>*>(&engine.getSDistributor(CAMERA_COMMANDS))->buildEndpoint(SYS::SYS_INPUT_PROCESSOR);
-			_cursorCoords = &static_cast<NLE::Core::Data::SDistributor<double>*>(&engine.getSDistributor(CURSOR_COORDINATES))->buildEndpoint(SYS::SYS_INPUT_PROCESSOR);
-			_scrollOffset = &static_cast<NLE::Core::Data::SDistributor<double>*>(&engine.getSDistributor(SCROLL_OFFSET))->buildEndpoint(SYS::SYS_INPUT_PROCESSOR);
 
 			_procedure = [&](){
 				_pollEvents.acquire()();
@@ -74,6 +68,16 @@ namespace NLE
 
 			_initialized = true;
 			return _initialized;
+		}
+
+		void InputProcessor::start()
+		{
+
+		}
+
+		void InputProcessor::stop()
+		{
+
 		}
 
 		void InputProcessor::release()
@@ -134,27 +138,35 @@ namespace NLE
 			{
 			case KEY::KEY_A:
 				if (event.eventData.keyEvent.action == ACTION::ACTION_PRESS)
-					_cameraCommands->modify(GRAPHICS::COMMANDS::CAMERA::LEFT, 1);
+				{
+				}
 				else
-					_cameraCommands->modify(GRAPHICS::COMMANDS::CAMERA::LEFT, 0);
+				{
+				}
 				break;
 			case KEY::KEY_D:
 				if (event.eventData.keyEvent.action == ACTION::ACTION_PRESS)
-					_cameraCommands->modify(GRAPHICS::COMMANDS::CAMERA::RIGHT, 1);
+				{
+				}
 				else
-					_cameraCommands->modify(GRAPHICS::COMMANDS::CAMERA::RIGHT, 0);
+				{
+				}
 				break;
 			case KEY::KEY_W:
 				if (event.eventData.keyEvent.action == ACTION::ACTION_PRESS)
-					_cameraCommands->modify(GRAPHICS::COMMANDS::CAMERA::FORWARD, 1);
+				{
+				}
 				else
-					_cameraCommands->modify(GRAPHICS::COMMANDS::CAMERA::FORWARD, 0);
+				{
+				}
 				break;
 			case KEY::KEY_S:
 				if (event.eventData.keyEvent.action == ACTION::ACTION_PRESS)
-					_cameraCommands->modify(GRAPHICS::COMMANDS::CAMERA::REVERSE, 1);
+				{
+				}
 				else
-					_cameraCommands->modify(GRAPHICS::COMMANDS::CAMERA::REVERSE, 0);
+				{
+				}
 				break;
 			case KEY::KEY_ESCAPE:
 				Nle::instance().stop();
@@ -198,14 +210,12 @@ namespace NLE
 
 		void InputProcessor::onCursorPositionChange(Event& event)
 		{
-			_cursorCoords->modify(0, event.eventData.cursorPositionEvent.xPos);
-			_cursorCoords->modify(1, event.eventData.cursorPositionEvent.yPos);
+			
 		}
 
 		void InputProcessor::onScrollEvent(Event& event)
 		{
-			_scrollOffset->modify(0, event.eventData.scrollEvent.xOffset);
-			_scrollOffset->modify(1, event.eventData.scrollEvent.yOffset);
+			
 		}
 	}
 }

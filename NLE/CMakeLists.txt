@@ -78,7 +78,6 @@ SET(HEADERS
 	NL_Scheduler.h
 	NL_SyncTask.h
 	NL_SysInitializer.h
-	NL_SysManager.h	
 	NL_SysThread.h
 	NL_System.h
 	NL_Thread.h
@@ -108,7 +107,6 @@ SET(SOURCES
 	
 	NL_DeviceCore.cpp
 	NL_Scheduler.cpp		
-	NL_SysManager.cpp
 	NL_SysThread.cpp
 	NL_Thread.cpp
 	)
@@ -332,8 +330,8 @@ TARGET_LINK_LIBRARIES(NLE
 	debug glfw3
 	optimized glfw3
 	
-	debug glew32
-	optimized glew32
+	debug glew32s
+	optimized glew32s
 	
 	debug glu32
 	optimized glu32

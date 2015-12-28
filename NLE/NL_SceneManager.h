@@ -4,8 +4,8 @@
 #include "NL_ISceneManager.h"
 #include "NL_RenderingResources.h"
 #include "NL_GScene.h"
-#include "NLCore\NL_System.h"
-#include "NLCore\NL_Thread.h"
+#include "NL_System.h"
+#include "NL_Thread.h"
 
 #include <functional>
 
@@ -30,6 +30,8 @@ namespace NLE
 		~SceneManager();
 
 		bool initialize(Core::IEngine& engine, std::unique_ptr<Core::SysInitializer> const& initializer);
+		void start();
+		void stop();
 		void release();
 
 		bool initialized();

@@ -32,9 +32,6 @@ namespace NLE
 			executor.registerCallback("NLE_ui_getData", uiGetData);
 			executor.registerCallback("NLE_ui_setData", uiSetData);
 
-			_fps = &static_cast<NLE::Core::Data::SDistributor<double>*>(&engine.getSDistributor(FPS))->buildEndpoint(SYS::SYS_UI_MANAGER);
-			_canvasBgColor = &static_cast<NLE::Core::Data::SDistributor<DirectX::XMFLOAT4>*>(&engine.getSDistributor(CANVAS_BG_COLOR))->buildEndpoint(SYS::SYS_UI_MANAGER);
-
 			_procedure = [&]() {
 				CONSOLE::Console::instance().outputConsole();
 
@@ -55,6 +52,16 @@ namespace NLE
 
 			_initialized = true;
 			return _initialized;
+		}
+
+		void UiManager::start()
+		{
+
+		}
+
+		void UiManager::stop()
+		{
+
 		}
 
 		void UiManager::release()
@@ -97,17 +104,17 @@ namespace NLE
 				std::string dataId = lua_tostring(state, 1);
 				if (dataId.compare("fps") == 0)
 				{
-					lua_pushnumber(state, (*_fps)[0]);
-					return 1;
+					//lua_pushnumber(state, (*_fps)[0]);
+					return 0;
 				}
 				else if (dataId.compare("canvasBgColor") == 0)
 				{
-					DirectX::XMFLOAT4 canvasColor = (*_canvasBgColor)[0];
+					/*DirectX::XMFLOAT4 canvasColor = (*_canvasBgColor)[0];
 					lua_pushnumber(state, canvasColor.x);
 					lua_pushnumber(state, canvasColor.y);
 					lua_pushnumber(state, canvasColor.z);
-					lua_pushnumber(state, canvasColor.w);
-					return 4;
+					lua_pushnumber(state, canvasColor.w);*/
+					return 0;
 				}
 				else
 				{
@@ -125,13 +132,12 @@ namespace NLE
 				std::string dataId = lua_tostring(state, 1);
 				if (dataId.compare("canvasBgColor") == 0)
 				{			
-					DirectX::XMFLOAT4 canvasColor = DirectX::XMFLOAT4(
+					/*DirectX::XMFLOAT4 canvasColor = DirectX::XMFLOAT4(
 						(float)lua_tonumber(state, 2),
 						(float)lua_tonumber(state, 3),
 						(float)lua_tonumber(state, 4),
 						(float)lua_tonumber(state, 5)
-						);
-					_canvasBgColor->modify(0, canvasColor);
+						);*/
 					return 0;
 				}
 				else
