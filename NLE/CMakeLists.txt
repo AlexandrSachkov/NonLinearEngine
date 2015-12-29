@@ -37,11 +37,8 @@ SET(HEADERS
 	NL_AssetImporter.h
 	NL_Camera.h
 	NL_CameraManager.h
-	NL_ICameraManager.h
 	NL_Console.h
 	NL_ConsoleOutType.h
-	NL_D3D11Utility.h
-	NL_D3D11Utility.inl
 	NL_GlfwInputMap.h
 	NL_GScene.h
 	NL_InputProcessor.h
@@ -63,7 +60,6 @@ SET(HEADERS
 	NL_UiManager.h
 	NL_IUiManager.h
 	NL_WindowManager.h
-	NL_IWindowManager.h
 	
 	DDSTextureLoader.h
 	WICTextureLoader.h
@@ -88,7 +84,6 @@ SET(SOURCES
 	NL_Camera.cpp
 	NL_CameraManager.cpp
 	NL_Console.cpp
-	NL_D3D11Utility.cpp
 	NL_GlfwInputMap.cpp
 	NL_GScene.cpp
 	NL_InputProcessor.cpp

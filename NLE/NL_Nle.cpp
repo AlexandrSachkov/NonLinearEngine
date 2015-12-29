@@ -35,16 +35,6 @@ namespace NLE
 
 		Core::DeviceCore& core = Core::DeviceCore::instance();
 
-		// Attach systems
-		Core::ExecutionDesc windowProcDesc(
-			Core::Priority::STANDARD,
-			Core::Execution::RECURRING,
-			Core::Mode::SYNC,
-			Core::Startup::AUTOMATIC,
-			16666666L	//60 FPS,
-			);
-		core.attachSystem(SYS::SYS_WINDOW_MANAGER, windowProcDesc, std::unique_ptr<WINDOW::WindowManager>(new WINDOW::WindowManager()));
-
 		Core::ExecutionDesc uiManagerProcDesc(
 			Core::Priority::LOW,
 			Core::Execution::RECURRING,
@@ -63,23 +53,14 @@ namespace NLE
 			);
 		core.attachSystem(SYS::SYS_INPUT_PROCESSOR, inputProcDesc, std::unique_ptr<INPUT::InputProcessor>(new INPUT::InputProcessor()));
 
-		Core::ExecutionDesc cameraMngrProcDesc(
-			Core::Priority::STANDARD,
-			Core::Execution::RECURRING,
-			Core::Mode::ASYNC,
-			Core::Startup::AUTOMATIC,
-			16666666L	//60 FPS
-			);
-		core.attachSystem(SYS::SYS_CAMERA_MANAGER, cameraMngrProcDesc, std::unique_ptr<GRAPHICS::CameraManager>(new GRAPHICS::CameraManager()));
-
 		Core::ExecutionDesc renderingEngineProcDesc(
 			Core::Priority::STANDARD,
-			Core::Execution::RECURRING,
+			Core::Execution::SINGULAR,
 			Core::Mode::ASYNC,
 			Core::Startup::AUTOMATIC,
-			//0L
+			0L
 			//16393443L
-			16666666L	//60 FPS		
+			//16666666L	//60 FPS		
 			);
 		core.attachSystem(SYS::SYS_RENDERING_ENGINE, renderingEngineProcDesc, std::unique_ptr<GRAPHICS::RenderingEngine>(new GRAPHICS::RenderingEngine()));
 
@@ -101,21 +82,14 @@ namespace NLE
 	{
 		assert(!_initialized);
 
-		static_cast<GRAPHICS::ICameraManager*>(&Core::DeviceCore::instance().getSystemInterface(SYS::SYS_CAMERA_MANAGER))
-			->setScreenDimensions(screenSize.width, screenSize.height);
-
-		std::unique_ptr<WINDOW::Initializer> windowInit = std::make_unique<WINDOW::Initializer>();
-		windowInit->screenSize = screenSize;
-		windowInit->fullscreen = fullscreen;
-		windowInit->decorated = decorated;
-		windowInit->title = title;
-		windowInit->openglMajorVersion = 4;
-		windowInit->openglMinorVersion = 5;
-		Core::DeviceCore::instance().setSystemInitializer(SYS::SYS_WINDOW_MANAGER, std::move(windowInit));
-
-		std::unique_ptr<GRAPHICS::CameraManagerInitializer> camInit = std::make_unique<GRAPHICS::CameraManagerInitializer>();
-		camInit->screenSize = screenSize;
-		Core::DeviceCore::instance().setSystemInitializer(SYS::SYS_CAMERA_MANAGER, std::move(camInit));
+		std::unique_ptr<GRAPHICS::Initializer> renderingEngineInit = std::make_unique<GRAPHICS::Initializer>();
+		renderingEngineInit->screenSize = screenSize;
+		renderingEngineInit->fullscreen = fullscreen;
+		renderingEngineInit->decorated = decorated;
+		renderingEngineInit->title = title;
+		renderingEngineInit->openglMajorVersion = 4;
+		renderingEngineInit->openglMinorVersion = 5;
+		Core::DeviceCore::instance().setSystemInitializer(SYS::SYS_RENDERING_ENGINE, std::move(renderingEngineInit));
 
 		if (!Core::DeviceCore::instance().initialize())
 			return false;

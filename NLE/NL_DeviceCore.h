@@ -88,6 +88,4 @@ namespace NLE
 	}
 }
 
-#include "NL_DeviceCore.inl"
-
 #endif

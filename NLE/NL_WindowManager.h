@@ -45,93 +45,69 @@ struct GLFWwindow;
 
 namespace NLE
 {
-	namespace WINDOW
+	class WindowManager
 	{
-		struct Initializer : public Core::SysInitializer
-		{
-			Initializer() :
-				screenSize(Size2D(0,0)),
-				fullscreen(false),
-				decorated(true),
-				title(L""),
-				openglMajorVersion(0),
-				openglMinorVersion(0)
-				{}
-			Size2D screenSize;
-			bool fullscreen;
-			bool decorated;
-			std::wstring title;
-			int openglMajorVersion;
-			int openglMinorVersion;
-		};
+	public:
+		WindowManager();
+		~WindowManager();
 
-		class WindowManager : public Core::System, public IWindowManager
-		{
-		public:
-			WindowManager();
-			~WindowManager();
+		bool initialize(
+			Size2D screenSize,
+			bool fullscreen,
+			bool decorated,
+			std::wstring title,
+			int openglMajorVersion,
+			int openglMinorVersion
+			);
 
-			bool initialize(Core::IEngine& engine, std::unique_ptr<Core::SysInitializer> const& initializer);
-			void start();
-			void stop();
-			void release();
+		Size2D getClientSize();
+		Position2D getWindowPosition();
 
-			bool initialized();
+		void setTitle(std::wstring title);
+		void setWindowPosition(Position2D position);
 
-			std::function<void()> const& getExecutionProcedure();
-			Core::ISystem& getInterface();
+		void iconify();
+		void restore();
+		void show();
+		void hide();
+		void closeWindow();
+		void enableCursor(bool enable);
 
-			Size2D getClientSize();
-			Position2D getWindowPosition();
+		void copyText(std::wstring text);
+		std::wstring pasteText();
 
-			void setTitle(std::wstring title);
-			void setWindowPosition(Position2D position);
+		void makeContextCurrent(bool makeCurrent);
+		void enableVSync(bool enable);
+		void swapBuffers();
+		void pollEvents();
 
-			void iconify();
-			void restore();
-			void show();
-			void hide();
-			void closeWindow();
-			void enableCursor(bool enable);
+	private:
+		void setDecoratedHint(bool option);
+		void setResizableHint(bool option);
+		void setWindowCallbacks(GLFWwindow* window);
 
-			void copyText(std::wstring text);
-			std::wstring pasteText();
+		static void glfwErrorCallback(int error, const char* description);
 
-			void makeContextCurrent(bool makeCurrent);
-			void enableVSync(bool enable);
-			void swapBuffers();
+		static void onKeyEvent(GLFWwindow* window, int key, int scancode, int action, int mods);
+		static void onCharEvent(GLFWwindow* window, unsigned int codepoint);
+		static void onMouseButtonEvent(GLFWwindow* window, int button, int action, int mods);
+		static void onCursorPositionEvent(GLFWwindow* window, double xPos, double yPos);
+		static void onCursorEnterEvent(GLFWwindow* window, int entered);
+		static void onScrollEvent(GLFWwindow* window, double xOffset, double yOffset);
 
-		private:
-			void setDecoratedHint(bool option);
-			void setResizableHint(bool option);
-			void setWindowCallbacks(GLFWwindow* window);
+		static void onWindowPositionEvent(GLFWwindow* window, int xPos, int yPos);
+		static void onWindowSizeEvent(GLFWwindow* window, int width, int height);
+		static void onWindowCloseEvent(GLFWwindow* window);
+		static void onWindowRefreshEvent(GLFWwindow* window);
+		static void onWindowFocusEvent(GLFWwindow* window, int focused);
+		static void onWindowIconifyEvent(GLFWwindow* window, int iconified);
 
-			static void glfwErrorCallback(int error, const char* description);
+		static void processEvent(INPUT::Event& event);
 
-			static void onKeyEvent(GLFWwindow* window, int key, int scancode, int action, int mods);
-			static void onCharEvent(GLFWwindow* window, unsigned int codepoint);
-			static void onMouseButtonEvent(GLFWwindow* window, int button, int action, int mods);
-			static void onCursorPositionEvent(GLFWwindow* window, double xPos, double yPos);
-			static void onCursorEnterEvent(GLFWwindow* window, int entered);
-			static void onScrollEvent(GLFWwindow* window, double xOffset, double yOffset);
-
-			static void onWindowPositionEvent(GLFWwindow* window, int xPos, int yPos);
-			static void onWindowSizeEvent(GLFWwindow* window, int width, int height);
-			static void onWindowCloseEvent(GLFWwindow* window);
-			static void onWindowRefreshEvent(GLFWwindow* window);
-			static void onWindowFocusEvent(GLFWwindow* window, int focused);
-			static void onWindowIconifyEvent(GLFWwindow* window, int iconified);
-
-			static void processEvent(INPUT::Event& event);
-
-			bool _initialized;
-			std::function<void()> _procedure;
-
-			GLFWwindow* _window;
-			std::wstring _title;
-			Timer _timer;
-		};
-	}
+		GLFWwindow* _window;
+		std::wstring _title;
+		Timer _timer;
+	};
 }
 
 

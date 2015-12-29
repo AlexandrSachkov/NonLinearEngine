@@ -6,6 +6,8 @@
 #include "NL_RenderingResources.h"
 #include "NL_Timer.h"
 #include "NL_Thread.h"
+#include "NL_SysInitializer.h"
+#include "NL_CommonTypes.h"
 
 #include <Windows.h>
 #include <d3d11.h>
@@ -22,7 +24,6 @@
 struct lua_State;
 namespace NLE
 {
-	class Window;
 	namespace Core
 	{
 		class IEngine;
@@ -37,10 +38,28 @@ namespace NLE
 	{
 		class IWindowManager;
 	}
+	class WindowManager;
 	namespace GRAPHICS
 	{
-		class Scene;
+		struct Initializer : public Core::SysInitializer
+		{
+			Initializer() :
+				screenSize(Size2D(0, 0)),
+				fullscreen(false),
+				decorated(true),
+				title(L""),
+				openglMajorVersion(0),
+				openglMinorVersion(0)
+			{}
+			Size2D screenSize;
+			bool fullscreen;
+			bool decorated;
+			std::wstring title;
+			int openglMajorVersion;
+			int openglMinorVersion;
+		};
 
+		class Scene;
 		class RenderingEngine : public Core::System, public IRenderingEngine
 		{
 		public:
@@ -63,9 +82,11 @@ namespace NLE
 			bool _initialized;
 			std::function<void()> _procedure;
 
-			WINDOW::IWindowManager* _windowManager;
+			WindowManager* _windowManager;
+			Initializer* _init;
 			Timer _timer;
 			tbb::atomic<bool> _firstRun;
+			Core::Thread* _renderingThread;
 		};
 	}
 }

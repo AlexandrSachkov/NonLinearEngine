@@ -25,22 +25,47 @@ namespace NLE
 			_timer(100)
 		{
 			_firstRun.store(true);
+			
+			_renderingThread = &Core::DeviceCore::instance().allocateThread();
+			_windowManager = new WindowManager();
 			CONSOLE::out(CONSOLE::STANDARD, L"Rendering Engine created");
 		}
 
 		RenderingEngine::~RenderingEngine()
 		{
+			if (_windowManager)
+				delete _windowManager;
 		}
 
 		bool RenderingEngine::initialize(Core::IEngine& engine, std::unique_ptr<Core::SysInitializer> const& initializer)
 		{
 			assert(!_initialized);
+			_init = static_cast<Initializer*>(initializer.get());
+			if (!_init)
+			{
+				CONSOLE::out(CONSOLE::ERR, "Rendering Engine requires an initializer");
+				return false;
+			}
 
-			_windowManager = static_cast<WINDOW::IWindowManager*>(&Core::DeviceCore::instance().getSystemInterface(SYS::SYS_WINDOW_MANAGER));
-			
-			_procedure = [&]() {
+
+			_procedure = [&]() {};
+
+			_renderingThread->setProcedure([&]() {
 				if (_firstRun)
 				{
+					bool result = _windowManager->initialize(
+						_init->screenSize,
+						_init->fullscreen,
+						_init->decorated,
+						_init->title,
+						_init->openglMajorVersion,
+						_init->openglMinorVersion
+						);
+					if (!result)
+					{
+						CONSOLE::out(CONSOLE::ERR, "WindowManager failed to initialize");
+						assert(false);
+					}
 					_windowManager->makeContextCurrent(true);
 					_windowManager->enableVSync(false);
 					GLenum err = glewInit();
@@ -48,12 +73,14 @@ namespace NLE
 					{
 						std::string error((const char*)glewGetErrorString(err));
 						CONSOLE::out(CONSOLE::ERR, error);
+						assert(false);
 					}
 					_firstRun.store(false);
 				}
+				_windowManager->pollEvents();
 				render();
 				_windowManager->swapBuffers();
-			};
+			});
 
 
 			_initialized = true;
@@ -62,12 +89,12 @@ namespace NLE
 
 		void RenderingEngine::start()
 		{
-			printf("start\n");
+			_renderingThread->start();
 		}
 
 		void RenderingEngine::stop()
 		{
-			printf("stop\n");
+			_renderingThread->stop();
 		}
 
 		void RenderingEngine::release()

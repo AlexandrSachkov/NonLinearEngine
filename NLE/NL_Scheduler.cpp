@@ -1,10 +1,8 @@
 #include "NL_Scheduler.h"
-#include "NL_SysManager.h"
 #include "tbb/tbb.h"
 #include "NL_System.h"
 #include "NL_AsyncTask.h"
 #include "NL_SyncTask.h"
-#include "NL_StateManager.h"
 
 #include <assert.h>
 
