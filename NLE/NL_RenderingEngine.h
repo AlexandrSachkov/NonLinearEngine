@@ -21,6 +21,8 @@
 #include <string>
 #include <vector>
 
+#include "gl\glew.h"
+
 struct lua_State;
 namespace NLE
 {
@@ -77,6 +79,8 @@ namespace NLE
 			ID3D11Device* getDevice();
 
 		private:
+			void initOpengl();
+			void releaseOpengl();
 			void render();		
 
 			bool _initialized;
@@ -87,6 +91,9 @@ namespace NLE
 			Timer _timer;
 			tbb::atomic<bool> _firstRun;
 			Core::Thread* _renderingThread;
+
+			GLuint _renderProgram;
+			GLuint _vertexArray;
 		};
 	}
 }

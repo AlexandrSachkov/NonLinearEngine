@@ -89,7 +89,7 @@ namespace NLE
 			_assetImporter->importScene(device, _path, *scene);
 			setGScene(scene);
 			_loadingThread.stop();
-		});
+		}, []() {});
 		_loadingThread.start();
 	}
 }

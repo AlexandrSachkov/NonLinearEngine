@@ -16,7 +16,7 @@ namespace NLE
 			Thread(unsigned long long sleepPeriodNs);
 			~Thread();
 
-			void setProcedure(std::function<void()> operation);
+			void setProcedure(std::function<void()> runOperation, std::function<void()> releaseOperation);
 			void start();
 			void stop();
 			void stopAndJoin();
@@ -25,7 +25,8 @@ namespace NLE
 		private:
 			std::chrono::duration<unsigned long long, std::nano> _sleepPeriodNs;
 			std::thread _thread;
-			std::function<void()> _procedure;
+			std::function<void()> _runProcedure;
+			std::function<void()> _releaseProcedure;
 			tbb::atomic<bool> _running;
 			tbb::atomic<bool> _releasing;
 			tbb::atomic<bool> _stopped;

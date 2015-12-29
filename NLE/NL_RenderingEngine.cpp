@@ -9,8 +9,6 @@
 #include "NL_ThreadLocal.h"
 #include "NL_WindowManager.h"
 
-#include "gl\glew.h"
-
 #include "NL_GScene.h"
 #include "NL_Console.h"
 #include "lua.hpp"
@@ -28,13 +26,14 @@ namespace NLE
 			
 			_renderingThread = &Core::DeviceCore::instance().allocateThread();
 			_windowManager = new WindowManager();
+
+			_vertexArray = 0;
 			CONSOLE::out(CONSOLE::STANDARD, L"Rendering Engine created");
 		}
 
 		RenderingEngine::~RenderingEngine()
 		{
-			if (_windowManager)
-				delete _windowManager;
+			
 		}
 
 		bool RenderingEngine::initialize(Core::IEngine& engine, std::unique_ptr<Core::SysInitializer> const& initializer)
@@ -53,38 +52,99 @@ namespace NLE
 			_renderingThread->setProcedure([&]() {
 				if (_firstRun)
 				{
-					bool result = _windowManager->initialize(
-						_init->screenSize,
-						_init->fullscreen,
-						_init->decorated,
-						_init->title,
-						_init->openglMajorVersion,
-						_init->openglMinorVersion
-						);
-					if (!result)
-					{
-						CONSOLE::out(CONSOLE::ERR, "WindowManager failed to initialize");
-						assert(false);
-					}
-					_windowManager->makeContextCurrent(true);
-					_windowManager->enableVSync(false);
-					GLenum err = glewInit();
-					if (GLEW_OK != err)
-					{
-						std::string error((const char*)glewGetErrorString(err));
-						CONSOLE::out(CONSOLE::ERR, error);
-						assert(false);
-					}
+					initOpengl();
 					_firstRun.store(false);
 				}
 				_windowManager->pollEvents();
 				render();
 				_windowManager->swapBuffers();
+
+			}, [&]() {
+				releaseOpengl();
 			});
 
 
 			_initialized = true;
 			return true;
+		}
+
+		void RenderingEngine::initOpengl()
+		{
+			bool result = _windowManager->initialize(
+				_init->screenSize,
+				_init->fullscreen,
+				_init->decorated,
+				_init->title,
+				_init->openglMajorVersion,
+				_init->openglMinorVersion
+				);
+			if (!result)
+			{
+				CONSOLE::out(CONSOLE::ERR, "WindowManager failed to initialize");
+				assert(false);
+			}
+			_windowManager->makeContextCurrent(true);
+			_windowManager->enableVSync(false);
+			glewExperimental = TRUE;
+			GLenum err = glewInit();
+			if (GLEW_OK != err)
+			{
+				std::string error((const char*)glewGetErrorString(err));
+				CONSOLE::out(CONSOLE::ERR, error);
+				assert(false);
+			}
+
+			_renderProgram = 0;
+			GLuint vertex_shader;
+			GLuint fragment_shader;
+			// Source code for vertex shader
+			static const GLchar * vertex_shader_source[] =
+			{
+				"#version 450 core \n"
+				" \n"
+				"void main(void) \n"
+				"{ \n"
+				" gl_Position = vec4(0.0, 0.0, 0.5, 1.0); \n"
+				"} \n"
+			};
+
+			static const GLchar * fragment_shader_source[] =
+			{
+				"#version 450 core \n"
+				" \n"
+				"out vec4 color; \n"
+				" \n"
+				"void main(void) \n"
+				"{ \n"
+				" color = vec4(0.0, 0.8, 1.0, 1.0); \n"
+				"} \n"
+			};
+
+			// Create and compile vertex shader
+			vertex_shader = glCreateShader(GL_VERTEX_SHADER);
+			glShaderSource(vertex_shader, 1, vertex_shader_source, NULL);
+			glCompileShader(vertex_shader);
+			// Create and compile fragment shader
+			fragment_shader = glCreateShader(GL_FRAGMENT_SHADER);
+			glShaderSource(fragment_shader, 1, fragment_shader_source, NULL);
+			glCompileShader(fragment_shader);
+			// Create program, attach shaders to it, and link it
+			_renderProgram = glCreateProgram();
+			glAttachShader(_renderProgram, vertex_shader);
+			glAttachShader(_renderProgram, fragment_shader);
+			glLinkProgram(_renderProgram);
+			// Delete the shaders as the program has them now
+			glDeleteShader(vertex_shader);
+			glDeleteShader(fragment_shader);
+
+			glCreateVertexArrays(1, &_vertexArray);
+			glBindVertexArray(_vertexArray);
+		}
+
+		void RenderingEngine::releaseOpengl()
+		{
+			glDeleteProgram(_renderProgram);
+			glDeleteVertexArrays(1, &_vertexArray);
 		}
 
 		void RenderingEngine::start()
@@ -101,6 +161,11 @@ namespace NLE
 		{
 			if (!_initialized)
 				return;
+
+			_renderingThread->stopAndJoin();
+			if (_windowManager)
+				delete _windowManager;
+			
 
 			_initialized = false;
 		}
@@ -133,6 +198,9 @@ namespace NLE
 
 			const GLfloat bgColor[] = {0.0f,0.5f,0.6f,1.0f};
 			glClearBufferfv(GL_COLOR, 0, bgColor);
+
+			glUseProgram(_renderProgram);
+			glDrawArrays(GL_POINTS, 0, 1);
 
 			_timer.sample();
 			if (_timer.fpsChanged())

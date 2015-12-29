@@ -12,14 +12,16 @@ namespace NLE
 			_running.fetch_and_store(false);
 			_releasing.fetch_and_store(false);
 			_stopped.fetch_and_store(true);
-			_procedure = []() {};
+			_runProcedure = []() {};
+			_releaseProcedure = []() {};
 
 			_thread = std::thread([&](
 				std::chrono::duration<unsigned long long, std::nano>& sleepPeriod,
 				tbb::atomic<bool>& running,
 				tbb::atomic<bool>& releasing,
 				tbb::atomic<bool>& stopped,
-				std::function<void()>& operation
+				std::function<void()>& runOperation,
+				std::function<void()>& releaseOperation
 				) {
 				while (!releasing)
 				{
@@ -30,11 +32,12 @@ namespace NLE
 					stopped.fetch_and_store(false);
 					while (running)
 					{
-						operation();
+						runOperation();
 					}
 					stopped.fetch_and_store(true);
 				}
-			}, std::ref(_sleepPeriodNs), std::ref(_running), std::ref(_releasing), std::ref(_stopped), std::ref(_procedure));
+				releaseOperation();
+			}, std::ref(_sleepPeriodNs), std::ref(_running), std::ref(_releasing), std::ref(_stopped), std::ref(_runProcedure), std::ref(_releaseProcedure));
 		}
 
 		Thread::~Thread()
@@ -45,17 +48,19 @@ namespace NLE
 				_thread.join();
 		}
 
-		void Thread::setProcedure(std::function<void()> operation)
+		void Thread::setProcedure(std::function<void()> runOperation, std::function<void()> releaseOperation)
 		{
 			if (_running)
 			{
 				stopAndJoin();
-				_procedure = operation;
+				_runProcedure = runOperation;
+				_releaseProcedure = releaseOperation;
 				start();
 			}
 			else
 			{
-				_procedure = operation;
+				_runProcedure = runOperation;
+				_releaseProcedure = releaseOperation;
 			}			
 		}
 
