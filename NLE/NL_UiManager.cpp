@@ -1,10 +1,9 @@
 #include "NL_UiManager.h"
 #include "NL_Console.h"
 #include "NL_ThreadLocal.h"
-#include "NLCore\NL_DeviceCore.h"
+#include "NL_DeviceCore.h"
 #include "NL_Systems.h"
-#include "NL_SharedContainers.h"
-#include "NLCore\NL_SysInitializer.h"
+#include "NL_SysInitializer.h"
 
 #include "lua.hpp"
 

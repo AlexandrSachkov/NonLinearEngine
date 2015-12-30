@@ -2,7 +2,6 @@
 #define NL_SCENE_MANAGER_H_
 
 #include "NL_ISceneManager.h"
-#include "NL_RenderingResources.h"
 #include "NL_GScene.h"
 #include "NL_System.h"
 #include "NL_Thread.h"
@@ -17,10 +16,6 @@ namespace NLE
 	namespace GRAPHICS
 	{
 		class Scene;
-	}
-	namespace IMPORTER
-	{
-		class AssetImporter;
 	}
 
 	class SceneManager : public Core::System, public ISceneManager
@@ -49,7 +44,6 @@ namespace NLE
 		Core::Thread _loadingThread;
 
 		tbb::atomic<GRAPHICS::Scene*> _gScene;
-		std::unique_ptr<IMPORTER::AssetImporter> _assetImporter;
 	};
 }
 

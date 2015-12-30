@@ -1,7 +1,6 @@
 #ifndef NL_CONSOLE_H_
 #define NL_CONSOLE_H_
 
-#include "NL_ConsoleOutType.h"
 #include "NL_ThreadLocal.h"
 
 #include "tbb\concurrent_queue.h"
@@ -18,6 +17,14 @@ namespace NLE
 {
 	namespace CONSOLE
 	{
+		enum OUTPUT_TYPE
+		{
+			DEBUG,
+			STANDARD,
+			WARNING,
+			ERR
+		};
+
 		class Console
 		{
 		public:

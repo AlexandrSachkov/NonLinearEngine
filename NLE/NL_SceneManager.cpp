@@ -1,5 +1,4 @@
 #include "NL_SceneManager.h"
-#include "NL_AssetImporter.h"
 #include "NL_IRenderingEngine.h"
 #include "NL_Systems.h"
 #include "NL_DeviceCore.h"
@@ -16,7 +15,6 @@ namespace NLE
 		_procedure(nullptr),
 		_loadingThread(100000L)
 	{
-		_assetImporter = std::make_unique<IMPORTER::AssetImporter>();
 		_gScene.fetch_and_store(nullptr);
 	}
 
@@ -83,11 +81,9 @@ namespace NLE
 		_path = path;
 		_loadingThread.setProcedure([&](){
 			CONSOLE::out(CONSOLE::STANDARD, L"Loading Thread running");
-			auto device = static_cast<GRAPHICS::IRenderingEngine*>(&Core::DeviceCore::instance().getSystemInterface(SYS::SYS_RENDERING_ENGINE))
-				->getDevice();
-			GRAPHICS::Scene* scene = new GRAPHICS::Scene();
-			_assetImporter->importScene(device, _path, *scene);
-			setGScene(scene);
+			//GRAPHICS::Scene* scene = new GRAPHICS::Scene();
+			//_assetImporter->importScene(device, _path, *scene);
+			//setGScene(scene);
 			_loadingThread.stop();
 		}, []() {});
 		_loadingThread.start();

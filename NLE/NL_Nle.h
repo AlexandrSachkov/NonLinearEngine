@@ -2,7 +2,6 @@
 #define NL_NLE_H_
 
 #include "NL_CommonTypes.h"
-#include "NL_ConsoleOutType.h"
 
 #include "tbb/atomic.h"
 

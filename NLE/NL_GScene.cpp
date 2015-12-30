@@ -1,5 +1,4 @@
 #include "NL_GScene.h"
-#include "NL_D3D11Utility.h"
 
 
 namespace NLE
@@ -70,14 +69,7 @@ namespace NLE
 		{
 			if (_pendingUpdate)
 			{
-				GRAPHICS::D3D11Utility::createBuffer<GRAPHICS::RESOURCES::LightBuff>(
-					device, 
-					D3D11_BIND_CONSTANT_BUFFER, 
-					D3D11_USAGE_IMMUTABLE, 
-					&_lights,
-					1, 
-					_lightBuff
-				);
+				
 				
 				_pendingUpdate.fetch_and_store(false);
 			}

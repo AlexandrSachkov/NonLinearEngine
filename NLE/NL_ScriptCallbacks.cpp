@@ -1,11 +1,10 @@
 #include "NL_ScriptCallbacks.h"
 #include "lua.hpp"
 #include "NL_Systems.h"
-#include "NLCore\NL_DeviceCore.h"
+#include "NL_DeviceCore.h"
 #include "NL_ThreadLocal.h"
 
 #include "NL_RenderingEngine.h"
-#include "NL_CameraManager.h"
 #include "NL_SceneManager.h"
 #include "NL_Console.h"
 #include <string>

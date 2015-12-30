@@ -1,7 +1,7 @@
 #ifndef NL_I_RENDERING_ENGINE_H_
 #define NL_I_RENDERING_ENGINE_H_
 
-#include "NLCore\NL_ISystem.h"
+#include "NL_ISystem.h"
 #include <cstdint>
 
 struct ID3D11Device;

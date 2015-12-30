@@ -29,8 +29,6 @@ THE SOFTWARE.
 #ifndef NL_WINDOW_MANAGER_H_
 #define NL_WINDOW_MANAGER_H_
 
-#include "NL_IWindowManager.h"
-
 #include "NL_CommonTypes.h"
 #include "NL_InputEvents.h"
 #include "NL_System.h"

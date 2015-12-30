@@ -3,10 +3,9 @@
 
 #include "NL_IUiManager.h"
 #include "NL_System.h"
-#include "NL_IConsolePump.h"
+#include "NL_Console.h"
 
 #include "tbb\concurrent_queue.h"
-#include "DirectXMath.h"
 
 namespace NLE
 {

@@ -34,11 +34,7 @@ ENDIF(NLE_TARGET_ARCHITECTURE STREQUAL "")
 SET(HEADERS 
 	NL_Allocator.h
 	NL_Atomic.h
-	NL_AssetImporter.h
-	NL_Camera.h
-	NL_CameraManager.h
 	NL_Console.h
-	NL_ConsoleOutType.h
 	NL_GlfwInputMap.h
 	NL_GScene.h
 	NL_InputProcessor.h
@@ -47,22 +43,16 @@ SET(HEADERS
 	NL_Nle.h
 	NL_RenderingEngine.h
 	NL_IRenderingEngine.h
-	NL_RenderingResources.h
 	NL_SceneManager.h
 	NL_ISceneManager.h
 	NL_ScriptCallbacks.h
 	NL_ScriptExecutor.h
-	NL_SharedContainers.h
 	NL_Systems.h
-	NL_TextureLoader.h
 	NL_Timer.h
 	NL_ThreadLocal.h
 	NL_UiManager.h
 	NL_IUiManager.h
 	NL_WindowManager.h
-	
-	DDSTextureLoader.h
-	WICTextureLoader.h
 	
 	NL_AsyncTask.h 
 	NL_DeviceCore.h	
@@ -80,9 +70,6 @@ SET(HEADERS
 	)
 
 SET(SOURCES 
-	NL_AssetImporter.cpp
-	NL_Camera.cpp
-	NL_CameraManager.cpp
 	NL_Console.cpp
 	NL_GlfwInputMap.cpp
 	NL_GScene.cpp
@@ -92,13 +79,9 @@ SET(SOURCES
 	NL_SceneManager.cpp
 	NL_ScriptCallbacks.cpp
 	NL_ScriptExecutor.cpp
-	NL_TextureLoader.cpp
 	NL_Timer.cpp
 	NL_UiManager.cpp
 	NL_WindowManager.cpp
-	
-	DDSTextureLoader.cpp
-	WICTextureLoader.cpp
 	
 	NL_DeviceCore.cpp
 	NL_Scheduler.cpp		
@@ -129,52 +112,6 @@ SET(NLE_TBB_LIBRARY_RELEASE_PATH
 IF(NLE_TBB_LIBRARY_RELEASE_PATH STREQUAL "")
 	MESSAGE(SEND_ERROR "TBB library release path must be specified")
 ENDIF(NLE_TBB_LIBRARY_RELEASE_PATH STREQUAL "")
-
-
-# DirectX SDK
-SET(NLE_DIRECT_X_SDK_INCLUDE_PATH
-	"" CACHE PATH "NLE DirectX SDK include path")
-
-IF(NLE_DIRECT_X_SDK_INCLUDE_PATH STREQUAL "")
-	MESSAGE(SEND_ERROR "NLE DirectX SDK include path must be specified")
-ENDIF(NLE_DIRECT_X_SDK_INCLUDE_PATH STREQUAL "")
-
-SET(NLE_DIRECT_X_SDK_LIBRARY_DEBUG_PATH
-	"" CACHE PATH "NLE DirectX SDK library debug path")
-
-IF(NLE_DIRECT_X_SDK_LIBRARY_DEBUG_PATH STREQUAL "")
-	MESSAGE(SEND_ERROR "NLE DirectX SDK library debug path must be specified")
-ENDIF(NLE_DIRECT_X_SDK_LIBRARY_DEBUG_PATH STREQUAL "")
-
-SET(NLE_DIRECT_X_SDK_LIBRARY_RELEASE_PATH
-	"" CACHE PATH "NLE DirectX SDK library release path")
-
-IF(NLE_DIRECT_X_SDK_LIBRARY_RELEASE_PATH STREQUAL "")
-	MESSAGE(SEND_ERROR "NLE DirectX SDK library release path must be specified")
-ENDIF(NLE_DIRECT_X_SDK_LIBRARY_RELEASE_PATH STREQUAL "")
-
-
-# Assimp
-SET(NLE_ASSIMP_INCLUDE_PATH
-	"" CACHE PATH "NLE Assimp include path")
-
-IF(NLE_ASSIMP_INCLUDE_PATH STREQUAL "")
-	MESSAGE(SEND_ERROR "NLE Assimp include path must be specified")
-ENDIF(NLE_ASSIMP_INCLUDE_PATH STREQUAL "")
-
-SET(NLE_ASSIMP_LIBRARY_DEBUG_PATH
-	"" CACHE PATH "NLE Assimp library debug path")
-
-IF(NLE_ASSIMP_LIBRARY_DEBUG_PATH STREQUAL "")
-	MESSAGE(SEND_ERROR "NLE Assimp library debug path must be specified")
-ENDIF(NLE_ASSIMP_LIBRARY_DEBUG_PATH STREQUAL "")
-
-SET(NLE_ASSIMP_LIBRARY_RELEASE_PATH
-	"" CACHE PATH "NLE Assimp library release path")
-
-IF(NLE_ASSIMP_LIBRARY_RELEASE_PATH STREQUAL "")
-	MESSAGE(SEND_ERROR "NLE Assimp library release path must be specified")
-ENDIF(NLE_ASSIMP_LIBRARY_RELEASE_PATH STREQUAL "")
 
 
 # Lua
@@ -256,10 +193,7 @@ ENDIF(NLE_GLM_INCLUDE_PATH STREQUAL "")
 
 
 INCLUDE_DIRECTORIES(
-	${NLE_SDK_INSTALL_PATH}/include/NLE
 	${NLE_TBB_INCLUDE_PATH}
-	${NLE_DIRECT_X_SDK_INCLUDE_PATH}
-	${NLE_ASSIMP_INCLUDE_PATH}
 	${NLE_LUA_INCLUDE_PATH}
 	${NLE_GLFW_INCLUDE_PATH}
 	${NLE_GLEW_INCLUDE_PATH}
@@ -277,11 +211,6 @@ ENDIF(NLE_HOST_OS STREQUAL "Windows")
 LINK_DIRECTORIES(
 	${NLE_TBB_LIBRARY_DEBUG_PATH}
 	${NLE_TBB_LIBRARY_RELEASE_PATH}
-	${NLE_SDK_INSTALL_PATH}/lib
-	${NLE_DIRECT_X_SDK_LIBRARY_DEBUG_PATH}
-	${NLE_DIRECT_X_SDK_LIBRARY_RELEASE_PATH}
-	${NLE_ASSIMP_LIBRARY_DEBUG_PATH}
-	${NLE_ASSIMP_LIBRARY_RELEASE_PATH}
 	${NLE_LUA_LIBRARY_DEBUG_PATH}
 	${NLE_LUA_LIBRARY_RELEASE_PATH}
 	${NLE_GLFW_LIBRARY_DEBUG_PATH}
@@ -307,17 +236,6 @@ TARGET_LINK_LIBRARIES(NLE
 	optimized tbbmalloc_proxy
 	debug tbbproxy_debug
 	optimized tbbproxy
-	
-	debug NLCore_d
-	optimized NLCore
-	
-	debug d3d11
-	optimized d3d11
-	debug d3dcompiler
-	optimized d3dcompiler
-	
-	debug assimpd
-	optimized assimp
 	
 	debug lua51
 	optimized lua51

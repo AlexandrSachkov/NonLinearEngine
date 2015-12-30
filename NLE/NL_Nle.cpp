@@ -6,7 +6,6 @@
 #include "NL_InputEvents.h"
 #include "NL_InputProcessor.h"
 #include "NL_SceneManager.h"
-#include "NL_CameraManager.h"
 #include "NL_Systems.h"
 #include "NL_Console.h"
 #include "NL_UiManager.h"

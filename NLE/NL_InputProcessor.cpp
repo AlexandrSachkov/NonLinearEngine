@@ -2,7 +2,6 @@
 #include "NL_InputEvents.h"
 #include "NL_IEngine.h"
 #include "NL_Nle.h"
-#include "NL_IRenderer.h"
 #include "NL_Systems.h"
 #include "NL_UiManager.h"
 #include "NL_DeviceCore.h"
