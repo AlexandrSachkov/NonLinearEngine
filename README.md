@@ -10,7 +10,7 @@ NonLinear Engine
 
 <h3>About the Project</h3>
 <p>
-NonLinear Engine is a completely free (MIT Licensed) experimental 3D game engine for Windows. The aim of this project is to develop a highly scalable game engine that fully utilizes processors with a large number of cores (6 cores +) through the use of its custom parallel framework, and then push it to see what is possible to achieve. Possible use cases include: achieving higher frame rates, more dynamic bodies and animations, smarter AI, higher graphical detail, approximated voxel terrain, real-time fluid simulations,  etc.
+NonLinear Engine is a completely free (MIT Licensed) experimental 3D game engine for Windows. The aim of this project is to develop a highly scalable game engine that fully utilizes processors with a large number of cores through the use of its custom parallel framework. Such scalability would allow for richer in-game content and the ability to handle more players in online games when ran server-side.
 </p>
 
 <p>
@@ -90,35 +90,29 @@ This section is created to track development progress and includes completed and
     <td><b>Description</b></td>
     <td><b>Status</b></td>
   </tr>
-  
-  <tr>
-    <td>...</td>
-    <td>Add shadows</td>
+   <tr>
+    <td>12</td>
+    <td>Build an in-game editor overlay</td>
     <td>Pending</td>
   </tr>
   <tr>
-    <td>...</td>
-    <td>Add material support</td>
-    <td>Pending</td>
-  </tr>
-  <tr>
-    <td>...</td>
-    <td>Add support for blending</td>
+    <td>11</td>
+    <td>Build a scene graph</td>
     <td>Pending</td>
   </tr>
   <tr>
     <td>10</td>
-    <td>Create a basic QT editor</td>
+    <td>Build an asset streaming system</td>
     <td>Pending</td>
   </tr>
   <tr>
     <td>9</td>
-    <td>Add support for forward lighting</td>
+    <td>Design a custom scene format</td>
     <td>Pending</td>
   </tr>
   <tr>
     <td>8</td>
-    <td>Build console</td>
+    <td>Build a console</td>
     <td>Complete</td>
   </tr>
   <tr>
