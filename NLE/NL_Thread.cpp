@@ -9,9 +9,9 @@ namespace NLE
 		Thread::Thread(unsigned long long sleepPeriodNs) :
 			_sleepPeriodNs(std::chrono::nanoseconds(sleepPeriodNs))
 		{
-			_running.fetch_and_store(false);
-			_releasing.fetch_and_store(false);
-			_stopped.fetch_and_store(true);
+			_running.store(false);
+			_releasing.store(false);
+			_stopped.store(true);
 			_runProcedure = []() {};
 			_releaseProcedure = []() {};
 
@@ -29,12 +29,12 @@ namespace NLE
 					{
 						std::this_thread::sleep_for(sleepPeriod);
 					}
-					stopped.fetch_and_store(false);
+					stopped.store(false);
 					while (running)
 					{
 						runOperation();
 					}
-					stopped.fetch_and_store(true);
+					stopped.store(true);
 				}
 				releaseOperation();
 			}, std::ref(_sleepPeriodNs), std::ref(_running), std::ref(_releasing), std::ref(_stopped), std::ref(_runProcedure), std::ref(_releaseProcedure));
@@ -42,8 +42,8 @@ namespace NLE
 
 		Thread::~Thread()
 		{
-			_running.fetch_and_store(false);
-			_releasing.fetch_and_store(true);				
+			_running.store(false);
+			_releasing.store(true);				
 			if (_thread.joinable())
 				_thread.join();
 		}
@@ -66,17 +66,17 @@ namespace NLE
 
 		void Thread::start()
 		{
-			_running.fetch_and_store(true);
+			_running.store(true);
 		}
 
 		void Thread::stop()
 		{
-			_running.fetch_and_store(false);
+			_running.store(false);
 		}
 
 		void Thread::stopAndJoin()
 		{
-			_running.fetch_and_store(false);
+			_running.store(false);
 			while (!_stopped)
 			{
 			}

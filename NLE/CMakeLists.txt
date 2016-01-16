@@ -33,25 +33,37 @@ ENDIF(NLE_TARGET_ARCHITECTURE STREQUAL "")
 
 SET(HEADERS 
 	NL_Allocator.h
+	NL_AssetImporter.h
 	NL_Atomic.h
+	NL_CommonTypes.h
 	NL_Console.h
+	NL_DataCompressionManager.h
+	NL_FileIOManager.h
+	NL_Game.h
 	NL_GlfwInputMap.h
 	NL_GScene.h
 	NL_InputProcessor.h
 	NL_IInputProcessor.h	
 	NL_InputEvents.h
+	NL_MemoryManager.h
+	NL_MemoryPool.h
 	NL_Nle.h
+	NL_Octree.h
 	NL_RenderingEngine.h
 	NL_IRenderingEngine.h
+	NL_Scene.h
 	NL_SceneManager.h
 	NL_ISceneManager.h
+	NL_ResourceManager.h
 	NL_ScriptCallbacks.h
 	NL_ScriptExecutor.h
 	NL_Systems.h
-	NL_Timer.h
+	NL_TextureLoader.h
+	NL_Timer.h	
 	NL_ThreadLocal.h
 	NL_UiManager.h
 	NL_IUiManager.h
+	
 	NL_WindowManager.h
 	
 	NL_AsyncTask.h 
@@ -61,6 +73,7 @@ SET(HEADERS
 	NL_ISystem.h
 	NL_PContainer.h
 	NL_PContainer.inl
+	NL_ResourceManager.cpp
 	NL_Scheduler.h
 	NL_SyncTask.h
 	NL_SysInitializer.h
@@ -70,15 +83,23 @@ SET(HEADERS
 	)
 
 SET(SOURCES 
+	NL_AssetImporter.cpp
 	NL_Console.cpp
+	NL_DataCompressionManager.cpp
+	NL_FileIOManager.cpp
+	NL_Game.cpp
 	NL_GlfwInputMap.cpp
 	NL_GScene.cpp
 	NL_InputProcessor.cpp
+	NL_MemoryManager.cpp
 	NL_Nle.cpp
+	NL_Octree.cpp
 	NL_RenderingEngine.cpp
+	NL_Scene.cpp
 	NL_SceneManager.cpp
 	NL_ScriptCallbacks.cpp
 	NL_ScriptExecutor.cpp
+	NL_TextureLoader.cpp
 	NL_Timer.cpp
 	NL_UiManager.cpp
 	NL_WindowManager.cpp
@@ -192,16 +213,102 @@ IF(NLE_GLM_INCLUDE_PATH STREQUAL "")
 ENDIF(NLE_GLM_INCLUDE_PATH STREQUAL "")
 
 
+# KTX
+SET(NLE_KTX_INCLUDE_PATH
+	"" CACHE PATH "NLE KTX include path")
+
+IF(NLE_KTX_INCLUDE_PATH STREQUAL "")
+	MESSAGE(SEND_ERROR "NLE KTX include path must be specified")
+ENDIF(NLE_KTX_INCLUDE_PATH STREQUAL "")
+
+SET(NLE_KTX_LIBRARY_DEBUG_PATH
+	"" CACHE PATH "NLE KTX library debug path")
+
+IF(NLE_KTX_LIBRARY_DEBUG_PATH STREQUAL "")
+	MESSAGE(SEND_ERROR "NLE KTX library debug path must be specified")
+ENDIF(NLE_KTX_LIBRARY_DEBUG_PATH STREQUAL "")
+
+SET(NLE_KTX_LIBRARY_RELEASE_PATH
+	"" CACHE PATH "NLE KTX library release path")
+
+IF(NLE_KTX_LIBRARY_RELEASE_PATH STREQUAL "")
+	MESSAGE(SEND_ERROR "NLE KTX library release path must be specified")
+ENDIF(NLE_KTX_LIBRARY_RELEASE_PATH STREQUAL "")
+
+
+# Assimp
+SET(NLE_ASSIMP_INCLUDE_PATH
+	"" CACHE PATH "NLE Assimp include path")
+
+IF(NLE_ASSIMP_INCLUDE_PATH STREQUAL "")
+	MESSAGE(SEND_ERROR "NLE Assimp include path must be specified")
+ENDIF(NLE_ASSIMP_INCLUDE_PATH STREQUAL "")
+
+SET(NLE_ASSIMP_LIBRARY_DEBUG_PATH
+	"" CACHE PATH "NLE Assimp library debug path")
+
+IF(NLE_ASSIMP_LIBRARY_DEBUG_PATH STREQUAL "")
+	MESSAGE(SEND_ERROR "NLE Assimp library debug path must be specified")
+ENDIF(NLE_ASSIMP_LIBRARY_DEBUG_PATH STREQUAL "")
+
+SET(NLE_ASSIMP_LIBRARY_RELEASE_PATH
+	"" CACHE PATH "NLE Assimp library release path")
+
+IF(NLE_ASSIMP_LIBRARY_RELEASE_PATH STREQUAL "")
+	MESSAGE(SEND_ERROR "NLE Assimp library release path must be specified")
+ENDIF(NLE_ASSIMP_LIBRARY_RELEASE_PATH STREQUAL "")
+
+
+# Rapid JSON
+SET(NLE_RAPID_JSON_INCLUDE_PATH
+	"" CACHE PATH "NLE Rapid JSON include path")
+
+IF(NLE_RAPID_JSON_INCLUDE_PATH STREQUAL "")
+	MESSAGE(SEND_ERROR "NLE Rapid JSON include path must be specified")
+ENDIF(NLE_RAPID_JSON_INCLUDE_PATH STREQUAL "")
+
+
+# LZ4
+SET(NLE_LZ4_INCLUDE_PATH
+	"" CACHE PATH "NLE LZ4 include path")
+
+IF(NLE_LZ4_INCLUDE_PATH STREQUAL "")
+	MESSAGE(SEND_ERROR "NLE LZ4 include path must be specified")
+ENDIF(NLE_LZ4_INCLUDE_PATH STREQUAL "")
+
+SET(NLE_LZ4_LIBRARY_DEBUG_PATH
+	"" CACHE PATH "NLE LZ4 library debug path")
+
+IF(NLE_LZ4_LIBRARY_DEBUG_PATH STREQUAL "")
+	MESSAGE(SEND_ERROR "NLE LZ4 library debug path must be specified")
+ENDIF(NLE_LZ4_LIBRARY_DEBUG_PATH STREQUAL "")
+
+SET(NLE_LZ4_LIBRARY_RELEASE_PATH
+	"" CACHE PATH "NLE LZ4 library release path")
+
+IF(NLE_LZ4_LIBRARY_RELEASE_PATH STREQUAL "")
+	MESSAGE(SEND_ERROR "NLE LZ4 library release path must be specified")
+ENDIF(NLE_LZ4_LIBRARY_RELEASE_PATH STREQUAL "")
+
+
+
 INCLUDE_DIRECTORIES(
 	${NLE_TBB_INCLUDE_PATH}
 	${NLE_LUA_INCLUDE_PATH}
 	${NLE_GLFW_INCLUDE_PATH}
 	${NLE_GLEW_INCLUDE_PATH}
 	${NLE_GLM_INCLUDE_PATH}
+	${NLE_KTX_INCLUDE_PATH}
+	${NLE_ASSIMP_INCLUDE_PATH}
+	${NLE_RAPID_JSON_INCLUDE_PATH}
+	${NLE_LZ4_INCLUDE_PATH}
 	)
 
 IF(NLE_HOST_OS STREQUAL "Windows")
 	ADD_DEFINITIONS(
+	-D_CRT_SECURE_NO_WARNINGS
+	-D_SCL_SECURE_NO_WARNINGS
+	-DKTX_OPENGL
 	-DGLEW_STATIC 
 	-D_WIN32_WINNT=0x0601
 	-DWINVER=0x0601
@@ -217,6 +324,12 @@ LINK_DIRECTORIES(
 	${NLE_GLFW_LIBRARY_RELEASE_PATH}
 	${NLE_GLEW_LIBRARY_DEBUG_PATH}
 	${NLE_GLEW_LIBRARY_RELEASE_PATH}
+	${NLE_KTX_LIBRARY_DEBUG_PATH}
+	${NLE_KTX_LIBRARY_RELEASE_PATH}
+	${NLE_ASSIMP_LIBRARY_DEBUG_PATH}
+	${NLE_ASSIMP_LIBRARY_RELEASE_PATH}
+	${NLE_LZ4_LIBRARY_DEBUG_PATH}
+	${NLE_LZ4_LIBRARY_RELEASE_PATH}
 	)
 
 add_executable (NLE
@@ -251,6 +364,15 @@ TARGET_LINK_LIBRARIES(NLE
 	
 	debug opengl32
 	optimized opengl32
+	
+	debug libktx
+	optimized libktx
+
+	debug assimpd
+	optimized assimp
+
+	debug lz4
+	optimized lz4
 	)
 
 set_target_properties(NLE PROPERTIES DEBUG_POSTFIX _d)

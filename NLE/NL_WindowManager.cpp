@@ -350,7 +350,7 @@ namespace NLE
 
 	void WindowManager::processEvent(INPUT::Event& event)
 	{
-		static_cast<INPUT::IInputProcessor*>(&Core::DeviceCore::instance().getSystemInterface(SYS::SYS_INPUT_PROCESSOR))
+		((INPUT::IInputProcessor*)(&Core::DeviceCore::instance().getSystemInterface(SYS::SYS_INPUT_PROCESSOR)))
 			->processEvent(event);
 	}
 

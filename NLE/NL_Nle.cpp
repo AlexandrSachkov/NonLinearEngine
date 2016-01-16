@@ -20,7 +20,7 @@
 #include <codecvt>
 #include <thread>
 #include <chrono>
-#include "DirectXMath.h"
+
 
 namespace NLE
 {
