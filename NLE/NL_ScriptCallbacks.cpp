@@ -13,7 +13,7 @@ namespace NLE
 {
 	namespace SCRIPT
 	{
-		int Callback::importScene(lua_State* state)
+		/*int Callback::importScene(lua_State* state)
 		{
 			lua_settop(state, 1);
 			if (lua_isstring(state, 1))
@@ -24,7 +24,7 @@ namespace NLE
 				return 0;
 			}
 			return 0;
-		}
+		}*/
 
 		int Callback::printConsole(lua_State* state)
 		{

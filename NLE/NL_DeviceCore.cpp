@@ -37,7 +37,7 @@ namespace NLE
 			for (uint_fast32_t& sysId : _sysInitOrder)
 			{
 				assert(_systems.count(sysId) > 0 && _executionDesc.count(sysId) > 0);
-				if (!_systems.at(sysId)->initialize(*this, _initializers.at(sysId)))
+				if (!_systems.at(sysId)->initialize(_initializers.at(sysId)))
 					return false;
 
 				auto& execDesc = _executionDesc.at(sysId);
@@ -185,6 +185,11 @@ namespace NLE
 		{
 			assert(!_initialized);
 			_initializers.at(sysId) = std::move(initializer);
+		}
+
+		void DeviceCore::runAsync(std::function<void()>& operation, Priority priority)
+		{
+			_scheduler->runAsync(operation, priority);
 		}
 	}
 }

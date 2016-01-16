@@ -24,7 +24,7 @@ namespace NLE
 			UiManager();
 			~UiManager();
 
-			bool initialize(Core::IEngine& engine, std::unique_ptr<Core::SysInitializer> const& initializer);
+			bool initialize(std::unique_ptr<Core::SysInitializer> const& initializer);
 			void start();
 			void stop();
 			void release();

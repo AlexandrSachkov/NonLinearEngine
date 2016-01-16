@@ -9,10 +9,6 @@
 #include "NL_SysInitializer.h"
 #include "NL_CommonTypes.h"
 
-#include <Windows.h>
-#include <d3d11.h>
-#include <DirectXMath.h>
-
 #include "tbb/atomic.h"
 
 #include <memory>
@@ -68,7 +64,7 @@ namespace NLE
 			RenderingEngine();
 			~RenderingEngine();
 
-			bool initialize(Core::IEngine& engine, std::unique_ptr<Core::SysInitializer> const& initializer);
+			bool initialize(std::unique_ptr<Core::SysInitializer> const& initializer);
 			void start();
 			void stop();
 			void release();

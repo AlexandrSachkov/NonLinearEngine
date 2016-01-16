@@ -1,7 +1,6 @@
 #include "NL_RenderingEngine.h"
 
 #include "NL_ISystem.h"
-#include "NL_IEngine.h"
 #include "NL_Systems.h"
 #include "NL_IGameManager.h"
 #include "NL_IInputProcessor.h"
@@ -35,7 +34,7 @@ namespace NLE
 			
 		}
 
-		bool RenderingEngine::initialize(Core::IEngine& engine, std::unique_ptr<Core::SysInitializer> const& initializer)
+		bool RenderingEngine::initialize(std::unique_ptr<Core::SysInitializer> const& initializer)
 		{
 			assert(!_initialized);
 			_init = static_cast<Initializer*>(initializer.get());
@@ -199,9 +198,6 @@ namespace NLE
 
 		void RenderingEngine::render()
 		{
-			Scene* scene = static_cast<IGameManager*>(&Core::DeviceCore::instance().getSystemInterface(SYS::SYS_GAME_MANAGER))
-				->getGScene();
-
 			const GLfloat bgColor[] = {0.0f,0.5f,0.6f,1.0f};
 			glClearBufferfv(GL_COLOR, 0, bgColor);
 

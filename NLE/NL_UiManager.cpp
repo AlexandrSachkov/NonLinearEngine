@@ -23,7 +23,7 @@ namespace NLE
 		{
 		}
 
-		bool UiManager::initialize(Core::IEngine& engine, std::unique_ptr<Core::SysInitializer> const& initializer)
+		bool UiManager::initialize(std::unique_ptr<Core::SysInitializer> const& initializer)
 		{
 			assert(!_initialized && _printConsole);
 

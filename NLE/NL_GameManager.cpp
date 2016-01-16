@@ -12,10 +12,9 @@ namespace NLE
 {
 	GameManager::GameManager() :
 		_initialized(false),
-		_procedure(nullptr),
-		_loadingThread(100000L)
+		_procedure(nullptr)
 	{
-		_gScene.fetch_and_store(nullptr);
+
 	}
 
 	GameManager::~GameManager()
@@ -23,7 +22,7 @@ namespace NLE
 
 	}
 
-	bool GameManager::initialize(Core::IEngine& engine, std::unique_ptr<Core::SysInitializer> const& initializer)
+	bool GameManager::initialize(std::unique_ptr<Core::SysInitializer> const& initializer)
 	{
 		assert(!_initialized);
 
@@ -62,30 +61,5 @@ namespace NLE
 	Core::ISystem& GameManager::getInterface()
 	{
 		return *this;
-	}
-
-	void GameManager::setGScene(GRAPHICS::Scene* scene)
-	{
-		_gScene.fetch_and_store(scene);
-	}
-
-	GRAPHICS::Scene* GameManager::getGScene()
-	{
-		return _gScene;
-	}
-
-	void GameManager::importScene(std::wstring& path)
-	{
-		assert(_initialized && !_loadingThread.isRunning());
-
-		_path = path;
-		_loadingThread.setProcedure([&](){
-			CONSOLE::out(CONSOLE::STANDARD, L"Loading Thread running");
-			//GRAPHICS::Scene* scene = new GRAPHICS::Scene();
-			//_assetImporter->importScene(device, _path, *scene);
-			//setGScene(scene);
-			_loadingThread.stop();
-		}, []() {});
-		_loadingThread.start();
 	}
 }

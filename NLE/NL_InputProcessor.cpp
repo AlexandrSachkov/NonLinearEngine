@@ -1,6 +1,5 @@
 #include "NL_InputProcessor.h"
 #include "NL_InputEvents.h"
-#include "NL_IEngine.h"
 #include "NL_Nle.h"
 #include "NL_Systems.h"
 #include "NL_UiManager.h"
@@ -25,7 +24,7 @@ namespace NLE
 			
 		}
 
-		bool InputProcessor::initialize(Core::IEngine& engine, std::unique_ptr<Core::SysInitializer> const& initializer)
+		bool InputProcessor::initialize(std::unique_ptr<Core::SysInitializer> const& initializer)
 		{
 			assert(!_initialized);
 

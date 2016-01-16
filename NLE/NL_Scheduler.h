@@ -3,6 +3,8 @@
 
 #include "NL_ExecutionDesc.h"
 #include "NL_PContainer.h"
+#include "NL_Task.h"
+
 #include "tbb\concurrent_queue.h"
 #include "tbb/task_scheduler_init.h"
 #include "tbb\scalable_allocator.h"
@@ -10,13 +12,14 @@
 #include <unordered_map>
 
 
+#include <functional>
+
 namespace NLE 
 {
 	namespace Core 
 	{
 		class SysManager;
 		class StateManager;
-		class SysTask;
 		class Clock;
 		class System;
 
@@ -39,7 +42,11 @@ namespace NLE
 				std::unordered_map<uint_fast32_t, ExecutionDesc>& executionDesc);
 			int_fast32_t getNumRunningTasks();
 
+			void runAsync(std::function<void()>& operation, Priority priority);
+
 		private:
+			void runTask(Task& task, Priority priority);
+
 			tbb::task_scheduler_init* _taskSchedulerInit;		
 			tbb::concurrent_queue<uint_fast32_t> _starting;
 			tbb::concurrent_queue<uint_fast32_t> _finished;

@@ -11,7 +11,7 @@ namespace NLE
 			_state = luaL_newstate();
 			luaL_openlibs(_state);
 
-			lua_register(_state, "NLE_importScene", Callback::importScene);
+			//lua_register(_state, "NLE_importScene", Callback::importScene);
 			lua_register(_state, "NLE_cout", Callback::printConsole);
 		}
 

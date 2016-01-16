@@ -1,8 +1,8 @@
 #ifndef NL_DEVICE_CORE_H_
 #define NL_DEVICE_CORE_H_
 
-#include "NL_IEngine.h"
 #include "NL_Thread.h"
+#include "NL_ExecutionDesc.h"
 
 #include "tbb/atomic.h"
 #include "tbb/concurrent_queue.h"
@@ -32,7 +32,7 @@ namespace NLE
 		class ISystem;
 		struct SysInitializer;
 
-		class DeviceCore : public IEngine
+		class DeviceCore
 		{
 		public:
 			static DeviceCore& instance()
@@ -55,6 +55,8 @@ namespace NLE
 			void run();
 			void stop();
 			void stopAndJoin();
+
+			void runAsync(std::function<void()>& operation, Priority priority);
 			
 			//Interface Methods
 			void startSystem(uint_fast32_t sysId);

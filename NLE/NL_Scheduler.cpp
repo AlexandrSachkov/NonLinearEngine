@@ -1,8 +1,7 @@
 #include "NL_Scheduler.h"
 #include "tbb/tbb.h"
 #include "NL_System.h"
-#include "NL_AsyncTask.h"
-#include "NL_SyncTask.h"
+#include "NL_SysTask.h"
 
 #include <assert.h>
 
@@ -116,22 +115,8 @@ namespace NLE
 						execDesc->resetStartTime();
 						
 						std::function<void()> const& procedure = systems.at(sysId)->getExecutionProcedure();
-						AsyncTask* task = new (tbb::task::allocate_root())NLE::Core::AsyncTask(*this, sysId, procedure);
-						switch (execDesc->getPriority())
-						{
-						case Priority::LOW:
-							tbb::task::enqueue(*task, tbb::priority_low);
-							break;
-						case Priority::STANDARD:
-							tbb::task::enqueue(*task, tbb::priority_normal);
-							break;
-						case Priority::HIGH:
-							tbb::task::enqueue(*task, tbb::priority_high);
-							break;
-						default:
-							//should never be reached
-							assert(false);
-						}
+						SysTask* task = new (tbb::task::allocate_root())NLE::Core::SysTask(*this, sysId, procedure);
+						runTask(*task, execDesc->getPriority());
 						
 					} else {
 						_syncSystemsToRun.push_back(sysId);
@@ -149,11 +134,37 @@ namespace NLE
 					execDesc->resetStartTime();
 
 					std::function<void()> const& procedure = systems.at(sysId)->getExecutionProcedure();
-					SyncTask task(*this, sysId, procedure);
+					SysTask task(*this, sysId, procedure);
 					task.execute();
 				}
 				_syncSystemsToRun.clear();
 			}
+		}
+
+
+		void Scheduler::runTask(Task& task, Priority priority)
+		{
+			switch (priority)
+			{
+			case Priority::LOW:
+				tbb::task::enqueue(task, tbb::priority_low);
+				break;
+			case Priority::STANDARD:
+				tbb::task::enqueue(task, tbb::priority_normal);
+				break;
+			case Priority::HIGH:
+				tbb::task::enqueue(task, tbb::priority_high);
+				break;
+			default:
+				//should never be reached
+				assert(false);
+			}
+		}
+
+		void Scheduler::runAsync(std::function<void()>& operation, Priority priority)
+		{
+			Task* task = new (tbb::task::allocate_root())NLE::Core::Task(operation);
+			runTask(*task, priority);
 		}
 	}
 }

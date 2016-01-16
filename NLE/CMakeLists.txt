@@ -65,20 +65,19 @@ SET(HEADERS
 	NL_IUiManager.h
 	
 	NL_WindowManager.h
-	
-	NL_AsyncTask.h 
+		
 	NL_DeviceCore.h	
 	NL_ExecutionDesc.h
-	NL_IEngine.h
 	NL_ISystem.h
 	NL_PContainer.h
 	NL_PContainer.inl
 	NL_ResourceManager.cpp
 	NL_Scheduler.h
-	NL_SyncTask.h
 	NL_SysInitializer.h
+	NL_SysTask.h
 	NL_SysThread.h
 	NL_System.h
+	NL_Task.h
 	NL_Thread.h
 	)
 

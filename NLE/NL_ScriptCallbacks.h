@@ -11,7 +11,7 @@ namespace NLE
 		class Callback
 		{
 		public:
-			static int importScene(lua_State* state);
+			//static int importScene(lua_State* state);
 
 			static int printConsole(lua_State* state);
 		};		
