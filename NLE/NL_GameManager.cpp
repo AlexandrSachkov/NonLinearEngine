@@ -1,4 +1,4 @@
-#include "NL_SceneManager.h"
+#include "NL_GameManager.h"
 #include "NL_IRenderingEngine.h"
 #include "NL_Systems.h"
 #include "NL_DeviceCore.h"
@@ -10,7 +10,7 @@
 
 namespace NLE
 {
-	SceneManager::SceneManager() :
+	GameManager::GameManager() :
 		_initialized(false),
 		_procedure(nullptr),
 		_loadingThread(100000L)
@@ -18,12 +18,12 @@ namespace NLE
 		_gScene.fetch_and_store(nullptr);
 	}
 
-	SceneManager::~SceneManager()
+	GameManager::~GameManager()
 	{
 
 	}
 
-	bool SceneManager::initialize(Core::IEngine& engine, std::unique_ptr<Core::SysInitializer> const& initializer)
+	bool GameManager::initialize(Core::IEngine& engine, std::unique_ptr<Core::SysInitializer> const& initializer)
 	{
 		assert(!_initialized);
 
@@ -34,47 +34,47 @@ namespace NLE
 		return true;
 	}
 
-	void SceneManager::start()
+	void GameManager::start()
 	{
 
 	}
 
-	void SceneManager::stop()
+	void GameManager::stop()
 	{
 
 	}
 
-	void SceneManager::release()
+	void GameManager::release()
 	{
 		_initialized = false;
 	}
 
-	bool SceneManager::initialized()
+	bool GameManager::initialized()
 	{
 		return _initialized;
 	}
 
-	std::function<void()> const& SceneManager::getExecutionProcedure()
+	std::function<void()> const& GameManager::getExecutionProcedure()
 	{
 		return _procedure;
 	}
 
-	Core::ISystem& SceneManager::getInterface()
+	Core::ISystem& GameManager::getInterface()
 	{
 		return *this;
 	}
 
-	void SceneManager::setGScene(GRAPHICS::Scene* scene)
+	void GameManager::setGScene(GRAPHICS::Scene* scene)
 	{
 		_gScene.fetch_and_store(scene);
 	}
 
-	GRAPHICS::Scene* SceneManager::getGScene()
+	GRAPHICS::Scene* GameManager::getGScene()
 	{
 		return _gScene;
 	}
 
-	void SceneManager::importScene(std::wstring& path)
+	void GameManager::importScene(std::wstring& path)
 	{
 		assert(_initialized && !_loadingThread.isRunning());
 

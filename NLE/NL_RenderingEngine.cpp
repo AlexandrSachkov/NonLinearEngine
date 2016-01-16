@@ -3,7 +3,7 @@
 #include "NL_ISystem.h"
 #include "NL_IEngine.h"
 #include "NL_Systems.h"
-#include "NL_ISceneManager.h"
+#include "NL_IGameManager.h"
 #include "NL_IInputProcessor.h"
 #include "NL_DeviceCore.h"
 #include "NL_ThreadLocal.h"
@@ -199,7 +199,7 @@ namespace NLE
 
 		void RenderingEngine::render()
 		{
-			Scene* scene = static_cast<ISceneManager*>(&Core::DeviceCore::instance().getSystemInterface(SYS::SYS_SCENE_MANAGER))
+			Scene* scene = static_cast<IGameManager*>(&Core::DeviceCore::instance().getSystemInterface(SYS::SYS_GAME_MANAGER))
 				->getGScene();
 
 			const GLfloat bgColor[] = {0.0f,0.5f,0.6f,1.0f};

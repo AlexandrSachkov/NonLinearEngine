@@ -52,8 +52,8 @@ SET(HEADERS
 	NL_RenderingEngine.h
 	NL_IRenderingEngine.h
 	NL_Scene.h
-	NL_SceneManager.h
-	NL_ISceneManager.h
+	NL_GameManager.h
+	NL_IGameManager.h
 	NL_ResourceManager.h
 	NL_ScriptCallbacks.h
 	NL_ScriptExecutor.h
@@ -96,7 +96,7 @@ SET(SOURCES
 	NL_Octree.cpp
 	NL_RenderingEngine.cpp
 	NL_Scene.cpp
-	NL_SceneManager.cpp
+	NL_GameManager.cpp
 	NL_ScriptCallbacks.cpp
 	NL_ScriptExecutor.cpp
 	NL_TextureLoader.cpp

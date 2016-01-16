@@ -5,7 +5,7 @@
 #include "NL_ThreadLocal.h"
 
 #include "NL_RenderingEngine.h"
-#include "NL_SceneManager.h"
+#include "NL_GameManager.h"
 #include "NL_Console.h"
 #include <string>
 
@@ -19,7 +19,7 @@ namespace NLE
 			if (lua_isstring(state, 1))
 			{
 				TLS::StringConverter::reference converter = TLS::strConverter.local();
-				static_cast<SceneManager*>(&Core::DeviceCore::instance().getSystemInterface(SYS::SYS_SCENE_MANAGER))
+				static_cast<GameManager*>(&Core::DeviceCore::instance().getSystemInterface(SYS::SYS_GAME_MANAGER))
 					->importScene(converter.from_bytes(lua_tostring(state, 1)));
 				return 0;
 			}

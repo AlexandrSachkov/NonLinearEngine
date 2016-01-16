@@ -5,7 +5,7 @@
 #include "NL_ExecutionDesc.h"
 #include "NL_InputEvents.h"
 #include "NL_InputProcessor.h"
-#include "NL_SceneManager.h"
+#include "NL_GameManager.h"
 #include "NL_Systems.h"
 #include "NL_Console.h"
 #include "NL_UiManager.h"
@@ -63,14 +63,14 @@ namespace NLE
 			);
 		core.attachSystem(SYS::SYS_RENDERING_ENGINE, renderingEngineProcDesc, std::unique_ptr<GRAPHICS::RenderingEngine>(new GRAPHICS::RenderingEngine()));
 
-		Core::ExecutionDesc sceneMngrProcDesc(
+		Core::ExecutionDesc gameMngrProcDesc(
 			Core::Priority::STANDARD,
 			Core::Execution::RECURRING,
 			Core::Mode::ASYNC,
 			Core::Startup::AUTOMATIC,
-			1000000000L	//1 FPS
+			33333333L	//30 FPS
 			);
-		core.attachSystem(SYS::SYS_SCENE_MANAGER, sceneMngrProcDesc, std::unique_ptr<SceneManager>(new SceneManager()));
+		core.attachSystem(SYS::SYS_GAME_MANAGER, gameMngrProcDesc, std::unique_ptr<GameManager>(new GameManager()));
 	}
 
 	Nle::~Nle()

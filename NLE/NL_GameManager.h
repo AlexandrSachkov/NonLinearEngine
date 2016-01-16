@@ -1,7 +1,7 @@
-#ifndef NL_SCENE_MANAGER_H_
-#define NL_SCENE_MANAGER_H_
+#ifndef NL_GAME_MANAGER_H_
+#define NL_GAME_MANAGER_H_
 
-#include "NL_ISceneManager.h"
+#include "NL_IGameManager.h"
 #include "NL_GScene.h"
 #include "NL_System.h"
 #include "NL_Thread.h"
@@ -18,11 +18,11 @@ namespace NLE
 		class Scene;
 	}
 
-	class SceneManager : public Core::System, public ISceneManager
+	class GameManager : public Core::System, public IGameManager
 	{
 	public:
-		SceneManager();
-		~SceneManager();
+		GameManager();
+		~GameManager();
 
 		bool initialize(Core::IEngine& engine, std::unique_ptr<Core::SysInitializer> const& initializer);
 		void start();
