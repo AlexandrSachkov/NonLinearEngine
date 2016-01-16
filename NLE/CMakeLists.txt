@@ -75,7 +75,6 @@ SET(HEADERS
 	NL_Scheduler.h
 	NL_SysInitializer.h
 	NL_SysTask.h
-	NL_SysThread.h
 	NL_System.h
 	NL_Task.h
 	NL_Thread.h
@@ -105,7 +104,6 @@ SET(SOURCES
 	
 	NL_DeviceCore.cpp
 	NL_Scheduler.cpp		
-	NL_SysThread.cpp
 	NL_Thread.cpp
 	)
 
