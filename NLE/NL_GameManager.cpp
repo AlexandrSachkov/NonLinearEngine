@@ -1,4 +1,5 @@
 #include "NL_GameManager.h"
+
 #include "NL_IRenderingEngine.h"
 #include "NL_Systems.h"
 #include "NL_DeviceCore.h"

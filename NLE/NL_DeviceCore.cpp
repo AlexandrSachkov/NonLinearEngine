@@ -187,7 +187,7 @@ namespace NLE
 			_initializers.at(sysId) = std::move(initializer);
 		}
 
-		void DeviceCore::runAsync(std::function<void()>& operation, Priority priority)
+		void DeviceCore::runAsync(std::function<void()> operation, Priority priority)
 		{
 			_scheduler->runAsync(operation, priority);
 		}

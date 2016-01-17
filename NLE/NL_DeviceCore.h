@@ -56,9 +56,8 @@ namespace NLE
 			void stop();
 			void stopAndJoin();
 
-			void runAsync(std::function<void()>& operation, Priority priority);
+			void runAsync(std::function<void()> operation, Priority priority);
 			
-			//Interface Methods
 			void startSystem(uint_fast32_t sysId);
 			void stopSystem(uint_fast32_t sysId);
 			uint_fast32_t getNumThreads();	

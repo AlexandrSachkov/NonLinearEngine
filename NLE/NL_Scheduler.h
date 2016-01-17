@@ -50,6 +50,7 @@ namespace NLE
 			tbb::task_scheduler_init* _taskSchedulerInit;		
 			tbb::concurrent_queue<uint_fast32_t> _starting;
 			tbb::concurrent_queue<uint_fast32_t> _finished;
+			tbb::concurrent_queue <std::pair<std::function<void()>, Priority>> _asyncOps;
 		
 			Data::PContainer<uint_fast32_t> _scheduledSystems;
 			std::vector<uint_fast32_t, tbb::scalable_allocator<uint_fast32_t>> _syncSystemsToRun;

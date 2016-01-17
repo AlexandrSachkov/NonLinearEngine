@@ -11,6 +11,7 @@
 #include "NL_UiManager.h"
 #include "NL_RenderingEngine.h"
 #include "NL_WindowManager.h"
+#include "NL_FileIOManager.h"
 
 #include "lua.hpp"
 

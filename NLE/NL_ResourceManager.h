@@ -15,35 +15,13 @@ namespace NLE
 {
 	namespace RESOURCE
 	{
-		struct NleFileHeader
-		{
-			NleFileHeader()
-			{
-				memset(_identifier, 0, 36);
-				_version = 1.0f;
-				_originalSize = 0;
-			}
-
-			NleFileHeader(std::string identifier, float version, size_t originalSize) :
-				_version(version),
-				_originalSize(originalSize)
-			{
-				memset(_identifier, 0, 36);
-				strncpy(_identifier, identifier.c_str(), 36);
-			}
-
-			char _identifier[36];
-			float _version;
-			size_t _originalSize;
-		};
-
 		class ResourceManager
 		{
 		public:
 			ResourceManager();
 			~ResourceManager();
 
-			void load(std::wstring& path, tbb::atomic<bool>& ready);
+			void load(std::wstring& path, std::function<void(std::vector<char>* data)> onSuccess);
 			std::vector<char>* get(std::wstring path);
 			void release(std::wstring& path);
 
@@ -51,10 +29,7 @@ namespace NLE
 			std::wstring getFileExtension(std::wstring path);
 			void addResource(std::wstring path, std::vector<char>* buffer);
 
-			Core::Thread _loadingThread;
-
 			tbb::concurrent_unordered_map<std::wstring, std::vector<char>*> _resources;
-			tbb::concurrent_queue<std::pair<std::wstring, tbb::atomic<bool>*>> _toLoad;
 		};
 	}
 }

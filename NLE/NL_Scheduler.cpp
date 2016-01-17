@@ -126,6 +126,14 @@ namespace NLE
 				}
 			}
 
+			std::pair<std::function<void()>, Priority> asyncOp;
+			while (_asyncOps.try_pop(asyncOp))
+			{
+				Task* task = new (tbb::task::allocate_root())NLE::Core::Task(asyncOp.first);
+				runTask(*task, asyncOp.second);
+			}
+
+
 			if (_syncSystemsToRun.size() > 0)
 			{
 				for (uint_fast32_t sysId : _syncSystemsToRun)
@@ -163,8 +171,7 @@ namespace NLE
 
 		void Scheduler::runAsync(std::function<void()>& operation, Priority priority)
 		{
-			Task* task = new (tbb::task::allocate_root())NLE::Core::Task(operation);
-			runTask(*task, priority);
+			_asyncOps.push(std::make_pair<>(operation, priority));
 		}
 	}
 }

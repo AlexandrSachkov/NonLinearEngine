@@ -8,7 +8,7 @@ namespace NLE
 {
 	bool DataCompressionManager::compress(const std::vector<char>* src, std::vector<char>*& dst)
 	{
-		std::vector<char>* dest = new std::vector<char>(src->size());
+		std::vector<char>* dest = new std::vector<char>(LZ4_compressBound((int)src->size()));
 		size_t destinationSize = (size_t)LZ4_compress_HC(&(*src)[0], &(*dest)[0], (int)src->size(), (int)dest->size(), 9);
 		if (destinationSize == 0)
 		{
