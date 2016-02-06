@@ -11,89 +11,124 @@
 
 namespace NLE
 {
-	struct FileIOOperationDesc
+	namespace IO
 	{
-		FileIOOperationDesc(
-			std::wstring path,
-			bool write,
-			std::vector<char>* inputData,
-			std::function<void(std::vector<char>* data)> onSuccess
-			) :
-			path(path),
-			write(write),
-			inputData(inputData),
-			onSuccess(onSuccess)
+		enum OperationType
 		{
-		}
+			READ,
+			WRITE
+		};
 
-		FileIOOperationDesc() :
-			path(L""),
-			write(false),
-			inputData(nullptr),
-			onSuccess([](std::vector<char>* data) {})
+		struct FileIOOperationDesc
 		{
-		}
-
-		std::wstring path;
-		bool write;
-		std::vector<char>* inputData;
-		std::function<void(std::vector<char>* data)> onSuccess;
-	};
-
-	struct NleFileHeader
-	{
-		NleFileHeader()
-		{
-			memset(_identifier, 0, 16);
-			_version = 1.0f;
-			_originalSize = 0;
-		}
-
-		NleFileHeader(std::string identifier, float version, size_t originalSize) :
-			_version(version),
-			_originalSize(originalSize)
-		{
-			memset(_identifier, 0, 16);
-			strncpy(_identifier, identifier.c_str(), 16);
-		}
-
-		char _identifier[16];
-		float _version;
-		size_t _originalSize;
-	};
-
-	class FileIOManager
-	{
-	public:
-		static FileIOManager& instance()
-		{
-			if (!_ioManager)
+			FileIOOperationDesc(
+				std::wstring path,
+				OperationType opType,
+				bool compressed,
+				std::vector<char>* inputData,
+				std::function<void(std::vector<char>* data)> onSuccess,
+				std::function<void()> onFailure
+				) :
+				path(path),
+				opType(opType),
+				compressed(compressed),
+				inputData(inputData),
+				onSuccess(onSuccess),
+				onFailure(onFailure)
 			{
-				_ioManager = new FileIOManager();
 			}
-			return *_ioManager;
-		}
 
-		~FileIOManager();
-		std::wstring getFileExtension(std::wstring path);
-		void fileOperation(FileIOOperationDesc& opDesc);
+			FileIOOperationDesc() :
+				path(L""),
+				opType(IO::READ),
+				compressed(false),
+				inputData(nullptr),
+				onSuccess([](std::vector<char>* data) {}),
+				onFailure([]() {})
+			{
+			}
 
-	private:
-		FileIOManager();
-		FileIOManager(FileIOManager const&) = delete;
-		void operator=(FileIOManager const&) = delete;
+			std::wstring path;
+			OperationType opType;
+			bool compressed;
+			std::vector<char>* inputData;
+			std::function<void(std::vector<char>* data)> onSuccess;
+			std::function<void()> onFailure;
+		};
 
-		void readFile(std::wstring& path, std::function<void(std::vector<char>* data)> onSuccess);
-		void writeFile(std::wstring path, std::vector<char>* data, std::function<void(std::vector<char>* data)> onSuccess);
-		std::vector<char>* decompressIfNeeded(std::wstring& path, std::vector<char>* inputBuffer);
-		std::vector<char>* compressIfNeeded(std::wstring& path, std::vector<char>* inputBuffer);
-		bool isCompressedType(const std::wstring& path);
-		std::wstring getResourceIdentifier(std::wstring& path);
+		struct NleFileHeader
+		{
+			NleFileHeader()
+			{
+				memset(_identifier, 0, 16);
+				_version = 1.0f;
+				_originalSize = 0;
+				_compressed = false;
+			}
 
-		static FileIOManager* _ioManager;
-		Core::Thread _loadingThread;
-		tbb::concurrent_queue<FileIOOperationDesc> _fileOps;
-	};
+			NleFileHeader(std::string identifier, float version, size_t originalSize, bool compressed) :
+				_version(version),
+				_originalSize(originalSize),
+				_compressed(compressed)
+			{
+				memset(_identifier, 0, 16);
+				strncpy(_identifier, identifier.c_str(), 16);
+			}
+
+			char _identifier[16];
+			float _version;
+			size_t _originalSize;
+			bool _compressed;
+		};
+
+		class FileIOManager
+		{
+		public:
+			static FileIOManager& instance()
+			{
+				if (!_ioManager)
+				{
+					_ioManager = new FileIOManager();
+				}
+				return *_ioManager;
+			}
+
+			~FileIOManager();
+			std::wstring getFileExtension(std::wstring path);
+			void read(
+				std::wstring path, 
+				std::function<void(std::vector<char>* data)> onSuccess, 
+				std::function<void()> onFailure
+				);
+
+			void write(
+				std::wstring path, 
+				bool compressed,
+				std::vector<char>* inputData, 
+				std::function<void()> onSuccess, 
+				std::function<void()> onFailure
+				);
+			
+
+		private:
+			FileIOManager();
+			FileIOManager(FileIOManager const&) = delete;
+			void operator=(FileIOManager const&) = delete;
+
+			void fileOperation(FileIOOperationDesc& opDesc);
+			void readFile(std::wstring& path, std::function<void(std::vector<char>* data)> onSuccess, std::function<void()> onFailure);
+			void writeFile(std::wstring path, bool compressed, std::vector<char>* data, std::function<void(std::vector<char>* data)> onSuccess, std::function<void()> onFailure);
+			std::vector<char>* decompressIfNeeded(std::wstring& path, std::vector<char>* inputBuffer);
+			std::vector<char>* compressIfNeeded(std::wstring& path, bool compressed, std::vector<char>* inputBuffer);
+			std::wstring getResourceIdentifier(std::wstring& path);
+			bool isEngineType(const std::wstring& path);
+
+			static FileIOManager* _ioManager;
+			Core::Thread _loadingThread;
+			tbb::concurrent_queue<FileIOOperationDesc> _fileOps;
+		};
+	}
+	
 }
 
 #endif
