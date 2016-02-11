@@ -66,7 +66,7 @@ namespace NLE
 			std::function<void()> const& getExecutionProcedure();
 			Core::ISystem& getInterface();
 
-			ID3D11Device* getDevice();
+			void setWindowTitle(std::wstring title);
 
 		private:
 			void initOpengl();

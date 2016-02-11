@@ -190,12 +190,6 @@ namespace NLE
 			return _initialized;
 		}
 
-		ID3D11Device* RenderingEngine::getDevice()
-		{
-			assert(_initialized);
-			return nullptr;
-		}
-
 		void RenderingEngine::render()
 		{
 			const GLfloat bgColor[] = {0.0f,0.5f,0.6f,1.0f};
@@ -210,6 +204,12 @@ namespace NLE
 				CONSOLE::out(CONSOLE::STANDARD, std::to_string(_timer.getFps()));
 				_timer.reset();
 			}
+		}
+
+		void RenderingEngine::setWindowTitle(std::wstring title)
+		{
+			assert(_initialized);
+			_windowManager->setTitle(title);
 		}
 	}
 }

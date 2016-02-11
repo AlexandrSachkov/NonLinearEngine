@@ -3,6 +3,7 @@
 
 #include "NL_ISystem.h"
 #include <cstdint>
+#include <string>
 
 struct ID3D11Device;
 namespace NLE
@@ -12,7 +13,7 @@ namespace NLE
 		class IRenderingEngine : public Core::ISystem
 		{
 		public:
-			virtual ID3D11Device* getDevice() = 0;
+			virtual void setWindowTitle(std::wstring title) = 0;
 		};
 	}
 }
