@@ -44,17 +44,11 @@ namespace NLE
 			Initializer() :
 				screenSize(Size2D(0, 0)),
 				fullscreen(false),
-				decorated(true),
-				title(L""),
-				openglMajorVersion(0),
-				openglMinorVersion(0)
+				decorated(true)
 			{}
 			Size2D screenSize;
 			bool fullscreen;
 			bool decorated;
-			std::wstring title;
-			int openglMajorVersion;
-			int openglMinorVersion;
 		};
 
 		class Scene;

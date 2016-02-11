@@ -72,9 +72,9 @@ namespace NLE
 				_init->screenSize,
 				_init->fullscreen,
 				_init->decorated,
-				_init->title,
-				_init->openglMajorVersion,
-				_init->openglMinorVersion
+				L"NonLinear Engine",
+				4,
+				5
 				);
 			if (!result)
 			{

@@ -30,7 +30,7 @@ namespace NLE
 
 		~Nle();
 
-		bool initialize(Size2D screenSize, bool fullscreen, bool decorated, std::wstring title);
+		bool initialize(Size2D screenSize, bool fullscreen, bool decorated);
 		void release();
 
 		void run();

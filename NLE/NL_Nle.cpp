@@ -78,7 +78,7 @@ namespace NLE
 	{
 	}
 
-	bool Nle::initialize(Size2D screenSize, bool fullscreen, bool decorated, std::wstring title)
+	bool Nle::initialize(Size2D screenSize, bool fullscreen, bool decorated)
 	{
 		assert(!_initialized);
 
@@ -86,9 +86,6 @@ namespace NLE
 		renderingEngineInit->screenSize = screenSize;
 		renderingEngineInit->fullscreen = fullscreen;
 		renderingEngineInit->decorated = decorated;
-		renderingEngineInit->title = title;
-		renderingEngineInit->openglMajorVersion = 4;
-		renderingEngineInit->openglMinorVersion = 5;
 		Core::DeviceCore::instance().setSystemInitializer(SYS::SYS_RENDERING_ENGINE, std::move(renderingEngineInit));
 
 		if (!Core::DeviceCore::instance().initialize())
@@ -132,7 +129,7 @@ namespace NLE
 int main(void)
 {
 	NLE::Nle& nle = NLE::Nle::instance();
-	nle.initialize(NLE::Size2D(800, 600), false, true, L"NonLinear Engine");
+	nle.initialize(NLE::Size2D(800, 600), false, true);
 	nle.run();
 	nle.release();
 	return 0;
