@@ -129,7 +129,7 @@ namespace NLE
 int main(void)
 {
 	NLE::Nle& nle = NLE::Nle::instance();
-	nle.initialize(NLE::Size2D(800, 600), false, true);
+	nle.initialize(NLE::Size2D(1920, 1080), true, true);
 	nle.run();
 	nle.release();
 	return 0;

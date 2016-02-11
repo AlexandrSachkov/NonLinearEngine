@@ -20,11 +20,12 @@ namespace NLE
 			_initialized(false),
 			_timer(100)
 		{
-			_firstRun.store(true);
+			_initGraphics.store(true);
 			
 			_renderingThread = &Core::DeviceCore::instance().allocateThread();
 			_windowManager = new WindowManager();
 
+			_renderProgram = 0;
 			_vertexArray = 0;
 			CONSOLE::out(CONSOLE::STANDARD, L"Rendering Engine created");
 		}
@@ -37,21 +38,25 @@ namespace NLE
 		bool RenderingEngine::initialize(std::unique_ptr<Core::SysInitializer> const& initializer)
 		{
 			assert(!_initialized);
-			_init = static_cast<Initializer*>(initializer.get());
-			if (!_init)
+			auto* init = static_cast<Initializer*>(initializer.get());
+			if (!init)
 			{
 				CONSOLE::out(CONSOLE::ERR, "Rendering Engine requires an initializer");
 				return false;
 			}
 
+			_resolution = init->screenSize;
+			_decorated = init->decorated;
+			_fullscreen = init->fullscreen;
 
 			_procedure = [&]() {};
 
 			_renderingThread->setProcedure([&]() {
-				if (_firstRun)
+				if (_initGraphics)
 				{
+					releaseOpengl();
 					initOpengl();
-					_firstRun.store(false);
+					_initGraphics.store(false);
 				}
 				_windowManager->pollEvents();
 				render();
@@ -69,9 +74,9 @@ namespace NLE
 		void RenderingEngine::initOpengl()
 		{
 			bool result = _windowManager->initialize(
-				_init->screenSize,
-				_init->fullscreen,
-				_init->decorated,
+				_resolution,
+				_fullscreen,
+				_decorated,
 				L"NonLinear Engine",
 				4,
 				5
@@ -148,8 +153,15 @@ namespace NLE
 
 		void RenderingEngine::releaseOpengl()
 		{
-			glDeleteProgram(_renderProgram);
-			glDeleteVertexArrays(1, &_vertexArray);
+			if (_renderProgram) {
+				glDeleteProgram(_renderProgram);
+				_renderProgram = 0;
+			}
+			
+			if (_vertexArray) {
+				glDeleteVertexArrays(1, &_vertexArray);
+				_vertexArray = 0;
+			}			
 		}
 
 		void RenderingEngine::start()
@@ -210,6 +222,20 @@ namespace NLE
 		{
 			assert(_initialized);
 			_windowManager->setTitle(title);
+		}
+
+		void RenderingEngine::setResolution(Size2D resolution)
+		{
+			assert(_initialized);
+			_resolution = resolution;
+			_initGraphics.store(true);
+		}
+
+		void RenderingEngine::setFullscreen(bool fullscreen)
+		{
+			assert(_initialized);
+			_fullscreen = fullscreen;
+			_initGraphics.store(true);
 		}
 	}
 }

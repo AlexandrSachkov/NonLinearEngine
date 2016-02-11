@@ -95,29 +95,6 @@ namespace NLE
 		setWindowCallbacks(_window);
 		enableCursor(true);
 
-		/*makeContextCurrent(true);
-		enableVSync(false);
-		GLenum err = glewInit();
-		if (GLEW_OK != err)
-		{
-			std::string error((const char*)glewGetErrorString(err));
-			CONSOLE::out(CONSOLE::ERR, error);
-		}*/
-		/*while (true)
-		{
-			glfwPollEvents();
-			static const GLfloat red[] = { 1.0f,0.0f,0.0f,1.0f };
-			glClearBufferfv(GL_COLOR, 0, red);
-
-			swapBuffers();
-			_timer.sample();
-			if (_timer.fpsChanged())
-			{
-				printf("%f\n",_timer.getFps());
-				_timer.reset();
-			}
-		}*/
-
 		return true;
 	}
 

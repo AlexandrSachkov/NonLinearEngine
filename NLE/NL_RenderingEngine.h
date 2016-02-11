@@ -67,6 +67,8 @@ namespace NLE
 			Core::ISystem& getInterface();
 
 			void setWindowTitle(std::wstring title);
+			void setResolution(Size2D resolution);
+			void setFullscreen(bool fullscreen);
 
 		private:
 			void initOpengl();
@@ -77,9 +79,12 @@ namespace NLE
 			std::function<void()> _procedure;
 
 			WindowManager* _windowManager;
-			Initializer* _init;
+			Size2D _resolution;
+			bool _fullscreen;
+			bool _decorated;
+
 			Timer _timer;
-			tbb::atomic<bool> _firstRun;
+			tbb::atomic<bool> _initGraphics;
 			Core::Thread* _renderingThread;
 
 			GLuint _renderProgram;
