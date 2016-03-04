@@ -11,11 +11,4 @@ namespace NLE
 	{
 
 	}
-
-	Game* Game::load(std::wstring path)
-	{
-
-
-		return nullptr;
-	}
 }

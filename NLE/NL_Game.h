@@ -10,8 +10,6 @@ namespace NLE
 	public:
 		Game();
 		~Game();
-
-		static Game* load(std::wstring path);
 	private:
 	};
 }
