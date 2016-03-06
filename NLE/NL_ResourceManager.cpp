@@ -2,7 +2,6 @@
 
 #include "NL_FileIOManager.h"
 #include "NL_DataCompressionManager.h"
-#include "NL_Console.h"
 
 namespace NLE
 {

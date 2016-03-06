@@ -1,12 +1,9 @@
 #include "NL_ScriptCallbacks.h"
 #include "lua.hpp"
-#include "NL_Systems.h"
-#include "NL_DeviceCore.h"
 #include "NL_ThreadLocal.h"
 
 #include "NL_RenderingEngine.h"
 #include "NL_GameManager.h"
-#include "NL_Console.h"
 #include <string>
 
 namespace NLE
@@ -31,7 +28,7 @@ namespace NLE
 			lua_settop(state, 1);
 			if (lua_isstring(state, 1))
 			{
-				CONSOLE::out(CONSOLE::STANDARD, lua_tostring(state, 1));
+				//CONSOLE::out(CONSOLE::STANDARD, lua_tostring(state, 1));
 				return 0;
 			}
 			return 0;

@@ -1,6 +1,5 @@
 #include "NL_ScriptExecutor.h"
 #include "NL_ScriptCallbacks.h"
-#include "NL_Console.h"
 
 namespace NLE
 {
@@ -35,12 +34,12 @@ namespace NLE
 			lua_settop(_state, 0);
 			if (luaL_loadstring(_state, script))
 			{
-				CONSOLE::out(CONSOLE::ERR, lua_tostring(_state, -1));
+				//CONSOLE::out(CONSOLE::ERR, lua_tostring(_state, -1));
 				return false;
 			}
 			if (lua_pcall(_state, 0, LUA_MULTRET, 0))
 			{
-				CONSOLE::out(CONSOLE::ERR, lua_tostring(_state, -1));
+				//CONSOLE::out(CONSOLE::ERR, lua_tostring(_state, -1));
 				return false;
 			}
 			return true;

@@ -28,14 +28,9 @@ THE SOFTWARE.
 
 #include "NL_WindowManager.h"
 #include "NL_GlfwInputMap.h"
-#include "NL_Console.h"
 #include "NL_ThreadLocal.h"
-#include "NL_DeviceCore.h"
-#include "NL_Systems.h"
-#include "NL_InputProcessor.h"
-#include "NL_SysInitializer.h"
+#include "NL_Globals.h"
 
-#include "gl/glew.h"
 #define GLFW_INCLUDE_NONE
 #include "GLFW\glfw3.h"
 
@@ -43,8 +38,8 @@ THE SOFTWARE.
 
 namespace NLE
 {
-	WindowManager::WindowManager() :
-		_timer(100)
+	WindowManager::WindowManager(CONSOLE::IConsoleQueue* console) :
+		_console(console)
 	{
 		_window = nullptr;
 	}
@@ -61,24 +56,18 @@ namespace NLE
 		Size2D screenSize,
 		bool fullscreen,
 		bool decorated,
-		std::wstring title,
-		int openglMajorVersion,
-		int openglMinorVersion
+		std::wstring title
 		)
 	{
 		glfwSetErrorCallback(glfwErrorCallback);
 		if (!glfwInit())
 		{
-			CONSOLE::out(CONSOLE::ERR, "GLFW failed to initialize");
+			_console->push(CONSOLE::ERR, "GLFW failed to initialize");
 			return false;
 		}
 
 		setResizableHint(false);
 		setDecoratedHint(decorated);
-		glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, openglMajorVersion);
-		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, openglMinorVersion);
-		glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
-		glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
 		TLS::StringConverter::reference converter = TLS::strConverter.local();
 		if (fullscreen)
@@ -89,7 +78,7 @@ namespace NLE
 		if (!_window)
 		{
 			glfwTerminate();
-			CONSOLE::out(CONSOLE::ERR, "Window failed to initialize");
+			_console->push(CONSOLE::ERR, "Window failed to initialize");
 			return false;
 		}
 		setWindowCallbacks(_window);
@@ -207,7 +196,7 @@ namespace NLE
 		else if (error == GLFW_FORMAT_UNAVAILABLE)
 			errCode = "GLFW_FORMAT_UNAVAILABLE";
 
-		CONSOLE::out(CONSOLE::ERR, errCode + ", " + description);
+		printf("%s, %s\n", errCode.c_str(), description);
 	}
 
 	void WindowManager::onKeyEvent(GLFWwindow *window, int key, int scancode, int action, int mods)
@@ -327,8 +316,7 @@ namespace NLE
 
 	void WindowManager::processEvent(INPUT::Event& event)
 	{
-		((INPUT::IInputProcessor*)(&Core::DeviceCore::instance().getSystemInterface(SYS::SYS_INPUT_PROCESSOR)))
-			->processEvent(event);
+		INPUT::GLOBAL_EVENT_QUEUE->push(event);
 	}
 
 	void WindowManager::makeContextCurrent(bool makeCurrent)

@@ -1,9 +1,6 @@
 #include "NL_TextureLoader.h"
 
 #include "NL_ThreadLocal.h"
-#include "NL_Console.h"
-
-#include "ktx.h"
 
 #include <cstdio>
 #include <cstdlib>
@@ -15,7 +12,7 @@ namespace NLE
 	{
 		bool TextureLoader::loadTexture(std::wstring path, void* texture)
 		{
-			TLS::StringConverter::reference converter = TLS::strConverter.local();
+			/*TLS::StringConverter::reference converter = TLS::strConverter.local();
 
 			FILE* file = nullptr;
 			errno_t err = fopen_s(&file, converter.to_bytes(path).c_str(), "rb");
@@ -41,7 +38,7 @@ namespace NLE
 
 			ktxerror = ktxLoadTextureM(fileData, (GLsizei)fileSize, &tex, &target, NULL, &isMipmapped, &glerror,
 				0, NULL);
-
+				*/
 			return true;
 		}
 	}

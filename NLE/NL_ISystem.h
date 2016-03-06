@@ -1,16 +1,17 @@
 #ifndef NL_I_SYSTEM_H_
 #define NL_I_SYSTEM_H_
 
+#include "NL_SystemServices.h"
+#include "NL_DataManager.h"
+
 namespace NLE
 {
-	namespace Core
+	class ISystem
 	{
-		class ISystem
-		{
-		public:
-			virtual bool initialized() = 0;
-		};
-	}
+	public:
+		virtual void update(SystemServices& sServices, DataManager& data, double deltaT) = 0;
+	};
 }
+
 
 #endif

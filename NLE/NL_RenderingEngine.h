@@ -2,11 +2,10 @@
 #define NL_RENDERING_ENGINE_H_
 
 #include "NL_IRenderingEngine.h"
-#include "NL_System.h"
-#include "NL_RenderingResources.h"
+#include "NL_ISystem.h"
+#include "NL_EngineServices.h"
 #include "NL_Timer.h"
 #include "NL_Thread.h"
-#include "NL_SysInitializer.h"
 #include "NL_CommonTypes.h"
 
 #include "tbb/atomic.h"
@@ -17,21 +16,8 @@
 #include <string>
 #include <vector>
 
-#include "gl\glew.h"
-
-struct lua_State;
 namespace NLE
 {
-	namespace Core
-	{
-		class IEngine;
-		class ISystem;
-		struct SysInitializer;
-	}
-	namespace IMPORTER
-	{
-		class AssetImporter;
-	}
 	namespace WINDOW
 	{
 		class IWindowManager;
@@ -39,56 +25,26 @@ namespace NLE
 	class WindowManager;
 	namespace GRAPHICS
 	{
-		struct Initializer : public Core::SysInitializer
-		{
-			Initializer() :
-				screenSize(Size2D(0, 0)),
-				fullscreen(false),
-				decorated(true)
-			{}
-			Size2D screenSize;
-			bool fullscreen;
-			bool decorated;
-		};
-
 		class Scene;
-		class RenderingEngine : public Core::System, public IRenderingEngine
+		class RenderingEngine : public IRenderingEngine, public ISystem
 		{
 		public:
-			RenderingEngine();
+			RenderingEngine(EngineServices& eServices);
 			~RenderingEngine();
 
-			bool initialize(std::unique_ptr<Core::SysInitializer> const& initializer);
-			void start();
-			void stop();
-			void release();
-			bool initialized();
-			std::function<void()> const& getExecutionProcedure();
-			Core::ISystem& getInterface();
+			bool initialize();
+			void update(SystemServices& sServices, DataManager& data, double deltaT);
 
 			void setWindowTitle(std::wstring title);
 			void setResolution(Size2D resolution);
 			void setFullscreen(bool fullscreen);
 
-		private:
-			void initOpengl();
-			void releaseOpengl();
-			void render();		
-
-			bool _initialized;
-			std::function<void()> _procedure;
-
+		private:	
+			EngineServices& _eServices;
 			WindowManager* _windowManager;
 			Size2D _resolution;
 			bool _fullscreen;
 			bool _decorated;
-
-			Timer _timer;
-			tbb::atomic<bool> _initGraphics;
-			Core::Thread* _renderingThread;
-
-			GLuint _renderProgram;
-			GLuint _vertexArray;
 		};
 	}
 }

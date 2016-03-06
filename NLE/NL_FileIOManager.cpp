@@ -1,7 +1,5 @@
 #include "NL_FileIOManager.h"
 
-#include "NL_DeviceCore.h"
-#include "NL_Console.h"
 #include "NL_DataCompressionManager.h"
 #include "NL_ThreadLocal.h"
 
@@ -13,10 +11,9 @@ namespace NLE
 {
 	namespace IO
 	{
-		FileIOManager* FileIOManager::_ioManager = nullptr;
-
-		FileIOManager::FileIOManager() :
-			_loadingThread(100000L)
+		FileIOManager::FileIOManager(NLE::EngineServices& eServices) :
+			_loadingThread(100000L),
+			_eServices(eServices)
 		{
 			_loadingThread.setProcedure([&]() {
 				FileIOOperationDesc opDesc;
@@ -77,7 +74,7 @@ namespace NLE
 
 				if (file.read(&(*fileData)[0], fileData->size()))
 				{
-					Core::DeviceCore::instance().runAsync([this, path, fileData, onSuccess, onFailure]() {
+					_eServices.task->queueProcedure([this, path, fileData, onSuccess, onFailure]() {
 						std::wstring myPath(path);
 						auto* decompressed = decompressIfNeeded(myPath, fileData);
 						if (decompressed)
@@ -88,24 +85,24 @@ namespace NLE
 						{
 							onFailure();
 						}
-					}, Core::Priority::STANDARD);
+					}, TASK::STANDARD);
 				}
 				else
 				{
 					delete fileData;
-					CONSOLE::out(CONSOLE::ERR, L"Could not read file: " + path);
-					Core::DeviceCore::instance().runAsync([onFailure]() {
+					_eServices.console->push(CONSOLE::ERR, L"Could not read file: " + path);
+					_eServices.task->queueProcedure([onFailure]() {
 						onFailure();
-					}, Core::Priority::STANDARD);
+					}, TASK::STANDARD);
 				}
 				file.close();
 			}
 			else
 			{
-				CONSOLE::out(CONSOLE::ERR, L"Could not open file: " + path);
-				Core::DeviceCore::instance().runAsync([onFailure]() {
+				_eServices.console->push(CONSOLE::ERR, L"Could not open file: " + path);
+				_eServices.task->queueProcedure([onFailure]() {
 					onFailure();
-				}, Core::Priority::STANDARD);
+				}, TASK::STANDARD);
 			}
 		}
 
@@ -115,9 +112,9 @@ namespace NLE
 			auto* compressed = compressIfNeeded(path, compress, data);
 			if (!compressed)
 			{
-				Core::DeviceCore::instance().runAsync([onFailure]() {
+				_eServices.task->queueProcedure([onFailure]() {
 					onFailure();
-				}, Core::Priority::STANDARD);
+				}, TASK::STANDARD);
 				return;
 			}
 				
@@ -127,25 +124,25 @@ namespace NLE
 			{
 				if (file.write(&(*compressed)[0], compressed->size()))
 				{
-					Core::DeviceCore::instance().runAsync([&]() {
+					_eServices.task->queueProcedure([&]() {
 						onSuccess(data);
-					}, Core::Priority::STANDARD);
+					}, TASK::STANDARD);
 				}
 				else
 				{
-					CONSOLE::out(CONSOLE::ERR, L"Could not write to file: " + path);
-					Core::DeviceCore::instance().runAsync([onFailure]() {
+					_eServices.console->push(CONSOLE::ERR, L"Could not write to file: " + path);
+					_eServices.task->queueProcedure([onFailure]() {
 						onFailure();
-					}, Core::Priority::STANDARD);
+					}, TASK::STANDARD);
 				}
 				file.close();
 			}
 			else
 			{
-				CONSOLE::out(CONSOLE::ERR, L"Could not open file: " + path);
-				Core::DeviceCore::instance().runAsync([onFailure]() {
+				_eServices.console->push(CONSOLE::ERR, L"Could not open file: " + path);
+				_eServices.task->queueProcedure([onFailure]() {
 					onFailure();
-				}, Core::Priority::STANDARD);
+				}, TASK::STANDARD);
 			}
 			if (compressed != data)
 			{
@@ -171,7 +168,7 @@ namespace NLE
 				if (compress)
 				{
 					std::vector<char>* compressed = nullptr;
-					if (DataCompressionManager::compress(buffer, compressed))
+					if (DataCompressionManager::compress(_eServices.console, buffer, compressed))
 					{
 						outBuffer->insert(outBuffer->end(), compressed->begin(), compressed->end());
 						delete compressed;
@@ -207,7 +204,7 @@ namespace NLE
 				auto identifier = converter.from_bytes(header._identifier);
 				if (getFileExtension(path).compare(identifier) != 0)
 				{
-					CONSOLE::out(CONSOLE::ERR, L"Resource identifier " + identifier + L" and file extension " + getFileExtension(path) + L" are mismatched");
+					_eServices.console->push(CONSOLE::ERR, L"Resource identifier " + identifier + L" and file extension " + getFileExtension(path) + L" are mismatched");
 					delete buffer;
 					return nullptr;
 				}
@@ -218,7 +215,7 @@ namespace NLE
 				}
 
 				std::vector<char>* decompressed = new std::vector<char>(header._originalSize);
-				if (DataCompressionManager::decompress(buffer, decompressed))
+				if (DataCompressionManager::decompress(_eServices.console, buffer, decompressed))
 				{
 					delete buffer;
 					return decompressed;

@@ -2,6 +2,7 @@
 #define NL_FILE_IO_MANAGER_H_
 
 #include "NL_Thread.h"
+#include "NL_EngineServices.h"
 
 #include "tbb/concurrent_queue.h"
 
@@ -56,6 +57,7 @@ namespace NLE
 			std::function<void()> onFailure;
 		};
 
+#pragma pack(push, 1)
 		struct NleFileHeader
 		{
 			NleFileHeader()
@@ -80,19 +82,12 @@ namespace NLE
 			size_t _originalSize;
 			bool _compressed;
 		};
+#pragma pack(pop)
 
 		class FileIOManager
 		{
 		public:
-			static FileIOManager& instance()
-			{
-				if (!_ioManager)
-				{
-					_ioManager = new FileIOManager();
-				}
-				return *_ioManager;
-			}
-
+			FileIOManager(NLE::EngineServices& eServices);
 			~FileIOManager();
 			std::wstring getFileExtension(std::wstring path);
 			void read(
@@ -110,8 +105,7 @@ namespace NLE
 				);
 			
 
-		private:
-			FileIOManager();
+		private:			
 			FileIOManager(FileIOManager const&) = delete;
 			void operator=(FileIOManager const&) = delete;
 
@@ -123,7 +117,7 @@ namespace NLE
 			std::wstring getResourceIdentifier(std::wstring& path);
 			bool isEngineType(const std::wstring& path);
 
-			static FileIOManager* _ioManager;
+			NLE::EngineServices& _eServices;
 			Core::Thread _loadingThread;
 			tbb::concurrent_queue<FileIOOperationDesc> _fileOps;
 		};

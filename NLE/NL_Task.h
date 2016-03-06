@@ -6,28 +6,20 @@
 
 namespace NLE
 {
-	namespace Core
+	namespace TASK
 	{
+		class TaskScheduler;
 		class Task : public tbb::task
 		{
 		public:
-			Task(std::function<void()> const& operation) :
-				_operation(operation)
-			{
-			}
+			Task(TaskScheduler* const scheduler, std::function<void()> const& operation);
+			~Task();
 
-			~Task()
-			{
-			}
-
-			tbb::task* execute()
-			{
-				_operation();
-				return nullptr;
-			}
+			tbb::task* execute();
 
 		private:
 			std::function<void()> _operation;
+			TaskScheduler* const _scheduler;
 		};
 	}
 }

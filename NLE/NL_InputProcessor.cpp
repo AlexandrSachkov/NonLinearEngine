@@ -1,9 +1,7 @@
 #include "NL_InputProcessor.h"
 #include "NL_InputEvents.h"
-#include "NL_Nle.h"
-#include "NL_Systems.h"
-#include "NL_UiManager.h"
-#include "NL_DeviceCore.h"
+#include "NL_Globals.h"
+#include "NL_ThreadLocal.h"
 
 #include <assert.h>
 
@@ -11,9 +9,9 @@ namespace NLE
 {
 	namespace INPUT
 	{
-		InputProcessor::InputProcessor() :
-			_initialized(false),
-			_pollEvents([]() {})
+		InputProcessor::InputProcessor(EngineServices& eServices) :
+			_eServices(eServices),
+			_execStatus(CONTINUE)
 		{
 			_enableTextInput.fetch_and_store(false);
 			_enableInputProcessing.fetch_and_store(true);
@@ -21,102 +19,70 @@ namespace NLE
 
 		InputProcessor::~InputProcessor()
 		{
-			
+
 		}
 
-		bool InputProcessor::initialize(std::unique_ptr<Core::SysInitializer> const& initializer)
+		bool InputProcessor::initialize()
 		{
-			assert(!_initialized);
+			return true;
+		}
 
-			_procedure = [&](){
-				_pollEvents.acquire()();
-				_pollEvents.release();
+		ExecStatus InputProcessor::getExecutionStatus()
+		{
+			return _execStatus;
+		}
 
-				if (!_enableInputProcessing)
-					return;
+		void InputProcessor::update(SystemServices& sServices, DataManager& data, double deltaT)
+		{
+			if (!_enableInputProcessing)
+				return;
 
-				if (!_events.empty())
+			NLE::TLS::PerformanceTimer::reference timer = NLE::TLS::performanceTimer.local();
+			timer.sample();
+
+			INPUT::Event event;
+			while (GLOBAL_EVENT_QUEUE->pop(event))
+			{
+				switch (event.eventType)
 				{
-					INPUT::Event event;
-					while (_events.try_pop(event))
-					{
-						switch (event.eventType)
-						{
-						case EVENT_TYPE::EVENT_KEY:
-							onKeyEvent(event);
-							break;
-						case EVENT_TYPE::EVENT_MOUSE_BUTTON:
-							onMouseButtonEvent(event);
-							break;
-						case EVENT_TYPE::EVENT_CURSOR_POSITION:
-							onCursorPositionChange(event);
-							break;
-						case EVENT_TYPE::EVENT_SCROLL:
-							onScrollEvent(event);
-							break;
-						case EVENT_TYPE::EVENT_WINDOW_CLOSE:
-							Nle::instance().stop();
-							break;
-						default:
-							break;
-						}
-					}
+				case EVENT_TYPE::EVENT_KEY:
+					onKeyEvent(event);
+					break;
+				case EVENT_TYPE::EVENT_MOUSE_BUTTON:
+					onMouseButtonEvent(event);
+					break;
+				case EVENT_TYPE::EVENT_CURSOR_POSITION:
+					onCursorPositionChange(event);
+					break;
+				case EVENT_TYPE::EVENT_SCROLL:
+					onScrollEvent(event);
+					break;
+				case EVENT_TYPE::EVENT_WINDOW_CLOSE:
+					_execStatus = TERMINATE;
+					break;
+				default:
+					break;
 				}
-			};
+			}
 
-			_initialized = true;
-			return _initialized;
+			timer.sample();
+			data.out.inputProcessorTime = timer.getDeltaT();
 		}
 
-		void InputProcessor::start()
-		{
-
-		}
-
-		void InputProcessor::stop()
-		{
-
-		}
-
-		void InputProcessor::release()
-		{
-			_initialized = false;
-		}
-
-		bool InputProcessor::initialized()
-		{
-			return _initialized;
-		}
-
-		std::function<void()> const& InputProcessor::getExecutionProcedure()
-		{
-			return _procedure;
-		}
-
-		Core::ISystem& InputProcessor::getInterface()
-		{
-			return *this;
-		}
-
-		void InputProcessor::attachPollEvents(std::function<void()> pollEvents)
-		{
-			_pollEvents.set(pollEvents);
-		}
-
-		void InputProcessor::processEvent(INPUT::Event& event)
+		void InputProcessor::queueEvent(INPUT::Event& event)
 		{
 			// Ignore repeated events
 			if (event.eventType == EVENT_KEY && event.eventData.keyEvent.action == ACTION_REPEAT)
 				return;
 
-			if(event.eventType == EVENT_MOUSE_BUTTON && event.eventData.mouseButtonEvent.action == ACTION_REPEAT)
+			if (event.eventType == EVENT_MOUSE_BUTTON && event.eventData.mouseButtonEvent.action == ACTION_REPEAT)
 				return;
 
 			// Ignore text input events when text input is disabled
 			if (event.eventType == EVENT_CHAR && !_enableTextInput)
 				return;
 
-			_events.push(event);
+			GLOBAL_EVENT_QUEUE->push(event);
 		}
 
 		void InputProcessor::enableTextInput(bool enable)
@@ -131,60 +97,28 @@ namespace NLE
 
 		void InputProcessor::onKeyEvent(Event& event)
 		{
-			// temporary hardcoded key mappings
 			switch (event.eventData.keyEvent.key)
 			{
 			case KEY::KEY_A:
-				if (event.eventData.keyEvent.action == ACTION::ACTION_PRESS)
-				{
-				}
-				else
-				{
-				}
+
 				break;
 			case KEY::KEY_D:
-				if (event.eventData.keyEvent.action == ACTION::ACTION_PRESS)
-				{
-				}
-				else
-				{
-				}
+
 				break;
 			case KEY::KEY_W:
-				if (event.eventData.keyEvent.action == ACTION::ACTION_PRESS)
-				{
-				}
-				else
-				{
-				}
+
 				break;
 			case KEY::KEY_S:
-				if (event.eventData.keyEvent.action == ACTION::ACTION_PRESS)
-				{
-				}
-				else
-				{
-				}
+
 				break;
 			case KEY::KEY_ESCAPE:
-				Nle::instance().stop();
+				_execStatus = TERMINATE;
 				break;
-			case KEY::KEY_1:
-				static_cast<UI::IUiManager*>(&Core::DeviceCore::instance().getSystemInterface(SYS::SYS_UI_MANAGER))
-					->executeScript("NLE_ui_setData(\"canvasBgColor\", 0,0.4,0.5,1)", true);
+
+			case KEY::KEY_F12:		//for testing purposes
+				_execStatus = RESTART;
 				break;
-			case KEY::KEY_2:
-				static_cast<UI::IUiManager*>(&Core::DeviceCore::instance().getSystemInterface(SYS::SYS_UI_MANAGER))
-					->executeScript("NLE_ui_setData(\"canvasBgColor\", 1,0,0,1)", true);
-				break;
-			case KEY::KEY_3:
-				static_cast<UI::IUiManager*>(&Core::DeviceCore::instance().getSystemInterface(SYS::SYS_UI_MANAGER))
-					->executeScript("NLE_ui_setData(\"canvasBgColor\", 0,1,0,1)", true);
-				break;
-			case KEY::KEY_4:
-				static_cast<UI::IUiManager*>(&Core::DeviceCore::instance().getSystemInterface(SYS::SYS_UI_MANAGER))
-					->executeScript("NLE_ui_setData(\"canvasBgColor\", 1,0,1,1)", true);
-				break;
+
 			default:
 				break;
 			}
@@ -208,12 +142,12 @@ namespace NLE
 
 		void InputProcessor::onCursorPositionChange(Event& event)
 		{
-			
+
 		}
 
 		void InputProcessor::onScrollEvent(Event& event)
 		{
-			
+
 		}
 	}
 }

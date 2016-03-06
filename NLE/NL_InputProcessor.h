@@ -1,55 +1,45 @@
 #ifndef NL_INPUT_PROCESSOR_H_
 #define NL_INPUT_PROCESSOR_H_
 
-#include "NL_System.h"
 #include "NL_IInputProcessor.h"
+#include "NL_ISystem.h"
+#include "NL_EngineServices.h"
 
-#include "tbb\concurrent_queue.h"
 #include "tbb\atomic.h"
 #include "NL_Atomic.h"
 
 namespace NLE
 {
-	namespace Core
+	enum ExecStatus 
 	{
-		class IEngine;
-		class ISystem;
-		struct SysInitializer;
-	}
+		CONTINUE,
+		TERMINATE,
+		RESTART
+	};
+
 	namespace INPUT
 	{
-		class InputProcessor : public Core::System, public IInputProcessor
+		class InputProcessor : public IInputProcessor, public ISystem
 		{
 		public:
-			InputProcessor();
+			InputProcessor(EngineServices& eServices);
 			~InputProcessor();
+			bool initialize();
 
-			bool initialize(std::unique_ptr<Core::SysInitializer> const& initializer);
-			void start();
-			void stop();
-			void release();
-
-			bool initialized();
-			
-			std::function<void()> const& getExecutionProcedure();
-			Core::ISystem& getInterface();
-
-			void attachPollEvents(std::function<void()> pollEvents);
-			void processEvent(INPUT::Event& event);
+			void update(SystemServices& sServices, DataManager& data, double deltaT);
+			ExecStatus getExecutionStatus();
+			void queueEvent(INPUT::Event& event);
 			void enableTextInput(bool enable);
 			void enableInputProcessing(bool enable);
 
 		private:
+			ExecStatus _execStatus;
 			void onKeyEvent(Event& event);
 			void onMouseButtonEvent(Event& event);
 			void onCursorPositionChange(Event& event);
 			void onScrollEvent(Event& event);
 
-			bool _initialized;
-			std::function<void()> _procedure;
-			Atomic<std::function<void()>> _pollEvents;
-
-			tbb::concurrent_queue<INPUT::Event> _events;
+			EngineServices& _eServices;
 			tbb::atomic<bool> _enableTextInput;
 			tbb::atomic<bool> _enableInputProcessing;
 		};

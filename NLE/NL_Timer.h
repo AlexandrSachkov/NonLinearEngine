@@ -2,29 +2,37 @@
 #define NL_TIMER_H_
 
 #include <chrono>
+#include <assert.h>
 
 namespace NLE
 {
 	class Timer
 	{
 	public:
-		Timer(uint_fast32_t frameAverage);
-		~Timer();
+		Timer()
+		{
+			_previousTime = std::chrono::high_resolution_clock::now();
+		}
 
-		void sample();
+		~Timer()
+		{
+		}
 
-		unsigned long long getFrameTimeNs();
-		double getFps();
-		bool fpsChanged();
-		void reset();
+		void sample()
+		{
+			auto time = std::chrono::high_resolution_clock::now();
+			_deltaT = std::chrono::duration_cast<std::chrono::duration<double>>(time - _previousTime).count() * 0.000000001;
+			_previousTime = time;
+		}
+
+		double getDeltaT()
+		{
+			return _deltaT;
+		}
 
 	private:
-		uint_fast32_t _frameAverage;
-		uint_fast32_t _currentFrameCount;
 		std::chrono::time_point<std::chrono::high_resolution_clock, std::chrono::nanoseconds> _previousTime;
-		unsigned long long _currentFrameTime;
-		double _currentFps;
-		bool _fpsChanged;
+		double _deltaT;
 	};
 }
 

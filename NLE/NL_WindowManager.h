@@ -31,9 +31,7 @@ THE SOFTWARE.
 
 #include "NL_CommonTypes.h"
 #include "NL_InputEvents.h"
-#include "NL_System.h"
-#include "NL_SysInitializer.h"
-#include "NL_Timer.h"
+#include "NL_IConsoleQueue.h"
 
 #include <string>
 #include <memory>
@@ -46,16 +44,14 @@ namespace NLE
 	class WindowManager
 	{
 	public:
-		WindowManager();
+		WindowManager(CONSOLE::IConsoleQueue* console);
 		~WindowManager();
 
 		bool initialize(
 			Size2D screenSize,
 			bool fullscreen,
 			bool decorated,
-			std::wstring title,
-			int openglMajorVersion,
-			int openglMinorVersion
+			std::wstring title
 			);
 
 		Size2D getClientSize();
@@ -102,9 +98,9 @@ namespace NLE
 
 		static void processEvent(INPUT::Event& event);
 
+		CONSOLE::IConsoleQueue* _console;
 		GLFWwindow* _window;
 		std::wstring _title;
-		Timer _timer;
 	};
 }
 
