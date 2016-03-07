@@ -10,8 +10,7 @@ namespace NLE
 	namespace INPUT
 	{
 		InputProcessor::InputProcessor(EngineServices& eServices) :
-			_eServices(eServices),
-			_execStatus(CONTINUE)
+			_eServices(eServices)
 		{
 			_enableTextInput.fetch_and_store(false);
 			_enableInputProcessing.fetch_and_store(true);
@@ -27,18 +26,13 @@ namespace NLE
 			return true;
 		}
 
-		ExecStatus InputProcessor::getExecutionStatus()
-		{
-			return _execStatus;
-		}
-
 		void InputProcessor::update(SystemServices& sServices, DataManager& data, double deltaT)
 		{
 			if (!_enableInputProcessing)
 				return;
 
 			NLE::TLS::PerformanceTimer::reference timer = NLE::TLS::performanceTimer.local();
-			timer.sample();
+			timer.deltaT();
 
 			INPUT::Event event;
 			while (GLOBAL_EVENT_QUEUE->pop(event))
@@ -46,7 +40,7 @@ namespace NLE
 				switch (event.eventType)
 				{
 				case EVENT_TYPE::EVENT_KEY:
-					onKeyEvent(event);
+					onKeyEvent(sServices, event);
 					break;
 				case EVENT_TYPE::EVENT_MOUSE_BUTTON:
 					onMouseButtonEvent(event);
@@ -58,15 +52,14 @@ namespace NLE
 					onScrollEvent(event);
 					break;
 				case EVENT_TYPE::EVENT_WINDOW_CLOSE:
-					_execStatus = TERMINATE;
+					sServices.game->quitGame();
 					break;
 				default:
 					break;
 				}
 			}
 
-			timer.sample();
-			data.out.inputProcessorTime = timer.getDeltaT();
+			data.out.inputProcessorTime = timer.deltaT();
 		}
 
 		void InputProcessor::queueEvent(INPUT::Event& event)
@@ -95,7 +88,7 @@ namespace NLE
 			_enableInputProcessing.fetch_and_store(enable);
 		}
 
-		void InputProcessor::onKeyEvent(Event& event)
+		void InputProcessor::onKeyEvent(SystemServices& sServices, Event& event)
 		{
 			switch (event.eventData.keyEvent.key)
 			{
@@ -112,11 +105,11 @@ namespace NLE
 
 				break;
 			case KEY::KEY_ESCAPE:
-				_execStatus = TERMINATE;
+				sServices.game->quitGame();
 				break;
 
 			case KEY::KEY_F12:		//for testing purposes
-				_execStatus = RESTART;
+				sServices.game->restartGame();
 				break;
 
 			default:

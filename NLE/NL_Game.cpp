@@ -2,13 +2,16 @@
 
 namespace NLE
 {
-	Game::Game()
+	namespace GAME
 	{
+		Game::Game()
+		{
 
-	}
+		}
 
-	Game::~Game()
-	{
+		Game::~Game()
+		{
 
+		}
 	}
 }

@@ -27,10 +27,9 @@ namespace NLE
 		void UiManager::update(SystemServices& sServices, DataManager& data, double deltaT)
 		{
 			NLE::TLS::PerformanceTimer::reference timer = NLE::TLS::performanceTimer.local();
-			timer.sample();
+			timer.deltaT();
 
-			timer.sample();
-			data.out.uiManagerTime = timer.getDeltaT();
+			data.out.uiManagerTime = timer.deltaT();
 		}
 	}
 }

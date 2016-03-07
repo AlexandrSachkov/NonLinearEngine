@@ -10,13 +10,6 @@
 
 namespace NLE
 {
-	enum ExecStatus 
-	{
-		CONTINUE,
-		TERMINATE,
-		RESTART
-	};
-
 	namespace INPUT
 	{
 		class InputProcessor : public IInputProcessor, public ISystem
@@ -27,14 +20,13 @@ namespace NLE
 			bool initialize();
 
 			void update(SystemServices& sServices, DataManager& data, double deltaT);
-			ExecStatus getExecutionStatus();
+
 			void queueEvent(INPUT::Event& event);
 			void enableTextInput(bool enable);
 			void enableInputProcessing(bool enable);
 
 		private:
-			ExecStatus _execStatus;
-			void onKeyEvent(Event& event);
+			void onKeyEvent(SystemServices& sServices, Event& event);
 			void onMouseButtonEvent(Event& event);
 			void onCursorPositionChange(Event& event);
 			void onScrollEvent(Event& event);

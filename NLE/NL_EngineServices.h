@@ -9,7 +9,7 @@ namespace NLE
 	class EngineServices
 	{
 	public:
-		EngineServices(CONSOLE::IConsoleQueue* console, TASK::ITaskScheduler* task) :
+		EngineServices(CONSOLE::IConsoleQueue* const console, TASK::ITaskScheduler* const task) :
 			console(console),
 			task(task)
 		{

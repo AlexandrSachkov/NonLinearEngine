@@ -4,6 +4,6 @@ namespace NLE
 {
 	namespace INPUT
 	{
-		NLE::INPUT::EventQueue* const GLOBAL_EVENT_QUEUE = new NLE::INPUT::EventQueue();
+		NLE::Queue<Event>* const GLOBAL_EVENT_QUEUE = new NLE::Queue<Event>();
 	}	
 }

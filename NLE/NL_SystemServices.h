@@ -1,6 +1,7 @@
 #ifndef NL_SYSTEM_SERVICES_H_
 #define NL_SYSTEM_SERVICES_H_
 
+#include "NL_IGameManager.h"
 #include "NL_IInputProcessor.h"
 #include "NL_IRenderingEngine.h"
 #include "NL_IUiManager.h"
@@ -12,11 +13,13 @@ namespace NLE
 	{
 	public:
 		SystemServices(
-			INPUT::IInputProcessor* input,
-			GRAPHICS::IRenderingEngine* graphics,
-			UI::IUiManager* ui,
-			SCRIPT::IScriptingEngine* script
+			GAME::IGameManager* const game,
+			INPUT::IInputProcessor* const input,
+			GRAPHICS::IRenderingEngine* const graphics,
+			UI::IUiManager* const ui,
+			SCRIPT::IScriptingEngine* const script
 			) :
+			game(game),
 			input(input),
 			graphics(graphics),
 			ui(ui),
@@ -28,10 +31,11 @@ namespace NLE
 		{
 		}
 
-		INPUT::IInputProcessor const* input;
-		GRAPHICS::IRenderingEngine const* graphics;
-		UI::IUiManager const* ui;
-		SCRIPT::IScriptingEngine const* script;
+		GAME::IGameManager* const game;
+		INPUT::IInputProcessor* const input;
+		GRAPHICS::IRenderingEngine* const graphics;
+		UI::IUiManager* const ui;
+		SCRIPT::IScriptingEngine* const script;
 	};
 }
 

@@ -18,21 +18,16 @@ namespace NLE
 		{
 		}
 
-		void sample()
+		double deltaT()
 		{
 			auto time = std::chrono::high_resolution_clock::now();
-			_deltaT = std::chrono::duration_cast<std::chrono::duration<double>>(time - _previousTime).count() * 0.000000001;
+			double deltaT = std::chrono::duration_cast<std::chrono::duration<double>>(time - _previousTime).count() * 0.000000001;
 			_previousTime = time;
-		}
-
-		double getDeltaT()
-		{
-			return _deltaT;
+			return deltaT;
 		}
 
 	private:
 		std::chrono::time_point<std::chrono::high_resolution_clock, std::chrono::nanoseconds> _previousTime;
-		double _deltaT;
 	};
 }
 

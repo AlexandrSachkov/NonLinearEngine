@@ -24,10 +24,9 @@ namespace NLE
 		void ScriptingEngine::update(SystemServices& sServices, DataManager& data, double deltaT)
 		{
 			NLE::TLS::PerformanceTimer::reference timer = NLE::TLS::performanceTimer.local();
-			timer.sample();
+			timer.deltaT();
 
-			timer.sample();
-			data.out.scriptingEngineTime = timer.getDeltaT();
+			data.out.scriptingEngineTime = timer.deltaT();
 		}
 	}
 }

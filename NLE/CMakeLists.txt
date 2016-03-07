@@ -41,7 +41,6 @@ SET(HEADERS
 	NL_DataCompressionManager.h
 	NL_DataManager.h
 	NL_EngineServices.h
-	NL_EventQueue.h
 	NL_FileIOManager.h
 	NL_Game.h
 	NL_GameManager.h
@@ -54,6 +53,7 @@ SET(HEADERS
 	NL_MemoryManager.h
 	NL_MemoryPool.h
 	NL_Octree.h
+	NL_Queue.h
 	NL_RenderingEngine.h
 	NL_IRenderingEngine.h
 	NL_ResourceManager.h

@@ -34,13 +34,12 @@ namespace NLE
 		void RenderingEngine::update(SystemServices& sServices, DataManager& data, double deltaT)
 		{
 			NLE::TLS::PerformanceTimer::reference timer = NLE::TLS::performanceTimer.local();
-			timer.sample();
+			timer.deltaT();
 
 			_windowManager->pollEvents();
 			std::cout<< deltaT << std::endl;
 
-			timer.sample();
-			data.out.renderingEngineTime = timer.getDeltaT();
+			data.out.renderingEngineTime = timer.deltaT();
 		}
 
 		void RenderingEngine::setWindowTitle(std::wstring title)
