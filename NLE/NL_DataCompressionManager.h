@@ -9,9 +9,9 @@ namespace NLE
 	class DataCompressionManager
 	{
 	public:
-		static bool compress(CONSOLE::IConsoleQueue *const console, const std::vector<char>* src, std::vector<char>*& dst);
-		static bool compressFast(CONSOLE::IConsoleQueue *const console, const std::vector<char>* src, std::vector<char>*& dst);
-		static bool decompress(CONSOLE::IConsoleQueue *const console, const std::vector<char>* src, std::vector<char>* dst);
+		static bool compress(CONSOLE::IConsoleQueue* console, const std::vector<char>* src, std::vector<char>*& dst);
+		static bool compressFast(CONSOLE::IConsoleQueue* console, const std::vector<char>* src, std::vector<char>*& dst);
+		static bool decompress(CONSOLE::IConsoleQueue* console, const std::vector<char>* src, std::vector<char>* dst);
 	};
 }
 

@@ -5,7 +5,7 @@
 
 namespace NLE
 {
-	bool DataCompressionManager::compress(CONSOLE::IConsoleQueue *const console, const std::vector<char>* src, std::vector<char>*& dst)
+	bool DataCompressionManager::compress(CONSOLE::IConsoleQueue* console, const std::vector<char>* src, std::vector<char>*& dst)
 	{
 		std::vector<char>* dest = new std::vector<char>(LZ4_compressBound((int)src->size()));
 		size_t destinationSize = (size_t)LZ4_compress_HC(&(*src)[0], &(*dest)[0], (int)src->size(), (int)dest->size(), 9);
@@ -21,7 +21,7 @@ namespace NLE
 		return true;
 	}
 
-	bool DataCompressionManager::compressFast(CONSOLE::IConsoleQueue *const console, const std::vector<char>* src, std::vector<char>*& dst)
+	bool DataCompressionManager::compressFast(CONSOLE::IConsoleQueue* console, const std::vector<char>* src, std::vector<char>*& dst)
 	{
 		std::vector<char>* dest = new std::vector<char>(src->size());
 		size_t destinationSize = (size_t)LZ4_compress_default(&(*src)[0], &(*dest)[0], (int)src->size(), (int)dest->size());
@@ -37,7 +37,7 @@ namespace NLE
 		return true;
 	}
 
-	bool DataCompressionManager::decompress(CONSOLE::IConsoleQueue *const console, const std::vector<char>* src, std::vector<char>* dst)
+	bool DataCompressionManager::decompress(CONSOLE::IConsoleQueue* console, const std::vector<char>* src, std::vector<char>* dst)
 	{
 		if (LZ4_decompress_fast(&(*src)[0], &(*dst)[0], (int)dst->size()) <= 0)
 		{

@@ -7,20 +7,29 @@ namespace NLE
 {
 	namespace GAME
 	{
+		enum CommandType
+		{
+			QUIT_GAME,
+			RESTART_GAME
+		};
+
+		union CommandData
+		{
+		};
+
+		struct Command
+		{
+			Command() {}
+			Command(CommandType type) : type(type) {}
+			Command(CommandType type, CommandData data) : type(type), data(data) {}
+			CommandType type;
+			CommandData data;
+		};
+
 		class IGameManager
 		{
 		public:
-			virtual void loadGame(std::wstring game) = 0;
-			virtual void saveGame() = 0;
-			virtual void quitGame() = 0;
-			virtual void restartGame() = 0;
-
-			virtual void loadScene(std::wstring scene) = 0;
-
-			virtual void loadGameObject(std::wstring gameObject) = 0;
-			virtual void unloadGameObject(std::wstring gameObject) = 0;
-
-			virtual void importMesh(std::wstring mesh) = 0;
+			virtual void queueCommand(Command& command) = 0;
 		};
 	}
 }

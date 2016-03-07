@@ -31,25 +31,6 @@ namespace NLE
 	}
 	namespace GAME
 	{
-		enum EventType
-		{
-			QUIT_GAME,
-			RESTART_GAME
-		};
-
-		union EventData
-		{
-		};
-
-		struct Event
-		{
-			Event() {}
-			Event(EventType type) : type(type) {}
-			Event(EventType type, EventData data) : type(type), data(data) {}
-			EventType type;
-			EventData data;
-		};
-
 		class Game;
 		class Scene;
 		class GameManager : public IGameManager, public ISystem
@@ -59,28 +40,25 @@ namespace NLE
 			~GameManager();
 
 			bool initialize(
-				GRAPHICS::RenderingEngine* const renderingEngine,
-				UI::UiManager* const uiManager,
-				SCRIPT::ScriptingEngine* const scriptingEngine);
+				GRAPHICS::RenderingEngine* renderingEngine,
+				UI::UiManager* uiManager,
+				SCRIPT::ScriptingEngine* scriptingEngine);
 
 			void update(SystemServices& sServices, DataManager& data, double deltaT);
-
-			void loadGame(std::wstring game);
-			void saveGame();
-			void quitGame();
-			void restartGame();
-
-			void loadScene(std::wstring scene);
-
-			void loadGameObject(std::wstring gameObject);
-			void unloadGameObject(std::wstring gameObject);
-
-			void importMesh(std::wstring mesh);
+			void queueCommand(Command& command);
 
 			ExecStatus getExecutionStatus();
 
 		private:
-			void processEvents();
+			void processCommands();
+			void loadGame(std::wstring game);
+			void saveGame();
+			void quitGame();
+			void restartGame();
+			void loadScene(std::wstring scene);
+			void loadGameObject(std::wstring gameObject);
+			void unloadGameObject(std::wstring gameObject);
+			void importMesh(std::wstring mesh);
 
 			ExecStatus _execStatus;
 
@@ -89,7 +67,7 @@ namespace NLE
 			UI::UiManager* _uiManager;
 			SCRIPT::ScriptingEngine* _scriptingEngine;
 
-			Queue<Event> _events;
+			Queue<Command> _commands;
 
 			Game* _game;
 			Scene* _currentScene;

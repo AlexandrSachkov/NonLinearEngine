@@ -13,11 +13,11 @@ namespace NLE
 	{
 	public:
 		SystemServices(
-			GAME::IGameManager* const game,
-			INPUT::IInputProcessor* const input,
-			GRAPHICS::IRenderingEngine* const graphics,
-			UI::IUiManager* const ui,
-			SCRIPT::IScriptingEngine* const script
+			GAME::IGameManager* game,
+			INPUT::IInputProcessor* input,
+			GRAPHICS::IRenderingEngine* graphics,
+			UI::IUiManager* ui,
+			SCRIPT::IScriptingEngine* script
 			) :
 			game(game),
 			input(input),

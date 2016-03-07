@@ -28,12 +28,14 @@ namespace NLE
 
 		GameManager::~GameManager()
 		{
+			delete _currentScene;
+			delete _game;		
 		}
 
 		bool GameManager::initialize(
-			GRAPHICS::RenderingEngine* const renderingEngine,
-			UI::UiManager* const uiManager,
-			SCRIPT::ScriptingEngine* const scriptingEngine)
+			GRAPHICS::RenderingEngine* renderingEngine,
+			UI::UiManager* uiManager,
+			SCRIPT::ScriptingEngine* scriptingEngine)
 		{
 			_renderingEngine = renderingEngine;
 			_uiManager = uiManager;
@@ -44,21 +46,26 @@ namespace NLE
 
 		void GameManager::update(SystemServices& sServices, DataManager& data, double deltaT)
 		{
-			processEvents();
+			processCommands();
 		}
 
-		void GameManager::processEvents()
+		void GameManager::queueCommand(Command& command)
 		{
-			Event event;
-			while (_events.pop(event))
+			_commands.push(command);
+		}
+
+		void GameManager::processCommands()
+		{
+			Command command;
+			while (_commands.pop(command))
 			{
-				switch (event.type)
+				switch (command.type)
 				{
-				case EventType::QUIT_GAME:
+				case QUIT_GAME:
 					_execStatus = TERMINATE;
 					break;
 
-				case EventType::RESTART_GAME:
+				case RESTART_GAME:
 					_execStatus = RESTART;
 					break;
 
@@ -85,12 +92,12 @@ namespace NLE
 
 		void GameManager::quitGame()
 		{
-			_events.push(Event(EventType::QUIT_GAME));
+
 		}
 
 		void GameManager::restartGame()
 		{
-			_events.push(Event(EventType::RESTART_GAME));
+
 		}
 
 		void GameManager::loadScene(std::wstring scene)
