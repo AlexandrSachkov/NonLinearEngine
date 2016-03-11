@@ -45,6 +45,7 @@ SET(HEADERS
 	NL_Game.h
 	NL_GameManager.h
 	NL_IGameManager.h
+	NL_GameObject.h
 	NL_GlfwInputMap.h
 	NL_Globals.h
 	NL_InputProcessor.h
@@ -56,10 +57,14 @@ SET(HEADERS
 	NL_Queue.h
 	NL_RenderingEngine.h
 	NL_IRenderingEngine.h
+	NL_RenderingComponent.h
+	NL_Resource.h
 	NL_ResourceManager.h
+	NL_IResourceManager.h
 	NL_Scene.h		
 	NL_ScriptCallbacks.h
 	NL_ScriptExecutor.h
+	NL_ScriptingComponent.h
 	NL_ScriptingEngine.h
 	NL_IScriptingEngine.h	
 	NL_SharedData.h
@@ -71,8 +76,10 @@ SET(HEADERS
 	NL_TextureLoader.h
 	NL_Timer.h	
 	NL_ThreadLocal.h
+	NL_UiComponent.h
 	NL_UiManager.h
 	NL_IUiManager.h
+	NL_Uuid.h
 	NL_WindowManager.h
 	NL_ResourceManager.cpp
 	NL_Thread.h
@@ -86,21 +93,24 @@ SET(SOURCES
 	NL_FileIOManager.cpp
 	NL_Game.cpp
 	NL_GameManager.cpp
+	NL_GameObject.cpp
 	NL_GlfwInputMap.cpp
 	NL_Globals.cpp
 	NL_InputProcessor.cpp
 	NL_MemoryManager.cpp
 	NL_Nle.cpp
 	NL_Octree.cpp
+	NL_RenderingComponent.cpp
 	NL_RenderingEngine.cpp
 	NL_Scene.cpp	
 	NL_ScriptCallbacks.cpp
 	NL_ScriptExecutor.cpp
+	NL_ScriptingComponent.cpp
 	NL_ScriptingEngine.cpp
-	NL_SharedData.cpp
 	NL_Task.cpp
 	NL_TextureLoader.cpp
 	NL_TaskScheduler.cpp
+	NL_UiComponent.cpp
 	NL_UiManager.cpp
 	NL_WindowManager.cpp		
 	NL_Thread.cpp
@@ -232,13 +242,13 @@ IF(NLE_ASSIMP_LIBRARY_RELEASE_PATH STREQUAL "")
 ENDIF(NLE_ASSIMP_LIBRARY_RELEASE_PATH STREQUAL "")
 
 
-# Rapid JSON
-SET(NLE_RAPID_JSON_INCLUDE_PATH
-	"" CACHE PATH "NLE Rapid JSON include path")
+# Cereal
+SET(NLE_CEREAL_INCLUDE_PATH
+	"" CACHE PATH "NLE Cereal include path")
 
-IF(NLE_RAPID_JSON_INCLUDE_PATH STREQUAL "")
-	MESSAGE(SEND_ERROR "NLE Rapid JSON include path must be specified")
-ENDIF(NLE_RAPID_JSON_INCLUDE_PATH STREQUAL "")
+IF(NLE_CEREAL_INCLUDE_PATH STREQUAL "")
+	MESSAGE(SEND_ERROR "NLE Cereal include path must be specified")
+ENDIF(NLE_CEREAL_INCLUDE_PATH STREQUAL "")
 
 
 # LZ4
@@ -272,7 +282,7 @@ INCLUDE_DIRECTORIES(
 	${NLE_GLM_INCLUDE_PATH}
 	${NLE_KTX_INCLUDE_PATH}
 	${NLE_ASSIMP_INCLUDE_PATH}
-	${NLE_RAPID_JSON_INCLUDE_PATH}
+	${NLE_CEREAL_INCLUDE_PATH}
 	${NLE_LZ4_INCLUDE_PATH}
 	)
 

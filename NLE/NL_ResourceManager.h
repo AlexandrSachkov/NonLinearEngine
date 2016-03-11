@@ -1,7 +1,8 @@
 #ifndef NL_RESOURCE_MANAGER_H_
 #define NL_RESOURCE_MANAGER_H_
 
-#include "NL_Thread.h"
+#include "NL_IResourceManager.h"
+#include "NL_FileIOManager.h"
 
 #include "tbb/atomic.h"
 #include "tbb/concurrent_unordered_map.h"
@@ -15,10 +16,10 @@ namespace NLE
 {
 	namespace RESOURCE
 	{
-		class ResourceManager
+		class ResourceManager : public IResourceManager
 		{
 		public:
-			ResourceManager();
+			ResourceManager(NLE::IO::FileIOManager& fileIO);
 			~ResourceManager();
 
 			void load(std::wstring& path, std::function<void(std::vector<char>* data)> onSuccess);
@@ -26,9 +27,9 @@ namespace NLE
 			void release(std::wstring& path);
 
 		private:
-			std::wstring getFileExtension(std::wstring path);
 			void addResource(std::wstring path, std::vector<char>* buffer);
 
+			NLE::IO::FileIOManager& _file;
 			tbb::concurrent_unordered_map<std::wstring, std::vector<char>*> _resources;
 		};
 	}

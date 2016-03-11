@@ -5,6 +5,7 @@
 #include "NL_ISystem.h"
 #include "NL_EngineServices.h"
 #include "NL_Queue.h"
+#include "NL_FileIOManager.h"
 
 #include <functional>
 
@@ -36,13 +37,13 @@ namespace NLE
 		class GameManager : public IGameManager, public ISystem
 		{
 		public:
-			GameManager(EngineServices& eServices);
+			GameManager(
+				EngineServices& eServices,
+				IO::FileIOManager& file,
+				GRAPHICS::RenderingEngine* const renderingEngine,
+				UI::UiManager* const uiManager,
+				SCRIPT::ScriptingEngine* const scriptingEngine);
 			~GameManager();
-
-			bool initialize(
-				GRAPHICS::RenderingEngine* renderingEngine,
-				UI::UiManager* uiManager,
-				SCRIPT::ScriptingEngine* scriptingEngine);
 
 			void update(SystemServices& sServices, DataManager& data, double deltaT);
 			void queueCommand(Command& command);
@@ -51,10 +52,12 @@ namespace NLE
 
 		private:
 			void processCommands();
+
 			void loadGame(std::wstring game);
 			void saveGame();
 			void quitGame();
 			void restartGame();
+			void updateGame(Game* game);
 			void loadScene(std::wstring scene);
 			void loadGameObject(std::wstring gameObject);
 			void unloadGameObject(std::wstring gameObject);
@@ -63,13 +66,14 @@ namespace NLE
 			ExecStatus _execStatus;
 
 			EngineServices& _eServices;
-			GRAPHICS::RenderingEngine* _renderingEngine;
-			UI::UiManager* _uiManager;
-			SCRIPT::ScriptingEngine* _scriptingEngine;
+			IO::FileIOManager& _file;
+			GRAPHICS::RenderingEngine* const _renderingEngine;
+			UI::UiManager* const _uiManager;
+			SCRIPT::ScriptingEngine* const _scriptingEngine;
 
 			Queue<Command> _commands;
 
-			Game* _game;
+			std::unique_ptr<Game> _game;
 			Scene* _currentScene;
 		};
 	}

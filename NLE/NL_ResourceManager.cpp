@@ -1,13 +1,13 @@
 #include "NL_ResourceManager.h"
 
 #include "NL_FileIOManager.h"
-#include "NL_DataCompressionManager.h"
 
 namespace NLE
 {
 	namespace RESOURCE
 	{
-		ResourceManager::ResourceManager()
+		ResourceManager::ResourceManager(NLE::IO::FileIOManager& fileIO) :
+			_file(fileIO)
 		{
 		}
 
@@ -17,19 +17,7 @@ namespace NLE
 
 		void ResourceManager::load(std::wstring& path, std::function<void(std::vector<char>* data)> onSuccess)
 		{
-			/*FileIOOperationDesc desc (
-				path, 
-				false, 
-				nullptr, 
-				[&](std::vector<char>* data) {
-					auto* decompressed = decompressIfNeeded(path, data);
-					if (decompressed)
-					{
-						onSuccess(decompressed);
-					}
-				});
 
-			FileIOManager::instance().fileOperation(desc);*/
 		}
 
 		std::vector<char>* ResourceManager::get(std::wstring path)
@@ -50,11 +38,6 @@ namespace NLE
 				delete iter->second;
 				iter->second = nullptr;
 			}
-		}
-
-		std::wstring ResourceManager::getFileExtension(std::wstring path)
-		{
-			return path.substr(path.find_last_of('.') + 1);
 		}
 
 		void ResourceManager::addResource(std::wstring path, std::vector<char>* buffer)

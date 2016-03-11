@@ -1,47 +1,60 @@
 #include "NL_GameManager.h"
 
-#include "NL_IRenderingEngine.h"
-#include "NL_ThreadLocal.h"
 #include "NL_RenderingEngine.h"
 #include "NL_UiManager.h"
 #include "NL_ScriptingEngine.h"
 #include "NL_Game.h"
 #include "NL_Scene.h"
 
-#include <assert.h>
+#include "cereal/archives/json.hpp"
+#include "cereal\types\string.hpp"
+#include "cereal\types\memory.hpp"
+
+#include <fstream>
 
 namespace NLE
 {
 	namespace GAME
 	{
-		GameManager::GameManager(EngineServices& eServices) :
-			_eServices(eServices)
+		GameManager::GameManager(
+			EngineServices& eServices,
+			IO::FileIOManager& file,
+			GRAPHICS::RenderingEngine* const renderingEngine,
+			UI::UiManager* const uiManager,
+			SCRIPT::ScriptingEngine* const scriptingEngine
+			) :
+			_eServices(eServices),
+			_file(file),
+			_renderingEngine(renderingEngine),
+			_uiManager(uiManager),
+			_scriptingEngine(scriptingEngine)
 		{
 			_execStatus = ExecStatus::CONTINUE;
-			_renderingEngine = nullptr;
-			_uiManager = nullptr;
-			_scriptingEngine = nullptr;
 
-			_game = new Game();
+			_game = std::make_unique<Game>();
+
+			std::stringstream stream;
+			{
+				cereal::JSONOutputArchive archive(stream);
+				archive(CEREAL_NVP(_game));
+			}		
+			const std::string str = stream.str();
+			std::vector<char>* data = new std::vector<char>(str.begin(), str.end());
+			_file.writeAsync(L"TestGame.nlegame", data, []() {
+				printf("File write succeeded\n");
+			}, []() {});
+
+			/*std::unique_ptr<Game> game = nullptr;
+			std::ifstream is("TestGame.nlegame");
+			cereal::JSONInputArchive ar(is);
+			ar(cereal::make_nvp("_game", game));*/
+
 			_currentScene = new Scene();
 		}
 
 		GameManager::~GameManager()
 		{
-			delete _currentScene;
-			delete _game;		
-		}
-
-		bool GameManager::initialize(
-			GRAPHICS::RenderingEngine* renderingEngine,
-			UI::UiManager* uiManager,
-			SCRIPT::ScriptingEngine* scriptingEngine)
-		{
-			_renderingEngine = renderingEngine;
-			_uiManager = uiManager;
-			_scriptingEngine = scriptingEngine;
-
-			return true;
+			delete _currentScene;	
 		}
 
 		void GameManager::update(SystemServices& sServices, DataManager& data, double deltaT)
@@ -96,6 +109,11 @@ namespace NLE
 		}
 
 		void GameManager::restartGame()
+		{
+
+		}
+
+		void GameManager::updateGame(Game* game)
 		{
 
 		}

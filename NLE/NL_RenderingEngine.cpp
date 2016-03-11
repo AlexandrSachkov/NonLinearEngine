@@ -37,7 +37,7 @@ namespace NLE
 			timer.deltaT();
 
 			_windowManager->pollEvents();
-			std::cout<< deltaT << std::endl;
+			//std::cout<< deltaT << std::endl;
 
 			data.out.renderingEngineTime = timer.deltaT();
 		}

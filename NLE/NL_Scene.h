@@ -1,6 +1,8 @@
 #ifndef NL_SCENE_H_
 #define NL_SCENE_H_
 
+#include <string>
+
 namespace NLE
 {
 	namespace GAME
@@ -12,6 +14,8 @@ namespace NLE
 			~Scene();
 
 		private:
+			std::wstring _name;
+			const unsigned long long _uuid;
 		};
 	}
 }

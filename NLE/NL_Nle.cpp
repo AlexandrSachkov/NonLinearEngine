@@ -11,6 +11,8 @@
 #include "NL_EngineServices.h"
 #include "NL_Timer.h"
 #include "NL_Globals.h"
+#include "NL_FileIOManager.h"
+#include "NL_ResourceManager.h"
 
 #include <vector>
 #include <iostream>
@@ -26,23 +28,16 @@ namespace NLE
 		{
 			TASK::TaskScheduler* taskScheduler = new TASK::TaskScheduler();
 			CONSOLE::ConsoleQueue* consoleQueue = new CONSOLE::ConsoleQueue();
-			EngineServices* engineServices = new EngineServices(consoleQueue, taskScheduler);
+			IO::FileIOManager* fileIOManager = new IO::FileIOManager(consoleQueue, taskScheduler);
+			RESOURCE::ResourceManager* resourceManager = new RESOURCE::ResourceManager(*fileIOManager);
+			EngineServices* engineServices = new EngineServices(consoleQueue, taskScheduler, resourceManager);
+			DataManager* dataManager = new DataManager();
 
-			GAME::GameManager* gameManager = new GAME::GameManager(*engineServices);
 			INPUT::InputProcessor* inputProcessor = new INPUT::InputProcessor(*engineServices);
 			GRAPHICS::RenderingEngine* renderingEngine = new GRAPHICS::RenderingEngine(*engineServices);
-			UI::UiManager* uiManager = new UI::UiManager(*engineServices);
-			SCRIPT::ScriptingEngine* scriptingEngine = new SCRIPT::ScriptingEngine(*engineServices);
+			UI::UiManager* uiManager = new UI::UiManager(*engineServices);			
+			SCRIPT::ScriptingEngine* scriptingEngine = new SCRIPT::ScriptingEngine(*engineServices);	
 
-			std::vector<ISystem*> parallelSystems;
-			parallelSystems.push_back(renderingEngine);
-			parallelSystems.push_back(uiManager);
-			parallelSystems.push_back(scriptingEngine);
-
-			DataManager* dataManager = new DataManager();
-			SystemServices* systemServices = new SystemServices(
-				gameManager, inputProcessor, renderingEngine, uiManager, scriptingEngine);
-		
 			if (!inputProcessor->initialize())
 				break;
 			if (!renderingEngine->initialize())
@@ -51,11 +46,20 @@ namespace NLE
 				break;
 			if (!scriptingEngine->initialize())
 				break;
-			if (!gameManager->initialize(renderingEngine, uiManager, scriptingEngine))
-				break;
 
+			GAME::GameManager* gameManager = new GAME::GameManager(
+				*engineServices, *fileIOManager, renderingEngine, uiManager, scriptingEngine);
+			SystemServices* systemServices = new SystemServices(
+				gameManager, inputProcessor, renderingEngine, uiManager, scriptingEngine);
+
+			std::vector<ISystem*> parallelSystems;
+			parallelSystems.push_back(renderingEngine);
+			parallelSystems.push_back(uiManager);
+			parallelSystems.push_back(scriptingEngine);
+							
 			Timer inputTimer, systemsTimer, gameTimer;
 			taskScheduler->dispatchTasks();
+
 			do
 			{
 				inputProcessor->update(*systemServices, *dataManager, inputTimer.deltaT());
@@ -79,17 +83,18 @@ namespace NLE
 			} while (execStatus == CONTINUE);
 
 			taskScheduler->waitOnTasks();
-
-			delete systemServices;
-			delete dataManager;
-
+			
+			delete systemServices;			
+			delete gameManager;
 			delete scriptingEngine;
 			delete uiManager;
 			delete renderingEngine;
 			delete inputProcessor;
-			delete gameManager;
-
+			
+			delete dataManager;
 			delete engineServices;
+			delete resourceManager;
+			delete fileIOManager;
 			delete consoleQueue;
 			delete taskScheduler;
 

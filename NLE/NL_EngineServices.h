@@ -3,15 +3,21 @@
 
 #include "NL_IConsoleQueue.h"
 #include "NL_ITaskScheduler.h"
+#include "NL_IResourceManager.h"
 
 namespace NLE
 {
 	class EngineServices
 	{
 	public:
-		EngineServices(CONSOLE::IConsoleQueue* console, TASK::ITaskScheduler* task) :
+		EngineServices(
+			CONSOLE::IConsoleQueue* console, 
+			TASK::ITaskScheduler* task,
+			RESOURCE::IResourceManager* resource
+			) :
 			console(console),
-			task(task)
+			task(task),
+			resource(resource)
 		{
 		}
 
@@ -21,6 +27,7 @@ namespace NLE
 
 		CONSOLE::IConsoleQueue* const console;
 		TASK::ITaskScheduler* const task;
+		RESOURCE::IResourceManager* const resource;
 	};
 }
 

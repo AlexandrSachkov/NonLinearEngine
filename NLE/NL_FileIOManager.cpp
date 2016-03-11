@@ -1,6 +1,4 @@
 #include "NL_FileIOManager.h"
-
-#include "NL_DataCompressionManager.h"
 #include "NL_ThreadLocal.h"
 
 #include <fstream>
@@ -11,21 +9,45 @@ namespace NLE
 {
 	namespace IO
 	{
-		FileIOManager::FileIOManager(NLE::EngineServices& eServices) :
+		FileIOManager::FileIOManager(NLE::CONSOLE::IConsoleQueue* const console, NLE::TASK::ITaskScheduler* const taskScheduler) :
 			_loadingThread(100000L),
-			_eServices(eServices)
+			_console(console),
+			_task(taskScheduler)
 		{
 			_loadingThread.setProcedure([&]() {
 				FileIOOperationDesc opDesc;
 				while (_fileOps.try_pop(opDesc))
 				{
-					if (opDesc.opType == IO::WRITE)
+					if (opDesc.type == IO::WRITE)
 					{
-						writeFile(opDesc.path, opDesc.compressed, opDesc.inputData, opDesc.onSuccess, opDesc.onFailure);
+						if (write(opDesc.path, opDesc.inputData))
+						{
+							_task->queueProcedure([opDesc]() {
+								opDesc.onSuccess(nullptr);
+							}, TASK::STANDARD);
+						}
+						else
+						{
+							_task->queueProcedure([opDesc]() {
+								opDesc.onFailure();
+							}, TASK::STANDARD);
+						}
 					}
 					else
 					{
-						readFile(opDesc.path, opDesc.onSuccess, opDesc.onFailure);
+						std::vector<char>* data = nullptr;
+						if (read(opDesc.path, data))
+						{
+							_task->queueProcedure([opDesc, data]() {
+								opDesc.onSuccess(data);
+							}, TASK::STANDARD);
+						}
+						else
+						{
+							_task->queueProcedure([opDesc]() {
+								opDesc.onFailure();
+							}, TASK::STANDARD);
+						}
 					}
 				}
 				_loadingThread.stop();
@@ -36,209 +58,88 @@ namespace NLE
 		{
 		}
 
-		void FileIOManager::fileOperation(FileIOOperationDesc& opDesc)
+		void FileIOManager::readAsync(
+			std::wstring path,
+			std::function<void(std::vector<char>* data)> onSuccess,
+			std::function<void()> onFailure)
 		{
-			_fileOps.push(opDesc);
+			FileIOOperationDesc desc;
+			desc.type = READ;
+			desc.path = path;
+			desc.onSuccess = onSuccess;
+			desc.onFailure = onFailure;
+
+			_fileOps.push(desc);
 			_loadingThread.start();
 		}
 
-		void FileIOManager::read(
-			std::wstring path, 
-			std::function<void(std::vector<char>* data)> onSuccess, 
-			std::function<void()> onFailure)
-		{
-			FileIOOperationDesc desc(path, IO::READ, false, nullptr, onSuccess, onFailure);
-			fileOperation(desc);
-		}
-
-		void FileIOManager::write(
+		void FileIOManager::writeAsync(
 			std::wstring path,
-			bool compressed,
 			std::vector<char>* inputData,
 			std::function<void()> onSuccess,
 			std::function<void()> onFailure)
 		{
-			FileIOOperationDesc desc(path, IO::WRITE, compressed, inputData, [onSuccess](std::vector<char>* data) {
-				onSuccess();
-			}, onFailure);
-			fileOperation(desc);
+			FileIOOperationDesc desc;
+			desc.type = WRITE;
+			desc.path = path;
+			desc.inputData = inputData;
+			desc.onSuccess = [onSuccess](std::vector<char>* data) { onSuccess(); };
+			desc.onFailure = onFailure;
+
+			_fileOps.push(desc);
+			_loadingThread.start();
 		}
 
-		void FileIOManager::readFile(std::wstring& path, std::function<void(std::vector<char>* data)> onSuccess, std::function<void()> onFailure)
+		bool FileIOManager::read(std::wstring& path, std::vector<char>*& data)
 		{
 			std::ifstream file(path, std::ios::binary | std::ios::ate);
-			if (file.is_open())
+			if (!file.is_open())
 			{
-				std::vector<char>* fileData = new std::vector<char>(file.tellg());
-				file.seekg(0, std::ios::beg);
+				_console->push(CONSOLE::ERR, L"Could not open file: " + path);
+				return false;
+			}
 
-				if (file.read(&(*fileData)[0], fileData->size()))
-				{
-					_eServices.task->queueProcedure([this, path, fileData, onSuccess, onFailure]() {
-						std::wstring myPath(path);
-						auto* decompressed = decompressIfNeeded(myPath, fileData);
-						if (decompressed)
-						{
-							onSuccess(decompressed);
-						}
-						else
-						{
-							onFailure();
-						}
-					}, TASK::STANDARD);
-				}
-				else
-				{
-					delete fileData;
-					_eServices.console->push(CONSOLE::ERR, L"Could not read file: " + path);
-					_eServices.task->queueProcedure([onFailure]() {
-						onFailure();
-					}, TASK::STANDARD);
-				}
-				file.close();
-			}
-			else
+			std::vector<char>* fileData = new std::vector<char>(file.tellg());
+			file.seekg(0, std::ios::beg);
+
+			if (!file.read(&(*fileData)[0], fileData->size()))
 			{
-				_eServices.console->push(CONSOLE::ERR, L"Could not open file: " + path);
-				_eServices.task->queueProcedure([onFailure]() {
-					onFailure();
-				}, TASK::STANDARD);
+				file.close();
+				delete fileData;
+				_console->push(CONSOLE::ERR, L"Could not read file: " + path);
+				return false;
 			}
+
+			file.close();
+			data = fileData;
+			return true;
 		}
 
 
-		void FileIOManager::writeFile(std::wstring path, bool compress, std::vector<char>* data, std::function<void(std::vector<char>* data)> onSuccess, std::function<void()> onFailure)
+		bool FileIOManager::write(std::wstring path, std::vector<char>* data)
 		{
-			auto* compressed = compressIfNeeded(path, compress, data);
-			if (!compressed)
-			{
-				_eServices.task->queueProcedure([onFailure]() {
-					onFailure();
-				}, TASK::STANDARD);
-				return;
-			}
-				
-
 			std::ofstream file(path, std::ios::binary);
-			if (file.is_open())
+			if (!file.is_open())
 			{
-				if (file.write(&(*compressed)[0], compressed->size()))
-				{
-					_eServices.task->queueProcedure([&]() {
-						onSuccess(data);
-					}, TASK::STANDARD);
-				}
-				else
-				{
-					_eServices.console->push(CONSOLE::ERR, L"Could not write to file: " + path);
-					_eServices.task->queueProcedure([onFailure]() {
-						onFailure();
-					}, TASK::STANDARD);
-				}
+				_console->push(CONSOLE::ERR, L"Could not open file: " + path);
+				return false;
+			}
+
+			if (!file.write(&(*data)[0], data->size()))
+			{
+				_console->push(CONSOLE::ERR, L"Could not write to file: " + path);
 				file.close();
+				return false;
 			}
-			else
-			{
-				_eServices.console->push(CONSOLE::ERR, L"Could not open file: " + path);
-				_eServices.task->queueProcedure([onFailure]() {
-					onFailure();
-				}, TASK::STANDARD);
-			}
-			if (compressed != data)
-			{
-				delete compressed;
-			}		
+
+			file.close();
+			return true;
 		}
 
 		std::wstring FileIOManager::getFileExtension(std::wstring path)
 		{
 			return path.substr(path.find_last_of('.') + 1);
 		}
-
-		std::vector<char>* FileIOManager::compressIfNeeded(std::wstring& path, bool compress, std::vector<char>* buffer)
-		{
-			if (isEngineType(path))
-			{
-				TLS::StringConverter::reference converter = TLS::strConverter.local();
-				NleFileHeader header(converter.to_bytes(getFileExtension(path)), 1.0f, buffer->size(), compress);
-
-				std::vector<char>* outBuffer = new std::vector<char>(sizeof(header));
-				memcpy(&(*outBuffer)[0], &header, sizeof(header));	
-
-				if (compress)
-				{
-					std::vector<char>* compressed = nullptr;
-					if (DataCompressionManager::compress(_eServices.console, buffer, compressed))
-					{
-						outBuffer->insert(outBuffer->end(), compressed->begin(), compressed->end());
-						delete compressed;
-						return outBuffer;
-					}
-					else
-					{
-						delete outBuffer;
-						return nullptr;
-					}
-				}
-				else
-				{
-					outBuffer->insert(outBuffer->end(), buffer->begin(), buffer->end());
-					return outBuffer;
-				}
-			}
-			else
-			{
-				return buffer;
-			}
-		}
-
-		std::vector<char>* FileIOManager::decompressIfNeeded(std::wstring& path, std::vector<char>* buffer)
-		{
-			if (isEngineType(path))
-			{
-				NleFileHeader header;
-				memcpy(&header, &(*buffer)[0], sizeof(header));
-				buffer->erase(buffer->begin(), buffer->begin() + sizeof(header));
-
-				TLS::StringConverter::reference converter = TLS::strConverter.local();
-				auto identifier = converter.from_bytes(header._identifier);
-				if (getFileExtension(path).compare(identifier) != 0)
-				{
-					_eServices.console->push(CONSOLE::ERR, L"Resource identifier " + identifier + L" and file extension " + getFileExtension(path) + L" are mismatched");
-					delete buffer;
-					return nullptr;
-				}
-
-				if (!header._compressed)
-				{
-					return buffer;
-				}
-
-				std::vector<char>* decompressed = new std::vector<char>(header._originalSize);
-				if (DataCompressionManager::decompress(_eServices.console, buffer, decompressed))
-				{
-					delete buffer;
-					return decompressed;
-				}
-				else
-				{
-					delete buffer;
-					delete decompressed;
-					return nullptr;
-				}
-			}
-			else
-			{
-				return buffer;			
-			}
-		}
-
-		bool FileIOManager::isEngineType(const std::wstring& path)
-		{
-			if (getFileExtension(path).find(L"nle") != std::string::npos)
-				return true;
-			return false;
-		}
 	}
-	
+
 }
