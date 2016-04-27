@@ -50,7 +50,7 @@ namespace NLE
 				std::function<void()> onFailure
 				);
 
-			bool read(std::wstring& path, std::vector<char>*& dataOut);
+			bool read(std::wstring path, std::vector<char>*& dataOut);
 			bool write(std::wstring path, std::vector<char>* srcData);
 
 		private:			

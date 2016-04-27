@@ -13,6 +13,7 @@
 #include "NL_Globals.h"
 #include "NL_FileIOManager.h"
 #include "NL_ResourceManager.h"
+#include "NL_Serializer.h"
 
 #include <vector>
 #include <iostream>
@@ -29,6 +30,7 @@ namespace NLE
 			TASK::TaskScheduler* taskScheduler = new TASK::TaskScheduler();
 			CONSOLE::ConsoleQueue* consoleQueue = new CONSOLE::ConsoleQueue();
 			IO::FileIOManager* fileIOManager = new IO::FileIOManager(consoleQueue, taskScheduler);
+			SERIALIZATION::Serializer* serializer = new SERIALIZATION::Serializer();
 			RESOURCE::ResourceManager* resourceManager = new RESOURCE::ResourceManager(*fileIOManager);
 			EngineServices* engineServices = new EngineServices(consoleQueue, taskScheduler, resourceManager);
 			DataManager* dataManager = new DataManager();
@@ -48,7 +50,7 @@ namespace NLE
 				break;
 
 			GAME::GameManager* gameManager = new GAME::GameManager(
-				*engineServices, *fileIOManager, renderingEngine, uiManager, scriptingEngine);
+				*engineServices, *fileIOManager, *serializer, renderingEngine, uiManager, scriptingEngine);
 			SystemServices* systemServices = new SystemServices(
 				gameManager, inputProcessor, renderingEngine, uiManager, scriptingEngine);
 
@@ -94,6 +96,7 @@ namespace NLE
 			delete dataManager;
 			delete engineServices;
 			delete resourceManager;
+			delete serializer;
 			delete fileIOManager;
 			delete consoleQueue;
 			delete taskScheduler;

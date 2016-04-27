@@ -19,12 +19,14 @@ namespace NLE
 		GameManager::GameManager(
 			EngineServices& eServices,
 			IO::FileIOManager& file,
+			SERIALIZATION::Serializer& serializer,
 			GRAPHICS::RenderingEngine* const renderingEngine,
 			UI::UiManager* const uiManager,
 			SCRIPT::ScriptingEngine* const scriptingEngine
 			) :
 			_eServices(eServices),
 			_file(file),
+			_serializer(serializer),
 			_renderingEngine(renderingEngine),
 			_uiManager(uiManager),
 			_scriptingEngine(scriptingEngine)
@@ -32,29 +34,11 @@ namespace NLE
 			_execStatus = ExecStatus::CONTINUE;
 
 			_game = std::make_unique<Game>();
-
-			std::stringstream stream;
-			{
-				cereal::JSONOutputArchive archive(stream);
-				archive(CEREAL_NVP(_game));
-			}		
-			const std::string str = stream.str();
-			std::vector<char>* data = new std::vector<char>(str.begin(), str.end());
-			_file.writeAsync(L"TestGame.nlegame", data, []() {
-				printf("File write succeeded\n");
-			}, []() {});
-
-			/*std::unique_ptr<Game> game = nullptr;
-			std::ifstream is("TestGame.nlegame");
-			cereal::JSONInputArchive ar(is);
-			ar(cereal::make_nvp("_game", game));*/
-
-			_currentScene = new Scene();
+			_currentScene = std::make_unique<Scene>();
 		}
 
 		GameManager::~GameManager()
 		{
-			delete _currentScene;	
 		}
 
 		void GameManager::update(SystemServices& sServices, DataManager& data, double deltaT)

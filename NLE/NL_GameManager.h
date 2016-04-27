@@ -6,6 +6,7 @@
 #include "NL_EngineServices.h"
 #include "NL_Queue.h"
 #include "NL_FileIOManager.h"
+#include "NL_Serializer.h"
 
 #include <functional>
 
@@ -40,6 +41,7 @@ namespace NLE
 			GameManager(
 				EngineServices& eServices,
 				IO::FileIOManager& file,
+				SERIALIZATION::Serializer& serializer,
 				GRAPHICS::RenderingEngine* const renderingEngine,
 				UI::UiManager* const uiManager,
 				SCRIPT::ScriptingEngine* const scriptingEngine);
@@ -67,6 +69,7 @@ namespace NLE
 
 			EngineServices& _eServices;
 			IO::FileIOManager& _file;
+			SERIALIZATION::Serializer& _serializer;
 			GRAPHICS::RenderingEngine* const _renderingEngine;
 			UI::UiManager* const _uiManager;
 			SCRIPT::ScriptingEngine* const _scriptingEngine;
@@ -74,7 +77,7 @@ namespace NLE
 			Queue<Command> _commands;
 
 			std::unique_ptr<Game> _game;
-			Scene* _currentScene;
+			std::unique_ptr<Scene> _currentScene;
 		};
 	}
 

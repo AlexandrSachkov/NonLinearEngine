@@ -25,8 +25,7 @@ namespace NLE
 					);
 			}
 
-		private:
-			int _testNum;
+			unsigned long long _testNum;
 			std::string _name;
 			std::string _initialScene;
 		};

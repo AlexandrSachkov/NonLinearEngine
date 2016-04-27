@@ -38,7 +38,6 @@ SET(HEADERS
 	NL_CommonTypes.h
 	NL_ConsoleQueue.h
 	NL_IConsoleQueue.h
-	NL_DataCompressionManager.h
 	NL_DataManager.h
 	NL_EngineServices.h
 	NL_FileIOManager.h
@@ -67,6 +66,7 @@ SET(HEADERS
 	NL_ScriptingComponent.h
 	NL_ScriptingEngine.h
 	NL_IScriptingEngine.h	
+	NL_Serializer.h
 	NL_SharedData.h
 	NL_ISystem.h
 	NL_SystemServices.h
@@ -88,7 +88,6 @@ SET(HEADERS
 SET(SOURCES 
 	NL_AssetImporter.cpp
 	NL_ConsoleQueue.cpp
-	NL_DataCompressionManager.cpp
 	NL_DataManager.cpp
 	NL_FileIOManager.cpp
 	NL_Game.cpp

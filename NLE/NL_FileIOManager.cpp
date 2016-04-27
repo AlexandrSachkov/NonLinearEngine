@@ -90,7 +90,7 @@ namespace NLE
 			_loadingThread.start();
 		}
 
-		bool FileIOManager::read(std::wstring& path, std::vector<char>*& data)
+		bool FileIOManager::read(std::wstring path, std::vector<char>*& data)
 		{
 			std::ifstream file(path, std::ios::binary | std::ios::ate);
 			if (!file.is_open())

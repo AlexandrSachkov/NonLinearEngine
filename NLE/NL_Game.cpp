@@ -1,4 +1,5 @@
 #include "NL_Game.h"
+#include "NL_Uuid.h"
 
 namespace NLE
 {
@@ -8,7 +9,7 @@ namespace NLE
 		{
 			_name = "Game1";
 			_initialScene = "none";
-			_testNum = 123456;
+			_testNum = UUID::generateUuid();
 		}
 
 		Game::~Game()
