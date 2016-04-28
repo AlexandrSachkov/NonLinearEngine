@@ -7,29 +7,35 @@ namespace NLE
 {
 	namespace GAME
 	{
-		enum CommandType
+		class Game;
+		class Scene;
+		namespace COMMAND
 		{
-			QUIT_GAME,
-			RESTART_GAME
-		};
+			enum Type
+			{
+				QUIT_GAME,
+				RESTART_GAME,
+				LOAD_GAME,
+				UPDATE_GAME,
+				LOAD_SCENE,
+				UPDATE_SCENE,
+				SAVE_GAME,
+				SAVE_SCENE
+			};
 
-		union CommandData
-		{
-		};
-
-		struct Command
-		{
-			Command() {}
-			Command(CommandType type) : type(type) {}
-			Command(CommandType type, CommandData data) : type(type), data(data) {}
-			CommandType type;
-			CommandData data;
-		};
+			union Data
+			{
+				Data() : name(nullptr), game(nullptr), scene(nullptr) {}
+				char* name;
+				Game* game;
+				Scene* scene;
+			};
+		}
 
 		class IGameManager
 		{
 		public:
-			virtual void queueCommand(Command& command) = 0;
+			virtual void queueCommand(COMMAND::Type type, COMMAND::Data data) = 0;
 		};
 	}
 }

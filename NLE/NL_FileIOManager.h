@@ -27,7 +27,7 @@ namespace NLE
 			std::wstring path;
 			std::vector<char>* inputData;
 			std::function<void(std::vector<char>* data)> onSuccess;
-			std::function<void()> onFailure;
+			std::function<void(std::vector<char>* data)> onFailure;
 		};
 		
 
@@ -46,8 +46,8 @@ namespace NLE
 			void writeAsync(
 				std::wstring path, 
 				std::vector<char>* inputData, 
-				std::function<void()> onSuccess, 
-				std::function<void()> onFailure
+				std::function<void(std::vector<char>* data)> onSuccess,
+				std::function<void(std::vector<char>* data)> onFailure
 				);
 
 			bool read(std::wstring path, std::vector<char>*& dataOut);

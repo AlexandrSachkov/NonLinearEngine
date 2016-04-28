@@ -1,5 +1,6 @@
 #include "NL_Game.h"
 #include "NL_Uuid.h"
+#include "NL_ThreadLocal.h"
 
 namespace NLE
 {
@@ -15,6 +16,12 @@ namespace NLE
 		Game::~Game()
 		{
 
+		}
+
+		std::wstring Game::getName()
+		{
+			TLS::StringConverter::reference converter = TLS::strConverter.local();
+			return converter.from_bytes(_name);
 		}
 	}
 }

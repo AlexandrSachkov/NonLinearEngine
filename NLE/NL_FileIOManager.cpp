@@ -23,13 +23,13 @@ namespace NLE
 						if (write(opDesc.path, opDesc.inputData))
 						{
 							_task->queueProcedure([opDesc]() {
-								opDesc.onSuccess(nullptr);
+								opDesc.onSuccess(opDesc.inputData);
 							}, TASK::STANDARD);
 						}
 						else
 						{
 							_task->queueProcedure([opDesc]() {
-								opDesc.onFailure();
+								opDesc.onFailure(opDesc.inputData);
 							}, TASK::STANDARD);
 						}
 					}
@@ -44,8 +44,8 @@ namespace NLE
 						}
 						else
 						{
-							_task->queueProcedure([opDesc]() {
-								opDesc.onFailure();
+							_task->queueProcedure([opDesc, data]() {
+								opDesc.onFailure(data);
 							}, TASK::STANDARD);
 						}
 					}
@@ -67,7 +67,7 @@ namespace NLE
 			desc.type = READ;
 			desc.path = path;
 			desc.onSuccess = onSuccess;
-			desc.onFailure = onFailure;
+			desc.onFailure = [onFailure](std::vector<char>* data) { onFailure(); };
 
 			_fileOps.push(desc);
 			_loadingThread.start();
@@ -76,14 +76,14 @@ namespace NLE
 		void FileIOManager::writeAsync(
 			std::wstring path,
 			std::vector<char>* inputData,
-			std::function<void()> onSuccess,
-			std::function<void()> onFailure)
+			std::function<void(std::vector<char>* data)> onSuccess,
+			std::function<void(std::vector<char>* data)> onFailure)
 		{
 			FileIOOperationDesc desc;
 			desc.type = WRITE;
 			desc.path = path;
 			desc.inputData = inputData;
-			desc.onSuccess = [onSuccess](std::vector<char>* data) { onSuccess(); };
+			desc.onSuccess = onSuccess;
 			desc.onFailure = onFailure;
 
 			_fileOps.push(desc);

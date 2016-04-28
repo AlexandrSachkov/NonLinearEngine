@@ -5,6 +5,7 @@
 #include "NL_ScriptingEngine.h"
 #include "NL_Game.h"
 #include "NL_Scene.h"
+#include "NL_ThreadLocal.h"
 
 #include "cereal/archives/json.hpp"
 #include "cereal\types\string.hpp"
@@ -32,9 +33,72 @@ namespace NLE
 			_scriptingEngine(scriptingEngine)
 		{
 			_execStatus = ExecStatus::CONTINUE;
+			_game = new Game();
+			_currentScene = new Scene();
+			_game->_initialScene = _currentScene->_name;
 
-			_game = std::make_unique<Game>();
-			_currentScene = std::make_unique<Scene>();
+			_commandBuffer.addFunction(COMMAND::QUIT_GAME,		[&](COMMAND::Data data) { _execStatus = TERMINATE; });
+			_commandBuffer.addFunction(COMMAND::RESTART_GAME,	[&](COMMAND::Data data) { _execStatus = RESTART; });
+
+			_commandBuffer.addFunction(COMMAND::LOAD_GAME,		[&](COMMAND::Data data) {
+				TLS::StringConverter::reference converter = TLS::strConverter.local();
+				std::wstring path = converter.from_bytes(data.name);
+				_file.readAsync(path + L".nlegame", [=](std::vector<char>* data) {
+					Game* game = _serializer.deserialize<Game>(data, SERIALIZATION::JSON);
+					COMMAND::Data updateData;
+					updateData.game = game;
+					_commandBuffer.queueCommand(COMMAND::UPDATE_GAME, updateData);
+					updateData.name = (char*)game->_initialScene.c_str();
+					_commandBuffer.queueCommand(COMMAND::LOAD_SCENE, updateData);
+				}, [=]() {
+					eServices.console->push(CONSOLE::ERR, L"Failed to load game " + path);
+				});
+			});
+
+			_commandBuffer.addFunction(COMMAND::UPDATE_GAME, [&](COMMAND::Data data) {
+				delete _game;
+				_game = data.game;
+			});
+
+			_commandBuffer.addFunction(COMMAND::LOAD_SCENE, [&](COMMAND::Data data) {
+				TLS::StringConverter::reference converter = TLS::strConverter.local();
+				std::wstring path = converter.from_bytes(data.name);
+				_file.readAsync(path + L".nlescene", [=](std::vector<char>* data) {
+					Scene* scene = _serializer.deserialize<Scene>(data, SERIALIZATION::JSON);
+					COMMAND::Data updateData;
+					updateData.scene = scene;
+					_commandBuffer.queueCommand(COMMAND::UPDATE_SCENE, updateData);
+				}, [=]() {
+					eServices.console->push(CONSOLE::ERR, L"Failed to load scene " + path);
+				});
+			});
+
+			_commandBuffer.addFunction(COMMAND::UPDATE_SCENE, [&](COMMAND::Data data) {
+				delete _currentScene;
+				_currentScene = data.scene;
+			});
+
+			_commandBuffer.addFunction(COMMAND::SAVE_GAME, [&](COMMAND::Data data) {
+				auto* gameData = _serializer.serialize<Game>(data.game, SERIALIZATION::JSON);
+				_file.writeAsync(data.game->getName() + L".nlegame", gameData, [=](std::vector<char>* serializedData) {
+					delete serializedData;
+					eServices.console->push(CONSOLE::STANDARD, L"Successfully saved game " + data.game->getName());
+				}, [=](std::vector<char>* serializedData) {
+					delete serializedData;
+					eServices.console->push(CONSOLE::ERR, L"Failed to save game " + data.game->getName());
+				});
+			});
+
+			_commandBuffer.addFunction(COMMAND::SAVE_SCENE, [&](COMMAND::Data data) {
+				auto* sceneData = _serializer.serialize<Scene>(data.scene, SERIALIZATION::JSON);
+				_file.writeAsync(data.scene->getName() + L".nlescene", sceneData, [=](std::vector<char>* serializedData) {
+					delete serializedData;
+					eServices.console->push(CONSOLE::STANDARD, L"Successfully saved scene " + data.scene->getName());
+				}, [=](std::vector<char>* serializedData) {
+					delete serializedData;
+					eServices.console->push(CONSOLE::ERR, L"Failed to save scene " + data.scene->getName());
+				});
+			});
 		}
 
 		GameManager::~GameManager()
@@ -43,68 +107,17 @@ namespace NLE
 
 		void GameManager::update(SystemServices& sServices, DataManager& data, double deltaT)
 		{
-			processCommands();
+			_commandBuffer.processCommands();
 		}
 
-		void GameManager::queueCommand(Command& command)
+		void GameManager::queueCommand(COMMAND::Type type, COMMAND::Data data)
 		{
-			_commands.push(command);
-		}
-
-		void GameManager::processCommands()
-		{
-			Command command;
-			while (_commands.pop(command))
-			{
-				switch (command.type)
-				{
-				case QUIT_GAME:
-					_execStatus = TERMINATE;
-					break;
-
-				case RESTART_GAME:
-					_execStatus = RESTART;
-					break;
-
-				default:
-					break;
-				}
-			}
+			_commandBuffer.queueCommand(type, data);
 		}
 
 		ExecStatus GameManager::getExecutionStatus()
 		{
 			return _execStatus;
-		}
-
-		void GameManager::loadGame(std::wstring game)
-		{
-
-		}
-
-		void GameManager::saveGame()
-		{
-
-		}
-
-		void GameManager::quitGame()
-		{
-
-		}
-
-		void GameManager::restartGame()
-		{
-
-		}
-
-		void GameManager::updateGame(Game* game)
-		{
-
-		}
-
-		void GameManager::loadScene(std::wstring scene)
-		{
-
 		}
 
 		void GameManager::loadGameObject(std::wstring gameObject)

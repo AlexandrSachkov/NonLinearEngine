@@ -4,9 +4,9 @@
 #include "NL_IGameManager.h"
 #include "NL_ISystem.h"
 #include "NL_EngineServices.h"
-#include "NL_Queue.h"
 #include "NL_FileIOManager.h"
 #include "NL_Serializer.h"
+#include "NL_CommandBuffer.h"
 
 #include <functional>
 
@@ -48,19 +48,11 @@ namespace NLE
 			~GameManager();
 
 			void update(SystemServices& sServices, DataManager& data, double deltaT);
-			void queueCommand(Command& command);
+			void queueCommand(COMMAND::Type type, COMMAND::Data data);
 
 			ExecStatus getExecutionStatus();
 
 		private:
-			void processCommands();
-
-			void loadGame(std::wstring game);
-			void saveGame();
-			void quitGame();
-			void restartGame();
-			void updateGame(Game* game);
-			void loadScene(std::wstring scene);
 			void loadGameObject(std::wstring gameObject);
 			void unloadGameObject(std::wstring gameObject);
 			void importMesh(std::wstring mesh);
@@ -74,10 +66,10 @@ namespace NLE
 			UI::UiManager* const _uiManager;
 			SCRIPT::ScriptingEngine* const _scriptingEngine;
 
-			Queue<Command> _commands;
+			CommandBuffer<COMMAND::Data> _commandBuffer;
 
-			std::unique_ptr<Game> _game;
-			std::unique_ptr<Scene> _currentScene;
+			Game* _game;
+			Scene* _currentScene;
 		};
 	}
 

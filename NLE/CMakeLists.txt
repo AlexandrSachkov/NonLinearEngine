@@ -35,6 +35,7 @@ SET(HEADERS
 	NL_Allocator.h
 	NL_AssetImporter.h
 	NL_Atomic.h
+	NL_CommandBuffer.h
 	NL_CommonTypes.h
 	NL_ConsoleQueue.h
 	NL_IConsoleQueue.h

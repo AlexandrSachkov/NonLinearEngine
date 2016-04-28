@@ -25,6 +25,8 @@ namespace NLE
 					);
 			}
 
+			std::wstring getName();
+
 			unsigned long long _testNum;
 			std::string _name;
 			std::string _initialScene;

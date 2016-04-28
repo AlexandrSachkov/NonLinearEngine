@@ -52,8 +52,11 @@ namespace NLE
 					onScrollEvent(event);
 					break;
 				case EVENT_TYPE::EVENT_WINDOW_CLOSE:
-					sServices.game->queueCommand(GAME::Command({ GAME::QUIT_GAME }));
-					break;
+				{
+					GAME::COMMAND::Data data;
+					sServices.game->queueCommand(GAME::COMMAND::QUIT_GAME, data);
+				}
+				break;
 				default:
 					break;
 				}
@@ -105,12 +108,18 @@ namespace NLE
 
 				break;
 			case KEY::KEY_ESCAPE:
-				sServices.game->queueCommand(GAME::Command({ GAME::QUIT_GAME }));
-				break;
+			{
+				GAME::COMMAND::Data data;
+				sServices.game->queueCommand(GAME::COMMAND::QUIT_GAME, data);
+			}
+			break;
 
 			case KEY::KEY_F12:		//for testing purposes
-				sServices.game->queueCommand(GAME::Command({ GAME::RESTART_GAME }));
-				break;
+			{
+				GAME::COMMAND::Data data;
+				sServices.game->queueCommand(GAME::COMMAND::RESTART_GAME, data);
+			}
+			break;
 
 			default:
 				break;

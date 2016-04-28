@@ -35,8 +35,9 @@ namespace NLE
 			}
 
 			template <class T>
-			std::vector<char>* serialize(std::unique_ptr<T>& object, Form form)
+			std::vector<char>* serialize(T* obj, Form form)
 			{
+				std::unique_ptr<T> object(obj);
 				std::stringstream stream;
 				switch (form)
 				{
@@ -64,12 +65,13 @@ namespace NLE
 				default:
 					assert(false);
 				}
+				object.release();
 				const std::string str = stream.str();
 				return new std::vector<char>(str.begin(), str.end());
 			}
 
 			template <class T>
-			std::unique_ptr<T> deserialize(std::vector<char>* data, Form form)
+			T* deserialize(std::vector<char>* data, Form form)
 			{
 				std::unique_ptr<T> object = nullptr;
 				std::stringstream stream(std::string(data->begin(), data->end()));
@@ -100,7 +102,7 @@ namespace NLE
 					assert(false);
 				}
 
-				return std::move(object);
+				return object.release();
 			}
 		};
 	}

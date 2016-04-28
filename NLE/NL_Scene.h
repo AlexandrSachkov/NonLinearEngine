@@ -13,9 +13,19 @@ namespace NLE
 			Scene();
 			~Scene();
 
-		private:
-			std::wstring _name;
-			const unsigned long long _uuid;
+			template<class Archive>
+			void serialize(Archive& archive)
+			{
+				archive(
+					CEREAL_NVP(_name),
+					CEREAL_NVP(_uuid)
+					);
+			}
+
+			std::wstring getName();
+
+			std::string _name;
+			unsigned long long _uuid;
 		};
 	}
 }
