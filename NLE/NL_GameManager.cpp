@@ -43,13 +43,16 @@ namespace NLE
 			_commandBuffer.addFunction(COMMAND::LOAD_GAME,		[&](COMMAND::Data data) {
 				TLS::StringConverter::reference converter = TLS::strConverter.local();
 				std::wstring path = converter.from_bytes(data.name);
+
 				_file.readAsync(path + L".nlegame", [=](std::vector<char>* data) {
 					Game* game = _serializer.deserialize<Game>(data, SERIALIZATION::JSON);
+					delete data;
 					COMMAND::Data updateData;
 					updateData.game = game;
 					_commandBuffer.queueCommand(COMMAND::UPDATE_GAME, updateData);
 					updateData.name = (char*)game->_initialScene.c_str();
 					_commandBuffer.queueCommand(COMMAND::LOAD_SCENE, updateData);
+
 				}, [=]() {
 					eServices.console->push(CONSOLE::ERR, L"Failed to load game " + path);
 				});
@@ -63,11 +66,14 @@ namespace NLE
 			_commandBuffer.addFunction(COMMAND::LOAD_SCENE, [&](COMMAND::Data data) {
 				TLS::StringConverter::reference converter = TLS::strConverter.local();
 				std::wstring path = converter.from_bytes(data.name);
+
 				_file.readAsync(path + L".nlescene", [=](std::vector<char>* data) {
 					Scene* scene = _serializer.deserialize<Scene>(data, SERIALIZATION::JSON);
+					delete data;
 					COMMAND::Data updateData;
 					updateData.scene = scene;
 					_commandBuffer.queueCommand(COMMAND::UPDATE_SCENE, updateData);
+
 				}, [=]() {
 					eServices.console->push(CONSOLE::ERR, L"Failed to load scene " + path);
 				});
@@ -80,9 +86,11 @@ namespace NLE
 
 			_commandBuffer.addFunction(COMMAND::SAVE_GAME, [&](COMMAND::Data data) {
 				auto* gameData = _serializer.serialize<Game>(data.game, SERIALIZATION::JSON);
+
 				_file.writeAsync(data.game->getName() + L".nlegame", gameData, [=](std::vector<char>* serializedData) {
 					delete serializedData;
 					eServices.console->push(CONSOLE::STANDARD, L"Successfully saved game " + data.game->getName());
+
 				}, [=](std::vector<char>* serializedData) {
 					delete serializedData;
 					eServices.console->push(CONSOLE::ERR, L"Failed to save game " + data.game->getName());
@@ -91,9 +99,11 @@ namespace NLE
 
 			_commandBuffer.addFunction(COMMAND::SAVE_SCENE, [&](COMMAND::Data data) {
 				auto* sceneData = _serializer.serialize<Scene>(data.scene, SERIALIZATION::JSON);
+
 				_file.writeAsync(data.scene->getName() + L".nlescene", sceneData, [=](std::vector<char>* serializedData) {
 					delete serializedData;
 					eServices.console->push(CONSOLE::STANDARD, L"Successfully saved scene " + data.scene->getName());
+
 				}, [=](std::vector<char>* serializedData) {
 					delete serializedData;
 					eServices.console->push(CONSOLE::ERR, L"Failed to save scene " + data.scene->getName());
