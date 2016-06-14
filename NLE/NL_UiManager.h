@@ -4,6 +4,7 @@
 #include "NL_IUiManager.h"
 #include "NL_ISystem.h"
 #include "NL_EngineServices.h"
+#include "NL_ConsoleQueue.h"
 
 #include "tbb\concurrent_queue.h"
 
@@ -21,7 +22,7 @@ namespace NLE
 		class UiManager : public IUiManager, public ISystem
 		{
 		public:
-			UiManager(EngineServices& eServices);
+			UiManager(EngineServices& eServices, CONSOLE::ConsoleQueue& consoleQueue);
 			~UiManager();
 
 			bool initialize();
@@ -29,6 +30,7 @@ namespace NLE
 
 		private:			
 			EngineServices& _eServices;
+			CONSOLE::ConsoleQueue& _consoleQueue;
 		};
 	}
 }

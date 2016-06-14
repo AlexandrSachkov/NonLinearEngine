@@ -21,7 +21,7 @@ namespace NLE
 			void push(OUTPUT_TYPE outType, const char* data);
 
 			bool pop(std::pair<OUTPUT_TYPE, std::wstring>& data);
-
+			void clear();
 		private:
 			tbb::concurrent_queue <std::pair<OUTPUT_TYPE, std::wstring>> _data;
 		};

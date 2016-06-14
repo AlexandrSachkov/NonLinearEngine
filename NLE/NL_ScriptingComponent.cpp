@@ -13,5 +13,10 @@ namespace NLE
 		{
 
 		}
+
+		SCRIPT::ScriptingContext& ScriptingComponent::getScriptingContext()
+		{
+			return _scriptingContext;
+		}
 	}
 }

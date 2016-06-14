@@ -67,6 +67,7 @@ namespace NLE
 			SCRIPT::ScriptingEngine* const _scriptingEngine;
 
 			CommandBuffer<COMMAND::Data> _commandBuffer;
+			SERIALIZATION::Form _serializationForm;
 
 			Game* _game;
 			Scene* _currentScene;

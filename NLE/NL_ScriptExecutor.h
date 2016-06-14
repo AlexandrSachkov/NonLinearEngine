@@ -8,6 +8,7 @@ namespace NLE
 {
 	namespace SCRIPT
 	{
+		class ScriptingContext;
 		class ScriptExecutor
 		{
 		public:
@@ -15,12 +16,15 @@ namespace NLE
 			~ScriptExecutor();
 
 			lua_State* getState();
-			void registerCallback(std::string name, int(*callback)(lua_State* state));
-			bool executeScript(const char* script);
+			void registerCallback(std::wstring name, int(*callback)(lua_State* state));
+			void bindContext(ScriptingContext* context);
+			ScriptingContext* getContext();
+			bool executeContextScript(std::wstring name);
+			bool executeScript(std::wstring script);
 
 		private:
 			lua_State* _state;
-
+			ScriptingContext* _context;
 		};
 	}
 }

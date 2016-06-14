@@ -36,6 +36,11 @@ namespace NLE
 
 			return _data.try_pop(data);
 		}
+
+		void ConsoleQueue::clear()
+		{
+			_data.clear();
+		}
 	}
 
 }

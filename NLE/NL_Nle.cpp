@@ -28,7 +28,7 @@ namespace NLE
 		do
 		{
 			TASK::TaskScheduler* taskScheduler = new TASK::TaskScheduler();
-			CONSOLE::ConsoleQueue* consoleQueue = new CONSOLE::ConsoleQueue();
+			CONSOLE::ConsoleQueue* consoleQueue = CONSOLE::GLOBAL_CONSOLE_QUEUE;
 			IO::FileIOManager* fileIOManager = new IO::FileIOManager(consoleQueue, taskScheduler);
 			SERIALIZATION::Serializer* serializer = new SERIALIZATION::Serializer();
 			RESOURCE::ResourceManager* resourceManager = new RESOURCE::ResourceManager(*fileIOManager);
@@ -37,7 +37,7 @@ namespace NLE
 
 			INPUT::InputProcessor* inputProcessor = new INPUT::InputProcessor(*engineServices);
 			GRAPHICS::RenderingEngine* renderingEngine = new GRAPHICS::RenderingEngine(*engineServices);
-			UI::UiManager* uiManager = new UI::UiManager(*engineServices);			
+			UI::UiManager* uiManager = new UI::UiManager(*engineServices, *consoleQueue);			
 			SCRIPT::ScriptingEngine* scriptingEngine = new SCRIPT::ScriptingEngine(*engineServices);	
 
 			if (!inputProcessor->initialize())
@@ -65,6 +65,7 @@ namespace NLE
 			do
 			{
 				inputProcessor->update(*systemServices, *dataManager, inputTimer.deltaT());
+				gameManager->update(*systemServices, *dataManager, gameTimer.deltaT());
 
 				double systemTime = systemsTimer.deltaT();
 				tbb::parallel_for(
@@ -78,7 +79,6 @@ namespace NLE
 				});
 
 				dataManager->update();
-				gameManager->update(*systemServices, *dataManager, gameTimer.deltaT());
 				taskScheduler->dispatchTasks();
 
 				execStatus = gameManager->getExecutionStatus();
@@ -98,10 +98,10 @@ namespace NLE
 			delete resourceManager;
 			delete serializer;
 			delete fileIOManager;
-			delete consoleQueue;
 			delete taskScheduler;
 
 			INPUT::GLOBAL_EVENT_QUEUE->clear();
+			CONSOLE::GLOBAL_CONSOLE_QUEUE->clear();
 
 		} while (execStatus == RESTART);
 	}

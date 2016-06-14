@@ -51,6 +51,7 @@ SET(HEADERS
 	NL_InputProcessor.h
 	NL_IInputProcessor.h	
 	NL_InputEvents.h
+	NL_Map.h
 	NL_MemoryManager.h
 	NL_MemoryPool.h
 	NL_Octree.h
@@ -62,9 +63,9 @@ SET(HEADERS
 	NL_ResourceManager.h
 	NL_IResourceManager.h
 	NL_Scene.h		
-	NL_ScriptCallbacks.h
 	NL_ScriptExecutor.h
 	NL_ScriptingComponent.h
+	NL_ScriptingContext.h
 	NL_ScriptingEngine.h
 	NL_IScriptingEngine.h	
 	NL_Serializer.h
@@ -106,6 +107,7 @@ SET(SOURCES
 	NL_ScriptCallbacks.cpp
 	NL_ScriptExecutor.cpp
 	NL_ScriptingComponent.cpp
+	NL_ScriptingContext.cpp
 	NL_ScriptingEngine.cpp
 	NL_Task.cpp
 	NL_TextureLoader.cpp

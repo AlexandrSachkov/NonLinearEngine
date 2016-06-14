@@ -1,6 +1,8 @@
 #include "NL_ScriptCallbacks.h"
 #include "lua.hpp"
 #include "NL_ThreadLocal.h"
+#include "NL_ScriptExecutor.h"
+#include "NL_ScriptingContext.h"
 
 #include "NL_RenderingEngine.h"
 #include "NL_GameManager.h"

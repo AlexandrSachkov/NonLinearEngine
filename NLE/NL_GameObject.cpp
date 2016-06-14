@@ -22,5 +22,15 @@ namespace NLE
 		{
 
 		}
+
+		unsigned long long GameObject::getUuid()
+		{
+			return _uuid;
+		}
+
+		std::wstring GameObject::getName()
+		{
+			return _name;
+		}
 	}
 }

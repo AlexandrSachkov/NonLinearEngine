@@ -1,17 +1,18 @@
 #include "NL_ScriptExecutor.h"
-#include "NL_ScriptCallbacks.h"
+#include "NL_ScriptingContext.h"
+#include "NL_ThreadLocal.h"
 
 namespace NLE
 {
 	namespace SCRIPT
 	{
-		ScriptExecutor::ScriptExecutor()
+		ScriptExecutor::ScriptExecutor() :
+			_context(nullptr)
 		{
 			_state = luaL_newstate();
 			luaL_openlibs(_state);
 
 			//lua_register(_state, "NLE_importScene", Callback::importScene);
-			lua_register(_state, "NLE_cout", Callback::printConsole);
 		}
 
 		ScriptExecutor::~ScriptExecutor()
@@ -24,15 +25,36 @@ namespace NLE
 			return _state;
 		}
 
-		void ScriptExecutor::registerCallback(std::string name, int(*callback)(lua_State* state))
+		void ScriptExecutor::registerCallback(std::wstring name, int(*callback)(lua_State* state))
 		{
-			lua_register(_state, name.c_str(), callback);
+			auto& strCnv = TLS::strConverter.local();
+			lua_register(_state, strCnv.to_bytes(name).c_str(), callback);
 		}
 
-		bool ScriptExecutor::executeScript(const char* script)
+		void ScriptExecutor::bindContext(ScriptingContext* context)
 		{
+			_context = context;
+		}
+
+		ScriptingContext* ScriptExecutor::getContext()
+		{
+			return _context;
+		}
+
+		bool ScriptExecutor::executeContextScript(std::wstring name)
+		{
+			if(_context)
+				return executeScript(_context->getScript(name));
+			else return false;
+		}
+
+		bool ScriptExecutor::executeScript(std::wstring script)
+		{
+			if (script.compare(L"") == 0) return true;
+
+			auto& strCnv = TLS::strConverter.local();
 			lua_settop(_state, 0);
-			if (luaL_loadstring(_state, script))
+			if (luaL_loadstring(_state, strCnv.to_bytes(script).c_str()))
 			{
 				//CONSOLE::out(CONSOLE::ERR, lua_tostring(_state, -1));
 				return false;

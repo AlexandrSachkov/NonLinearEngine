@@ -1,17 +1,17 @@
 #include "NL_UiManager.h"
 #include "NL_ThreadLocal.h"
 
-#include "lua.hpp"
-
 #include <assert.h>
 #include <string>
+#include <iostream>
 
 namespace NLE
 {
 	namespace UI
 	{
-		UiManager::UiManager(EngineServices& eServices) :
-			_eServices(eServices)
+		UiManager::UiManager(EngineServices& eServices, CONSOLE::ConsoleQueue& consoleQueue) :
+			_eServices(eServices),
+			_consoleQueue(consoleQueue)
 		{
 		}
 
@@ -28,6 +28,12 @@ namespace NLE
 		{
 			NLE::TLS::PerformanceTimer::reference timer = NLE::TLS::performanceTimer.local();
 			timer.deltaT();
+
+			std::pair<CONSOLE::OUTPUT_TYPE, std::wstring> consoleEntry;
+			while (_consoleQueue.pop(consoleEntry))
+			{
+				std::wcout << consoleEntry.second << std::endl;
+			}
 
 			data.out.uiManagerTime = timer.deltaT();
 		}

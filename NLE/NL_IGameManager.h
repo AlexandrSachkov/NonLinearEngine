@@ -9,6 +9,7 @@ namespace NLE
 	{
 		class Game;
 		class Scene;
+		class GameObject;
 		namespace COMMAND
 		{
 			enum Type
@@ -20,7 +21,11 @@ namespace NLE
 				LOAD_SCENE,
 				UPDATE_SCENE,
 				SAVE_GAME,
-				SAVE_SCENE
+				SAVE_SCENE,
+				ADD_OBJECT,
+				UPDATE_OBJECT,
+				LOAD_OBJECT,
+				SAVE_OBJECT,
 			};
 
 			union Data
@@ -29,6 +34,7 @@ namespace NLE
 				char* name;
 				Game* game;
 				Scene* scene;
+				GameObject* gameObject;
 			};
 		}
 

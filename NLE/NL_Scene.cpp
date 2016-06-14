@@ -1,6 +1,7 @@
 #include "NL_Scene.h"
 #include "NL_Uuid.h"
 #include "NL_ThreadLocal.h"
+#include "NL_GameObject.h"
 
 namespace NLE
 {
@@ -9,7 +10,7 @@ namespace NLE
 		Scene::Scene() :
 			_uuid(UUID::generateUuid())
 		{
-			_name = "Scene " + std::to_string(_uuid);
+			_name = L"Scene " + std::to_wstring(_uuid);
 		}
 
 		Scene::~Scene()
@@ -19,8 +20,29 @@ namespace NLE
 
 		std::wstring Scene::getName()
 		{
-			TLS::StringConverter::reference converter = TLS::strConverter.local();
-			return converter.from_bytes(_name);
+			return _name;
+		}
+
+		void Scene::setName(std::wstring name)
+		{
+			_name = name;
+		}
+
+		void Scene::addObject(GameObject* object)
+		{
+			_objects.insert(object->getUuid(), object);
+		}
+
+		GameObject* Scene::getObject(unsigned long long uuid)
+		{
+			GameObject* object = nullptr;
+			_objects.get(uuid, object);
+			return object;
+		}
+
+		SCRIPT::ScriptingContext& Scene::getScriptingContext()
+		{
+			return _scriptingContext;
 		}
 	}
 }

@@ -8,8 +8,8 @@ namespace NLE
 	{
 		Game::Game()
 		{
-			_name = "Game1";
-			_initialScene = "none";
+			_name = L"Game1";
+			_initialScene = L"";
 			_testNum = UUID::generateUuid();
 		}
 
@@ -20,8 +20,27 @@ namespace NLE
 
 		std::wstring Game::getName()
 		{
-			TLS::StringConverter::reference converter = TLS::strConverter.local();
-			return converter.from_bytes(_name);
+			return _name;
+		}
+
+		void Game::setName(std::wstring name)
+		{
+			_name = name;
+		}
+
+		void Game::setInitialScene(std::wstring sceneName)
+		{
+			_initialScene = sceneName;
+		}
+
+		std::wstring Game::getInitialScene()
+		{
+			return _initialScene;
+		}
+
+		SCRIPT::ScriptingContext& Game::getScriptingContext()
+		{
+			return _scriptingContext;
 		}
 	}
 }
