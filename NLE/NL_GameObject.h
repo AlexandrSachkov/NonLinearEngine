@@ -9,7 +9,6 @@ namespace NLE
 	namespace GAME
 	{
 		class RenderingComponent;
-		class UiComponent;
 		class ScriptingComponent;
 		class GameObject
 		{
@@ -43,10 +42,13 @@ namespace NLE
 
 			unsigned long long getUuid();
 			std::wstring getName();
+			void setRenderingComponent(RenderingComponent* component);
+			void setScriptingComponent(ScriptingComponent* component);
+			RenderingComponent* getRenderingComponent();
+			ScriptingComponent* getScriptingComponent();
 
 		private:
 			RenderingComponent* _renderingComponent;
-			UiComponent* _uiComponent;
 			ScriptingComponent* _scriptingComponent;
 
 			std::wstring _name;

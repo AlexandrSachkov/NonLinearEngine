@@ -4,7 +4,8 @@ namespace NLE
 {
 	namespace GAME
 	{
-		ScriptingComponent::ScriptingComponent()
+		ScriptingComponent::ScriptingComponent(GameObject* parent) :
+			GameObjectComponent(parent)
 		{
 
 		}

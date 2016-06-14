@@ -46,6 +46,7 @@ SET(HEADERS
 	NL_GameManager.h
 	NL_IGameManager.h
 	NL_GameObject.h
+	NL_GameObjectComponent.h
 	NL_GlfwInputMap.h
 	NL_Globals.h
 	NL_InputProcessor.h
@@ -95,6 +96,7 @@ SET(SOURCES
 	NL_Game.cpp
 	NL_GameManager.cpp
 	NL_GameObject.cpp
+	NL_GameObjectComponent.cpp
 	NL_GlfwInputMap.cpp
 	NL_Globals.cpp
 	NL_InputProcessor.cpp

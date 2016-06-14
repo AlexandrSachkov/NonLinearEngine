@@ -176,20 +176,5 @@ namespace NLE
 		{
 			return _execStatus;
 		}
-
-		void GameManager::loadGameObject(std::wstring gameObject)
-		{
-
-		}
-
-		void GameManager::unloadGameObject(std::wstring gameObject)
-		{
-
-		}
-
-		void GameManager::importMesh(std::wstring mesh)
-		{
-
-		}
 	}
 }

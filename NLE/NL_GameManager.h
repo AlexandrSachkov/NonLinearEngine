@@ -53,10 +53,6 @@ namespace NLE
 			ExecStatus getExecutionStatus();
 
 		private:
-			void loadGameObject(std::wstring gameObject);
-			void unloadGameObject(std::wstring gameObject);
-			void importMesh(std::wstring mesh);
-
 			ExecStatus _execStatus;
 
 			EngineServices& _eServices;
