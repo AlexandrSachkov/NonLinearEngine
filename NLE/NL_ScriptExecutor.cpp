@@ -1,6 +1,7 @@
 #include "NL_ScriptExecutor.h"
 #include "NL_ScriptingContext.h"
 #include "NL_ThreadLocal.h"
+#include "NL_LuaBindings.h"
 
 namespace NLE
 {
@@ -12,7 +13,7 @@ namespace NLE
 			_state = luaL_newstate();
 			luaL_openlibs(_state);
 
-			//lua_register(_state, "NLE_importScene", Callback::importScene);
+			Bindings::attach(_state);
 		}
 
 		ScriptExecutor::~ScriptExecutor()

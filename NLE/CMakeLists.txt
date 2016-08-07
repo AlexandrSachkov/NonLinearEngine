@@ -52,6 +52,7 @@ SET(HEADERS
 	NL_InputProcessor.h
 	NL_IInputProcessor.h	
 	NL_InputEvents.h
+	NL_LuaBindings.h
 	NL_Map.h
 	NL_MemoryManager.h
 	NL_MemoryPool.h
@@ -100,13 +101,13 @@ SET(SOURCES
 	NL_GlfwInputMap.cpp
 	NL_Globals.cpp
 	NL_InputProcessor.cpp
+	NL_LuaBindings.cpp
 	NL_MemoryManager.cpp
 	NL_Nle.cpp
 	NL_Octree.cpp
 	NL_RenderingComponent.cpp
 	NL_RenderingEngine.cpp
 	NL_Scene.cpp	
-	NL_ScriptCallbacks.cpp
 	NL_ScriptExecutor.cpp
 	NL_ScriptingComponent.cpp
 	NL_ScriptingContext.cpp
@@ -278,6 +279,14 @@ IF(NLE_LZ4_LIBRARY_RELEASE_PATH STREQUAL "")
 ENDIF(NLE_LZ4_LIBRARY_RELEASE_PATH STREQUAL "")
 
 
+#lua-intf
+SET(NLE_LUA_INTF_INCLUDE_PATH
+	"" CACHE PATH "NLE LUA_INTF include path")
+
+IF(NLE_LUA_INTF_INCLUDE_PATH STREQUAL "")
+	MESSAGE(SEND_ERROR "NLE LUA_INTF include path must be specified")
+ENDIF(NLE_LUA_INTF_INCLUDE_PATH STREQUAL "")
+
 
 INCLUDE_DIRECTORIES(
 	${NLE_TBB_INCLUDE_PATH}
@@ -288,6 +297,7 @@ INCLUDE_DIRECTORIES(
 	${NLE_ASSIMP_INCLUDE_PATH}
 	${NLE_CEREAL_INCLUDE_PATH}
 	${NLE_LZ4_INCLUDE_PATH}
+	${NLE_LUA_INTF_INCLUDE_PATH}
 	)
 
 IF(NLE_HOST_OS STREQUAL "Windows")
