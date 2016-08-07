@@ -2,18 +2,18 @@
 #define NL_GLOBALS_H_
 
 #include "NL_Queue.h"
-#include "NL_ConsoleQueue.h"
-#include "NL_InputEvents.h"
 
 namespace NLE
 {
 	namespace INPUT
 	{
-		extern NLE::Queue<Event>* const GLOBAL_EVENT_QUEUE; //needed to pass events from static callbacks of GLFW to InputManager
+		struct Event;
+		extern NLE::Queue<Event>* const GLOBAL_EVENT_QUEUE;
 	}	
 	namespace CONSOLE
 	{
-		extern NLE::CONSOLE::ConsoleQueue* const GLOBAL_CONSOLE_QUEUE;
+		class IConsoleQueue;
+		extern NLE::CONSOLE::IConsoleQueue* const GLOBAL_CONSOLE_QUEUE;
 	}
 }
 

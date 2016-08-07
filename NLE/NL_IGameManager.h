@@ -1,6 +1,7 @@
 #ifndef NL_IGAME_MANAGER_H_
 #define NL_IGAME_MANAGER_H_
 
+#include "NL_ISystem.h"
 #include <string>
 
 namespace NLE
@@ -38,10 +39,19 @@ namespace NLE
 			};
 		}
 
-		class IGameManager
+		enum ExecStatus
+		{
+			CONTINUE,
+			TERMINATE,
+			RESTART
+		};
+
+
+		class IGameManager : public ISystem
 		{
 		public:
 			virtual void queueCommand(COMMAND::Type type, COMMAND::Data data) = 0;
+			virtual ExecStatus getExecutionStatus() = 0;
 		};
 	}
 }

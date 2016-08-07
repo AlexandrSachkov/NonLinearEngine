@@ -2,6 +2,7 @@
 #include "NL_InputEvents.h"
 #include "NL_Globals.h"
 #include "NL_ThreadLocal.h"
+#include "NL_SystemServices.h"
 
 #include <assert.h>
 
@@ -26,7 +27,7 @@ namespace NLE
 			return true;
 		}
 
-		void InputProcessor::update(SystemServices& sServices, DataManager& data, double deltaT)
+		void InputProcessor::update(SystemServices* sServices, DataManager* data, double deltaT)
 		{
 			if (!_enableInputProcessing)
 				return;
@@ -54,7 +55,7 @@ namespace NLE
 				case EVENT_TYPE::EVENT_WINDOW_CLOSE:
 				{
 					GAME::COMMAND::Data data;
-					sServices.game->queueCommand(GAME::COMMAND::QUIT_GAME, data);
+					sServices->game->queueCommand(GAME::COMMAND::QUIT_GAME, data);
 				}
 				break;
 				default:
@@ -62,7 +63,7 @@ namespace NLE
 				}
 			}
 
-			data.out.inputProcessorTime = timer.deltaT();
+			data->out.inputProcessorTime = timer.deltaT();
 		}
 
 		void InputProcessor::queueEvent(INPUT::Event& event)
@@ -91,7 +92,7 @@ namespace NLE
 			_enableInputProcessing.fetch_and_store(enable);
 		}
 
-		void InputProcessor::onKeyEvent(SystemServices& sServices, Event& event)
+		void InputProcessor::onKeyEvent(SystemServices* sServices, Event& event)
 		{
 			switch (event.eventData.keyEvent.key)
 			{
@@ -110,14 +111,14 @@ namespace NLE
 			case KEY::KEY_ESCAPE:
 			{
 				GAME::COMMAND::Data data;
-				sServices.game->queueCommand(GAME::COMMAND::QUIT_GAME, data);
+				sServices->game->queueCommand(GAME::COMMAND::QUIT_GAME, data);
 			}
 			break;
 
 			case KEY::KEY_F12:		//for testing purposes
 			{
 				GAME::COMMAND::Data data;
-				sServices.game->queueCommand(GAME::COMMAND::RESTART_GAME, data);
+				sServices->game->queueCommand(GAME::COMMAND::RESTART_GAME, data);
 			}
 			break;
 

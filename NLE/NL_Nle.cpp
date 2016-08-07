@@ -4,7 +4,7 @@
 #include "NL_UiManager.h"
 #include "NL_ScriptingEngine.h"
 
-#include "NL_TaskScheduler.h"
+#include "NL_TBBTaskScheduler.h"
 #include "NL_ConsoleQueue.h"
 #include "NL_DataManager.h"
 #include "NL_SystemServices.h"
@@ -23,22 +23,22 @@ namespace NLE
 {
 	static void run()
 	{
-		ExecStatus execStatus = TERMINATE;
+		GAME::ExecStatus execStatus = GAME::TERMINATE;
 
 		do
 		{
-			TASK::TaskScheduler* taskScheduler = new TASK::TaskScheduler();
-			CONSOLE::ConsoleQueue* consoleQueue = CONSOLE::GLOBAL_CONSOLE_QUEUE;
-			IO::FileIOManager* fileIOManager = new IO::FileIOManager(consoleQueue, taskScheduler);
+			TASK::ITaskScheduler* taskScheduler = new TASK::TBBTaskScheduler();
+			CONSOLE::IConsoleQueue* consoleQueue = CONSOLE::GLOBAL_CONSOLE_QUEUE;
+			IO::IFileIOManager* fileIOManager = new IO::FileIOManager(consoleQueue, taskScheduler);
 			SERIALIZATION::Serializer* serializer = new SERIALIZATION::Serializer();
-			RESOURCE::ResourceManager* resourceManager = new RESOURCE::ResourceManager(*fileIOManager);
-			EngineServices* engineServices = new EngineServices(consoleQueue, taskScheduler, resourceManager);
+			//RESOURCE::ResourceManager* resourceManager = new RESOURCE::ResourceManager(*fileIOManager);
+			EngineServices* engineServices = new EngineServices(consoleQueue, taskScheduler);
 			DataManager* dataManager = new DataManager();
 
-			INPUT::InputProcessor* inputProcessor = new INPUT::InputProcessor(*engineServices);
-			GRAPHICS::RenderingEngine* renderingEngine = new GRAPHICS::RenderingEngine(*engineServices);
-			UI::UiManager* uiManager = new UI::UiManager(*engineServices, *consoleQueue);			
-			SCRIPT::ScriptingEngine* scriptingEngine = new SCRIPT::ScriptingEngine(*engineServices);	
+			INPUT::IInputProcessor* inputProcessor = new INPUT::InputProcessor(*engineServices);
+			GRAPHICS::IRenderingEngine* renderingEngine = new GRAPHICS::RenderingEngine(*engineServices);
+			UI::IUiManager* uiManager = new UI::UiManager(*engineServices, consoleQueue);			
+			SCRIPT::IScriptingEngine* scriptingEngine = new SCRIPT::ScriptingEngine(*engineServices);	
 
 			if (!inputProcessor->initialize())
 				break;
@@ -49,8 +49,8 @@ namespace NLE
 			if (!scriptingEngine->initialize())
 				break;
 
-			GAME::GameManager* gameManager = new GAME::GameManager(
-				*engineServices, *fileIOManager, *serializer, renderingEngine, uiManager, scriptingEngine);
+			GAME::IGameManager* gameManager = new GAME::GameManager(
+				*engineServices, fileIOManager, *serializer, renderingEngine, uiManager, scriptingEngine);
 			SystemServices* systemServices = new SystemServices(
 				gameManager, inputProcessor, renderingEngine, uiManager, scriptingEngine);
 
@@ -64,8 +64,8 @@ namespace NLE
 
 			do
 			{
-				inputProcessor->update(*systemServices, *dataManager, inputTimer.deltaT());
-				gameManager->update(*systemServices, *dataManager, gameTimer.deltaT());
+				inputProcessor->update(systemServices, dataManager, inputTimer.deltaT());
+				gameManager->update(systemServices, dataManager, gameTimer.deltaT());
 
 				double systemTime = systemsTimer.deltaT();
 				tbb::parallel_for(
@@ -74,7 +74,7 @@ namespace NLE
 				{
 					for (uint_fast32_t i = (uint_fast32_t)r.begin(); i < r.end(); ++i)
 					{
-						parallelSystems[i]->update(*systemServices, *dataManager, systemTime);
+						parallelSystems[i]->update(systemServices, dataManager, systemTime);
 					}
 				});
 
@@ -82,7 +82,7 @@ namespace NLE
 				taskScheduler->dispatchTasks();
 
 				execStatus = gameManager->getExecutionStatus();
-			} while (execStatus == CONTINUE);
+			} while (execStatus == GAME::CONTINUE);
 
 			taskScheduler->waitOnTasks();
 			
@@ -95,7 +95,7 @@ namespace NLE
 			
 			delete dataManager;
 			delete engineServices;
-			delete resourceManager;
+			//delete resourceManager;
 			delete serializer;
 			delete fileIOManager;
 			delete taskScheduler;
@@ -103,7 +103,7 @@ namespace NLE
 			INPUT::GLOBAL_EVENT_QUEUE->clear();
 			CONSOLE::GLOBAL_CONSOLE_QUEUE->clear();
 
-		} while (execStatus == RESTART);
+		} while (execStatus == GAME::RESTART);
 	}
 }
 

@@ -15,10 +15,18 @@ namespace NLE
 			LOW = tbb::priority_low
 		};
 
-		class ITaskScheduler
+		class ITaskScheduler_EService
 		{
 		public:
 			virtual void queueProcedure(std::function<void()> procedure, TaskPriority priority) = 0;
+		};
+
+		class ITaskScheduler : public ITaskScheduler_EService
+		{
+		public:
+			virtual void dispatchTasks() = 0;
+			virtual void notifyOfCompletion() = 0;
+			virtual void waitOnTasks() = 0;
 		};
 	}
 }

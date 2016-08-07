@@ -31,7 +31,7 @@ namespace NLE
 			return true;
 		}
 
-		void RenderingEngine::update(SystemServices& sServices, DataManager& data, double deltaT)
+		void RenderingEngine::update(SystemServices* sServices, DataManager* data, double deltaT)
 		{
 			NLE::TLS::PerformanceTimer::reference timer = NLE::TLS::performanceTimer.local();
 			timer.deltaT();
@@ -39,7 +39,7 @@ namespace NLE
 			_windowManager->pollEvents();
 			//std::cout<< deltaT << std::endl;
 
-			data.out.renderingEngineTime = timer.deltaT();
+			data->out.renderingEngineTime = timer.deltaT();
 		}
 
 		void RenderingEngine::setWindowTitle(std::wstring title)

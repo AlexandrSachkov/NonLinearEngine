@@ -38,7 +38,7 @@ THE SOFTWARE.
 
 namespace NLE
 {
-	WindowManager::WindowManager(CONSOLE::IConsoleQueue* console) :
+	WindowManager::WindowManager(CONSOLE::IConsoleQueue_EService* console) :
 		_console(console)
 	{
 		_window = nullptr;

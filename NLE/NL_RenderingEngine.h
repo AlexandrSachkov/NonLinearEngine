@@ -2,7 +2,6 @@
 #define NL_RENDERING_ENGINE_H_
 
 #include "NL_IRenderingEngine.h"
-#include "NL_ISystem.h"
 #include "NL_EngineServices.h"
 #include "NL_Timer.h"
 #include "NL_Thread.h"
@@ -26,14 +25,14 @@ namespace NLE
 	namespace GRAPHICS
 	{
 		class Scene;
-		class RenderingEngine : public IRenderingEngine, public ISystem
+		class RenderingEngine : public IRenderingEngine
 		{
 		public:
 			RenderingEngine(EngineServices& eServices);
 			~RenderingEngine();
 
 			bool initialize();
-			void update(SystemServices& sServices, DataManager& data, double deltaT);
+			void update(SystemServices* sServices, DataManager* data, double deltaT);
 
 			void setWindowTitle(std::wstring title);
 			void setResolution(Size2D resolution);

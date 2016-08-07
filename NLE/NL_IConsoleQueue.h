@@ -26,12 +26,19 @@ namespace NLE
 			ERR
 		};
 
-		class IConsoleQueue
+		class IConsoleQueue_EService
 		{
 		public:
 			virtual void push(OUTPUT_TYPE outType, const std::wstring& data) = 0;
 			virtual void push(OUTPUT_TYPE outType, const std::string& data) = 0;
 			virtual void push(OUTPUT_TYPE outType, const char* data) = 0;
+		};
+
+		class IConsoleQueue : public IConsoleQueue_EService
+		{
+		public:
+			virtual bool pop(std::pair<OUTPUT_TYPE, std::wstring>& data) = 0;
+			virtual void clear() = 0;
 		};
 	}
 

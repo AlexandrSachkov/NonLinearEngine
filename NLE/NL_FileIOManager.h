@@ -1,15 +1,12 @@
 #ifndef NL_FILE_IO_MANAGER_H_
 #define NL_FILE_IO_MANAGER_H_
 
+#include "NL_IFileIOManager.h"
 #include "NL_Thread.h"
 #include "NL_IConsoleQueue.h"
 #include "NL_ITaskScheduler.h"
 
 #include "tbb/concurrent_queue.h"
-
-#include <string>
-#include <vector>
-#include <functional>
 
 namespace NLE
 {
@@ -31,12 +28,12 @@ namespace NLE
 		};
 		
 
-		class FileIOManager
+		class FileIOManager : public IFileIOManager
 		{
 		public:
 			FileIOManager(NLE::CONSOLE::IConsoleQueue* const console, NLE::TASK::ITaskScheduler* const taskScheduler);
 			~FileIOManager();
-			std::wstring getFileExtension(std::wstring path);
+			
 			void readAsync(
 				std::wstring path, 
 				std::function<void(std::vector<char>* data)> onSuccess, 
@@ -57,10 +54,13 @@ namespace NLE
 			FileIOManager(FileIOManager const&) = delete;
 			void operator=(FileIOManager const&) = delete;
 
+			std::wstring getFileExtension(std::wstring path);
+
 			NLE::CONSOLE::IConsoleQueue* const _console;
 			NLE::TASK::ITaskScheduler* const _task;
 			Core::Thread _loadingThread;
 			tbb::concurrent_queue<FileIOOperationDesc> _fileOps;
+
 		};
 	}
 	

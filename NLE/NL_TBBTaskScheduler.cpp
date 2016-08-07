@@ -1,31 +1,31 @@
-#include "NL_TaskScheduler.h"
+#include "NL_TbbTaskScheduler.h"
 
 namespace NLE
 {
 	namespace TASK
 	{
-		TaskScheduler::TaskScheduler() :
+		TBBTaskScheduler::TBBTaskScheduler() :
 			_scheduler(tbb::task_scheduler_init::default_num_threads())
 		{
 			_runningTasks.store(0);
 		}
 
-		TaskScheduler::TaskScheduler(unsigned int numThreads) :
+		TBBTaskScheduler::TBBTaskScheduler(unsigned int numThreads) :
 			_scheduler(numThreads)
 		{
 			_runningTasks.store(0);
 		}
 
-		TaskScheduler::~TaskScheduler()
+		TBBTaskScheduler::~TBBTaskScheduler()
 		{
 		}
 
-		void TaskScheduler::queueProcedure(std::function<void()> procedure, TaskPriority priority)
+		void TBBTaskScheduler::queueProcedure(std::function<void()> procedure, TaskPriority priority)
 		{
 			_tasks.push({ procedure, priority });
 		}
 
-		void TaskScheduler::dispatchTasks()
+		void TBBTaskScheduler::dispatchTasks()
 		{
 			if (!_tasks.empty())
 			{
@@ -38,18 +38,18 @@ namespace NLE
 			}
 		}
 
-		void TaskScheduler::runProcedure(std::function<void()>& procedure, TaskPriority priority)
+		void TBBTaskScheduler::runProcedure(std::function<void()>& procedure, TaskPriority priority)
 		{
 			Task* task = new (tbb::task::allocate_root())Task(this, procedure);
 			tbb::task::enqueue(*task, (tbb::priority_t)priority);
 		}
 
-		void TaskScheduler::notifyOfCompletion()
+		void TBBTaskScheduler::notifyOfCompletion()
 		{
 			_runningTasks.fetch_and_decrement();
 		}
 
-		void TaskScheduler::waitOnTasks()
+		void TBBTaskScheduler::waitOnTasks()
 		{
 			while (_runningTasks != 0)
 			{

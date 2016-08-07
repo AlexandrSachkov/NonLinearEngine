@@ -8,18 +8,18 @@ namespace NLE
 {
 	namespace TASK
 	{
-		class TaskScheduler;
+		class ITaskScheduler;
 		class Task : public tbb::task
 		{
 		public:
-			Task(TaskScheduler* const scheduler, std::function<void()> const& operation);
+			Task(ITaskScheduler* const scheduler, std::function<void()> const& operation);
 			~Task();
 
 			tbb::task* execute();
 
 		private:
 			std::function<void()> _operation;
-			TaskScheduler* const _scheduler;
+			ITaskScheduler* const _scheduler;
 		};
 	}
 }

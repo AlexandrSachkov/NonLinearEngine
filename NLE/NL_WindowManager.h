@@ -44,7 +44,7 @@ namespace NLE
 	class WindowManager
 	{
 	public:
-		WindowManager(CONSOLE::IConsoleQueue* console);
+		WindowManager(CONSOLE::IConsoleQueue_EService* console);
 		~WindowManager();
 
 		bool initialize(
@@ -98,7 +98,7 @@ namespace NLE
 
 		static void processEvent(INPUT::Event& event);
 
-		CONSOLE::IConsoleQueue* _console;
+		CONSOLE::IConsoleQueue_EService* _console;
 		GLFWwindow* _window;
 		std::wstring _title;
 	};

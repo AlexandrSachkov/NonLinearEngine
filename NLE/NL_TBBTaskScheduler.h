@@ -12,12 +12,12 @@ namespace NLE
 {
 	namespace TASK
 	{
-		class TaskScheduler : public ITaskScheduler
+		class TBBTaskScheduler : public ITaskScheduler
 		{
 		public:
-			TaskScheduler();
-			TaskScheduler(unsigned int numThreads);
-			~TaskScheduler();
+			TBBTaskScheduler();
+			TBBTaskScheduler(unsigned int numThreads);
+			~TBBTaskScheduler();
 
 			void queueProcedure(std::function<void()> procedure, TaskPriority priority);
 			void dispatchTasks();

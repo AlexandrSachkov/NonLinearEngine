@@ -1,4 +1,6 @@
 #include "NL_Globals.h"
+#include "NL_InputEvents.h"
+#include "NL_ConsoleQueue.h"
 
 namespace NLE
 {
@@ -8,6 +10,6 @@ namespace NLE
 	}	
 	namespace CONSOLE
 	{
-		NLE::CONSOLE::ConsoleQueue* const GLOBAL_CONSOLE_QUEUE = new NLE::CONSOLE::ConsoleQueue();
+		NLE::CONSOLE::IConsoleQueue* const GLOBAL_CONSOLE_QUEUE = new NLE::CONSOLE::ConsoleQueue();
 	}
 }

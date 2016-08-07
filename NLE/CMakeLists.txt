@@ -25,6 +25,12 @@ IF(NLE_TARGET_ARCHITECTURE STREQUAL "")
 	MESSAGE(SEND_ERROR "Target Architecture must be specified")
 ENDIF(NLE_TARGET_ARCHITECTURE STREQUAL "")
 
+# Rendering API Config
+SET(NLE_RENDERING_API CACHE STRING "Rendering API. Choose: \n\n D3D11 \n Vulkan")
+IF(NLE_RENDERING_API STREQUAL "")
+	MESSAGE(SEND_ERROR "Target Architecture must be specified")
+ENDIF(NLE_RENDERING_API STREQUAL "")
+
 # =====================================================================================
 
 #                                     Global includes
@@ -38,10 +44,15 @@ SET(HEADERS
 	NL_CommandBuffer.h
 	NL_CommonTypes.h
 	NL_ConsoleQueue.h
+	NL_D3D11RenderingEngine.h
+	NL_D3D11RenderingResources.h
+	NL_D3D11Utility.h
+	NL_D3D11Utility.inl
 	NL_IConsoleQueue.h
 	NL_DataManager.h
 	NL_EngineServices.h
 	NL_FileIOManager.h
+	NL_IFileIOManager.h
 	NL_Game.h
 	NL_GameManager.h
 	NL_IGameManager.h
@@ -70,6 +81,7 @@ SET(HEADERS
 	NL_ScriptingContext.h
 	NL_ScriptingEngine.h
 	NL_IScriptingEngine.h	
+	NL_ISerializable.h
 	NL_Serializer.h
 	NL_SharedData.h
 	NL_ISystem.h
@@ -92,6 +104,8 @@ SET(HEADERS
 SET(SOURCES 
 	NL_AssetImporter.cpp
 	NL_ConsoleQueue.cpp
+	NL_D3D11RenderingEngine.cpp
+	NL_D3D11Utility.cpp
 	NL_DataManager.cpp
 	NL_FileIOManager.cpp
 	NL_Game.cpp
@@ -288,6 +302,31 @@ IF(NLE_LUA_INTF_INCLUDE_PATH STREQUAL "")
 ENDIF(NLE_LUA_INTF_INCLUDE_PATH STREQUAL "")
 
 
+# D3D11
+if(NLE_RENDERING_API STREQUAL "D3D11")
+	SET(NLE_D3D11_INCLUDE_PATH
+	"" CACHE PATH "NLE D3D11 include path")
+
+	IF(NLE_D3D11_INCLUDE_PATH STREQUAL "")
+		MESSAGE(SEND_ERROR "NLE D3D11 include path must be specified")
+	ENDIF(NLE_D3D11_INCLUDE_PATH STREQUAL "")
+
+	SET(NLE_D3D11_LIBRARY_DEBUG_PATH
+		"" CACHE PATH "NLE D3D11 library debug path")
+
+	IF(NLE_D3D11_LIBRARY_DEBUG_PATH STREQUAL "")
+		MESSAGE(SEND_ERROR "NLE D3D11 library debug path must be specified")
+	ENDIF(NLE_D3D11_LIBRARY_DEBUG_PATH STREQUAL "")
+
+	SET(NLE_D3D11_LIBRARY_RELEASE_PATH
+		"" CACHE PATH "NLE D3D11 library release path")
+
+	IF(NLE_D3D11_LIBRARY_RELEASE_PATH STREQUAL "")
+		MESSAGE(SEND_ERROR "NLE D3D11 library release path must be specified")
+	ENDIF(NLE_D3D11_LIBRARY_RELEASE_PATH STREQUAL "")
+ENDIF(NLE_RENDERING_API STREQUAL "D3D11")
+
+
 INCLUDE_DIRECTORIES(
 	${NLE_TBB_INCLUDE_PATH}
 	${NLE_LUA_INCLUDE_PATH}
@@ -299,6 +338,12 @@ INCLUDE_DIRECTORIES(
 	${NLE_LZ4_INCLUDE_PATH}
 	${NLE_LUA_INTF_INCLUDE_PATH}
 	)
+
+if(NLE_RENDERING_API STREQUAL "D3D11")
+	INCLUDE_DIRECTORIES(
+		${NLE_D3D11_INCLUDE_PATH}
+	)
+ENDIF(NLE_RENDERING_API STREQUAL "D3D11")
 
 IF(NLE_HOST_OS STREQUAL "Windows")
 	ADD_DEFINITIONS(
@@ -324,6 +369,13 @@ LINK_DIRECTORIES(
 	${NLE_LZ4_LIBRARY_DEBUG_PATH}
 	${NLE_LZ4_LIBRARY_RELEASE_PATH}
 	)
+
+if(NLE_RENDERING_API STREQUAL "D3D11")
+	LINK_DIRECTORIES(
+		${NLE_D3D11_LIBRARY_DEBUG_PATH}
+		${NLE_D3D11_LIBRARY_RELEASE_PATH}
+	)
+ENDIF(NLE_RENDERING_API STREQUAL "D3D11")
 
 add_executable (NLE
   ${HEADERS}
@@ -358,5 +410,14 @@ TARGET_LINK_LIBRARIES(NLE
 	debug lz4
 	optimized lz4
 	)
+
+if(NLE_RENDERING_API STREQUAL "D3D11")
+	TARGET_LINK_LIBRARIES(NLE 
+		debug d3d11.lib
+		optimized d3d11.lib
+		debug d3dcompiler.lib
+		optimized d3dcompiler.lib
+	)
+ENDIF(NLE_RENDERING_API STREQUAL "D3D11")
 
 set_target_properties(NLE PROPERTIES DEBUG_POSTFIX _d)

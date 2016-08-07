@@ -2,9 +2,7 @@
 #define NL_GAME_MANAGER_H_
 
 #include "NL_IGameManager.h"
-#include "NL_ISystem.h"
 #include "NL_EngineServices.h"
-#include "NL_FileIOManager.h"
 #include "NL_Serializer.h"
 #include "NL_CommandBuffer.h"
 
@@ -12,55 +10,51 @@
 
 namespace NLE
 {
-	enum ExecStatus
-	{
-		CONTINUE,
-		TERMINATE,
-		RESTART
-	};
-
 	namespace GRAPHICS
 	{
-		class RenderingEngine;
+		class IRenderingEngine;
 	}
 	namespace UI
 	{
-		class UiManager;
+		class IUiManager;
 	}
 	namespace SCRIPT
 	{
-		class ScriptingEngine;
+		class IScriptingEngine;
+	}
+	namespace IO
+	{
+		class IFileIOManager;
 	}
 	namespace GAME
 	{
 		class Game;
 		class Scene;
-		class GameManager : public IGameManager, public ISystem
+		class GameManager : public IGameManager
 		{
 		public:
 			GameManager(
 				EngineServices& eServices,
-				IO::FileIOManager& file,
+				IO::IFileIOManager* file,
 				SERIALIZATION::Serializer& serializer,
-				GRAPHICS::RenderingEngine* const renderingEngine,
-				UI::UiManager* const uiManager,
-				SCRIPT::ScriptingEngine* const scriptingEngine);
+				GRAPHICS::IRenderingEngine* const renderingEngine,
+				UI::IUiManager* const uiManager,
+				SCRIPT::IScriptingEngine* const scriptingEngine);
 			~GameManager();
 
-			void update(SystemServices& sServices, DataManager& data, double deltaT);
+			void update(SystemServices* sServices, DataManager* data, double deltaT);
 			void queueCommand(COMMAND::Type type, COMMAND::Data data);
-
 			ExecStatus getExecutionStatus();
 
 		private:
 			ExecStatus _execStatus;
 
 			EngineServices& _eServices;
-			IO::FileIOManager& _file;
+			IO::IFileIOManager* _file;
 			SERIALIZATION::Serializer& _serializer;
-			GRAPHICS::RenderingEngine* const _renderingEngine;
-			UI::UiManager* const _uiManager;
-			SCRIPT::ScriptingEngine* const _scriptingEngine;
+			GRAPHICS::IRenderingEngine* const _renderingEngine;
+			UI::IUiManager* const _uiManager;
+			SCRIPT::IScriptingEngine* const _scriptingEngine;
 
 			CommandBuffer<COMMAND::Data> _commandBuffer;
 			SERIALIZATION::Form _serializationForm;
