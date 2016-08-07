@@ -26,25 +26,28 @@ THE SOFTWARE.
 -----------------------------------------------------------------------------
 */
 
-#include "NL_WindowManager.h"
+#include "NL_GlfwWindowManager.h"
 #include "NL_GlfwInputMap.h"
 #include "NL_ThreadLocal.h"
 #include "NL_Globals.h"
 
+#define GLFW_EXPOSE_NATIVE_WIN32
+#define GLFW_EXPOSE_NATIVE_WGL
 #define GLFW_INCLUDE_NONE
 #include "GLFW\glfw3.h"
+#include "GLFW/glfw3native.h"
 
 #include <assert.h>
 
 namespace NLE
 {
-	WindowManager::WindowManager(CONSOLE::IConsoleQueue_EService* console) :
+	GlfwWindowManager::GlfwWindowManager(CONSOLE::IConsoleQueue_EService* console) :
 		_console(console)
 	{
 		_window = nullptr;
 	}
 
-	WindowManager::~WindowManager()
+	GlfwWindowManager::~GlfwWindowManager()
 	{
 		if (_window)
 			glfwDestroyWindow(_window);
@@ -52,7 +55,7 @@ namespace NLE
 	}
 
 
-	bool WindowManager::initialize(
+	bool GlfwWindowManager::initialize(
 		Size2D screenSize,
 		bool fullscreen,
 		bool decorated,
@@ -87,7 +90,7 @@ namespace NLE
 		return true;
 	}
 
-	void WindowManager::setWindowCallbacks(GLFWwindow* window)
+	void GlfwWindowManager::setWindowCallbacks(GLFWwindow* window)
 	{
 		glfwSetKeyCallback(window, onKeyEvent);
 		glfwSetCharCallback(window, onCharEvent);
@@ -104,85 +107,90 @@ namespace NLE
 		glfwSetWindowIconifyCallback(window, onWindowIconifyEvent);
 	}
 
-	void WindowManager::enableCursor(bool enable)
+	void GlfwWindowManager::enableCursor(bool enable)
 	{
 		glfwSetInputMode(_window, GLFW_CURSOR, enable == true ? GLFW_CURSOR_NORMAL : GLFW_CURSOR_DISABLED);
 	}
 
-	Size2D WindowManager::getClientSize()
+	Size2D GlfwWindowManager::getClientSize()
 	{
 		int width, height;
 		glfwGetWindowSize(_window, &width, &height);
 		return Size2D(width, height);
 	}
 
-	void WindowManager::setResizableHint(bool option)
+	void* GlfwWindowManager::getWindowHandle()
+	{
+		return (void*)glfwGetWin32Window(_window);
+	}
+
+	void GlfwWindowManager::setResizableHint(bool option)
 	{
 		glfwWindowHint(GLFW_RESIZABLE, option);
 	}
 
-	void WindowManager::setDecoratedHint(bool option)
+	void GlfwWindowManager::setDecoratedHint(bool option)
 	{
 		glfwWindowHint(GLFW_DECORATED, option);
 	}
 
-	void WindowManager::setTitle(std::wstring title)
+	void GlfwWindowManager::setTitle(std::wstring title)
 	{
 		TLS::StringConverter::reference converter = TLS::strConverter.local();
 		glfwSetWindowTitle(_window, converter.to_bytes(title).c_str());
 	}
 
-	void WindowManager::setWindowPosition(Position2D position)
+	void GlfwWindowManager::setWindowPosition(Position2D position)
 	{
 		glfwSetWindowPos(_window, position.x, position.y);
 	}
 
-	Position2D WindowManager::getWindowPosition()
+	Position2D GlfwWindowManager::getWindowPosition()
 	{
 		int x, y;
 		glfwGetWindowPos(_window, &x, &y);
 		return Position2D(x, y);
 	}
 
-	void WindowManager::iconify()
+	void GlfwWindowManager::iconify()
 	{
 		glfwIconifyWindow(_window);
 	}
 
-	void WindowManager::restore()
+	void GlfwWindowManager::restore()
 	{
 		glfwRestoreWindow(_window);
 	}
 
-	void WindowManager::show()
+	void GlfwWindowManager::show()
 	{
 		glfwShowWindow(_window);
 	}
 
-	void WindowManager::hide()
+	void GlfwWindowManager::hide()
 	{
 		glfwHideWindow(_window);
 	}
 
-	void WindowManager::closeWindow()
+	void GlfwWindowManager::closeWindow()
 	{
 		glfwSetWindowShouldClose(_window, true);
 	}
 
-	void WindowManager::copyText(std::wstring text)
+	void GlfwWindowManager::copyText(std::wstring text)
 	{
 		std::string textOut(text.begin(), text.end());
 		glfwSetClipboardString(_window, textOut.c_str());
 	}
 
-	std::wstring WindowManager::pasteText()
+	std::wstring GlfwWindowManager::pasteText()
 	{
 		std::string text(glfwGetClipboardString(_window));
 		std::wstring textOut(text.begin(), text.end());
 		return textOut;
 	}
 
-	void WindowManager::glfwErrorCallback(int error, const char* description)
+	void GlfwWindowManager::glfwErrorCallback(int error, const char* description)
 	{
 		std::string errCode;
 		if (error == GLFW_NO_CURRENT_CONTEXT)
@@ -199,7 +207,7 @@ namespace NLE
 		printf("%s, %s\n", errCode.c_str(), description);
 	}
 
-	void WindowManager::onKeyEvent(GLFWwindow *window, int key, int scancode, int action, int mods)
+	void GlfwWindowManager::onKeyEvent(GLFWwindow *window, int key, int scancode, int action, int mods)
 	{
 		NLE::INPUT::Event event;
 		event.eventType = NLE::INPUT::EVENT_TYPE::EVENT_KEY;
@@ -211,7 +219,7 @@ namespace NLE
 		processEvent(event);
 	}
 
-	void WindowManager::onCharEvent(GLFWwindow *window, unsigned int codepoint)
+	void GlfwWindowManager::onCharEvent(GLFWwindow *window, unsigned int codepoint)
 	{
 		NLE::INPUT::Event event;
 		event.eventType = NLE::INPUT::EVENT_TYPE::EVENT_CHAR;
@@ -220,7 +228,7 @@ namespace NLE
 		processEvent(event);
 	}
 
-	void WindowManager::onMouseButtonEvent(GLFWwindow *window, int button, int action, int mods)
+	void GlfwWindowManager::onMouseButtonEvent(GLFWwindow *window, int button, int action, int mods)
 	{
 		NLE::INPUT::Event event;
 		event.eventType = NLE::INPUT::EVENT_TYPE::EVENT_MOUSE_BUTTON;
@@ -231,7 +239,7 @@ namespace NLE
 		processEvent(event);
 	}
 
-	void WindowManager::onCursorPositionEvent(GLFWwindow *window, double xPos, double yPos)
+	void GlfwWindowManager::onCursorPositionEvent(GLFWwindow *window, double xPos, double yPos)
 	{
 		NLE::INPUT::Event event;
 		event.eventType = NLE::INPUT::EVENT_TYPE::EVENT_CURSOR_POSITION;
@@ -241,7 +249,7 @@ namespace NLE
 		processEvent(event);
 	}
 
-	void WindowManager::onCursorEnterEvent(GLFWwindow *window, int entered)
+	void GlfwWindowManager::onCursorEnterEvent(GLFWwindow *window, int entered)
 	{
 		NLE::INPUT::Event event;
 		event.eventType = NLE::INPUT::EVENT_TYPE::EVENT_CURSOR_ENTER;
@@ -250,7 +258,7 @@ namespace NLE
 		processEvent(event);
 	}
 
-	void WindowManager::onScrollEvent(GLFWwindow *window, double xOffset, double yOffset)
+	void GlfwWindowManager::onScrollEvent(GLFWwindow *window, double xOffset, double yOffset)
 	{
 		NLE::INPUT::Event event;
 		event.eventType = NLE::INPUT::EVENT_TYPE::EVENT_SCROLL;
@@ -260,7 +268,7 @@ namespace NLE
 		processEvent(event);
 	}
 
-	void WindowManager::onWindowPositionEvent(GLFWwindow *window, int xPos, int yPos)
+	void GlfwWindowManager::onWindowPositionEvent(GLFWwindow *window, int xPos, int yPos)
 	{
 		NLE::INPUT::Event event;
 		event.eventType = NLE::INPUT::EVENT_TYPE::EVENT_WINDOW_POSITION;
@@ -270,7 +278,7 @@ namespace NLE
 		processEvent(event);
 	}
 
-	void WindowManager::onWindowSizeEvent(GLFWwindow *window, int width, int height)
+	void GlfwWindowManager::onWindowSizeEvent(GLFWwindow *window, int width, int height)
 	{
 		NLE::INPUT::Event event;
 		event.eventType = NLE::INPUT::EVENT_TYPE::EVENT_WINDOW_SIZE;
@@ -280,7 +288,7 @@ namespace NLE
 		processEvent(event);
 	}
 
-	void WindowManager::onWindowCloseEvent(GLFWwindow *window)
+	void GlfwWindowManager::onWindowCloseEvent(GLFWwindow *window)
 	{
 		NLE::INPUT::Event event;
 		event.eventType = NLE::INPUT::EVENT_TYPE::EVENT_WINDOW_CLOSE;
@@ -288,7 +296,7 @@ namespace NLE
 		processEvent(event);
 	}
 
-	void WindowManager::onWindowRefreshEvent(GLFWwindow *window)
+	void GlfwWindowManager::onWindowRefreshEvent(GLFWwindow *window)
 	{
 		NLE::INPUT::Event event;
 		event.eventType = NLE::INPUT::EVENT_TYPE::EVENT_WINDOW_REFRESH;
@@ -296,7 +304,7 @@ namespace NLE
 		processEvent(event);
 	}
 
-	void WindowManager::onWindowFocusEvent(GLFWwindow *window, int focused)
+	void GlfwWindowManager::onWindowFocusEvent(GLFWwindow *window, int focused)
 	{
 		NLE::INPUT::Event event;
 		event.eventType = NLE::INPUT::EVENT_TYPE::EVENT_WINDOW_FOCUS;
@@ -305,7 +313,7 @@ namespace NLE
 		processEvent(event);
 	}
 
-	void WindowManager::onWindowIconifyEvent(GLFWwindow *window, int iconified)
+	void GlfwWindowManager::onWindowIconifyEvent(GLFWwindow *window, int iconified)
 	{
 		NLE::INPUT::Event event;
 		event.eventType = NLE::INPUT::EVENT_TYPE::EVENT_WINDOW_ICONIFY;
@@ -314,27 +322,27 @@ namespace NLE
 		processEvent(event);
 	}
 
-	void WindowManager::processEvent(INPUT::Event& event)
+	void GlfwWindowManager::processEvent(INPUT::Event& event)
 	{
 		INPUT::GLOBAL_EVENT_QUEUE->push(event);
 	}
 
-	void WindowManager::makeContextCurrent(bool makeCurrent)
+	void GlfwWindowManager::makeContextCurrent(bool makeCurrent)
 	{
 		glfwMakeContextCurrent(makeCurrent == true ? _window : NULL);
 	}
 
-	void WindowManager::enableVSync(bool enable)
+	void GlfwWindowManager::enableVSync(bool enable)
 	{
 		glfwSwapInterval(enable == true ? 1 : 0);
 	}
 
-	void WindowManager::swapBuffers()
+	void GlfwWindowManager::swapBuffers()
 	{
 		glfwSwapBuffers(_window);
 	}
 
-	void WindowManager::pollEvents()
+	void GlfwWindowManager::pollEvents()
 	{
 		glfwPollEvents();
 	}

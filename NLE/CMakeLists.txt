@@ -59,6 +59,7 @@ SET(HEADERS
 	NL_GameObject.h
 	NL_GameObjectComponent.h
 	NL_GlfwInputMap.h
+	NL_GlfwWindowManager.h
 	NL_Globals.h
 	NL_InputProcessor.h
 	NL_IInputProcessor.h	
@@ -87,7 +88,7 @@ SET(HEADERS
 	NL_ISystem.h
 	NL_SystemServices.h
 	NL_Task.h
-	NL_TaskScheduler.h
+	NL_TBBTaskScheduler.h
 	NL_ITaskScheduler.h
 	NL_TextureLoader.h
 	NL_Timer.h	
@@ -96,7 +97,6 @@ SET(HEADERS
 	NL_UiManager.h
 	NL_IUiManager.h
 	NL_Uuid.h
-	NL_WindowManager.h
 	NL_ResourceManager.cpp
 	NL_Thread.h
 	)
@@ -113,6 +113,7 @@ SET(SOURCES
 	NL_GameObject.cpp
 	NL_GameObjectComponent.cpp
 	NL_GlfwInputMap.cpp
+	NL_GlfwWindowManager.cpp
 	NL_Globals.cpp
 	NL_InputProcessor.cpp
 	NL_LuaBindings.cpp
@@ -128,10 +129,9 @@ SET(SOURCES
 	NL_ScriptingEngine.cpp
 	NL_Task.cpp
 	NL_TextureLoader.cpp
-	NL_TaskScheduler.cpp
+	NL_TBBTaskScheduler.cpp
 	NL_UiComponent.cpp
-	NL_UiManager.cpp
-	NL_WindowManager.cpp		
+	NL_UiManager.cpp	
 	NL_Thread.cpp
 	)
 

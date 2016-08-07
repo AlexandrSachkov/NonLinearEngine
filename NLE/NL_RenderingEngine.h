@@ -21,7 +21,7 @@ namespace NLE
 	{
 		class IWindowManager;
 	}
-	class WindowManager;
+	class IWindowManager;
 	namespace GRAPHICS
 	{
 		class Scene;
@@ -40,7 +40,7 @@ namespace NLE
 
 		private:	
 			EngineServices& _eServices;
-			WindowManager* _windowManager;
+			IWindowManager* _windowManager;
 			Size2D _resolution;
 			bool _fullscreen;
 			bool _decorated;

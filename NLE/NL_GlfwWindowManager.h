@@ -26,10 +26,10 @@ THE SOFTWARE.
 -----------------------------------------------------------------------------
 */
 
-#ifndef NL_WINDOW_MANAGER_H_
-#define NL_WINDOW_MANAGER_H_
+#ifndef NL_GLFW_WINDOW_MANAGER_H_
+#define NL_GLFW_WINDOW_MANAGER_H_
 
-#include "NL_CommonTypes.h"
+#include "NL_IWindowManager.h"
 #include "NL_InputEvents.h"
 #include "NL_IConsoleQueue.h"
 
@@ -41,11 +41,11 @@ struct GLFWwindow;
 
 namespace NLE
 {
-	class WindowManager
+	class GlfwWindowManager : public IWindowManager
 	{
 	public:
-		WindowManager(CONSOLE::IConsoleQueue_EService* console);
-		~WindowManager();
+		GlfwWindowManager(CONSOLE::IConsoleQueue_EService* console);
+		~GlfwWindowManager();
 
 		bool initialize(
 			Size2D screenSize,
@@ -56,6 +56,7 @@ namespace NLE
 
 		Size2D getClientSize();
 		Position2D getWindowPosition();
+		void* getWindowHandle();
 
 		void setTitle(std::wstring title);
 		void setWindowPosition(Position2D position);

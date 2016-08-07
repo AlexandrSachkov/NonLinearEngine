@@ -3,7 +3,7 @@
 #include "NL_IGameManager.h"
 #include "NL_IInputProcessor.h"
 #include "NL_ThreadLocal.h"
-#include "NL_WindowManager.h"
+#include "NL_GlfwWindowManager.h"
 
 #include <iostream>
 
@@ -16,7 +16,7 @@ namespace NLE
 		RenderingEngine::RenderingEngine(EngineServices& eServices) :
 			_eServices(eServices)
 		{
-			_windowManager = new WindowManager(eServices.console);
+			_windowManager = new GlfwWindowManager(eServices.console);
 		}
 
 		RenderingEngine::~RenderingEngine()
