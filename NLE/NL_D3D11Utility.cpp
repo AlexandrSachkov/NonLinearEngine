@@ -430,7 +430,6 @@ namespace NLE
 			flags |= D3DCOMPILE_DEBUG;
 #endif
 
-			ID3DBlob* shaderBlob = nullptr;
 			ID3DBlob* errorBlob = nullptr;
 			HRESULT hr = D3DCompileFromFile(path.c_str(), nullptr, D3D_COMPILE_STANDARD_FILE_INCLUDE,
 				entryPoint, profile,
@@ -443,8 +442,8 @@ namespace NLE
 					errorBlob->Release();
 					
 					//CONSOLE::out(CONSOLE::ERR, L"Failed to compile blob.\n");
-					return false;
-				}			
+				}	
+				return false;
 			}
 			return true;
 		}
