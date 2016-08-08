@@ -36,6 +36,7 @@ SET(HEADERS
 	NL_Allocator.h
 	NL_AssetImporter.h
 	NL_Atomic.h
+	NL_CerealSerializer.h
 	NL_CommandBuffer.h
 	NL_CommonTypes.h
 	NL_ConsoleQueue.h
@@ -75,6 +76,7 @@ SET(HEADERS
 	NL_IScriptingEngine.h	
 	NL_ISerializable.h
 	NL_Serializer.h
+	NL_ISerializer.h
 	NL_SharedData.h
 	NL_ISystem.h
 	NL_SystemServices.h
@@ -140,6 +142,7 @@ if(NLE_RENDERING_API STREQUAL "D3D11")
 	SET(SOURCES 
 		${SOURCES}
 		NL_D3D11RenderingEngine.cpp
+		NL_D3D11RenderingResources.cpp
 		NL_D3D11Utility.cpp
 	)
 

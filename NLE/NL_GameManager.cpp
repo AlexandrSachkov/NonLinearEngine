@@ -17,7 +17,7 @@ namespace NLE
 		GameManager::GameManager(
 			EngineServices& eServices,
 			IO::IFileIOManager* file,
-			SERIALIZATION::Serializer& serializer,
+			SERIALIZATION::ISerializer& serializer,
 			GRAPHICS::IRenderingEngine* const renderingEngine,
 			UI::IUiManager* const uiManager,
 			SCRIPT::IScriptingEngine* const scriptingEngine
@@ -27,8 +27,7 @@ namespace NLE
 			_serializer(serializer),
 			_renderingEngine(renderingEngine),
 			_uiManager(uiManager),
-			_scriptingEngine(scriptingEngine),
-			_serializationForm(SERIALIZATION::JSON)
+			_scriptingEngine(scriptingEngine)
 		{
 			_execStatus = ExecStatus::CONTINUE;
 			_game = new Game();
@@ -42,7 +41,7 @@ namespace NLE
 				std::wstring path = TLS::strConverter.local().from_bytes(data.name);
 
 				_file->readAsync(path + L".nlegame", [=](std::vector<char>* data) {
-					Game* game = _serializer.deserialize<Game>(data, _serializationForm);
+					Game* game = _serializer.deserialize<Game>(data);
 					delete data;
 					COMMAND::Data updateData;
 					updateData.game = game;
@@ -71,7 +70,7 @@ namespace NLE
 				std::wstring path = TLS::strConverter.local().from_bytes(data.name);
 
 				_file->readAsync(path + L".nlescene", [=](std::vector<char>* data) {
-					Scene* scene = _serializer.deserialize<Scene>(data, _serializationForm);
+					Scene* scene = _serializer.deserialize<Scene>(data);
 					delete data;
 					COMMAND::Data updateData;
 					updateData.scene = scene;
@@ -95,7 +94,7 @@ namespace NLE
 			});
 
 			_commandBuffer.addFunction(COMMAND::SAVE_GAME, [&](COMMAND::Data data) {
-				auto* gameData = _serializer.serialize<Game>(data.game, _serializationForm);
+				auto* gameData = _serializer.serialize<Game>(data.game);
 
 				_file->writeAsync(data.game->getName() + L".nlegame", gameData, [=](std::vector<char>* serializedData) {
 					delete serializedData;
@@ -108,7 +107,7 @@ namespace NLE
 			});
 
 			_commandBuffer.addFunction(COMMAND::SAVE_SCENE, [&](COMMAND::Data data) {
-				auto* sceneData = _serializer.serialize<Scene>(data.scene, _serializationForm);
+				auto* sceneData = _serializer.serialize<Scene>(data.scene);
 
 				_file->writeAsync(data.scene->getName() + L".nlescene", sceneData, [=](std::vector<char>* serializedData) {
 					delete serializedData;
@@ -132,7 +131,7 @@ namespace NLE
 				std::wstring path = TLS::strConverter.local().from_bytes(data.name);
 
 				_file->readAsync(path + L".nleobject", [=](std::vector<char>* data) {
-					GameObject* object = _serializer.deserialize<GameObject>(data, _serializationForm);
+					GameObject* object = _serializer.deserialize<GameObject>(data);
 					delete data;
 					COMMAND::Data updateData;
 					updateData.gameObject = object;
@@ -144,7 +143,7 @@ namespace NLE
 			});
 
 			_commandBuffer.addFunction(COMMAND::SAVE_OBJECT, [&](COMMAND::Data data) {
-				auto* objectData = _serializer.serialize<GameObject>(data.gameObject, _serializationForm);
+				auto* objectData = _serializer.serialize<GameObject>(data.gameObject);
 
 				_file->writeAsync(data.scene->getName() + L".nleobject", objectData, [=](std::vector<char>* serializedData) {
 					delete serializedData;

@@ -462,22 +462,21 @@ namespace NLE
 		}
 
 
-		bool D3D11Utility::loadVertexShader(ID3D11Device* device, std::wstring path, ID3D11VertexShader*& vertexShader)
+		bool D3D11Utility::loadVertexShader(ID3D11Device* device, std::wstring path, RESOURCES::VertexShader& vertexShader)
 		{
 			HRESULT hr;
 			//Load vertex shader from file
 			std::wstring source(L".hlsl");
 			std::wstring binary(L".cso");
 
-			ID3DBlob* blob;
 			bool result;
 			if (path.rfind(source) != std::string::npos)
 			{
-				result = compileBlobFromFile(path, "VSMain", "vs_5_0", blob);
+				result = compileBlobFromFile(path, "VSMain", "vs_5_0", vertexShader.blob);
 			}
 			else if (path.rfind(binary) != std::string::npos)
 			{
-				result = loadBlobFromFile(path, blob);
+				result = loadBlobFromFile(path, vertexShader.blob);
 			}
 			else
 			{
@@ -492,7 +491,7 @@ namespace NLE
 			}
 
 			//Create Vertex Shader
-			hr = device->CreateVertexShader(blob->GetBufferPointer(), blob->GetBufferSize(), NULL, &vertexShader);
+			hr = device->CreateVertexShader(vertexShader.blob->GetBufferPointer(), vertexShader.blob->GetBufferSize(), NULL, &vertexShader.apiVertexShader);
 			if (FAILED(hr))
 			{
 				//CONSOLE::out(CONSOLE::ERR, L"Failed to create Vertex Shader");
@@ -502,7 +501,7 @@ namespace NLE
 			return true;
 		}
 
-		bool D3D11Utility::loadPixelShader(ID3D11Device* device, std::wstring path, ID3D11PixelShader*& pixelShader)
+		bool D3D11Utility::loadPixelShader(ID3D11Device* device, std::wstring path, RESOURCES::PixelShader& pixelShader)
 		{
 			HRESULT hr;
 
@@ -510,15 +509,14 @@ namespace NLE
 			std::wstring source(L".hlsl");
 			std::wstring binary(L".cso");
 
-			ID3DBlob* blob;
 			bool result;
 			if (path.rfind(source) != std::string::npos)
 			{
-				result = compileBlobFromFile(path, "PSMain", "ps_5_0", blob);
+				result = compileBlobFromFile(path, "PSMain", "ps_5_0", pixelShader.blob);
 			}
 			else if (path.rfind(binary) != std::string::npos)
 			{
-				result = loadBlobFromFile(path, blob);
+				result = loadBlobFromFile(path, pixelShader.blob);
 			}
 			else
 			{
@@ -534,7 +532,7 @@ namespace NLE
 
 			//Create Pixel Shader
 			ID3D11PixelShader* ps = NULL;
-			hr = device->CreatePixelShader(blob->GetBufferPointer(), blob->GetBufferSize(), NULL, &pixelShader);
+			hr = device->CreatePixelShader(pixelShader.blob->GetBufferPointer(), pixelShader.blob->GetBufferSize(), NULL, &pixelShader.apiPixelShader);
 			if (FAILED(hr))
 			{
 				//CONSOLE::out(CONSOLE::ERR, L"Failed to create Pixel Shader");

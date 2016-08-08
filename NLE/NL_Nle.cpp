@@ -36,7 +36,7 @@ namespace NLE
 			TASK::ITaskScheduler* taskScheduler = new TASK::TBBTaskScheduler();
 			CONSOLE::IConsoleQueue* consoleQueue = CONSOLE::GLOBAL_CONSOLE_QUEUE;
 			IO::IFileIOManager* fileIOManager = new IO::FileIOManager(consoleQueue, taskScheduler);
-			SERIALIZATION::Serializer* serializer = new SERIALIZATION::Serializer();
+			SERIALIZATION::ISerializer* serializer = new SERIALIZATION::CerealSerializer(SERIALIZATION::JSON);
 			//RESOURCE::ResourceManager* resourceManager = new RESOURCE::ResourceManager(*fileIOManager);
 			EngineServices* engineServices = new EngineServices(consoleQueue, taskScheduler);
 			DataManager* dataManager = new DataManager();

@@ -64,8 +64,8 @@ namespace NLE
 				return false;
 			if (!D3D11Utility::createDepthStencilView(_d3dDevice, screenResolution.width, screenResolution.height, _depthStencilView))
 				return false;
-			if (!D3D11Utility::loadVertexShader(_d3dDevice, L"Forward_VS.hlsl", _vertexShader))
-				return false;
+			//if (!D3D11Utility::loadVertexShader(_d3dDevice, L"Forward_VS.hlsl", _vertexShader))
+			//	return false;
 			/*if (!D3D11Utility::createInputLayout(_d3dDevice, forwardPosNormTextDesc, ARRAYSIZE(forwardPosNormTextDesc), _vertexShader, _inputLayout))
 				return false;
 			if (!D3D11Utility::createRasterizerState(_d3dDevice, D3D11_CULL_BACK, D3D11_FILL_SOLID, _backFaceCull))
