@@ -128,8 +128,8 @@ namespace NLE
 				ID3D11RasterizerState*& rasterizerState
 				);
 				
-			static bool loadVertexShader(ID3D11Device* device, std::wstring path, RESOURCES::VertexShader& vertexShader);
-			static bool loadPixelShader(ID3D11Device* device, std::wstring path, RESOURCES::PixelShader& pixelShader);
+			static bool loadVertexShader(ID3D11Device* device, std::wstring path, ID3D11VertexShader*& vertexShader);
+			static bool loadPixelShader(ID3D11Device* device, std::wstring path, ID3D11PixelShader*& pixelShader);
 			
 			static void setFullscreen(IDXGISwapChain*& swapChain, bool fullScreen);
 

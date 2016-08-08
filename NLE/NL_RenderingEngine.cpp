@@ -24,9 +24,9 @@ namespace NLE
 			delete _windowManager;
 		}
 
-		bool RenderingEngine::initialize()
+		bool RenderingEngine::initialize(Size2D screenResolution, bool fullscreen, bool decorated, std::wstring title)
 		{
-			if (!_windowManager->initialize(Size2D(1024, 768), false, true, L"NonLinear Engine"))
+			if (!_windowManager->initialize(screenResolution, fullscreen, decorated, title))
 				return false;
 			return true;
 		}
@@ -40,21 +40,6 @@ namespace NLE
 			//std::cout<< deltaT << std::endl;
 
 			data->out.renderingEngineTime = timer.deltaT();
-		}
-
-		void RenderingEngine::setWindowTitle(std::wstring title)
-		{
-			_windowManager->setTitle(title);
-		}
-
-		void RenderingEngine::setResolution(Size2D resolution)
-		{
-			_resolution = resolution;
-		}
-
-		void RenderingEngine::setFullscreen(bool fullscreen)
-		{
-			_fullscreen = fullscreen;
 		}
 	}
 }

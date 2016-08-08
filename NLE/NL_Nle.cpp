@@ -1,6 +1,12 @@
 #include "NL_GameManager.h"
 #include "NL_InputProcessor.h"
-#include "NL_RenderingEngine.h"
+
+#if defined (RENDERING_API_D3D11)
+	#include "NL_D3D11RenderingEngine.h"
+#else
+	#include "NL_RenderingEngine.h"
+#endif
+
 #include "NL_UiManager.h"
 #include "NL_ScriptingEngine.h"
 
@@ -36,13 +42,18 @@ namespace NLE
 			DataManager* dataManager = new DataManager();
 
 			INPUT::IInputProcessor* inputProcessor = new INPUT::InputProcessor(*engineServices);
+
+#if defined (RENDERING_API_D3D11)
+			GRAPHICS::IRenderingEngine* renderingEngine = new GRAPHICS::D3D11RenderingEngine(*engineServices);
+#else
 			GRAPHICS::IRenderingEngine* renderingEngine = new GRAPHICS::RenderingEngine(*engineServices);
+#endif
 			UI::IUiManager* uiManager = new UI::UiManager(*engineServices, consoleQueue);			
 			SCRIPT::IScriptingEngine* scriptingEngine = new SCRIPT::ScriptingEngine(*engineServices);	
 
 			if (!inputProcessor->initialize())
 				break;
-			if (!renderingEngine->initialize())
+			if (!renderingEngine->initialize(Size2D(1024, 768), false, true, L"NonLinear Engine"))
 				break;
 			if (!uiManager->initialize())
 				break;

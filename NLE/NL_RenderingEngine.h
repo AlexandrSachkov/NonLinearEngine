@@ -3,8 +3,6 @@
 
 #include "NL_IRenderingEngine.h"
 #include "NL_EngineServices.h"
-#include "NL_Timer.h"
-#include "NL_Thread.h"
 #include "NL_CommonTypes.h"
 
 #include "tbb/atomic.h"
@@ -17,10 +15,6 @@
 
 namespace NLE
 {
-	namespace WINDOW
-	{
-		class IWindowManager;
-	}
 	class IWindowManager;
 	namespace GRAPHICS
 	{
@@ -31,19 +25,12 @@ namespace NLE
 			RenderingEngine(EngineServices& eServices);
 			~RenderingEngine();
 
-			bool initialize();
+			bool initialize(Size2D screenResolution, bool fullscreen, bool decorated, std::wstring title);
 			void update(SystemServices* sServices, DataManager* data, double deltaT);
-
-			void setWindowTitle(std::wstring title);
-			void setResolution(Size2D resolution);
-			void setFullscreen(bool fullscreen);
 
 		private:	
 			EngineServices& _eServices;
 			IWindowManager* _windowManager;
-			Size2D _resolution;
-			bool _fullscreen;
-			bool _decorated;
 		};
 	}
 }

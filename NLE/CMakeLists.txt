@@ -20,15 +20,10 @@ IF(NLE_HOST_OS STREQUAL "")
 	MESSAGE(SEND_ERROR "Host Operating System must be specified")
 ENDIF(NLE_HOST_OS STREQUAL "")
 
-SET(NLE_TARGET_ARCHITECTURE CACHE STRING "Target Architecture. Choose: \n\n x86 \n x64")
-IF(NLE_TARGET_ARCHITECTURE STREQUAL "")
-	MESSAGE(SEND_ERROR "Target Architecture must be specified")
-ENDIF(NLE_TARGET_ARCHITECTURE STREQUAL "")
-
 # Rendering API Config
 SET(NLE_RENDERING_API CACHE STRING "Rendering API. Choose: \n\n D3D11 \n Vulkan")
 IF(NLE_RENDERING_API STREQUAL "")
-	MESSAGE(SEND_ERROR "Target Architecture must be specified")
+	MESSAGE(SEND_ERROR "Rendering API must be specified")
 ENDIF(NLE_RENDERING_API STREQUAL "")
 
 # =====================================================================================
@@ -44,10 +39,6 @@ SET(HEADERS
 	NL_CommandBuffer.h
 	NL_CommonTypes.h
 	NL_ConsoleQueue.h
-	NL_D3D11RenderingEngine.h
-	NL_D3D11RenderingResources.h
-	NL_D3D11Utility.h
-	NL_D3D11Utility.inl
 	NL_IConsoleQueue.h
 	NL_DataManager.h
 	NL_EngineServices.h
@@ -99,13 +90,12 @@ SET(HEADERS
 	NL_Uuid.h
 	NL_ResourceManager.cpp
 	NL_Thread.h
+	NL_IWindowManager.h
 	)
 
 SET(SOURCES 
 	NL_AssetImporter.cpp
 	NL_ConsoleQueue.cpp
-	NL_D3D11RenderingEngine.cpp
-	NL_D3D11Utility.cpp
 	NL_DataManager.cpp
 	NL_FileIOManager.cpp
 	NL_Game.cpp
@@ -134,6 +124,30 @@ SET(SOURCES
 	NL_UiManager.cpp	
 	NL_Thread.cpp
 	)
+
+SET (SHADERS
+)
+
+if(NLE_RENDERING_API STREQUAL "D3D11")
+	SET(HEADERS
+		${HEADERS}
+		NL_D3D11RenderingEngine.h
+		NL_D3D11RenderingResources.h
+		NL_D3D11Utility.h
+		NL_D3D11Utility.inl
+	)
+
+	SET(SOURCES 
+		${SOURCES}
+		NL_D3D11RenderingEngine.cpp
+		NL_D3D11Utility.cpp
+	)
+
+	SET (SHADERS
+		D3D11Shaders/Forward_VS.hlsl
+		D3D11Shaders/Forward_PS.hlsl
+	)
+ENDIF(NLE_RENDERING_API STREQUAL "D3D11")
 
 
 # TBB
@@ -349,11 +363,16 @@ IF(NLE_HOST_OS STREQUAL "Windows")
 	ADD_DEFINITIONS(
 	-D_CRT_SECURE_NO_WARNINGS
 	-D_SCL_SECURE_NO_WARNINGS
-	-DKTX_OPENGL
 	-D_WIN32_WINNT=0x0601
 	-DWINVER=0x0601
 	)
 ENDIF(NLE_HOST_OS STREQUAL "Windows")
+
+if(NLE_RENDERING_API STREQUAL "D3D11")
+	ADD_DEFINITIONS(
+		-DRENDERING_API_D3D11
+	)
+ENDIF(NLE_RENDERING_API STREQUAL "D3D11")
 
 LINK_DIRECTORIES(
 	${NLE_TBB_LIBRARY_DEBUG_PATH}
@@ -380,7 +399,7 @@ ENDIF(NLE_RENDERING_API STREQUAL "D3D11")
 add_executable (NLE
   ${HEADERS}
   ${SOURCES}
-  #${SHADERS}
+  ${SHADERS}
 )
 
 TARGET_LINK_LIBRARIES(NLE 
