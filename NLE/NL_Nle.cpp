@@ -19,7 +19,7 @@
 #include "NL_Globals.h"
 #include "NL_FileIOManager.h"
 #include "NL_ResourceManager.h"
-#include "NL_Serializer.h"
+#include "NL_ISerializer.h"
 
 #include <vector>
 #include <iostream>
