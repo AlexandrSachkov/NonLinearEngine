@@ -42,6 +42,7 @@ SET(HEADERS
 	NL_ConsoleQueue.h
 	NL_IConsoleQueue.h
 	NL_DataManager.h
+	NL_IDataManager.h
 	NL_EngineServices.h
 	NL_FileIOManager.h
 	NL_IFileIOManager.h
@@ -74,10 +75,11 @@ SET(HEADERS
 	NL_ScriptingContext.h
 	NL_ScriptingEngine.h
 	NL_IScriptingEngine.h	
-	NL_ISerializable.h
 	NL_Serializer.h
 	NL_ISerializer.h
 	NL_SharedData.h
+	NL_SharedEntry.h
+	NL_ISharedEntity.h
 	NL_ISystem.h
 	NL_SystemServices.h
 	NL_Task.h
@@ -119,6 +121,7 @@ SET(SOURCES
 	NL_ScriptingComponent.cpp
 	NL_ScriptingContext.cpp
 	NL_ScriptingEngine.cpp
+	NL_SharedData.cpp
 	NL_Task.cpp
 	NL_TextureLoader.cpp
 	NL_TBBTaskScheduler.cpp
@@ -344,6 +347,15 @@ if(NLE_RENDERING_API STREQUAL "D3D11")
 ENDIF(NLE_RENDERING_API STREQUAL "D3D11")
 
 
+#lua-intf
+SET(NLE_IMGUI_INCLUDE_PATH
+	"" CACHE PATH "NLE IMGUI include path")
+
+IF(NLE_IMGUI_INCLUDE_PATH STREQUAL "")
+	MESSAGE(SEND_ERROR "NLE IMGUI include path must be specified")
+ENDIF(NLE_IMGUI_INCLUDE_PATH STREQUAL "")
+
+
 INCLUDE_DIRECTORIES(
 	${NLE_TBB_INCLUDE_PATH}
 	${NLE_LUA_INCLUDE_PATH}
@@ -354,6 +366,7 @@ INCLUDE_DIRECTORIES(
 	${NLE_CEREAL_INCLUDE_PATH}
 	${NLE_LZ4_INCLUDE_PATH}
 	${NLE_LUA_INTF_INCLUDE_PATH}
+	${NLE_IMGUI_INCLUDE_PATH}
 	)
 
 if(NLE_RENDERING_API STREQUAL "D3D11")

@@ -9,9 +9,12 @@ namespace NLE
 	class Atomic
 	{
 	public:
-		Atomic(T data)
+		Atomic()
 		{
-			_data = data;
+		}
+
+		Atomic(T data) : _data(data)
+		{
 		}
 
 		T& acquire()
@@ -30,7 +33,7 @@ namespace NLE
 			return _data;
 		}
 
-		void set(T& data)
+		void set(T data)
 		{
 			_lock.lock();
 			_data = data;

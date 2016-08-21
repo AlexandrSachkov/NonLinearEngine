@@ -23,11 +23,13 @@ namespace NLE
 			void dispatchTasks();
 			void notifyOfCompletion();
 			void waitOnTasks();
+			unsigned int getNumThreads();
 
 		private:
 			void runProcedure(std::function<void()>& procedure, TaskPriority priority);
 
 			tbb::task_scheduler_init _scheduler;
+			const unsigned int _numThreads;
 			tbb::concurrent_queue<std::pair<std::function<void()>, TaskPriority>> _tasks;
 			tbb::atomic<unsigned int> _runningTasks;
 		};

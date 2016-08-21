@@ -1,6 +1,7 @@
 #include "NL_D3D11RenderingEngine.h"
 #include "NL_GlfwWindowManager.h"
 #include "NL_ThreadLocal.h"
+#include "NL_EngineServices.h"
 #include "NL_D3D11Utility.h"
 
 #include <Windows.h>
@@ -113,7 +114,7 @@ namespace NLE
 			return true;
 		}
 
-		void D3D11RenderingEngine::update(SystemServices* sServices, DataManager* data, double deltaT)
+		void D3D11RenderingEngine::update(SystemServices* sServices, double deltaT)
 		{
 			NLE::TLS::PerformanceTimer::reference timer = NLE::TLS::performanceTimer.local();
 			timer.deltaT();
@@ -121,7 +122,7 @@ namespace NLE
 			_windowManager->pollEvents();
 			//std::cout<< deltaT << std::endl;
 
-			data->out.renderingEngineTime = timer.deltaT();
+			//data->out.renderingEngineTime = timer.deltaT();
 		}
 	}
 }

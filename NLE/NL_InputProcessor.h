@@ -2,13 +2,13 @@
 #define NL_INPUT_PROCESSOR_H_
 
 #include "NL_IInputProcessor.h"
-#include "NL_EngineServices.h"
 
 #include "tbb\atomic.h"
 #include "NL_Atomic.h"
 
 namespace NLE
 {
+	class EngineServices;
 	namespace INPUT
 	{
 		class InputProcessor : public IInputProcessor
@@ -18,7 +18,7 @@ namespace NLE
 			~InputProcessor();
 			bool initialize();
 
-			void update(SystemServices* sServices, DataManager* data, double deltaT);
+			void update(SystemServices* sServices, double deltaT);
 
 			void queueEvent(INPUT::Event& event);
 			void enableTextInput(bool enable);

@@ -38,18 +38,18 @@ namespace NLE
 			IO::IFileIOManager* fileIOManager = new IO::FileIOManager(consoleQueue, taskScheduler);
 			SERIALIZATION::ISerializer* serializer = new SERIALIZATION::CerealSerializer(SERIALIZATION::JSON);
 			//RESOURCE::ResourceManager* resourceManager = new RESOURCE::ResourceManager(*fileIOManager);
-			EngineServices* engineServices = new EngineServices(consoleQueue, taskScheduler);
-			DataManager* dataManager = new DataManager();
+			DATA::IDataManager* dataManager = new DATA::DataManager();
+			EngineServices engineServices(consoleQueue, taskScheduler, dataManager);
 
-			INPUT::IInputProcessor* inputProcessor = new INPUT::InputProcessor(*engineServices);
+			INPUT::IInputProcessor* inputProcessor = new INPUT::InputProcessor(engineServices);
 
 #if defined (RENDERING_API_D3D11)
-			GRAPHICS::IRenderingEngine* renderingEngine = new GRAPHICS::D3D11RenderingEngine(*engineServices);
+			GRAPHICS::IRenderingEngine* renderingEngine = new GRAPHICS::D3D11RenderingEngine(engineServices);
 #else
-			GRAPHICS::IRenderingEngine* renderingEngine = new GRAPHICS::RenderingEngine(*engineServices);
+			GRAPHICS::IRenderingEngine* renderingEngine = new GRAPHICS::RenderingEngine(engineServices);
 #endif
-			UI::IUiManager* uiManager = new UI::UiManager(*engineServices, consoleQueue);			
-			SCRIPT::IScriptingEngine* scriptingEngine = new SCRIPT::ScriptingEngine(*engineServices);	
+			UI::IUiManager* uiManager = new UI::UiManager(engineServices, consoleQueue);			
+			SCRIPT::IScriptingEngine* scriptingEngine = new SCRIPT::ScriptingEngine(engineServices);	
 
 			if (!inputProcessor->initialize())
 				break;
@@ -61,7 +61,7 @@ namespace NLE
 				break;
 
 			GAME::IGameManager* gameManager = new GAME::GameManager(
-				*engineServices, fileIOManager, *serializer, renderingEngine, uiManager, scriptingEngine);
+				engineServices, fileIOManager, *serializer, renderingEngine, uiManager, scriptingEngine);
 			SystemServices* systemServices = new SystemServices(
 				gameManager, inputProcessor, renderingEngine, uiManager, scriptingEngine);
 
@@ -75,8 +75,10 @@ namespace NLE
 
 			do
 			{
-				inputProcessor->update(systemServices, dataManager, inputTimer.deltaT());
-				gameManager->update(systemServices, dataManager, gameTimer.deltaT());
+				inputProcessor->update(systemServices, inputTimer.deltaT());
+				dataManager->syncData(taskScheduler->getNumThreads());
+				gameManager->update(systemServices, gameTimer.deltaT());
+				dataManager->syncData(taskScheduler->getNumThreads());
 
 				double systemTime = systemsTimer.deltaT();
 				tbb::parallel_for(
@@ -85,11 +87,11 @@ namespace NLE
 				{
 					for (uint_fast32_t i = (uint_fast32_t)r.begin(); i < r.end(); ++i)
 					{
-						parallelSystems[i]->update(systemServices, dataManager, systemTime);
+						parallelSystems[i]->update(systemServices, systemTime);
 					}
 				});
 
-				dataManager->update();
+				dataManager->syncData(taskScheduler->getNumThreads());
 				taskScheduler->dispatchTasks();
 
 				execStatus = gameManager->getExecutionStatus();
@@ -105,7 +107,6 @@ namespace NLE
 			delete inputProcessor;
 			
 			delete dataManager;
-			delete engineServices;
 			//delete resourceManager;
 			delete serializer;
 			delete fileIOManager;

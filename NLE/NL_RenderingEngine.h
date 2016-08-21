@@ -2,7 +2,6 @@
 #define NL_RENDERING_ENGINE_H_
 
 #include "NL_IRenderingEngine.h"
-#include "NL_EngineServices.h"
 #include "NL_CommonTypes.h"
 
 #include "tbb/atomic.h"
@@ -15,6 +14,7 @@
 
 namespace NLE
 {
+	class EngineServices;
 	class IWindowManager;
 	namespace GRAPHICS
 	{
@@ -26,7 +26,7 @@ namespace NLE
 			~RenderingEngine();
 
 			bool initialize(Size2D screenResolution, bool fullscreen, bool decorated, std::wstring title);
-			void update(SystemServices* sServices, DataManager* data, double deltaT);
+			void update(SystemServices* sServices, double deltaT);
 
 		private:	
 			EngineServices& _eServices;

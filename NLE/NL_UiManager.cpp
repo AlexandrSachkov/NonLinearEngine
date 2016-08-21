@@ -1,5 +1,6 @@
 #include "NL_UiManager.h"
 #include "NL_ThreadLocal.h"
+#include "NL_EngineServices.h"
 
 #include <assert.h>
 #include <string>
@@ -24,7 +25,7 @@ namespace NLE
 			return true;
 		}
 
-		void UiManager::update(SystemServices* sServices, DataManager* data, double deltaT)
+		void UiManager::update(SystemServices* sServices, double deltaT)
 		{
 			NLE::TLS::PerformanceTimer::reference timer = NLE::TLS::performanceTimer.local();
 			timer.deltaT();
@@ -35,7 +36,7 @@ namespace NLE
 				std::wcout << consoleEntry.second << std::endl;
 			}
 
-			data->out.uiManagerTime = timer.deltaT();
+			//data->out.uiManagerTime = timer.deltaT();
 		}
 	}
 }

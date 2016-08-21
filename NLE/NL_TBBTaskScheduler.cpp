@@ -5,13 +5,15 @@ namespace NLE
 	namespace TASK
 	{
 		TBBTaskScheduler::TBBTaskScheduler() :
-			_scheduler(tbb::task_scheduler_init::default_num_threads())
+			_scheduler(tbb::task_scheduler_init::default_num_threads()),
+			_numThreads(tbb::task_scheduler_init::default_num_threads())
 		{
 			_runningTasks.store(0);
 		}
 
 		TBBTaskScheduler::TBBTaskScheduler(unsigned int numThreads) :
-			_scheduler(numThreads)
+			_scheduler(numThreads),
+			_numThreads(numThreads)
 		{
 			_runningTasks.store(0);
 		}
@@ -54,6 +56,11 @@ namespace NLE
 			while (_runningTasks != 0)
 			{
 			}
+		}
+
+		unsigned int TBBTaskScheduler::getNumThreads()
+		{
+			return _numThreads;
 		}
 	}
 

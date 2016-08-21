@@ -7,6 +7,7 @@
 #include "NL_Scene.h"
 #include "NL_ThreadLocal.h"
 #include "NL_GameObject.h"
+#include "NL_EngineServices.h"
 
 #include <fstream>
 
@@ -161,7 +162,7 @@ namespace NLE
 		{
 		}
 
-		void GameManager::update(SystemServices* sServices, DataManager* data, double deltaT)
+		void GameManager::update(SystemServices* sServices, double deltaT)
 		{
 			_commandBuffer.processCommands();
 		}

@@ -2,7 +2,6 @@
 #define NL_D3D11_RenderingEngine_
 
 #include "NL_IRenderingEngine.h"
-#include "NL_EngineServices.h"
 
 
 struct ID3D11Device;
@@ -20,6 +19,7 @@ struct ID3D11PixelShader;
 namespace NLE
 {
 	class IWindowManager;
+	class EngineServices;
 	namespace GRAPHICS
 	{
 		class D3D11RenderingEngine : public IRenderingEngine
@@ -29,7 +29,7 @@ namespace NLE
 			~D3D11RenderingEngine();
 
 			bool initialize(Size2D screenResolution, bool fullscreen, bool decorated, std::wstring title);
-			void update(SystemServices* sServices, DataManager* data, double deltaT);
+			void update(SystemServices* sServices, double deltaT);
 
 		private:
 			EngineServices& _eServices;

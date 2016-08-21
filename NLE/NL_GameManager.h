@@ -2,7 +2,6 @@
 #define NL_GAME_MANAGER_H_
 
 #include "NL_IGameManager.h"
-#include "NL_EngineServices.h"
 #include "NL_ISerializer.h"
 #include "NL_CommandBuffer.h"
 
@@ -10,6 +9,7 @@
 
 namespace NLE
 {
+	class EngineServices;
 	namespace GRAPHICS
 	{
 		class IRenderingEngine;
@@ -42,7 +42,7 @@ namespace NLE
 				SCRIPT::IScriptingEngine* const scriptingEngine);
 			~GameManager();
 
-			void update(SystemServices* sServices, DataManager* data, double deltaT);
+			void update(SystemServices* sServices, double deltaT);
 			void queueCommand(COMMAND::Type type, COMMAND::Data data);
 			ExecStatus getExecutionStatus();
 

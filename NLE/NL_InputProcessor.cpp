@@ -3,6 +3,8 @@
 #include "NL_Globals.h"
 #include "NL_ThreadLocal.h"
 #include "NL_SystemServices.h"
+#include "NL_IDataManager.h"
+#include "NL_EngineServices.h"
 
 #include <assert.h>
 
@@ -27,7 +29,7 @@ namespace NLE
 			return true;
 		}
 
-		void InputProcessor::update(SystemServices* sServices, DataManager* data, double deltaT)
+		void InputProcessor::update(SystemServices* sServices, double deltaT)
 		{
 			if (!_enableInputProcessing)
 				return;
@@ -62,8 +64,6 @@ namespace NLE
 					break;
 				}
 			}
-
-			data->out.inputProcessorTime = timer.deltaT();
 		}
 
 		void InputProcessor::queueEvent(INPUT::Event& event)

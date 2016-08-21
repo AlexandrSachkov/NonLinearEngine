@@ -4,6 +4,7 @@
 #include "NL_IConsoleQueue.h"
 #include "NL_ITaskScheduler.h"
 #include "NL_IResourceManager.h"
+#include "NL_IDataManager.h"
 
 namespace NLE
 {
@@ -12,10 +13,12 @@ namespace NLE
 	public:
 		EngineServices(
 			CONSOLE::IConsoleQueue_EService* console, 
-			TASK::ITaskScheduler_EService* task
+			TASK::ITaskScheduler_EService* task,
+			DATA::IDataManager* data
 			) :
 			console(console),
-			task(task)
+			task(task),
+			data(data)
 		{
 		}
 
@@ -25,6 +28,7 @@ namespace NLE
 
 		CONSOLE::IConsoleQueue_EService* const console;
 		TASK::ITaskScheduler_EService* const task;
+		DATA::IDataManager* const data;
 	};
 }
 

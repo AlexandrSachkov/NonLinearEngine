@@ -1,5 +1,7 @@
 #include "NL_ScriptingEngine.h"
 #include "NL_ThreadLocal.h"
+#include "NL_EngineServices.h"
+#include "NL_SharedData.h"
 
 namespace NLE
 {
@@ -21,12 +23,16 @@ namespace NLE
 			return true;
 		}
 
-		void ScriptingEngine::update(SystemServices* sServices, DataManager* data, double deltaT)
+		void ScriptingEngine::update(SystemServices* sServices, double deltaT)
 		{
 			NLE::TLS::PerformanceTimer::reference timer = NLE::TLS::performanceTimer.local();
 			timer.deltaT();
 
-			data->out.scriptingEngineTime = timer.deltaT();
+			int myNum = _eServices.data->getData().testInt.get();
+			_eServices.console->push(CONSOLE::DEBUG, "My Number is: " + std::to_string(myNum));
+			_eServices.data->getData().testInt.requestUpdate(myNum + 1);
+
+			//data->out.scriptingEngineTime = timer.deltaT();
 		}
 	}
 }

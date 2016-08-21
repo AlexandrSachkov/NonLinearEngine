@@ -2,20 +2,13 @@
 #define NL_UI_MANAGER_H_
 
 #include "NL_IUiManager.h"
-#include "NL_EngineServices.h"
 #include "NL_ConsoleQueue.h"
 
 #include "tbb\concurrent_queue.h"
 
 namespace NLE
 {
-	namespace Core
-	{
-		class IEngine;
-		class ISystem;
-		struct SysInitializer;
-	}
-
+	class EngineServices;
 	namespace UI
 	{
 		class UiManager : public IUiManager
@@ -25,7 +18,7 @@ namespace NLE
 			~UiManager();
 
 			bool initialize();
-			void update(SystemServices* sServices, DataManager* data, double deltaT);
+			void update(SystemServices* sServices, double deltaT);
 
 		private:			
 			EngineServices& _eServices;

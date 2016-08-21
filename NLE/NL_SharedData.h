@@ -1,28 +1,22 @@
 #ifndef NL_SHARED_DATA_H_
 #define NL_SHARED_DATA_H_
 
+#include "NL_SharedEntry.h"
+
 namespace NLE
 {
-	class SharedData
+	namespace DATA
 	{
-	public:
-		SharedData()
+		class IDataManager_Data;
+		class SharedData
 		{
-			inputProcessorTime = 0;
-			renderingEngineTime = 0;
-			uiManagerTime = 0;
-			scriptingEngineTime = 0;
-		}
+		public:
+			SharedData(IDataManager_Data& dataManager);
+			~SharedData();
 
-		~SharedData()
-		{
-		}
-
-		double inputProcessorTime;
-		double renderingEngineTime;
-		double uiManagerTime;
-		double scriptingEngineTime;
-	};
+			SharedEntry<int> testInt;
+		};
+	}
 }
 
 #endif

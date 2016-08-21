@@ -4,6 +4,7 @@
 #include "NL_IInputProcessor.h"
 #include "NL_ThreadLocal.h"
 #include "NL_GlfwWindowManager.h"
+#include "NL_EngineServices.h"
 
 #include <iostream>
 
@@ -25,13 +26,13 @@ namespace NLE
 		}
 
 		bool RenderingEngine::initialize(Size2D screenResolution, bool fullscreen, bool decorated, std::wstring title)
-		{
+		{				
 			if (!_windowManager->initialize(screenResolution, fullscreen, decorated, title))
 				return false;
 			return true;
 		}
 
-		void RenderingEngine::update(SystemServices* sServices, DataManager* data, double deltaT)
+		void RenderingEngine::update(SystemServices* sServices, double deltaT)
 		{
 			NLE::TLS::PerformanceTimer::reference timer = NLE::TLS::performanceTimer.local();
 			timer.deltaT();
@@ -39,7 +40,7 @@ namespace NLE
 			_windowManager->pollEvents();
 			//std::cout<< deltaT << std::endl;
 
-			data->out.renderingEngineTime = timer.deltaT();
+			//data->out.renderingEngineTime = timer.deltaT();
 		}
 	}
 }

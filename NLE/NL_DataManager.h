@@ -1,21 +1,29 @@
 #ifndef NL_DATA_MANAGER_H_
 #define NL_DATA_MANAGER_H_
 
+#include "NL_IDataManager.h"
 #include "NL_SharedData.h"
+#include "tbb/concurrent_vector.h"
 
 namespace NLE
 {
-	class DataManager
+	namespace DATA
 	{
-	public:
-		DataManager();
-		~DataManager();
+		class DataManager : public IDataManager
+		{
+		public:
+			DataManager();
+			~DataManager();
 
-		void update();
+			void syncData(unsigned int numThreads);
+			void requestSync(ISharedEntity* entity);
+			SharedData& getData();
 
-		SharedData in;
-		SharedData out;
-	};
+		private:
+			SharedData _data;
+			tbb::concurrent_vector<ISharedEntity*> _entitiesToSync;
+		};
+	}
 }
 
 #endif

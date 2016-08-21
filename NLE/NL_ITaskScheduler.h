@@ -19,6 +19,7 @@ namespace NLE
 		{
 		public:
 			virtual void queueProcedure(std::function<void()> procedure, TaskPriority priority) = 0;
+			virtual unsigned int getNumThreads() = 0;
 		};
 
 		class ITaskScheduler : public ITaskScheduler_EService
