@@ -2,8 +2,9 @@
 #define NL_SHARED_ENTRY_H_
 
 #include "NL_ISharedEntity.h"
-#include "NL_Atomic.h"
 #include "NL_IDataManager.h"
+
+#include "tbb/spin_mutex.h"
 
 namespace NLE
 {
@@ -16,7 +17,6 @@ namespace NLE
 			SharedEntry(IDataManager_Data& dataManager) : 
 				_dataManager(dataManager),
 				_updated(false)
-
 			{
 			}
 
@@ -39,44 +39,28 @@ namespace NLE
 
 			void set(T value)
 			{
-				_destination.set(value);
-				requestSync();
-			}
-
-			T& acquire()
-			{
-				return _destination.acquire();
-			}
-
-			void release()
-			{
-				_destination.release();
-				requestSync();
+				_updateLock.lock();
+				_destination = value;
+				if (!_updated)
+				{
+					_updated = true;
+					_dataManager.requestSync(this);
+				}
+				_updateLock.unlock();
 			}
 
 			void sync()
 			{
-				_source = _destination.get();
-				_updated.set(false);
+				_source = _destination;
+				_updated = false;
 			}
 
 		private:
-			void requestSync()
-			{
-				bool updated = _updated.acquire();
-				if (!updated)
-				{
-					updated = true;
-					_dataManager.requestSync(this);
-				}
-				_updated.release();
-			}
-
-
+			tbb::spin_mutex _updateLock;
 			IDataManager_Data& _dataManager;
 			T _source;
-			Atomic<T> _destination;
-			Atomic<bool> _updated;
+			T _destination;
+			bool _updated;
 		};
 	}
 }

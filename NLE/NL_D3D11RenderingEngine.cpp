@@ -3,6 +3,7 @@
 #include "NL_ThreadLocal.h"
 #include "NL_EngineServices.h"
 #include "NL_D3D11Utility.h"
+#include "NL_SharedData.h"
 
 #include <Windows.h>
 #include <d3d11.h>
@@ -120,9 +121,9 @@ namespace NLE
 			timer.deltaT();
 
 			_windowManager->pollEvents();
-			//std::cout<< deltaT << std::endl;
-
-			//data->out.renderingEngineTime = timer.deltaT();
+			
+			DATA::SharedData& data = _eServices.data->getData();
+			data.sysExecutionTimes.set(RENDERING_ENGINE, timer.deltaT());
 		}
 	}
 }

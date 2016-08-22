@@ -5,6 +5,7 @@
 #include "NL_ThreadLocal.h"
 #include "NL_GlfwWindowManager.h"
 #include "NL_EngineServices.h"
+#include "NL_SharedData.h"
 
 #include <iostream>
 
@@ -38,9 +39,9 @@ namespace NLE
 			timer.deltaT();
 
 			_windowManager->pollEvents();
-			//std::cout<< deltaT << std::endl;
-
-			//data->out.renderingEngineTime = timer.deltaT();
+			
+			DATA::SharedData& data = _eServices.data->getData();
+			//data.sysExecutionTimes[RENDERING_ENGINE].set(timer.deltaT());
 		}
 	}
 }

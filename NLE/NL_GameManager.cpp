@@ -8,6 +8,7 @@
 #include "NL_ThreadLocal.h"
 #include "NL_GameObject.h"
 #include "NL_EngineServices.h"
+#include "NL_SharedData.h"
 
 #include <fstream>
 
@@ -164,7 +165,13 @@ namespace NLE
 
 		void GameManager::update(SystemServices* sServices, double deltaT)
 		{
+			NLE::TLS::PerformanceTimer::reference timer = NLE::TLS::performanceTimer.local();
+			timer.deltaT();
+
 			_commandBuffer.processCommands();
+
+			DATA::SharedData& data = _eServices.data->getData();
+			data.sysExecutionTimes.set(GAME_MANAGER, timer.deltaT());
 		}
 
 		void GameManager::queueCommand(COMMAND::Type type, COMMAND::Data data)

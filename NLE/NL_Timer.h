@@ -21,7 +21,7 @@ namespace NLE
 		double deltaT()
 		{
 			auto time = std::chrono::high_resolution_clock::now();
-			double deltaT = std::chrono::duration_cast<std::chrono::duration<double>>(time - _previousTime).count() * 0.000000001;
+			double deltaT = std::chrono::duration_cast<std::chrono::duration<double>>(time - _previousTime).count() * 1000000000;
 			_previousTime = time;
 			return deltaT;
 		}

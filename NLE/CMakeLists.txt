@@ -77,6 +77,7 @@ SET(HEADERS
 	NL_IScriptingEngine.h	
 	NL_Serializer.h
 	NL_ISerializer.h
+	NL_SharedArray.h
 	NL_SharedData.h
 	NL_SharedEntry.h
 	NL_ISharedEntity.h

@@ -6,7 +6,7 @@ namespace NLE
 	namespace DATA
 	{
 		SharedData::SharedData(IDataManager_Data& dataManager) :
-			testInt(dataManager, 5)
+			sysExecutionTimes(dataManager, NUM_SYSTEMS, 0)
 		{
 		}
 

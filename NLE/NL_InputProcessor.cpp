@@ -5,6 +5,7 @@
 #include "NL_SystemServices.h"
 #include "NL_IDataManager.h"
 #include "NL_EngineServices.h"
+#include "NL_SharedData.h"
 
 #include <assert.h>
 
@@ -33,6 +34,8 @@ namespace NLE
 		{
 			if (!_enableInputProcessing)
 				return;
+
+			DATA::SharedData& data = _eServices.data->getData();
 
 			NLE::TLS::PerformanceTimer::reference timer = NLE::TLS::performanceTimer.local();
 			timer.deltaT();
@@ -64,6 +67,8 @@ namespace NLE
 					break;
 				}
 			}
+
+			data.sysExecutionTimes.set(INPUT_PROCESSOR, timer.deltaT());
 		}
 
 		void InputProcessor::queueEvent(INPUT::Event& event)
