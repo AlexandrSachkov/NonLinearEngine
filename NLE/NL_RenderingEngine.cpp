@@ -41,7 +41,7 @@ namespace NLE
 			_windowManager->pollEvents();
 			
 			DATA::SharedData& data = _eServices.data->getData();
-			//data.sysExecutionTimes[RENDERING_ENGINE].set(timer.deltaT());
+			data.sysExecutionTimes.set(RENDERING_ENGINE, timer.deltaT());
 		}
 	}
 }
