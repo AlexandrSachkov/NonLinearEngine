@@ -162,7 +162,9 @@ namespace NLE
 			KEY_RIGHT_CONTROL,
 			KEY_RIGHT_ALT,
 			KEY_RIGHT_SUPER,
-			KEY_MENU
+			KEY_MENU,
+
+			NUM_KEYS
 		};
 
 		enum MOUSE
@@ -175,7 +177,9 @@ namespace NLE
 			MOUSE_BUTTON_5,
 			MOUSE_BUTTON_6,
 			MOUSE_BUTTON_7,
-			MOUSE_BUTTON_8
+			MOUSE_BUTTON_8,
+
+			NUM_MOUSE_BUTTONS
 		};
 
 		enum MOD
@@ -184,7 +188,9 @@ namespace NLE
 			KEY_MOD_ALT = 0x0001,
 			KEY_MOD_CONTROL = 0x0002,
 			KEY_MOD_SHIFT = 0x0004,
-			MOD_SUPER = 0x0008
+			MOD_SUPER = 0x0008,
+
+			NUM_KEY_MODS
 		};
 
 		enum ACTION
@@ -192,7 +198,9 @@ namespace NLE
 			ACTION_UNKNOWN,
 			ACTION_PRESS,
 			ACTION_RELEASE,
-			ACTION_REPEAT
+			ACTION_REPEAT,
+
+			NUM_ACTIONS
 		};
 
 		/////////////////////////////////////////////////

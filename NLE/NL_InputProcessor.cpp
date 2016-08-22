@@ -46,17 +46,46 @@ namespace NLE
 				switch (event.eventType)
 				{
 				case EVENT_TYPE::EVENT_KEY:
+					data.keysPressed.set(
+						event.eventData.keyEvent.key,
+						event.eventData.keyEvent.action == ACTION::ACTION_PRESS ? 1 : 0
+						);
+					data.keyModsPressed.set(
+						event.eventData.keyEvent.mods,
+						event.eventData.keyEvent.action == ACTION::ACTION_PRESS ? 1 : 0
+						);
+
 					onKeyEvent(sServices, event);
 					break;
+
 				case EVENT_TYPE::EVENT_MOUSE_BUTTON:
+					data.mouseButtonPressed.set(
+						event.eventData.mouseButtonEvent.button,
+						event.eventData.mouseButtonEvent.action == ACTION::ACTION_PRESS ? 1 : 0
+						);
 					onMouseButtonEvent(event);
 					break;
+
 				case EVENT_TYPE::EVENT_CURSOR_POSITION:
+					data.mouseCursorPosition.set({
+						event.eventData.cursorPositionEvent.xPos,
+						event.eventData.cursorPositionEvent.yPos
+					});
 					onCursorPositionChange(event);
 					break;
+
 				case EVENT_TYPE::EVENT_SCROLL:
+					data.scrollOffset.set({
+						event.eventData.scrollEvent.xOffset,
+						event.eventData.scrollEvent.yOffset
+					});
 					onScrollEvent(event);
 					break;
+
+				case EVENT_TYPE::EVENT_CHAR:
+					data.typedCharacter.set(event.eventData.charEvent.code);
+					break;
+
 				case EVENT_TYPE::EVENT_WINDOW_CLOSE:
 				{
 					GAME::COMMAND::Data data;
@@ -101,18 +130,6 @@ namespace NLE
 		{
 			switch (event.eventData.keyEvent.key)
 			{
-			case KEY::KEY_A:
-
-				break;
-			case KEY::KEY_D:
-
-				break;
-			case KEY::KEY_W:
-
-				break;
-			case KEY::KEY_S:
-
-				break;
 			case KEY::KEY_ESCAPE:
 			{
 				GAME::COMMAND::Data data;
@@ -134,18 +151,7 @@ namespace NLE
 
 		void InputProcessor::onMouseButtonEvent(Event& event)
 		{
-			//temporary hardcoded mouse mappings
-			switch (event.eventData.mouseButtonEvent.button)
-			{
-			case MOUSE::MOUSE_BUTTON_LEFT:
-				break;
-			case MOUSE::MOUSE_BUTTON_MIDDLE:
-				break;
-			case MOUSE::MOUSE_BUTTON_RIGHT:
-				break;
-			default:
-				break;
-			}
+
 		}
 
 		void InputProcessor::onCursorPositionChange(Event& event)

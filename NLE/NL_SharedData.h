@@ -29,7 +29,17 @@ namespace NLE
 			SharedData(IDataManager_Data& dataManager);
 			~SharedData();
 
+			//Engine
 			SharedArray<double> sysExecutionTimes;
+
+
+			//Input
+			SharedArray<char> keysPressed;
+			SharedArray<char> keyModsPressed;
+			SharedArray<char> mouseButtonPressed;
+			SharedArray<double> mouseCursorPosition;
+			SharedArray<double> scrollOffset;
+			SharedEntry<unsigned int> typedCharacter;
 		};
 	}
 }

@@ -6,6 +6,7 @@
 
 #include <vector>
 #include <algorithm>
+#include <assert.h>
 
 #include "tbb/spin_mutex.h"
 
@@ -57,6 +58,17 @@ namespace NLE
 			{
 				_updateLock.lock();
 				_destination[index] = value;
+				requestSync();
+				_updateLock.unlock();
+			}
+
+			void set(std::vector<T> values)
+			{
+				if (values.size() != _destination.size())
+					assert(false);
+
+				_updateLock.lock();
+				_destination = values;
 				requestSync();
 				_updateLock.unlock();
 			}
