@@ -30,7 +30,7 @@ namespace NLE
 
 			int myNum = _eServices.data->getData().testInt.get();
 			_eServices.console->push(CONSOLE::DEBUG, "My Number is: " + std::to_string(myNum));
-			_eServices.data->getData().testInt.requestUpdate(myNum + 1);
+			_eServices.data->getData().testInt.set(myNum + 1);
 
 			//data->out.scriptingEngineTime = timer.deltaT();
 		}

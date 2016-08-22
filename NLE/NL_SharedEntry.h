@@ -18,7 +18,6 @@ namespace NLE
 				_updated(false)
 
 			{
-
 			}
 
 			SharedEntry(IDataManager_Data& dataManager, T value) : 
@@ -38,16 +37,21 @@ namespace NLE
 				return _source;
 			}
 
-			void requestUpdate(T value)
+			void set(T value)
 			{
 				_destination.set(value);
-				bool updated = _updated.acquire();
-				if (!updated)
-				{
-					updated = true;
-					_dataManager.requestSync(this);
-				}
-				_updated.release();
+				requestSync();
+			}
+
+			T& acquire()
+			{
+				return _destination.acquire();
+			}
+
+			void release()
+			{
+				_destination.release();
+				requestSync();
 			}
 
 			void sync()
@@ -57,6 +61,18 @@ namespace NLE
 			}
 
 		private:
+			void requestSync()
+			{
+				bool updated = _updated.acquire();
+				if (!updated)
+				{
+					updated = true;
+					_dataManager.requestSync(this);
+				}
+				_updated.release();
+			}
+
+
 			IDataManager_Data& _dataManager;
 			T _source;
 			Atomic<T> _destination;
