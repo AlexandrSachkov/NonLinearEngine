@@ -17,7 +17,6 @@ namespace NLE
 		class IRenderingEngine : public ISystem, public IRenderingEngine_SysService
 		{
 		public:
-			virtual bool initialize(Size2D screenResolution, bool fullscreen, bool decorated, std::wstring title) = 0;
 		};
 	}
 }

@@ -28,12 +28,11 @@ namespace NLE
 			D3D11RenderingEngine(EngineServices& eServices);
 			~D3D11RenderingEngine();
 
-			bool initialize(Size2D screenResolution, bool fullscreen, bool decorated, std::wstring title);
+			bool initialize(void* windowHandle, Size2D screenResolution, bool fullscreen);
 			void update(SystemServices* sServices, double deltaT);
 
 		private:
 			EngineServices& _eServices;
-			IWindowManager* _windowManager;
 
 			ID3D11Device* _d3dDevice;
 			IDXGISwapChain* _swapChain;

@@ -34,7 +34,7 @@ namespace NLE
 			DATA::SharedData& data = _eServices.data->getData();
 			auto& execTimes = data.sysExecutionTimes.get();
 
-			std::wstring executionTimes =
+			/*std::wstring executionTimes =
 				L"Execution times: \n"
 				L"Input Processor: " + std::to_wstring(execTimes[INPUT_PROCESSOR]) + L"\n"
 				L"Game Manager: " + std::to_wstring(execTimes[GAME_MANAGER]) + L"\n"
@@ -50,7 +50,7 @@ namespace NLE
 			while (_consoleQueue->pop(consoleEntry))
 			{
 				std::wcout << consoleEntry.second << std::endl;
-			}
+			}*/
 
 			
 			data.sysExecutionTimes.set(UI_MANAGER,timer.deltaT());

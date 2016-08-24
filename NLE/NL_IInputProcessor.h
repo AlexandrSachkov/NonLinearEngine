@@ -19,7 +19,6 @@ namespace NLE
 		class IInputProcessor : public ISystem, public IInputProcessor_SysService
 		{
 		public:
-			virtual bool initialize() = 0;
 		};
 	}
 }

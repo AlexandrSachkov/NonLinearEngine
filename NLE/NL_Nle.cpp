@@ -20,6 +20,7 @@
 #include "NL_FileIOManager.h"
 #include "NL_ResourceManager.h"
 #include "NL_ISerializer.h"
+#include "NL_GlfwWindowManager.h"
 
 #include <vector>
 #include <iostream>
@@ -41,22 +42,31 @@ namespace NLE
 			DATA::IDataManager* dataManager = new DATA::DataManager();
 			EngineServices engineServices(consoleQueue, taskScheduler, dataManager);
 
-			INPUT::IInputProcessor* inputProcessor = new INPUT::InputProcessor(engineServices);
+			Size2D windowSize(1024, 768);
+			bool fullscreen = false;
 
-#if defined (RENDERING_API_D3D11)
-			GRAPHICS::IRenderingEngine* renderingEngine = new GRAPHICS::D3D11RenderingEngine(engineServices);
-#else
-			GRAPHICS::IRenderingEngine* renderingEngine = new GRAPHICS::RenderingEngine(engineServices);
-#endif
-			UI::IUiManager* uiManager = new UI::UiManager(engineServices, consoleQueue);			
-			SCRIPT::IScriptingEngine* scriptingEngine = new SCRIPT::ScriptingEngine(engineServices);	
+			GlfwWindowManager* windowManager = new GlfwWindowManager(engineServices.console);
+			if (!windowManager->initialize(windowSize, fullscreen, true, L"NonLinear Engine"))
+				break;
 
+			INPUT::InputProcessor* inputProcessor = new INPUT::InputProcessor(engineServices);
 			if (!inputProcessor->initialize())
 				break;
-			if (!renderingEngine->initialize(Size2D(1024, 768), false, true, L"NonLinear Engine"))
+
+#if defined (RENDERING_API_D3D11)
+			GRAPHICS::D3D11RenderingEngine* renderingEngine = new GRAPHICS::D3D11RenderingEngine(engineServices);
+			if (!renderingEngine->initialize(windowManager->getWindowHandle(), windowSize, fullscreen))
 				break;
+#else
+			GRAPHICS::RenderingEngine* renderingEngine = new GRAPHICS::RenderingEngine(engineServices);
+			if (!renderingEngine->initialize())
+				break;
+#endif
+			UI::IUiManager* uiManager = new UI::UiManager(engineServices, consoleQueue);		
 			if (!uiManager->initialize())
 				break;
+
+			SCRIPT::IScriptingEngine* scriptingEngine = new SCRIPT::ScriptingEngine(engineServices);	
 			if (!scriptingEngine->initialize())
 				break;
 
@@ -75,6 +85,7 @@ namespace NLE
 
 			do
 			{
+				windowManager->pollEvents();
 				inputProcessor->update(systemServices, inputTimer.deltaT());
 				dataManager->syncData(taskScheduler->getNumThreads());
 				gameManager->update(systemServices, gameTimer.deltaT());

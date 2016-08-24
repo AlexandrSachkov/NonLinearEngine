@@ -25,12 +25,11 @@ namespace NLE
 			RenderingEngine(EngineServices& eServices);
 			~RenderingEngine();
 
-			bool initialize(Size2D screenResolution, bool fullscreen, bool decorated, std::wstring title);
+			bool initialize();
 			void update(SystemServices* sServices, double deltaT);
 
 		private:	
 			EngineServices& _eServices;
-			IWindowManager* _windowManager;
 		};
 	}
 }

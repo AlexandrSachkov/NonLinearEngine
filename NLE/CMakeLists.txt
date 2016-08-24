@@ -348,13 +348,32 @@ if(NLE_RENDERING_API STREQUAL "D3D11")
 ENDIF(NLE_RENDERING_API STREQUAL "D3D11")
 
 
-#lua-intf
+#imgui
 SET(NLE_IMGUI_INCLUDE_PATH
 	"" CACHE PATH "NLE IMGUI include path")
 
 IF(NLE_IMGUI_INCLUDE_PATH STREQUAL "")
 	MESSAGE(SEND_ERROR "NLE IMGUI include path must be specified")
 ENDIF(NLE_IMGUI_INCLUDE_PATH STREQUAL "")
+
+SET(HEADERS
+		${HEADERS}
+		${NLE_IMGUI_INCLUDE_PATH}/imgui.h
+		${NLE_IMGUI_INCLUDE_PATH}/imconfig.h
+		${NLE_IMGUI_INCLUDE_PATH}/imgui_impl_dx11.h
+		${NLE_IMGUI_INCLUDE_PATH}/imgui_internal.h
+		${NLE_IMGUI_INCLUDE_PATH}/stb_rect_pack.h
+		${NLE_IMGUI_INCLUDE_PATH}/stb_textedit.h
+		${NLE_IMGUI_INCLUDE_PATH}/stb_truetype.h
+	)
+
+	SET(SOURCES 
+		${SOURCES}
+		${NLE_IMGUI_INCLUDE_PATH}/imgui.cpp
+		${NLE_IMGUI_INCLUDE_PATH}/imgui_demo.cpp
+		${NLE_IMGUI_INCLUDE_PATH}/imgui_draw.cpp
+		${NLE_IMGUI_INCLUDE_PATH}/imgui_impl_dx11.cpp
+	)
 
 
 INCLUDE_DIRECTORIES(

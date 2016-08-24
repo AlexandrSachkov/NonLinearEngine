@@ -18,18 +18,14 @@ namespace NLE
 		RenderingEngine::RenderingEngine(EngineServices& eServices) :
 			_eServices(eServices)
 		{
-			_windowManager = new GlfwWindowManager(eServices.console);
 		}
 
 		RenderingEngine::~RenderingEngine()
 		{			
-			delete _windowManager;
 		}
 
-		bool RenderingEngine::initialize(Size2D screenResolution, bool fullscreen, bool decorated, std::wstring title)
+		bool RenderingEngine::initialize()
 		{				
-			if (!_windowManager->initialize(screenResolution, fullscreen, decorated, title))
-				return false;
 			return true;
 		}
 
@@ -37,8 +33,6 @@ namespace NLE
 		{
 			NLE::TLS::PerformanceTimer::reference timer = NLE::TLS::performanceTimer.local();
 			timer.deltaT();
-
-			_windowManager->pollEvents();
 			
 			DATA::SharedData& data = _eServices.data->getData();
 			data.sysExecutionTimes.set(RENDERING_ENGINE, timer.deltaT());
