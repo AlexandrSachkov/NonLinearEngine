@@ -1,7 +1,7 @@
 #include "NL_GameManager.h"
 
 #include "NL_RenderingEngine.h"
-#include "NL_UiManager.h"
+#include "NL_EditorUiManager.h"
 #include "NL_ScriptingEngine.h"
 #include "NL_Game.h"
 #include "NL_Scene.h"
@@ -23,7 +23,7 @@ namespace NLE
 			IO::IFileIOManager* file,
 			SERIALIZATION::ISerializer& serializer,
 			GRAPHICS::IRenderingEngine* const renderingEngine,
-			UI::IUiManager* const uiManager,
+			UI::IEditorUiManager* const editorUiManager,
 			SCRIPT::IScriptingEngine* const scriptingEngine
 			) :
 			_eServices(eServices),
@@ -31,7 +31,7 @@ namespace NLE
 			_file(file),
 			_serializer(serializer),
 			_renderingEngine(renderingEngine),
-			_uiManager(uiManager),
+			_editorUiManager(editorUiManager),
 			_scriptingEngine(scriptingEngine)
 		{
 			_execStatus = ExecStatus::CONTINUE;

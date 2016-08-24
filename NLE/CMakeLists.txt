@@ -43,6 +43,8 @@ SET(HEADERS
 	NL_IConsoleQueue.h
 	NL_DataManager.h
 	NL_IDataManager.h
+	NL_EditorUiManager.h
+	NL_IEditorUiManager.h
 	NL_EngineServices.h
 	NL_FileIOManager.h
 	NL_IFileIOManager.h
@@ -90,8 +92,6 @@ SET(HEADERS
 	NL_Timer.h	
 	NL_ThreadLocal.h
 	NL_UiComponent.h
-	NL_UiManager.h
-	NL_IUiManager.h
 	NL_Uuid.h
 	NL_ResourceManager.cpp
 	NL_Thread.h
@@ -102,6 +102,7 @@ SET(SOURCES
 	NL_AssetImporter.cpp
 	NL_ConsoleQueue.cpp
 	NL_DataManager.cpp
+	NL_EditorUiManager.cpp	
 	NL_FileIOManager.cpp
 	NL_Game.cpp
 	NL_GameManager.cpp
@@ -127,7 +128,6 @@ SET(SOURCES
 	NL_TextureLoader.cpp
 	NL_TBBTaskScheduler.cpp
 	NL_UiComponent.cpp
-	NL_UiManager.cpp	
 	NL_Thread.cpp
 	)
 

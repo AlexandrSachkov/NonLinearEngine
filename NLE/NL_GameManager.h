@@ -17,7 +17,7 @@ namespace NLE
 	}
 	namespace UI
 	{
-		class IUiManager;
+		class IEditorUiManager;
 	}
 	namespace SCRIPT
 	{
@@ -40,7 +40,7 @@ namespace NLE
 				IO::IFileIOManager* file,
 				SERIALIZATION::ISerializer& serializer,
 				GRAPHICS::IRenderingEngine* const renderingEngine,
-				UI::IUiManager* const uiManager,
+				UI::IEditorUiManager* const editorUiManager,
 				SCRIPT::IScriptingEngine* const scriptingEngine);
 			~GameManager();
 
@@ -56,7 +56,7 @@ namespace NLE
 			IO::IFileIOManager* _file;
 			SERIALIZATION::ISerializer& _serializer;
 			GRAPHICS::IRenderingEngine* const _renderingEngine;
-			UI::IUiManager* const _uiManager;
+			UI::IEditorUiManager* const _editorUiManager;
 			SCRIPT::IScriptingEngine* const _scriptingEngine;
 
 			CommandBuffer<COMMAND::Data> _commandBuffer;

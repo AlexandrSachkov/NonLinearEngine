@@ -1,4 +1,4 @@
-#include "NL_UiManager.h"
+#include "NL_EditorUiManager.h"
 #include "NL_ThreadLocal.h"
 #include "NL_EngineServices.h"
 #include "NL_SharedData.h"
@@ -11,22 +11,22 @@ namespace NLE
 {
 	namespace UI
 	{
-		UiManager::UiManager(EngineServices& eServices, CONSOLE::IConsoleQueue* consoleQueue) :
+		EditorUiManager::EditorUiManager(EngineServices& eServices, CONSOLE::IConsoleQueue* consoleQueue) :
 			_eServices(eServices),
 			_consoleQueue(consoleQueue)
 		{
 		}
 
-		UiManager::~UiManager()
+		EditorUiManager::~EditorUiManager()
 		{
 		}
 
-		bool UiManager::initialize()
+		bool EditorUiManager::initialize()
 		{
 			return true;
 		}
 
-		void UiManager::update(SystemServices* sServices, double deltaT)
+		void EditorUiManager::update(SystemServices* sServices, double deltaT)
 		{
 			NLE::TLS::PerformanceTimer::reference timer = NLE::TLS::performanceTimer.local();
 			timer.deltaT();

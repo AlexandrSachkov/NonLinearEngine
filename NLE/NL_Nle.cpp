@@ -7,7 +7,7 @@
 	#include "NL_RenderingEngine.h"
 #endif
 
-#include "NL_UiManager.h"
+#include "NL_EditorUiManager.h"
 #include "NL_ScriptingEngine.h"
 
 #include "NL_TBBTaskScheduler.h"
@@ -62,8 +62,8 @@ namespace NLE
 			if (!renderingEngine->initialize())
 				break;
 #endif
-			UI::IUiManager* uiManager = new UI::UiManager(engineServices, consoleQueue);		
-			if (!uiManager->initialize())
+			UI::EditorUiManager* editorUiManager = new UI::EditorUiManager(engineServices, consoleQueue);		
+			if (!editorUiManager->initialize())
 				break;
 
 			SCRIPT::IScriptingEngine* scriptingEngine = new SCRIPT::ScriptingEngine(engineServices);	
@@ -71,23 +71,27 @@ namespace NLE
 				break;
 
 			GAME::IGameManager* gameManager = new GAME::GameManager(
-				engineServices, *windowManager, fileIOManager, *serializer, renderingEngine, uiManager, scriptingEngine);
+				engineServices, *windowManager, fileIOManager, *serializer, renderingEngine, editorUiManager, scriptingEngine);
 			SystemServices* systemServices = new SystemServices(
-				gameManager, inputProcessor, renderingEngine, uiManager, scriptingEngine);
+				gameManager, inputProcessor, renderingEngine, scriptingEngine);
 
 			std::vector<ISystem*> parallelSystems;
 			parallelSystems.push_back(renderingEngine);
-			parallelSystems.push_back(uiManager);
 			parallelSystems.push_back(scriptingEngine);
 							
-			Timer inputTimer, systemsTimer, gameTimer;
+			Timer inputTimer, systemsTimer, gameTimer, editorUiTimer;
 			taskScheduler->dispatchTasks();
 
 			do
 			{
 				windowManager->pollEvents();
+
 				inputProcessor->update(systemServices, inputTimer.deltaT());
 				dataManager->syncData(taskScheduler->getNumThreads());
+
+				editorUiManager->update(systemServices, editorUiTimer.deltaT());
+				dataManager->syncData(taskScheduler->getNumThreads());
+
 				gameManager->update(systemServices, gameTimer.deltaT());
 				dataManager->syncData(taskScheduler->getNumThreads());
 
@@ -113,7 +117,7 @@ namespace NLE
 			delete systemServices;			
 			delete gameManager;
 			delete scriptingEngine;
-			delete uiManager;
+			delete editorUiManager;
 			delete renderingEngine;
 			delete inputProcessor;
 			

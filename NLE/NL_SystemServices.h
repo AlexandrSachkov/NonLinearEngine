@@ -4,7 +4,6 @@
 #include "NL_IGameManager.h"
 #include "NL_IInputProcessor.h"
 #include "NL_IRenderingEngine.h"
-#include "NL_IUiManager.h"
 #include "NL_IScriptingEngine.h"
 
 namespace NLE
@@ -16,13 +15,11 @@ namespace NLE
 			GAME::IGameManager* game,
 			INPUT::IInputProcessor* input,
 			GRAPHICS::IRenderingEngine* graphics,
-			UI::IUiManager* ui,
 			SCRIPT::IScriptingEngine* script
 			) :
 			game(game),
 			input(input),
 			graphics(graphics),
-			ui(ui),
 			script(script)
 		{
 		}
@@ -34,7 +31,6 @@ namespace NLE
 		GAME::IGameManager* const game;
 		INPUT::IInputProcessor* const input;
 		GRAPHICS::IRenderingEngine* const graphics;
-		UI::IUiManager* const ui;
 		SCRIPT::IScriptingEngine* const script;
 	};
 }
