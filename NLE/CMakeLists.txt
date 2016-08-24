@@ -43,7 +43,7 @@ SET(HEADERS
 	NL_IConsoleQueue.h
 	NL_DataManager.h
 	NL_IDataManager.h
-	NL_EditorUiManager.h
+	NL_ImguiEditorUiManager.h
 	NL_IEditorUiManager.h
 	NL_EngineServices.h
 	NL_FileIOManager.h
@@ -102,7 +102,7 @@ SET(SOURCES
 	NL_AssetImporter.cpp
 	NL_ConsoleQueue.cpp
 	NL_DataManager.cpp
-	NL_EditorUiManager.cpp	
+	NL_ImguiEditorUiManager.cpp	
 	NL_FileIOManager.cpp
 	NL_Game.cpp
 	NL_GameManager.cpp

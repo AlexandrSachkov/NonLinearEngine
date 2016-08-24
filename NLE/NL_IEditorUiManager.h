@@ -10,6 +10,7 @@ namespace NLE
 		class IEditorUiManager : public ISystem
 		{
 		public:
+			virtual void show(bool show) = 0;
 		};
 	}
 }

@@ -7,7 +7,7 @@
 	#include "NL_RenderingEngine.h"
 #endif
 
-#include "NL_EditorUiManager.h"
+#include "NL_ImguiEditorUiManager.h"
 #include "NL_ScriptingEngine.h"
 
 #include "NL_TBBTaskScheduler.h"
@@ -62,16 +62,17 @@ namespace NLE
 			if (!renderingEngine->initialize())
 				break;
 #endif
-			UI::EditorUiManager* editorUiManager = new UI::EditorUiManager(engineServices, consoleQueue);		
-			if (!editorUiManager->initialize())
-				break;
 
 			SCRIPT::IScriptingEngine* scriptingEngine = new SCRIPT::ScriptingEngine(engineServices);	
 			if (!scriptingEngine->initialize())
 				break;
 
 			GAME::IGameManager* gameManager = new GAME::GameManager(
-				engineServices, *windowManager, fileIOManager, *serializer, renderingEngine, editorUiManager, scriptingEngine);
+				engineServices, *windowManager, fileIOManager, *serializer, renderingEngine, scriptingEngine);
+
+			UI::ImguiEditorUiManager* editorUiManager = new UI::ImguiEditorUiManager(
+				engineServices, *consoleQueue, *windowManager, *gameManager, *inputProcessor, *renderingEngine, *scriptingEngine);
+
 			SystemServices* systemServices = new SystemServices(
 				gameManager, inputProcessor, renderingEngine, scriptingEngine);
 
