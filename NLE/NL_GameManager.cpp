@@ -9,6 +9,7 @@
 #include "NL_GameObject.h"
 #include "NL_EngineServices.h"
 #include "NL_SharedData.h"
+#include "NL_IWindowManager.h"
 
 #include <fstream>
 
@@ -18,6 +19,7 @@ namespace NLE
 	{
 		GameManager::GameManager(
 			EngineServices& eServices,
+			IWindowManager& windowManager,
 			IO::IFileIOManager* file,
 			SERIALIZATION::ISerializer& serializer,
 			GRAPHICS::IRenderingEngine* const renderingEngine,
@@ -25,6 +27,7 @@ namespace NLE
 			SCRIPT::IScriptingEngine* const scriptingEngine
 			) :
 			_eServices(eServices),
+			_windowManager(windowManager),
 			_file(file),
 			_serializer(serializer),
 			_renderingEngine(renderingEngine),

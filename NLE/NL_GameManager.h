@@ -9,6 +9,7 @@
 
 namespace NLE
 {
+	class IWindowManager;
 	class EngineServices;
 	namespace GRAPHICS
 	{
@@ -35,6 +36,7 @@ namespace NLE
 		public:
 			GameManager(
 				EngineServices& eServices,
+				IWindowManager& windowManager,
 				IO::IFileIOManager* file,
 				SERIALIZATION::ISerializer& serializer,
 				GRAPHICS::IRenderingEngine* const renderingEngine,
@@ -50,6 +52,7 @@ namespace NLE
 			ExecStatus _execStatus;
 
 			EngineServices& _eServices;
+			IWindowManager& _windowManager;
 			IO::IFileIOManager* _file;
 			SERIALIZATION::ISerializer& _serializer;
 			GRAPHICS::IRenderingEngine* const _renderingEngine;

@@ -71,7 +71,7 @@ namespace NLE
 				break;
 
 			GAME::IGameManager* gameManager = new GAME::GameManager(
-				engineServices, fileIOManager, *serializer, renderingEngine, uiManager, scriptingEngine);
+				engineServices, *windowManager, fileIOManager, *serializer, renderingEngine, uiManager, scriptingEngine);
 			SystemServices* systemServices = new SystemServices(
 				gameManager, inputProcessor, renderingEngine, uiManager, scriptingEngine);
 
