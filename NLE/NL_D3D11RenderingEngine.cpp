@@ -3,6 +3,7 @@
 #include "NL_EngineServices.h"
 #include "NL_D3D11Utility.h"
 #include "NL_SharedData.h"
+#include "NL_IWindowManager.h"
 
 #include <imgui.h>
 #include "imgui_impl_dx11.h"
@@ -23,7 +24,7 @@ namespace NLE
 		{
 		}
 
-		bool D3D11RenderingEngine::initialize(void* windowHandle, Size2D screenResolution, bool fullscreen)
+		bool D3D11RenderingEngine::initialize(IWindowManager& windowManager)
 		{
 			D3D11_INPUT_ELEMENT_DESC forwardPosNormTanTextDesc[] = {
 				{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
@@ -47,11 +48,13 @@ namespace NLE
 				{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
 			};
 
+			auto screenSize = windowManager.getClientSize();
+
 			if (!D3D11Utility::createDeviceAndSwapChain(
-				(HWND)windowHandle,
-				screenResolution.width,
-				screenResolution.height,
-				fullscreen,
+				(HWND)windowManager.getWindowHandle(),
+				screenSize.width,
+				screenSize.height,
+				windowManager.getFullScreen(),
 				_d3dDevice,
 				_swapChain,
 				_deviceContext))
@@ -61,7 +64,7 @@ namespace NLE
 				return false;
 			/*if (!D3D11Utility::createBlendStates(_d3dDevice, false, false, 1, false, _noBlendState))
 				return false;*/
-			if (!D3D11Utility::createDepthStencilView(_d3dDevice, screenResolution.width, screenResolution.height, _depthStencilView))
+			if (!D3D11Utility::createDepthStencilView(_d3dDevice, screenSize.width, screenSize.height, _depthStencilView))
 				return false;
 
 			_deviceContext->OMSetRenderTargets(1, &_backBufferRenderTargetView, _depthStencilView);
@@ -111,7 +114,7 @@ namespace NLE
 				))
 				return false;*/
 
-			ImGui_ImplDX11_Init(windowHandle, _d3dDevice, _deviceContext);
+			ImGui_ImplDX11_Init(windowManager.getWindowHandle(), _d3dDevice, _deviceContext);
 
 
 			return true;

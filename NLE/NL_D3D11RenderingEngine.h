@@ -28,7 +28,7 @@ namespace NLE
 			D3D11RenderingEngine(EngineServices& eServices);
 			~D3D11RenderingEngine();
 
-			bool initialize(void* windowHandle, Size2D screenResolution, bool fullscreen);
+			bool initialize(IWindowManager& windowManager);
 			void update(SystemServices* sServices, double deltaT);
 
 		private:

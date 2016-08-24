@@ -20,6 +20,7 @@ namespace NLE
 		virtual Size2D getClientSize() = 0;
 		virtual Position2D getWindowPosition() = 0;
 		virtual void* getWindowHandle() = 0;
+		virtual bool getFullScreen() = 0;
 
 		virtual void setTitle(std::wstring title) = 0;
 		virtual void setWindowPosition(Position2D position) = 0;

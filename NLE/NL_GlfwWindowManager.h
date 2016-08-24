@@ -57,6 +57,7 @@ namespace NLE
 		Size2D getClientSize();
 		Position2D getWindowPosition();
 		void* getWindowHandle();
+		bool getFullScreen();
 
 		void setTitle(std::wstring title);
 		void setWindowPosition(Position2D position);
@@ -102,6 +103,7 @@ namespace NLE
 		CONSOLE::IConsoleQueue_EService* _console;
 		GLFWwindow* _window;
 		std::wstring _title;
+		bool _fullScreen;
 	};
 }
 

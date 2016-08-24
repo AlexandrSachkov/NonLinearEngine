@@ -62,6 +62,8 @@ namespace NLE
 		std::wstring title
 		)
 	{
+		_fullScreen = fullscreen;
+
 		glfwSetErrorCallback(glfwErrorCallback);
 		if (!glfwInit())
 		{
@@ -122,6 +124,11 @@ namespace NLE
 	void* GlfwWindowManager::getWindowHandle()
 	{
 		return (void*)glfwGetWin32Window(_window);
+	}
+
+	bool GlfwWindowManager::getFullScreen()
+	{
+		return _fullScreen;
 	}
 
 	void GlfwWindowManager::setResizableHint(bool option)

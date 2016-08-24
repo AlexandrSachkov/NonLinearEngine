@@ -55,7 +55,7 @@ namespace NLE
 
 #if defined (RENDERING_API_D3D11)
 			GRAPHICS::D3D11RenderingEngine* renderingEngine = new GRAPHICS::D3D11RenderingEngine(engineServices);
-			if (!renderingEngine->initialize(windowManager->getWindowHandle(), windowSize, fullscreen))
+			if (!renderingEngine->initialize(*windowManager))
 				break;
 #else
 			GRAPHICS::RenderingEngine* renderingEngine = new GRAPHICS::RenderingEngine(engineServices);
