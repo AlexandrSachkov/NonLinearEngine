@@ -22,6 +22,7 @@ namespace NLE
 	class EngineServices;
 	namespace GRAPHICS
 	{
+		class ImguiD3D11Renderer;
 		class D3D11RenderingEngine : public IRenderingEngine
 		{
 		public:
@@ -30,13 +31,16 @@ namespace NLE
 
 			bool initialize(IWindowManager& windowManager);
 			void update(SystemServices* sServices, double deltaT);
+			void attachGetUIRenderingData(std::function<void*()> func);
 
 		private:
 			EngineServices& _eServices;
+			std::function<void*()> _getUIRenderingData;
 
 			ID3D11Device* _d3dDevice;
 			IDXGISwapChain* _swapChain;
 			ID3D11DeviceContext* _deviceContext;
+			ImguiD3D11Renderer* _uiRenderer;
 
 			ID3D11RenderTargetView* _backBufferRenderTargetView;
 			ID3D11BlendState* _noBlendState;

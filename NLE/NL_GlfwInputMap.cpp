@@ -194,7 +194,7 @@ namespace NLE
 			case GLFW_MOD_ALT:		return KEY_MOD_ALT;
 			case GLFW_MOD_CONTROL:	return KEY_MOD_CONTROL;
 			case GLFW_MOD_SHIFT:	return KEY_MOD_SHIFT;
-			case GLFW_MOD_SUPER:	return MOD_SUPER;
+			case GLFW_MOD_SUPER:	return KEY_MOD_SUPER;
 
 			default:				return KEY_MOD_UNKNOWN;
 			}

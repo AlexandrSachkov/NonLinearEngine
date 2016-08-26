@@ -29,6 +29,11 @@ namespace NLE
 			return true;
 		}
 
+		void RenderingEngine::attachGetUIRenderingData(std::function<void*()> func)
+		{
+
+		}
+
 		void RenderingEngine::update(SystemServices* sServices, double deltaT)
 		{
 			NLE::TLS::PerformanceTimer::reference timer = NLE::TLS::performanceTimer.local();

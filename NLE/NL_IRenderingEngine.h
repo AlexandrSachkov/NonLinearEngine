@@ -5,6 +5,7 @@
 #include "NL_CommonTypes.h"
 #include <cstdint>
 #include <string>
+#include <functional>
 
 namespace NLE
 {
@@ -17,6 +18,7 @@ namespace NLE
 		class IRenderingEngine : public ISystem, public IRenderingEngine_SysService
 		{
 		public:
+			void attachGetUIRenderingData(std::function<void*()>);
 		};
 	}
 }

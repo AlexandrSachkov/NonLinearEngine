@@ -48,11 +48,11 @@ namespace NLE
 				case EVENT_TYPE::EVENT_KEY:
 					data.keysPressed.set(
 						event.eventData.keyEvent.key,
-						event.eventData.keyEvent.action == ACTION::ACTION_PRESS ? 1 : 0
+						event.eventData.keyEvent.action == ACTION::ACTION_PRESS ? true : false
 						);
 					data.keyModsPressed.set(
 						event.eventData.keyEvent.mods,
-						event.eventData.keyEvent.action == ACTION::ACTION_PRESS ? 1 : 0
+						event.eventData.keyEvent.action == ACTION::ACTION_PRESS ? true : false
 						);
 
 					onKeyEvent(sServices, event);
@@ -61,7 +61,7 @@ namespace NLE
 				case EVENT_TYPE::EVENT_MOUSE_BUTTON:
 					data.mouseButtonPressed.set(
 						event.eventData.mouseButtonEvent.button,
-						event.eventData.mouseButtonEvent.action == ACTION::ACTION_PRESS ? 1 : 0
+						event.eventData.mouseButtonEvent.action == ACTION::ACTION_PRESS ? true : false
 						);
 					onMouseButtonEvent(event);
 					break;

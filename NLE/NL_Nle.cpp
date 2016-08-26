@@ -72,6 +72,9 @@ namespace NLE
 
 			UI::ImguiEditorUiManager* editorUiManager = new UI::ImguiEditorUiManager(
 				engineServices, *consoleQueue, *windowManager, *gameManager, *inputProcessor, *renderingEngine, *scriptingEngine);
+			renderingEngine->attachGetUIRenderingData([&]() {
+				return (void*)editorUiManager->getDrawData();
+			});
 
 			SystemServices* systemServices = new SystemServices(
 				gameManager, inputProcessor, renderingEngine, scriptingEngine);
@@ -90,7 +93,7 @@ namespace NLE
 				inputProcessor->update(systemServices, inputTimer.deltaT());
 				dataManager->syncData(taskScheduler->getNumThreads());
 
-				editorUiManager->update(systemServices, editorUiTimer.deltaT());
+				editorUiManager->update(systemServices, editorUiTimer.deltaT(), windowManager->getClientSize());
 				dataManager->syncData(taskScheduler->getNumThreads());
 
 				gameManager->update(systemServices, gameTimer.deltaT());

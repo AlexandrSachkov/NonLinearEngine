@@ -27,6 +27,7 @@ namespace NLE
 
 			bool initialize();
 			void update(SystemServices* sServices, double deltaT);
+			void attachGetUIRenderingData(std::function<void*()>);
 
 		private:	
 			EngineServices& _eServices;

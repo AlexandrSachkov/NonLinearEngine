@@ -3,13 +3,16 @@
 
 #include "NL_IEditorUiManager.h"
 #include "NL_ConsoleQueue.h"
+#include "NL_CommonTypes.h"
 
 #include "tbb\concurrent_queue.h"
 
+struct ImDrawData;
 namespace NLE
 {
 	class EngineServices;
 	class IWindowManager;
+	class SystemServices;
 	namespace CONSOLE
 	{
 		class IConsoleQueue;
@@ -38,7 +41,7 @@ namespace NLE
 		{
 		public:
 			ImguiEditorUiManager(
-				EngineServices& eServices, 
+				EngineServices& eServices,
 				CONSOLE::IConsoleQueue& consoleQueue,
 				IWindowManager& windowManager,
 				GAME::IGameManager& gameManager,
@@ -48,10 +51,13 @@ namespace NLE
 				);
 			~ImguiEditorUiManager();
 
-			void update(SystemServices* sServices, double deltaT);
-			void show(bool show);
+			bool initialize(Size2D screenSize);
 
-		private:			
+			void update(SystemServices* sServices, double deltaT, Size2D screenSize);
+			void show(bool show);
+			ImDrawData* getDrawData();
+
+		private:
 			EngineServices& _eServices;
 			CONSOLE::IConsoleQueue& _consoleQueue;
 			IWindowManager& _windowManager;

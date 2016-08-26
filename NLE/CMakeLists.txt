@@ -43,6 +43,7 @@ SET(HEADERS
 	NL_IConsoleQueue.h
 	NL_DataManager.h
 	NL_IDataManager.h
+	NL_ImguiD3D11Renderer.h
 	NL_ImguiEditorUiManager.h
 	NL_IEditorUiManager.h
 	NL_EngineServices.h
@@ -102,6 +103,7 @@ SET(SOURCES
 	NL_AssetImporter.cpp
 	NL_ConsoleQueue.cpp
 	NL_DataManager.cpp
+	NL_ImguiD3D11Renderer.cpp
 	NL_ImguiEditorUiManager.cpp	
 	NL_FileIOManager.cpp
 	NL_Game.cpp
@@ -360,7 +362,6 @@ SET(HEADERS
 		${HEADERS}
 		${NLE_IMGUI_INCLUDE_PATH}/imgui.h
 		${NLE_IMGUI_INCLUDE_PATH}/imconfig.h
-		${NLE_IMGUI_INCLUDE_PATH}/imgui_impl_dx11.h
 		${NLE_IMGUI_INCLUDE_PATH}/imgui_internal.h
 		${NLE_IMGUI_INCLUDE_PATH}/stb_rect_pack.h
 		${NLE_IMGUI_INCLUDE_PATH}/stb_textedit.h
@@ -372,7 +373,6 @@ SET(HEADERS
 		${NLE_IMGUI_INCLUDE_PATH}/imgui.cpp
 		${NLE_IMGUI_INCLUDE_PATH}/imgui_demo.cpp
 		${NLE_IMGUI_INCLUDE_PATH}/imgui_draw.cpp
-		${NLE_IMGUI_INCLUDE_PATH}/imgui_impl_dx11.cpp
 	)
 
 

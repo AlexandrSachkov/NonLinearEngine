@@ -34,9 +34,9 @@ namespace NLE
 
 
 			//Input
-			SharedArray<char> keysPressed;
-			SharedArray<char> keyModsPressed;
-			SharedArray<char> mouseButtonPressed;
+			SharedArray<bool> keysPressed;
+			SharedArray<bool> keyModsPressed;
+			SharedArray<bool> mouseButtonPressed;
 			SharedArray<double> mouseCursorPosition;
 			SharedArray<double> scrollOffset;
 			SharedEntry<unsigned int> typedCharacter;

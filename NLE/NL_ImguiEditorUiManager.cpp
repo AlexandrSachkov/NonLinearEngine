@@ -2,6 +2,10 @@
 #include "NL_ThreadLocal.h"
 #include "NL_EngineServices.h"
 #include "NL_SharedData.h"
+#include "NL_SystemServices.h"
+#include "NL_InputEvents.h"
+
+#include <imgui.h>
 
 #include <assert.h>
 #include <string>
@@ -18,7 +22,7 @@ namespace NLE
 			GAME::IGameManager& gameManager,
 			INPUT::IInputProcessor& inputProcessor,
 			GRAPHICS::IRenderingEngine& renderingEngine,
-			SCRIPT::IScriptingEngine& scriptingEngine) 
+			SCRIPT::IScriptingEngine& scriptingEngine)
 			:
 			_eServices(eServices),
 			_consoleQueue(consoleQueue),
@@ -34,22 +38,96 @@ namespace NLE
 		{
 		}
 
-		void ImguiEditorUiManager::update(SystemServices* sServices, double deltaT)
+		bool ImguiEditorUiManager::initialize(Size2D screenSize)
+		{
+
+			return true;
+		}
+
+		ImDrawData* ImguiEditorUiManager::getDrawData()
+		{
+			return ImGui::GetDrawData();
+		}
+
+		void ImguiEditorUiManager::update(SystemServices* sServices, double deltaT, Size2D screenSize)
 		{
 			NLE::TLS::PerformanceTimer::reference timer = NLE::TLS::performanceTimer.local();
 			timer.deltaT();
 
 			DATA::SharedData& data = _eServices.data->getData();
-			auto& execTimes = data.sysExecutionTimes.get();
 
-			/*std::pair<CONSOLE::OUTPUT_TYPE, std::wstring> consoleEntry;
-			while (_consoleQueue->pop(consoleEntry))
+			ImGuiIO& io = ImGui::GetIO();
+
+			// Setup display size (every frame to accommodate for window resizing)
+			io.DisplaySize = ImVec2((float)screenSize.width, (float)screenSize.height);
+			io.DeltaTime = (float)(deltaT * 0.000000001);
+
+			// Read keyboard modifiers inputs
+			io.MouseDown[0] = data.mouseButtonPressed.get()[INPUT::MOUSE_BUTTON_LEFT];
+			io.MouseDown[1] = data.mouseButtonPressed.get()[INPUT::MOUSE_BUTTON_RIGHT];
+			io.MouseDown[2] = data.mouseButtonPressed.get()[INPUT::MOUSE_BUTTON_MIDDLE];
+			io.MouseWheel += (float)data.scrollOffset.get()[1];
+			io.MousePos.x = (float)data.mouseCursorPosition.get()[0];
+			io.MousePos.y = (float)data.mouseCursorPosition.get()[1];
+
+			/*case WM_KEYDOWN:
+				if (wParam < 256)
+					io.KeysDown[wParam] = 1;
+				return true;
+			case WM_KEYUP:
+				if (wParam < 256)
+					io.KeysDown[wParam] = 0;
+				return true;
+			case WM_CHAR:
+				// You can also use ToAscii()+GetKeyboardState() to retrieve characters.
+				if (wParam > 0 && wParam < 0x10000)
+					io.AddInputCharacter((unsigned short)wParam);
+				return true;*/
+
+			io.KeyCtrl = data.keyModsPressed.get()[INPUT::KEY_MOD_CONTROL];
+			io.KeyShift = data.keyModsPressed.get()[INPUT::KEY_MOD_SHIFT];
+			io.KeyAlt = data.keyModsPressed.get()[INPUT::KEY_MOD_ALT];
+			io.KeySuper = data.keyModsPressed.get()[INPUT::KEY_MOD_SUPER];
+
+			// Hide OS mouse cursor if ImGui is drawing it
+			SetCursor(io.MouseDrawCursor ? NULL : LoadCursor(NULL, IDC_ARROW));
+
+			ImGui::NewFrame();
+
+			bool show_test_window = true;
+			bool show_another_window = false;
+			ImVec4 clear_col = ImColor(114, 144, 154);
+
+			// 1. Show a simple window
+			// Tip: if we don't call ImGui::Begin()/ImGui::End() the widgets appears in a window automatically called "Debug"
 			{
-				std::wcout << consoleEntry.second << std::endl;
-			}*/
+				static float f = 0.0f;
+				ImGui::Text("Hello, world!");
+				ImGui::SliderFloat("float", &f, 0.0f, 1.0f);
+				ImGui::ColorEdit3("clear color", (float*)&clear_col);
+				if (ImGui::Button("Test Window")) show_test_window ^= 1;
+				if (ImGui::Button("Another Window")) show_another_window ^= 1;
+				ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
+			}
 
-			
-			data.sysExecutionTimes.set(UI_MANAGER,timer.deltaT());
+			// 2. Show another simple window, this time using an explicit Begin/End pair
+			if (show_another_window)
+			{
+				ImGui::SetNextWindowSize(ImVec2(200, 100), ImGuiSetCond_FirstUseEver);
+				ImGui::Begin("Another Window", &show_another_window);
+				ImGui::Text("Hello");
+				ImGui::End();
+			}
+
+			// 3. Show the ImGui test window. Most of the sample code is in ImGui::ShowTestWindow()
+			if (show_test_window)
+			{
+				ImGui::SetNextWindowPos(ImVec2(650, 20), ImGuiSetCond_FirstUseEver);     // Normally user code doesn't need/want to call it because positions are saved in .ini file anyway. Here we just want to make the demo initial state a bit more friendly!
+				ImGui::ShowTestWindow(&show_test_window);
+			}
+			ImGui::Render();
+
+			data.sysExecutionTimes.set(UI_MANAGER, timer.deltaT());
 		}
 
 		void ImguiEditorUiManager::show(bool show)
