@@ -4,12 +4,14 @@
 #include "NL_SharedData.h"
 #include "NL_SystemServices.h"
 #include "NL_InputEvents.h"
+#include "NL_ImguiInputMap.h"
 
 #include <imgui.h>
 
 #include <assert.h>
 #include <string>
 #include <iostream>
+#include <algorithm>
 
 namespace NLE
 {
@@ -38,15 +40,34 @@ namespace NLE
 		{
 		}
 
-		bool ImguiEditorUiManager::initialize(Size2D screenSize)
+		bool ImguiEditorUiManager::initialize()
 		{
-
 			return true;
+		}
+
+		int ImguiEditorUiManager::getScancodeForKeyEvent(INPUT::Event event)
+		{
+			assert(event.eventType == INPUT::EVENT_KEY);
+			ImGuiIO& io = ImGui::GetIO();
+
+			auto key = INPUT::NLEtoImguiKey(event.eventData.keyEvent.key);
+			if (key == -1)
+				return event.eventData.keyEvent.scancode;
+
+			if (io.KeyMap[key] == -1)
+				io.KeyMap[key] = event.eventData.keyEvent.scancode;
+
+			return io.KeyMap[key];
 		}
 
 		ImDrawData* ImguiEditorUiManager::getDrawData()
 		{
 			return ImGui::GetDrawData();
+		}
+
+		void ImguiEditorUiManager::queueKeyAndCharEvent(INPUT::Event event)
+		{
+			_keyAndCharEvents.push(event);
 		}
 
 		void ImguiEditorUiManager::update(SystemServices* sServices, double deltaT, Size2D screenSize)
@@ -55,14 +76,11 @@ namespace NLE
 			timer.deltaT();
 
 			DATA::SharedData& data = _eServices.data->getData();
-
 			ImGuiIO& io = ImGui::GetIO();
 
-			// Setup display size (every frame to accommodate for window resizing)
 			io.DisplaySize = ImVec2((float)screenSize.width, (float)screenSize.height);
 			io.DeltaTime = (float)(deltaT * 0.000000001);
 
-			// Read keyboard modifiers inputs
 			io.MouseDown[0] = data.mouseButtonPressed.get()[INPUT::MOUSE_BUTTON_LEFT];
 			io.MouseDown[1] = data.mouseButtonPressed.get()[INPUT::MOUSE_BUTTON_RIGHT];
 			io.MouseDown[2] = data.mouseButtonPressed.get()[INPUT::MOUSE_BUTTON_MIDDLE];
@@ -70,27 +88,28 @@ namespace NLE
 			io.MousePos.x = (float)data.mouseCursorPosition.get()[0];
 			io.MousePos.y = (float)data.mouseCursorPosition.get()[1];
 
-			/*case WM_KEYDOWN:
-				if (wParam < 256)
-					io.KeysDown[wParam] = 1;
-				return true;
-			case WM_KEYUP:
-				if (wParam < 256)
-					io.KeysDown[wParam] = 0;
-				return true;
-			case WM_CHAR:
-				// You can also use ToAscii()+GetKeyboardState() to retrieve characters.
-				if (wParam > 0 && wParam < 0x10000)
-					io.AddInputCharacter((unsigned short)wParam);
-				return true;*/
+			INPUT::Event event;
+			while (_keyAndCharEvents.pop(event))
+			{
+				if (event.eventType == INPUT::EVENT_KEY)
+				{
+					int scancode = getScancodeForKeyEvent(event);
+					io.KeysDown[scancode] = event.eventData.keyEvent.action == INPUT::ACTION_PRESS ? 1 : 0;
+				}
+				else
+				{
+					io.AddInputCharacter((unsigned short)event.eventData.charEvent.code);
+				}
+			}
 
 			io.KeyCtrl = data.keyModsPressed.get()[INPUT::KEY_MOD_CONTROL];
 			io.KeyShift = data.keyModsPressed.get()[INPUT::KEY_MOD_SHIFT];
 			io.KeyAlt = data.keyModsPressed.get()[INPUT::KEY_MOD_ALT];
 			io.KeySuper = data.keyModsPressed.get()[INPUT::KEY_MOD_SUPER];
 
+			//Need crossplatform implementation
 			// Hide OS mouse cursor if ImGui is drawing it
-			SetCursor(io.MouseDrawCursor ? NULL : LoadCursor(NULL, IDC_ARROW));
+			//SetCursor(io.MouseDrawCursor ? NULL : LoadCursor(NULL, IDC_ARROW));
 
 			ImGui::NewFrame();
 

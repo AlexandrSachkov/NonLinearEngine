@@ -3,6 +3,7 @@
 
 #include "NL_ISystem.h"
 #include "NL_InputEvents.h"
+#include <functional>
 
 namespace NLE
 {
@@ -12,8 +13,8 @@ namespace NLE
 		{
 		public:
 			virtual void queueEvent(INPUT::Event& event) = 0;
-			virtual void enableTextInput(bool enable) = 0;
 			virtual void enableInputProcessing(bool enable) = 0;
+			virtual void attachKeyAndCharCallback(std::function<void(INPUT::Event)> callback) = 0;
 		};
 
 		class IInputProcessor : public ISystem, public IInputProcessor_SysService

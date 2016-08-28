@@ -72,6 +72,12 @@ namespace NLE
 
 			UI::ImguiEditorUiManager* editorUiManager = new UI::ImguiEditorUiManager(
 				engineServices, *consoleQueue, *windowManager, *gameManager, *inputProcessor, *renderingEngine, *scriptingEngine);
+			if (!editorUiManager->initialize())
+				break;
+
+			inputProcessor->attachKeyAndCharCallback([&](INPUT::Event event) {
+				editorUiManager->queueKeyAndCharEvent(event);
+			});
 			renderingEngine->attachGetUIRenderingData([&]() {
 				return (void*)editorUiManager->getDrawData();
 			});

@@ -13,8 +13,7 @@ namespace NLE
 			keyModsPressed(dataManager, INPUT::MOD::NUM_KEY_MODS, 0),
 			mouseButtonPressed(dataManager, INPUT::MOUSE::NUM_MOUSE_BUTTONS, 0),
 			mouseCursorPosition(dataManager, 2, 0),
-			scrollOffset(dataManager, 2, 0),
-			typedCharacter(dataManager, 0)
+			scrollOffset(dataManager, 2, 0)
 		{
 		}
 

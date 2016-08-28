@@ -5,6 +5,7 @@
 
 #include "tbb\atomic.h"
 #include "NL_Atomic.h"
+#include <vector>
 
 namespace NLE
 {
@@ -21,8 +22,8 @@ namespace NLE
 			void update(SystemServices* sServices, double deltaT);
 
 			void queueEvent(INPUT::Event& event);
-			void enableTextInput(bool enable);
 			void enableInputProcessing(bool enable);
+			void attachKeyAndCharCallback(std::function<void(INPUT::Event)> callback);
 
 		private:
 			void onKeyEvent(SystemServices* sServices, Event& event);
@@ -33,6 +34,7 @@ namespace NLE
 			EngineServices& _eServices;
 			tbb::atomic<bool> _enableTextInput;
 			tbb::atomic<bool> _enableInputProcessing;
+			std::vector<std::function<void(INPUT::Event)>> _keyAndCharCallbacks;
 		};
 	}
 }

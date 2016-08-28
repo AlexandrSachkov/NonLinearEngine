@@ -4,8 +4,8 @@
 #include "NL_IEditorUiManager.h"
 #include "NL_ConsoleQueue.h"
 #include "NL_CommonTypes.h"
-
-#include "tbb\concurrent_queue.h"
+#include "NL_InputEvents.h"
+#include "NL_Queue.h"
 
 struct ImDrawData;
 namespace NLE
@@ -51,13 +51,16 @@ namespace NLE
 				);
 			~ImguiEditorUiManager();
 
-			bool initialize(Size2D screenSize);
+			bool initialize();
 
 			void update(SystemServices* sServices, double deltaT, Size2D screenSize);
+			void queueKeyAndCharEvent(INPUT::Event event);
 			void show(bool show);
 			ImDrawData* getDrawData();
 
 		private:
+			int getScancodeForKeyEvent(INPUT::Event event);
+
 			EngineServices& _eServices;
 			CONSOLE::IConsoleQueue& _consoleQueue;
 			IWindowManager& _windowManager;
@@ -65,6 +68,8 @@ namespace NLE
 			INPUT::IInputProcessor& _inputProcessor;
 			GRAPHICS::IRenderingEngine& _renderingEngine;
 			SCRIPT::IScriptingEngine& _scriptingEngine;
+
+			Queue<INPUT::Event> _keyAndCharEvents;
 		};
 	}
 }

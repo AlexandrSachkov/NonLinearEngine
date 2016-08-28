@@ -8,6 +8,7 @@
 #include "NL_SharedData.h"
 
 #include <assert.h>
+#include <vector>
 
 namespace NLE
 {
@@ -32,9 +33,6 @@ namespace NLE
 
 		void InputProcessor::update(SystemServices* sServices, double deltaT)
 		{
-			if (!_enableInputProcessing)
-				return;
-
 			DATA::SharedData& data = _eServices.data->getData();
 
 			NLE::TLS::PerformanceTimer::reference timer = NLE::TLS::performanceTimer.local();
@@ -54,6 +52,11 @@ namespace NLE
 						event.eventData.keyEvent.mods,
 						event.eventData.keyEvent.action == ACTION::ACTION_PRESS ? true : false
 						);
+
+					for (int i = 0; i < _keyAndCharCallbacks.size(); ++i)
+					{
+						_keyAndCharCallbacks[i](event);
+					}
 
 					onKeyEvent(sServices, event);
 					break;
@@ -83,7 +86,10 @@ namespace NLE
 					break;
 
 				case EVENT_TYPE::EVENT_CHAR:
-					data.typedCharacter.set(event.eventData.charEvent.code);
+					for (int i = 0; i < _keyAndCharCallbacks.size(); ++i)
+					{
+						_keyAndCharCallbacks[i](event);
+					}
 					break;
 
 				case EVENT_TYPE::EVENT_WINDOW_CLOSE:
@@ -100,8 +106,16 @@ namespace NLE
 			data.sysExecutionTimes.set(INPUT_PROCESSOR, timer.deltaT());
 		}
 
+		void InputProcessor::attachKeyAndCharCallback(std::function<void(INPUT::Event)> callback)
+		{
+			_keyAndCharCallbacks.push_back(callback);
+		}
+
 		void InputProcessor::queueEvent(INPUT::Event& event)
 		{
+			if (!_enableInputProcessing)
+				return;
+
 			// Ignore repeated events
 			if (event.eventType == EVENT_KEY && event.eventData.keyEvent.action == ACTION_REPEAT)
 				return;
@@ -109,16 +123,7 @@ namespace NLE
 			if (event.eventType == EVENT_MOUSE_BUTTON && event.eventData.mouseButtonEvent.action == ACTION_REPEAT)
 				return;
 
-			// Ignore text input events when text input is disabled
-			if (event.eventType == EVENT_CHAR && !_enableTextInput)
-				return;
-
 			GLOBAL_EVENT_QUEUE->push(event);
-		}
-
-		void InputProcessor::enableTextInput(bool enable)
-		{
-			_enableTextInput.fetch_and_store(enable);
 		}
 
 		void InputProcessor::enableInputProcessing(bool enable)
@@ -128,6 +133,7 @@ namespace NLE
 
 		void InputProcessor::onKeyEvent(SystemServices* sServices, Event& event)
 		{
+			
 			switch (event.eventData.keyEvent.key)
 			{
 			case KEY::KEY_ESCAPE:

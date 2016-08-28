@@ -39,7 +39,6 @@ namespace NLE
 			SharedArray<bool> mouseButtonPressed;
 			SharedArray<double> mouseCursorPosition;
 			SharedArray<double> scrollOffset;
-			SharedEntry<unsigned int> typedCharacter;
 		};
 	}
 }

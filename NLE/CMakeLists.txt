@@ -43,8 +43,6 @@ SET(HEADERS
 	NL_IConsoleQueue.h
 	NL_DataManager.h
 	NL_IDataManager.h
-	NL_ImguiD3D11Renderer.h
-	NL_ImguiEditorUiManager.h
 	NL_IEditorUiManager.h
 	NL_EngineServices.h
 	NL_FileIOManager.h
@@ -57,6 +55,9 @@ SET(HEADERS
 	NL_GlfwInputMap.h
 	NL_GlfwWindowManager.h
 	NL_Globals.h
+	NL_ImguiD3D11Renderer.h
+	NL_ImguiEditorUiManager.h
+	NL_ImguiInputMap.h
 	NL_InputProcessor.h
 	NL_IInputProcessor.h	
 	NL_InputEvents.h
@@ -103,8 +104,6 @@ SET(SOURCES
 	NL_AssetImporter.cpp
 	NL_ConsoleQueue.cpp
 	NL_DataManager.cpp
-	NL_ImguiD3D11Renderer.cpp
-	NL_ImguiEditorUiManager.cpp	
 	NL_FileIOManager.cpp
 	NL_Game.cpp
 	NL_GameManager.cpp
@@ -113,6 +112,9 @@ SET(SOURCES
 	NL_GlfwInputMap.cpp
 	NL_GlfwWindowManager.cpp
 	NL_Globals.cpp
+	NL_ImguiD3D11Renderer.cpp
+	NL_ImguiEditorUiManager.cpp	
+	NL_ImguiInputMap.cpp
 	NL_InputProcessor.cpp
 	NL_LuaBindings.cpp
 	NL_MemoryManager.cpp
