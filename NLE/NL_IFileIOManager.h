@@ -27,6 +27,7 @@ namespace NLE
 
 			virtual bool read(std::wstring path, std::vector<char>*& dataOut) = 0;
 			virtual bool write(std::wstring path, std::vector<char>* srcData) = 0;
+			virtual ~IFileIOManager() {};
 		};
 	}
 }
