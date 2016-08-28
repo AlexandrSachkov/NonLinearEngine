@@ -60,6 +60,8 @@ namespace NLE
 
 		private:
 			int getScancodeForKeyEvent(INPUT::Event event);
+			void captureInput(SystemServices* sServices, double deltaT, Size2D screenSize);
+			void drawUI(SystemServices* sServices, double deltaT, Size2D screenSize);
 
 			EngineServices& _eServices;
 			CONSOLE::IConsoleQueue& _consoleQueue;

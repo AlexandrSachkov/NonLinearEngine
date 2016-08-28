@@ -77,9 +77,25 @@ namespace NLE
 
 			DATA::SharedData& data = _eServices.data->getData();
 			ImGuiIO& io = ImGui::GetIO();
-
 			io.DisplaySize = ImVec2((float)screenSize.width, (float)screenSize.height);
 			io.DeltaTime = (float)(deltaT * 0.000000001);
+
+			//Need crossplatform implementation
+			// Hide OS mouse cursor if ImGui is drawing it
+			//SetCursor(io.MouseDrawCursor ? NULL : LoadCursor(NULL, IDC_ARROW));
+
+			captureInput(sServices, deltaT, screenSize);
+			ImGui::NewFrame();
+			drawUI(sServices, deltaT, screenSize);
+			ImGui::Render();
+
+			data.sysExecutionTimes.set(UI_MANAGER, timer.deltaT());
+		}
+
+		void ImguiEditorUiManager::captureInput(SystemServices* sServices, double deltaT, Size2D screenSize)
+		{
+			DATA::SharedData& data = _eServices.data->getData();
+			ImGuiIO& io = ImGui::GetIO();
 
 			io.MouseDown[0] = data.mouseButtonPressed.get()[INPUT::MOUSE_BUTTON_LEFT];
 			io.MouseDown[1] = data.mouseButtonPressed.get()[INPUT::MOUSE_BUTTON_RIGHT];
@@ -106,13 +122,10 @@ namespace NLE
 			io.KeyShift = data.keyModsPressed.get()[INPUT::KEY_MOD_SHIFT];
 			io.KeyAlt = data.keyModsPressed.get()[INPUT::KEY_MOD_ALT];
 			io.KeySuper = data.keyModsPressed.get()[INPUT::KEY_MOD_SUPER];
+		}
 
-			//Need crossplatform implementation
-			// Hide OS mouse cursor if ImGui is drawing it
-			//SetCursor(io.MouseDrawCursor ? NULL : LoadCursor(NULL, IDC_ARROW));
-
-			ImGui::NewFrame();
-
+		void ImguiEditorUiManager::drawUI(SystemServices* sServices, double deltaT, Size2D screenSize)
+		{
 			bool show_test_window = true;
 			bool show_another_window = false;
 			ImVec4 clear_col = ImColor(114, 144, 154);
@@ -120,33 +133,31 @@ namespace NLE
 			// 1. Show a simple window
 			// Tip: if we don't call ImGui::Begin()/ImGui::End() the widgets appears in a window automatically called "Debug"
 			{
-				static float f = 0.0f;
-				ImGui::Text("Hello, world!");
-				ImGui::SliderFloat("float", &f, 0.0f, 1.0f);
-				ImGui::ColorEdit3("clear color", (float*)&clear_col);
-				if (ImGui::Button("Test Window")) show_test_window ^= 1;
-				if (ImGui::Button("Another Window")) show_another_window ^= 1;
-				ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
+			static float f = 0.0f;
+			ImGui::Text("Hello, world!");
+			ImGui::SliderFloat("float", &f, 0.0f, 1.0f);
+			ImGui::ColorEdit3("clear color", (float*)&clear_col);
+			if (ImGui::Button("Test Window")) show_test_window ^= 1;
+			if (ImGui::Button("Another Window")) show_another_window ^= 1;
+			ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
 			}
 
 			// 2. Show another simple window, this time using an explicit Begin/End pair
 			if (show_another_window)
 			{
-				ImGui::SetNextWindowSize(ImVec2(200, 100), ImGuiSetCond_FirstUseEver);
-				ImGui::Begin("Another Window", &show_another_window);
-				ImGui::Text("Hello");
-				ImGui::End();
+			ImGui::SetNextWindowSize(ImVec2(200, 100), ImGuiSetCond_FirstUseEver);
+			ImGui::Begin("Another Window", &show_another_window);
+			ImGui::Text("Hello");
+			ImGui::End();
 			}
 
 			// 3. Show the ImGui test window. Most of the sample code is in ImGui::ShowTestWindow()
 			if (show_test_window)
 			{
-				ImGui::SetNextWindowPos(ImVec2(650, 20), ImGuiSetCond_FirstUseEver);     // Normally user code doesn't need/want to call it because positions are saved in .ini file anyway. Here we just want to make the demo initial state a bit more friendly!
-				ImGui::ShowTestWindow(&show_test_window);
+			ImGui::SetNextWindowPos(ImVec2(650, 20), ImGuiSetCond_FirstUseEver);     // Normally user code doesn't need/want to call it because positions are saved in .ini file anyway. Here we just want to make the demo initial state a bit more friendly!
+			ImGui::ShowTestWindow(&show_test_window);
 			}
-			ImGui::Render();
 
-			data.sysExecutionTimes.set(UI_MANAGER, timer.deltaT());
 		}
 
 		void ImguiEditorUiManager::show(bool show)
