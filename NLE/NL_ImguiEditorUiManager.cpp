@@ -162,6 +162,8 @@ namespace NLE
 					ImGui::MenuItem("Editor", NULL, &_showEditorSettings);
 					ImGui::EndMenu();
 				}
+				ImGui::SameLine(ImGui::GetWindowWidth() - 100);
+				ImGui::Text("%.1f FPS", ImGui::GetIO().Framerate);
 				ImGui::EndMenuBar();
 			}
 
@@ -179,6 +181,7 @@ namespace NLE
 			ImGuiWindowFlags window_flags = 0;
 			window_flags |= ImGuiWindowFlags_NoSavedSettings;
 			window_flags |= ImGuiWindowFlags_AlwaysAutoResize;
+			window_flags |= ImGuiWindowFlags_ShowBorders;
 
 			ImGui::SetNextWindowPos(ImVec2((float)screenSize.width / 2, (float)screenSize.height / 2), ImGuiSetCond_FirstUseEver);
 			ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 0.0f);
