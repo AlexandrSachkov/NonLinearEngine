@@ -42,8 +42,8 @@ namespace NLE
 			DATA::IDataManager* dataManager = new DATA::DataManager();
 			EngineServices engineServices(consoleQueue, taskScheduler, dataManager);
 
-			Size2D windowSize(1024, 768);
-			bool fullscreen = false;
+			Size2D windowSize(1920, 1080);
+			bool fullscreen = true;
 
 			GlfwWindowManager* windowManager = new GlfwWindowManager(engineServices.console);
 			if (!windowManager->initialize(windowSize, fullscreen, true, L"NonLinear Engine"))

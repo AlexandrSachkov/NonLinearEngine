@@ -7,6 +7,8 @@
 #include "NL_InputEvents.h"
 #include "NL_Queue.h"
 
+#include <imgui.h>
+
 struct ImDrawData;
 namespace NLE
 {
@@ -61,7 +63,10 @@ namespace NLE
 		private:
 			int getScancodeForKeyEvent(INPUT::Event event);
 			void captureInput(SystemServices* sServices, double deltaT, Size2D screenSize);
-			void drawUI(SystemServices* sServices, double deltaT, Size2D screenSize);
+			void drawUI(SystemServices* sServices, Size2D screenSize);
+			void showEditorSettings(SystemServices* sServices, Size2D screenSize);
+			void applyColorScheme(bool root);
+			void restoreColorScheme();
 
 			EngineServices& _eServices;
 			CONSOLE::IConsoleQueue& _consoleQueue;
@@ -72,6 +77,18 @@ namespace NLE
 			SCRIPT::IScriptingEngine& _scriptingEngine;
 
 			Queue<INPUT::Event> _keyAndCharEvents;
+
+			bool _showEditor;
+			bool _showEditorSettings;
+
+			ImVec4 _windowBgColor;
+			ImVec4 _textColor;
+			ImVec4 _borderColor;
+			ImVec4 _itemColor;
+			ImVec4 _itemHoverColor;
+			ImVec4 _itemActiveColor;
+			ImVec4 _selectionColor;
+
 		};
 	}
 }

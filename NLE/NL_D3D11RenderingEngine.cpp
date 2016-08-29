@@ -130,8 +130,8 @@ namespace NLE
 			NLE::TLS::PerformanceTimer::reference timer = NLE::TLS::performanceTimer.local();
 			timer.deltaT();
 
-			ImVec4 clear_col = ImColor(114, 144, 154);
-			_deviceContext->ClearRenderTargetView(_backBufferRenderTargetView, (float*)&clear_col);
+			float backgroundColor[] = {0.0f, 0.0f, 0.0f};
+			_deviceContext->ClearRenderTargetView(_backBufferRenderTargetView, backgroundColor);
 
 			//draw things
 

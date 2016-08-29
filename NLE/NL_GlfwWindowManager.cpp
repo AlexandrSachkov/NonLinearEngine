@@ -76,9 +76,15 @@ namespace NLE
 
 		TLS::StringConverter::reference converter = TLS::strConverter.local();
 		if (fullscreen)
-			_window = glfwCreateWindow(screenSize.width, screenSize.height, converter.to_bytes(title).c_str(), glfwGetPrimaryMonitor(), NULL);
+		{
+			const GLFWvidmode* mode = glfwGetVideoMode(glfwGetPrimaryMonitor());
+			_window = glfwCreateWindow(mode->width, mode->height, converter.to_bytes(title).c_str(), glfwGetPrimaryMonitor(), NULL);
+		}
 		else
+		{
 			_window = glfwCreateWindow(screenSize.width, screenSize.height, converter.to_bytes(title).c_str(), NULL, NULL);
+		}
+			
 
 		if (!_window)
 		{

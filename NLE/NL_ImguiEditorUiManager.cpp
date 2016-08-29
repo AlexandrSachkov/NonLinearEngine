@@ -6,8 +6,6 @@
 #include "NL_InputEvents.h"
 #include "NL_ImguiInputMap.h"
 
-#include <imgui.h>
-
 #include <assert.h>
 #include <string>
 #include <iostream>
@@ -32,7 +30,18 @@ namespace NLE
 			_gameManager(gameManager),
 			_inputProcessor(inputProcessor),
 			_renderingEngine(renderingEngine),
-			_scriptingEngine(scriptingEngine)
+			_scriptingEngine(scriptingEngine),
+
+			_showEditor(true),
+			_showEditorSettings(false),
+
+			_windowBgColor(0.0f, 0.0f, 1.0f, 0.5f),
+			_textColor(0.0f, 1.0f, 0.0f, 1.0f),
+			_borderColor(0.0f, 1.0f, 0.0f, 1.0f),
+			_itemColor(0.0f, 0.0f, 1.0f, 0.5f),
+			_itemHoverColor(0.0f, 0.0f, 1.0f, 0.8f),
+			_itemActiveColor(0.0f, 0.0f, 1.0f, 0.8f),
+			_selectionColor(1.0f, 1.0f, 1.0f, 0.8f)
 		{
 		}
 
@@ -86,7 +95,7 @@ namespace NLE
 
 			captureInput(sServices, deltaT, screenSize);
 			ImGui::NewFrame();
-			drawUI(sServices, deltaT, screenSize);
+			drawUI(sServices, screenSize);
 			ImGui::Render();
 
 			data.sysExecutionTimes.set(UI_MANAGER, timer.deltaT());
@@ -124,45 +133,129 @@ namespace NLE
 			io.KeySuper = data.keyModsPressed.get()[INPUT::KEY_MOD_SUPER];
 		}
 
-		void ImguiEditorUiManager::drawUI(SystemServices* sServices, double deltaT, Size2D screenSize)
+		void ImguiEditorUiManager::drawUI(SystemServices* sServices, Size2D screenSize)
 		{
-			bool show_test_window = true;
-			bool show_another_window = false;
-			ImVec4 clear_col = ImColor(114, 144, 154);
+			ImGuiWindowFlags window_flags = 0;
+			window_flags |= ImGuiWindowFlags_NoTitleBar;
+			window_flags |= ImGuiWindowFlags_NoResize;
+			window_flags |= ImGuiWindowFlags_NoMove;
+			window_flags |= ImGuiWindowFlags_NoScrollbar;
+			window_flags |= ImGuiWindowFlags_NoCollapse;
+			window_flags |= ImGuiWindowFlags_MenuBar;
+			window_flags |= ImGuiWindowFlags_NoSavedSettings;
+			window_flags |= ImGuiWindowFlags_NoBringToFrontOnFocus;
 
-			// 1. Show a simple window
-			// Tip: if we don't call ImGui::Begin()/ImGui::End() the widgets appears in a window automatically called "Debug"
+			ImGui::SetNextWindowPos(ImVec2(0,0));
+			ImGui::SetNextWindowSize(ImVec2((float)screenSize.width, (float)screenSize.height), ImGuiSetCond_FirstUseEver);
+			ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 0.0f);
+			applyColorScheme(true);
+			ImGui::Begin("Engine UI Overlay Window", &_showEditor, window_flags);
+
+			if (ImGui::BeginMenuBar())
 			{
-			static float f = 0.0f;
-			ImGui::Text("Hello, world!");
-			ImGui::SliderFloat("float", &f, 0.0f, 1.0f);
-			ImGui::ColorEdit3("clear color", (float*)&clear_col);
-			if (ImGui::Button("Test Window")) show_test_window ^= 1;
-			if (ImGui::Button("Another Window")) show_another_window ^= 1;
-			ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
+				if (ImGui::BeginMenu("File"))
+				{
+					ImGui::EndMenu();
+				}
+				if (ImGui::BeginMenu("View"))
+				{
+					ImGui::MenuItem("Editor", NULL, &_showEditorSettings);
+					ImGui::EndMenu();
+				}
+				ImGui::EndMenuBar();
 			}
 
-			// 2. Show another simple window, this time using an explicit Begin/End pair
-			if (show_another_window)
-			{
-			ImGui::SetNextWindowSize(ImVec2(200, 100), ImGuiSetCond_FirstUseEver);
-			ImGui::Begin("Another Window", &show_another_window);
-			ImGui::Text("Hello");
 			ImGui::End();
-			}
+			restoreColorScheme();
+			ImGui::PopStyleVar();
+			
+			if(_showEditorSettings)
+				showEditorSettings(sServices, screenSize);
+			
+		}
 
-			// 3. Show the ImGui test window. Most of the sample code is in ImGui::ShowTestWindow()
-			if (show_test_window)
+		void ImguiEditorUiManager::showEditorSettings(SystemServices* sServices, Size2D screenSize)
+		{
+			ImGuiWindowFlags window_flags = 0;
+			window_flags |= ImGuiWindowFlags_NoSavedSettings;
+			window_flags |= ImGuiWindowFlags_AlwaysAutoResize;
+
+			ImGui::SetNextWindowPos(ImVec2((float)screenSize.width / 2, (float)screenSize.height / 2), ImGuiSetCond_FirstUseEver);
+			ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 0.0f);
+			applyColorScheme(false);
+			ImGui::Begin("Editor Settings", &_showEditorSettings, window_flags);
+
+			if (ImGui::CollapsingHeader("Color Scheme"))
 			{
-			ImGui::SetNextWindowPos(ImVec2(650, 20), ImGuiSetCond_FirstUseEver);     // Normally user code doesn't need/want to call it because positions are saved in .ini file anyway. Here we just want to make the demo initial state a bit more friendly!
-			ImGui::ShowTestWindow(&show_test_window);
+				ImGui::ColorEdit4("Window Background", (float*)&_windowBgColor);
+				ImGui::ColorEdit4("Text Color", (float*)&_textColor);
+				ImGui::ColorEdit4("Border Color", (float*)&_borderColor);
+				ImGui::ColorEdit4("Item Color", (float*)&_itemColor);
+				ImGui::ColorEdit4("Item Hover Color", (float*)&_itemHoverColor);
+				ImGui::ColorEdit4("Item Active Color", (float*)&_itemActiveColor);
+				ImGui::ColorEdit4("Selection Color", (float*)&_selectionColor);
 			}
 
+			ImGui::End();
+			restoreColorScheme();
+			ImGui::PopStyleVar();
+		}
+
+		void ImguiEditorUiManager::applyColorScheme(bool root)
+		{
+			if(root)
+				ImGui::PushStyleColor(ImGuiCol_WindowBg, ImColor(0.0f, 0.0f, 0.0f, 0.0f));
+			else
+				ImGui::PushStyleColor(ImGuiCol_WindowBg, _windowBgColor);
+
+			ImGui::PushStyleColor(ImGuiCol_MenuBarBg, _windowBgColor);
+			ImGui::PushStyleColor(ImGuiCol_Text, _textColor);
+			ImGui::PushStyleColor(ImGuiCol_Border, _borderColor);
+			ImGui::PushStyleColor(ImGuiCol_Button, _itemColor);
+			ImGui::PushStyleColor(ImGuiCol_ButtonHovered, _itemHoverColor);
+			ImGui::PushStyleColor(ImGuiCol_ButtonActive, _itemActiveColor);
+			ImGui::PushStyleColor(ImGuiCol_Header, _itemColor);
+			ImGui::PushStyleColor(ImGuiCol_HeaderHovered, _itemHoverColor);
+			ImGui::PushStyleColor(ImGuiCol_HeaderActive, _itemActiveColor);
+			ImGui::PushStyleColor(ImGuiCol_FrameBg, _itemColor);
+			ImGui::PushStyleColor(ImGuiCol_FrameBgHovered, _itemHoverColor);
+			ImGui::PushStyleColor(ImGuiCol_FrameBgActive, _itemActiveColor);
+			ImGui::PushStyleColor(ImGuiCol_TitleBg, _itemColor);
+			ImGui::PushStyleColor(ImGuiCol_TitleBgCollapsed, _itemColor);
+			ImGui::PushStyleColor(ImGuiCol_TitleBgActive, _itemActiveColor);
+			ImGui::PushStyleColor(ImGuiCol_CloseButton, _itemColor);
+			ImGui::PushStyleColor(ImGuiCol_CloseButtonHovered, _itemHoverColor);
+			ImGui::PushStyleColor(ImGuiCol_CloseButtonActive, _itemActiveColor);
+			ImGui::PushStyleColor(ImGuiCol_TextSelectedBg, _selectionColor);
+		}
+
+		void ImguiEditorUiManager::restoreColorScheme()
+		{
+			ImGui::PopStyleColor();
+			ImGui::PopStyleColor();
+			ImGui::PopStyleColor();
+			ImGui::PopStyleColor();
+			ImGui::PopStyleColor();
+			ImGui::PopStyleColor();
+			ImGui::PopStyleColor();
+			ImGui::PopStyleColor();
+			ImGui::PopStyleColor();
+			ImGui::PopStyleColor();
+			ImGui::PopStyleColor();
+			ImGui::PopStyleColor();
+			ImGui::PopStyleColor();
+			ImGui::PopStyleColor();
+			ImGui::PopStyleColor();
+			ImGui::PopStyleColor();
+			ImGui::PopStyleColor();
+			ImGui::PopStyleColor();
+			ImGui::PopStyleColor();
+			ImGui::PopStyleColor();
 		}
 
 		void ImguiEditorUiManager::show(bool show)
 		{
-
+			_showEditor = show;
 		}
 	}
 }
