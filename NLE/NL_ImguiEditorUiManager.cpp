@@ -135,30 +135,30 @@ namespace NLE
 
 		void ImguiEditorUiManager::drawUI(SystemServices* sServices, Size2D screenSize)
 		{
-			ImGuiWindowFlags window_flags = 0;
-			window_flags |= ImGuiWindowFlags_NoTitleBar;
-			window_flags |= ImGuiWindowFlags_NoResize;
-			window_flags |= ImGuiWindowFlags_NoMove;
-			window_flags |= ImGuiWindowFlags_NoScrollbar;
-			window_flags |= ImGuiWindowFlags_NoCollapse;
-			window_flags |= ImGuiWindowFlags_MenuBar;
-			window_flags |= ImGuiWindowFlags_NoSavedSettings;
-			window_flags |= ImGuiWindowFlags_NoBringToFrontOnFocus;
+			ImGuiWindowFlags windowFlags = 0;
+			windowFlags |= ImGuiWindowFlags_NoTitleBar;
+			windowFlags |= ImGuiWindowFlags_NoResize;
+			windowFlags |= ImGuiWindowFlags_NoMove;
+			windowFlags |= ImGuiWindowFlags_NoScrollbar;
+			windowFlags |= ImGuiWindowFlags_NoCollapse;
+			windowFlags |= ImGuiWindowFlags_MenuBar;
+			windowFlags |= ImGuiWindowFlags_NoSavedSettings;
+			windowFlags |= ImGuiWindowFlags_NoBringToFrontOnFocus;
 
 			ImGui::SetNextWindowPos(ImVec2(0,0));
 			ImGui::SetNextWindowSize(ImVec2((float)screenSize.width, (float)screenSize.height), ImGuiSetCond_FirstUseEver);
 			ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 0.0f);
 			applyColorScheme(true);
-			ImGui::Begin("Engine UI Overlay Window", &_showEditor, window_flags);
+			ImGui::Begin("Engine UI Overlay Window", &_showEditor, windowFlags);
 
 			if (ImGui::BeginMenuBar())
 			{
 				if (ImGui::BeginMenu("File"))
 				{
-					ImGui::MenuItem("New", NULL, nullptr);
-					ImGui::MenuItem("Open", NULL, nullptr);
-					ImGui::MenuItem("Save", NULL, nullptr);
-					if (ImGui::MenuItem("Exit", NULL))
+					ImGui::MenuItem("New", nullptr);
+					ImGui::MenuItem("Open", nullptr);
+					ImGui::MenuItem("Save", nullptr);
+					if (ImGui::MenuItem("Exit", nullptr))
 					{
 						_gameManager.quitGame();
 					}
@@ -166,10 +166,10 @@ namespace NLE
 				}
 				if (ImGui::BeginMenu("View"))
 				{
-					ImGui::MenuItem("Editor", NULL, &_showEditorSettings);
-					ImGui::MenuItem("Game", NULL, nullptr);
-					ImGui::MenuItem("Scene", NULL, nullptr);
-					ImGui::MenuItem("Object", NULL, nullptr);
+					ImGui::MenuItem("Editor", nullptr, &_showEditorSettings);
+					ImGui::MenuItem("Game", nullptr, nullptr);
+					ImGui::MenuItem("Scene", nullptr, nullptr);
+					ImGui::MenuItem("Object", nullptr, nullptr);
 					ImGui::EndMenu();
 				}
 				ImGui::SameLine(ImGui::GetWindowWidth() - 100);
@@ -188,15 +188,15 @@ namespace NLE
 
 		void ImguiEditorUiManager::showEditorSettings(SystemServices* sServices, Size2D screenSize)
 		{
-			ImGuiWindowFlags window_flags = 0;
-			window_flags |= ImGuiWindowFlags_NoSavedSettings;
-			window_flags |= ImGuiWindowFlags_AlwaysAutoResize;
-			window_flags |= ImGuiWindowFlags_ShowBorders;
+			ImGuiWindowFlags windowFlags = 0;
+			windowFlags |= ImGuiWindowFlags_NoSavedSettings;
+			windowFlags |= ImGuiWindowFlags_ShowBorders;
+			windowFlags |= ImGuiWindowFlags_AlwaysAutoResize;
 
 			ImGui::SetNextWindowPos(ImVec2((float)screenSize.width / 2, (float)screenSize.height / 2), ImGuiSetCond_FirstUseEver);
 			ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 0.0f);
 			applyColorScheme(false);
-			ImGui::Begin("Editor Settings", &_showEditorSettings, window_flags);
+			ImGui::Begin("Editor Settings", &_showEditorSettings, windowFlags);
 
 			if (ImGui::CollapsingHeader("Color Scheme"))
 			{
