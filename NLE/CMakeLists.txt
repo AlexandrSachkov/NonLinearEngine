@@ -37,7 +37,6 @@ SET(HEADERS
 	NL_AssetImporter.h
 	NL_Atomic.h
 	NL_CerealSerializer.h
-	NL_CommandBuffer.h
 	NL_CommonTypes.h
 	NL_ConsoleQueue.h
 	NL_IConsoleQueue.h
@@ -66,6 +65,7 @@ SET(HEADERS
 	NL_MemoryManager.h
 	NL_MemoryPool.h
 	NL_Octree.h
+	NL_OperationBuffer.h
 	NL_Queue.h
 	NL_RenderingEngine.h
 	NL_IRenderingEngine.h

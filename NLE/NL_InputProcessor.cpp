@@ -94,8 +94,7 @@ namespace NLE
 
 				case EVENT_TYPE::EVENT_WINDOW_CLOSE:
 				{
-					GAME::COMMAND::Data data;
-					sServices->game->queueCommand(GAME::COMMAND::QUIT_GAME, data);
+					sServices->game->quitGame();
 				}
 				break;
 				default:
@@ -134,25 +133,6 @@ namespace NLE
 		void InputProcessor::onKeyEvent(SystemServices* sServices, Event& event)
 		{
 			
-			switch (event.eventData.keyEvent.key)
-			{
-			case KEY::KEY_ESCAPE:
-			{
-				GAME::COMMAND::Data data;
-				sServices->game->queueCommand(GAME::COMMAND::QUIT_GAME, data);
-			}
-			break;
-
-			case KEY::KEY_F12:		//for testing purposes
-			{
-				GAME::COMMAND::Data data;
-				sServices->game->queueCommand(GAME::COMMAND::RESTART_GAME, data);
-			}
-			break;
-
-			default:
-				break;
-			}
 		}
 
 		void InputProcessor::onMouseButtonEvent(Event& event)

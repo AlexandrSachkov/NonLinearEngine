@@ -36,7 +36,7 @@ namespace NLE
 			_currentScene = new Scene();
 			_game->setInitialScene(_currentScene->getName());
 
-			_commandBuffer.addFunction(COMMAND::QUIT_GAME,		[&](COMMAND::Data data) { _execStatus = TERMINATE; });
+			/*_commandBuffer.addFunction(COMMAND::QUIT_GAME,		[&](COMMAND::Data data) { _execStatus = TERMINATE; });
 			_commandBuffer.addFunction(COMMAND::RESTART_GAME,	[&](COMMAND::Data data) { _execStatus = RESTART; });
 
 			_commandBuffer.addFunction(COMMAND::LOAD_GAME,		[&](COMMAND::Data data) {
@@ -155,7 +155,7 @@ namespace NLE
 					delete serializedData;
 					eServices.console->push(CONSOLE::ERR, L"Failed to save game object " + data.gameObject->getName());
 				});
-			});
+			});*/
 
 		}
 
@@ -168,15 +168,22 @@ namespace NLE
 			NLE::TLS::PerformanceTimer::reference timer = NLE::TLS::performanceTimer.local();
 			timer.deltaT();
 
-			_commandBuffer.processCommands();
+			_opBuffer.replayOperations();
 
 			DATA::SharedData& data = _eServices.data->getData();
 			data.sysExecutionTimes.set(GAME_MANAGER, timer.deltaT());
 		}
 
-		void GameManager::queueCommand(COMMAND::Type type, COMMAND::Data data)
+		bool GameManager::hasUnsavedChanges()
 		{
-			_commandBuffer.queueCommand(type, data);
+			return true;
+		}
+
+		void GameManager::quitGame()
+		{
+			_opBuffer.queueOperation([&]() {
+				_execStatus = TERMINATE;
+			});
 		}
 
 		ExecStatus GameManager::getExecutionStatus()

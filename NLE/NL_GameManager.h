@@ -3,7 +3,7 @@
 
 #include "NL_IGameManager.h"
 #include "NL_ISerializer.h"
-#include "NL_CommandBuffer.h"
+#include "NL_OperationBuffer.h"
 
 #include <functional>
 
@@ -23,10 +23,13 @@ namespace NLE
 	{
 		class IFileIOManager;
 	}
+	
 	namespace GAME
 	{
 		class Game;
 		class Scene;
+		class GameObject;
+		
 		class GameManager : public IGameManager
 		{
 		public:
@@ -40,7 +43,8 @@ namespace NLE
 			~GameManager();
 
 			void update(SystemServices* sServices, double deltaT);
-			void queueCommand(COMMAND::Type type, COMMAND::Data data);
+			bool hasUnsavedChanges();
+			void quitGame();
 			ExecStatus getExecutionStatus();
 
 		private:
@@ -53,7 +57,7 @@ namespace NLE
 			GRAPHICS::IRenderingEngine* const _renderingEngine;
 			SCRIPT::IScriptingEngine* const _scriptingEngine;
 
-			CommandBuffer<COMMAND::Data> _commandBuffer;
+			OperationBuffer _opBuffer;
 
 			Game* _game;
 			Scene* _currentScene;

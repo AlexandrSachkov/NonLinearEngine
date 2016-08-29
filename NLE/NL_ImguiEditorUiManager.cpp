@@ -155,11 +155,21 @@ namespace NLE
 			{
 				if (ImGui::BeginMenu("File"))
 				{
+					ImGui::MenuItem("New", NULL, nullptr);
+					ImGui::MenuItem("Open", NULL, nullptr);
+					ImGui::MenuItem("Save", NULL, nullptr);
+					if (ImGui::MenuItem("Exit", NULL))
+					{
+						_gameManager.quitGame();
+					}
 					ImGui::EndMenu();
 				}
 				if (ImGui::BeginMenu("View"))
 				{
 					ImGui::MenuItem("Editor", NULL, &_showEditorSettings);
+					ImGui::MenuItem("Game", NULL, nullptr);
+					ImGui::MenuItem("Scene", NULL, nullptr);
+					ImGui::MenuItem("Object", NULL, nullptr);
 					ImGui::EndMenu();
 				}
 				ImGui::SameLine(ImGui::GetWindowWidth() - 100);
@@ -191,12 +201,12 @@ namespace NLE
 			if (ImGui::CollapsingHeader("Color Scheme"))
 			{
 				ImGui::ColorEdit4("Window Background", (float*)&_windowBgColor);
-				ImGui::ColorEdit4("Text Color", (float*)&_textColor);
-				ImGui::ColorEdit4("Border Color", (float*)&_borderColor);
-				ImGui::ColorEdit4("Item Color", (float*)&_itemColor);
-				ImGui::ColorEdit4("Item Hover Color", (float*)&_itemHoverColor);
-				ImGui::ColorEdit4("Item Active Color", (float*)&_itemActiveColor);
-				ImGui::ColorEdit4("Selection Color", (float*)&_selectionColor);
+				ImGui::ColorEdit4("Text", (float*)&_textColor);
+				ImGui::ColorEdit4("Border", (float*)&_borderColor);
+				ImGui::ColorEdit4("Item", (float*)&_itemColor);
+				ImGui::ColorEdit4("Item Hover", (float*)&_itemHoverColor);
+				ImGui::ColorEdit4("Item Active", (float*)&_itemActiveColor);
+				ImGui::ColorEdit4("Selection", (float*)&_selectionColor);
 			}
 
 			ImGui::End();
