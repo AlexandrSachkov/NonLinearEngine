@@ -35,13 +35,13 @@ namespace NLE
 			_showEditor(true),
 			_showEditorSettings(false),
 
-			_windowBgColor(0.0f, 0.0f, 1.0f, 0.5f),
-			_textColor(0.0f, 1.0f, 0.0f, 1.0f),
-			_borderColor(0.0f, 1.0f, 0.0f, 1.0f),
-			_itemColor(0.0f, 0.0f, 1.0f, 0.5f),
-			_itemHoverColor(0.0f, 0.0f, 1.0f, 0.8f),
-			_itemActiveColor(0.0f, 0.0f, 1.0f, 0.8f),
-			_selectionColor(1.0f, 1.0f, 1.0f, 0.8f)
+			_windowBgColor(0.0f, 0.0f, 0.0f, 0.392f),
+			_textColor(0.0f, 1.0f, 1.0f, 1.0f),
+			_borderColor(0.0f, 1.0f, 1.0f, 0.129f),
+			_itemColor(0.0f, 0.0f, 0.0f, 0.392f),
+			_itemHoverColor(0.0f, 0.675f, 0.820f, 0.263f),
+			_itemActiveColor(0.0f, 0.384f, 0.620f, 0.690f),
+			_selectionColor(0.290f, 0.290f, 0.290f, 0.690f)
 		{
 		}
 
