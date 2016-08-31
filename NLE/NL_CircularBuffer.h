@@ -19,13 +19,13 @@ namespace NLE
 
 		void push(T val)
 		{
-			_buffer[_index] = val;
-			_index = (_index + 1) % _buffer.size();
-			++_numElements;
 			if (_index == _start && _numElements > 0)
 			{
 				_start = (_start + 1) % _buffer.size();
 			}
+			_buffer[_index] = val;
+			_index = (_index + 1) % _buffer.size();
+			++_numElements;
 		}
 
 		size_t size()
