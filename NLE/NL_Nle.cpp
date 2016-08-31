@@ -43,7 +43,7 @@ namespace NLE
 			EngineServices engineServices(consoleQueue, taskScheduler, dataManager);
 
 			Size2D windowSize(1920, 1080);
-			bool fullscreen = true;
+			bool fullscreen = false;
 
 			GlfwWindowManager* windowManager = new GlfwWindowManager(engineServices.console);
 			if (!windowManager->initialize(windowSize, fullscreen, true, L"NonLinear Engine"))
@@ -91,7 +91,7 @@ namespace NLE
 							
 			Timer inputTimer, systemsTimer, gameTimer, editorUiTimer;
 			taskScheduler->dispatchTasks();
-
+			
 			do
 			{
 				windowManager->pollEvents();

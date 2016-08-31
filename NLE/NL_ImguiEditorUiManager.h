@@ -6,6 +6,8 @@
 #include "NL_CommonTypes.h"
 #include "NL_InputEvents.h"
 #include "NL_Queue.h"
+#include "NL_CircularBuffer.h"
+#include "NL_IConsoleQueue.h"
 
 #include <imgui.h>
 
@@ -15,10 +17,6 @@ namespace NLE
 	class EngineServices;
 	class IWindowManager;
 	class SystemServices;
-	namespace CONSOLE
-	{
-		class IConsoleQueue;
-	}
 	namespace GAME
 	{
 		class IGameManager;
@@ -65,6 +63,7 @@ namespace NLE
 			void captureInput(SystemServices* sServices, double deltaT, Size2D screenSize);
 			void drawUI(SystemServices* sServices, Size2D screenSize);
 			void showEditorSettings(SystemServices* sServices, Size2D screenSize);
+			void showConsole(SystemServices* sServices, Size2D screenSize);
 			void applyColorScheme(bool root);
 			void restoreColorScheme();
 
@@ -80,6 +79,9 @@ namespace NLE
 
 			bool _showEditor;
 			bool _showEditorSettings;
+			bool _showConsole;
+
+			CircularBuffer<std::pair<CONSOLE::OUTPUT_TYPE, std::string>> _consoleLogs;
 
 			ImVec4 _windowBgColor;
 			ImVec4 _textColor;

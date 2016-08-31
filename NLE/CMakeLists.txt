@@ -37,6 +37,7 @@ SET(HEADERS
 	NL_AssetImporter.h
 	NL_Atomic.h
 	NL_CerealSerializer.h
+	NL_CircularBuffer.h
 	NL_CommonTypes.h
 	NL_ConsoleQueue.h
 	NL_IConsoleQueue.h

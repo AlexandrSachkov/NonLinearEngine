@@ -34,6 +34,9 @@ namespace NLE
 
 			_showEditor(true),
 			_showEditorSettings(false),
+			_showConsole(true),
+
+			_consoleLogs(100),
 
 			_windowBgColor(0.0f, 0.0f, 0.0f, 0.392f),
 			_textColor(0.0f, 1.0f, 1.0f, 1.0f),
@@ -170,6 +173,7 @@ namespace NLE
 					ImGui::MenuItem("Game", nullptr, nullptr);
 					ImGui::MenuItem("Scene", nullptr, nullptr);
 					ImGui::MenuItem("Object", nullptr, nullptr);
+					ImGui::MenuItem("Console", nullptr, &_showConsole);
 					ImGui::EndMenu();
 				}
 				ImGui::SameLine(ImGui::GetWindowWidth() - 100);
@@ -184,6 +188,8 @@ namespace NLE
 			if(_showEditorSettings)
 				showEditorSettings(sServices, screenSize);
 			
+			if (_showConsole)
+				showConsole(sServices, screenSize);
 		}
 
 		void ImguiEditorUiManager::showEditorSettings(SystemServices* sServices, Size2D screenSize)
@@ -194,7 +200,7 @@ namespace NLE
 			windowFlags |= ImGuiWindowFlags_AlwaysAutoResize;
 
 			ImGui::SetNextWindowPos(ImVec2((float)screenSize.width / 2, (float)screenSize.height / 2), ImGuiSetCond_FirstUseEver);
-			ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 0.0f);
+			ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 2.0f);
 			applyColorScheme(false);
 			ImGui::Begin("Editor Settings", &_showEditorSettings, windowFlags);
 
@@ -208,6 +214,39 @@ namespace NLE
 				ImGui::ColorEdit4("Item Active", (float*)&_itemActiveColor);
 				ImGui::ColorEdit4("Selection", (float*)&_selectionColor);
 			}
+
+			ImGui::End();
+			restoreColorScheme();
+			ImGui::PopStyleVar();
+		}
+
+		void ImguiEditorUiManager::showConsole(SystemServices* sServices, Size2D screenSize)
+		{
+			std::pair<CONSOLE::OUTPUT_TYPE, std::wstring> consoleEntry;
+			while (_consoleQueue.pop(consoleEntry))
+			{
+				auto& cnv = TLS::strConverter.local();
+				auto entry = cnv.to_bytes(consoleEntry.second);
+				_consoleLogs.push({ consoleEntry.first, entry });
+			}
+
+			ImGuiWindowFlags windowFlags = 0;
+			windowFlags |= ImGuiWindowFlags_NoSavedSettings;
+			windowFlags |= ImGuiWindowFlags_ShowBorders;
+
+			ImGui::SetNextWindowPos(ImVec2((float)screenSize.width / 2, (float)screenSize.height / 2), ImGuiSetCond_FirstUseEver);
+			ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 2.0f);
+			applyColorScheme(false);
+			ImGui::Begin("Console", &_showConsole, windowFlags);
+
+			ImGui::BeginChild("ScrollingRegion", ImVec2(0, -ImGui::GetItemsLineHeightWithSpacing()), false, ImGuiWindowFlags_HorizontalScrollbar);
+			for (int i = 0; i < _consoleLogs.size(); ++i)
+			{
+				auto entry = _consoleLogs[i];
+				ImGui::TextUnformatted(entry.second.c_str());
+			}
+			//ImGui::SetScrollHere();
+			ImGui::EndChild();
 
 			ImGui::End();
 			restoreColorScheme();
