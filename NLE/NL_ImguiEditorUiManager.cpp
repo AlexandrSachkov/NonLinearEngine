@@ -240,10 +240,14 @@ namespace NLE
 			ImGui::Begin("Console", &_showConsole, windowFlags);
 
 			ImGui::BeginChild("ScrollingRegion", ImVec2(0, -ImGui::GetItemsLineHeightWithSpacing()), false, ImGuiWindowFlags_HorizontalScrollbar);
-			for (int i = 0; i < _consoleLogs.size(); ++i)
+			ImGuiListClipper clipper((int)_consoleLogs.size());
+			while (clipper.Step())
 			{
-				auto entry = _consoleLogs[i];
-				ImGui::TextUnformatted(entry.second.c_str());
+				for (int i = clipper.DisplayStart; i < clipper.DisplayEnd; ++i)
+				{
+					auto entry = _consoleLogs[i];
+					ImGui::TextUnformatted(entry.second.c_str());
+				}
 			}
 			//ImGui::SetScrollHere();
 			ImGui::EndChild();
