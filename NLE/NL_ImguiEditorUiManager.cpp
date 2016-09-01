@@ -246,7 +246,24 @@ namespace NLE
 				for (int i = clipper.DisplayStart; i < clipper.DisplayEnd; ++i)
 				{
 					auto entry = _consoleLogs[i];
+					switch (entry.first)
+					{
+					case CONSOLE::STANDARD:
+					case CONSOLE::DEBUG:
+						ImGui::PushStyleColor(ImGuiCol_Text, _textColor);
+						break;
+					case CONSOLE::WARNING: 
+						ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(1.0f, 1.0f, 0.0f, _textColor.z));
+						break;
+					case CONSOLE::ERR:
+						ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(1.0f, 0.0f, 0.0f, _textColor.z));
+						break;
+					default:
+						ImGui::PushStyleColor(ImGuiCol_Text, _textColor);
+						break;
+					}
 					ImGui::TextUnformatted(entry.second.c_str());
+					ImGui::PopStyleColor();
 				}
 			}
 			//ImGui::SetScrollHere();
