@@ -253,10 +253,10 @@ namespace NLE
 						ImGui::PushStyleColor(ImGuiCol_Text, _textColor);
 						break;
 					case CONSOLE::WARNING: 
-						ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(1.0f, 1.0f, 0.0f, _textColor.z));
+						ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(1.0f, 1.0f, 0.0f, _textColor.w));
 						break;
 					case CONSOLE::ERR:
-						ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(1.0f, 0.0f, 0.0f, _textColor.z));
+						ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(1.0f, 0.0f, 0.0f, _textColor.w));
 						break;
 					default:
 						ImGui::PushStyleColor(ImGuiCol_Text, _textColor);
