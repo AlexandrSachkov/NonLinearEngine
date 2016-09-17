@@ -8,6 +8,7 @@
 #include "NL_Queue.h"
 #include "NL_CircularBuffer.h"
 #include "NL_IConsoleQueue.h"
+#include "NL_CharBuffer.h"
 
 #include <imgui.h>
 
@@ -68,8 +69,13 @@ namespace NLE
 			void showSaveSceneDialog(SystemServices* sServices, Size2D screenSize);
 			void showLoadGameDialog(SystemServices* sServices, Size2D screenSize);
 			void showLoadSceneDialog(SystemServices* sServices, Size2D screenSize);
+			void showGameEditor(SystemServices* sServices, Size2D screenSize);
+			void showSceneEditor(SystemServices* sServices, Size2D screenSize);
+			void showObjectEditor(SystemServices* sServices, Size2D screenSize);
 			void applyColorScheme(bool root);
 			void restoreColorScheme();
+
+			bool isBufferEmpty(char* buff);
 
 			EngineServices& _eServices;
 			CONSOLE::IConsoleQueue& _consoleQueue;
@@ -88,8 +94,13 @@ namespace NLE
 			bool _showSaveSceneDialog;
 			bool _showLoadGameDialog;
 			bool _showLoadSceneDialog;
-			char _saveDialogBuff[256];
-			char _loadDialogBuff[1024];
+			CharBuffer _saveGameBuff;
+			CharBuffer _saveSceneBuff;
+			CharBuffer _loadGameBuff;
+			CharBuffer _loadSceneBuff;
+			bool _showGameEditor;
+			bool _showSceneEditor;
+			bool _showObjectEditor;
 
 			CircularBuffer<std::pair<CONSOLE::OUTPUT_TYPE, std::string>> _consoleLogs;
 

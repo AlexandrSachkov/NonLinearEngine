@@ -215,5 +215,15 @@ namespace NLE
 		{
 			return _execStatus;
 		}
+
+		Game& GameManager::getGame()
+		{
+			return *_game;
+		}
+
+		Scene& GameManager::getCurrentScene()
+		{
+			return *_currentScene;
+		}
 	}
 }

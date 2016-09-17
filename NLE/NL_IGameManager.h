@@ -15,7 +15,8 @@ namespace NLE
 			RESTART
 		};
 
-
+		class Game;
+		class Scene;
 		class IGameManager : public ISystem
 		{
 		public:
@@ -27,6 +28,9 @@ namespace NLE
 			virtual void saveGame(std::wstring name) = 0;
 			virtual void saveScene(std::wstring name) = 0;
 			virtual void quitGame() = 0;
+
+			virtual Game& getGame() = 0;
+			virtual Scene& getCurrentScene() = 0;
 
 			virtual ~IGameManager() {}
 		};

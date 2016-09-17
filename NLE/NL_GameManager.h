@@ -53,6 +53,9 @@ namespace NLE
 			void quitGame();
 			ExecStatus getExecutionStatus();
 
+			Game& getGame();
+			Scene& getCurrentScene();
+
 		private:
 			void updateGame(Game* game);
 			void updateScene(Scene* scene);

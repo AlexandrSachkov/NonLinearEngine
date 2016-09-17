@@ -5,11 +5,14 @@
 #include "NL_SystemServices.h"
 #include "NL_InputEvents.h"
 #include "NL_ImguiInputMap.h"
+#include "NL_Game.h"
+#include "NL_Scene.h"
 
 #include <assert.h>
 #include <string>
 #include <iostream>
 #include <algorithm>
+#include <experimental\filesystem>
 
 namespace NLE
 {
@@ -39,6 +42,14 @@ namespace NLE
 			_showSaveSceneDialog(false),
 			_showLoadGameDialog(false),
 			_showLoadSceneDialog(false),
+			_showGameEditor(false),
+			_showSceneEditor(false),
+			_showObjectEditor(false),
+
+			_saveGameBuff(256),
+			_saveSceneBuff(256),
+			_loadGameBuff(1024),
+			_loadSceneBuff(1024),
 
 			_consoleLogs(100),
 
@@ -50,8 +61,6 @@ namespace NLE
 			_itemActiveColor(0.0f, 0.384f, 0.620f, 0.690f),
 			_selectionColor(0.290f, 0.290f, 0.290f, 0.690f)
 		{
-			memset(_saveDialogBuff, 0, sizeof(_saveDialogBuff));
-			memset(_loadDialogBuff, 0, sizeof(_loadDialogBuff));
 		}
 
 		ImguiEditorUiManager::~ImguiEditorUiManager()
@@ -201,9 +210,9 @@ namespace NLE
 				if (ImGui::BeginMenu("View"))
 				{
 					ImGui::MenuItem("Editor", nullptr, &_showEditorSettings);
-					ImGui::MenuItem("Game", nullptr, nullptr);
-					ImGui::MenuItem("Scene", nullptr, nullptr);
-					ImGui::MenuItem("Object", nullptr, nullptr);
+					ImGui::MenuItem("Game", nullptr, &_showGameEditor);
+					ImGui::MenuItem("Scene", nullptr, &_showSceneEditor);
+					ImGui::MenuItem("Object", nullptr, &_showObjectEditor);
 					ImGui::MenuItem("Console", nullptr, &_showConsole);
 					ImGui::EndMenu();
 				}
@@ -233,6 +242,15 @@ namespace NLE
 
 			if (_showLoadSceneDialog)
 				showLoadSceneDialog(sServices, screenSize);
+
+			if (_showGameEditor)
+				showGameEditor(sServices, screenSize);
+
+			if (_showSceneEditor)
+				showSceneEditor(sServices, screenSize);
+
+			if (_showObjectEditor)
+				showObjectEditor(sServices, screenSize);
 			
 		}
 
@@ -329,18 +347,24 @@ namespace NLE
 			ImGui::OpenPopup("Save Game");
 			if (ImGui::BeginPopupModal("Save Game", NULL, windowFlags))
 			{
-				ImGui::InputText("Name", _saveDialogBuff, ARRAYSIZE(_saveDialogBuff), 0, nullptr, (void*)this);
+				if (_saveGameBuff.isEmpty())
+				{
+					auto gameName = TLS::strConverter.local().to_bytes(_gameManager.getGame().getName());
+					_saveGameBuff.setText(gameName);
+				}
+				ImGui::InputText("Name", &_saveGameBuff[0], _saveGameBuff.getSize(), 0, nullptr, (void*)this);
 				if (ImGui::Button("Save", ImVec2(120, 0))) {
 					ImGui::CloseCurrentPopup();
 					_showSaveGameDialog = false;
-					std::string name(_saveDialogBuff);
-					auto gameName = TLS::strConverter.local().from_bytes(name);
+					auto gameName = TLS::strConverter.local().from_bytes(_saveGameBuff.getText());
 					_gameManager.saveGame(gameName);
 				}
 				ImGui::SameLine();
 				if (ImGui::Button("Cancel", ImVec2(120, 0))) {
 					ImGui::CloseCurrentPopup();
 					_showSaveGameDialog = false;
+					auto gameName = TLS::strConverter.local().to_bytes(_gameManager.getGame().getName());
+					_saveGameBuff.setText(gameName);
 				}
 				ImGui::EndPopup();
 			}
@@ -358,18 +382,24 @@ namespace NLE
 			ImGui::OpenPopup("Save Scene");
 			if (ImGui::BeginPopupModal("Save Scene", NULL, windowFlags))
 			{
-				ImGui::InputText("Name", _saveDialogBuff, ARRAYSIZE(_saveDialogBuff), 0, nullptr, (void*)this);
+				if (_saveSceneBuff.isEmpty())
+				{
+					auto sceneName = TLS::strConverter.local().to_bytes(_gameManager.getCurrentScene().getName());
+					_saveSceneBuff.setText(sceneName);
+				}
+				ImGui::InputText("Name", &_saveSceneBuff[0], _saveSceneBuff.getSize(), 0, nullptr, (void*)this);
 				if (ImGui::Button("Save", ImVec2(120, 0))) {
 					ImGui::CloseCurrentPopup();
 					_showSaveSceneDialog = false;
-					std::string name(_saveDialogBuff);
-					auto sceneName = TLS::strConverter.local().from_bytes(name);
+					auto sceneName = TLS::strConverter.local().from_bytes(_saveSceneBuff.getText());
 					_gameManager.saveScene(sceneName);
 				}
 				ImGui::SameLine();
 				if (ImGui::Button("Cancel", ImVec2(120, 0))) {
 					ImGui::CloseCurrentPopup();
 					_showSaveSceneDialog = false;
+					auto sceneName = TLS::strConverter.local().to_bytes(_gameManager.getCurrentScene().getName());
+					_saveSceneBuff.setText(sceneName);
 				}
 				ImGui::EndPopup();
 			}
@@ -387,12 +417,16 @@ namespace NLE
 			ImGui::OpenPopup("Load Game");
 			if (ImGui::BeginPopupModal("Load Game", NULL, windowFlags))
 			{
-				ImGui::InputText("Path", _loadDialogBuff, ARRAYSIZE(_loadDialogBuff), 0, nullptr, (void*)this);
+				if (_loadGameBuff.isEmpty())
+				{
+					auto path = std::experimental::filesystem::current_path();
+					_loadGameBuff.setText(path.generic_string());
+				}
+				ImGui::InputText("Path", &_loadGameBuff[0], _loadGameBuff.getSize(), 0, nullptr, (void*)this);
 				if (ImGui::Button("Load", ImVec2(120, 0))) {
 					ImGui::CloseCurrentPopup();
 					_showLoadGameDialog = false;
-					std::string path(_loadDialogBuff);
-					auto gamePath = TLS::strConverter.local().from_bytes(path);
+					auto gamePath = TLS::strConverter.local().from_bytes(_loadGameBuff.getText());
 					_gameManager.loadGame(gamePath);
 				}
 				ImGui::SameLine();
@@ -416,12 +450,16 @@ namespace NLE
 			ImGui::OpenPopup("Load Scene");
 			if (ImGui::BeginPopupModal("Load Scene", NULL, windowFlags))
 			{
-				ImGui::InputText("Path", _loadDialogBuff, ARRAYSIZE(_loadDialogBuff), 0, nullptr, (void*)this);
+				if (_loadSceneBuff.isEmpty())
+				{
+					auto path = std::experimental::filesystem::current_path();
+					_loadSceneBuff.setText(path.generic_string());
+				}
+				ImGui::InputText("Path", &_loadSceneBuff[0], _loadSceneBuff.getSize(), 0, nullptr, (void*)this);
 				if (ImGui::Button("Load", ImVec2(120, 0))) {
 					ImGui::CloseCurrentPopup();
 					_showLoadSceneDialog = false;
-					std::string path(_loadDialogBuff);
-					auto scenePath = TLS::strConverter.local().from_bytes(path);
+					auto scenePath = TLS::strConverter.local().from_bytes(_loadSceneBuff.getText());
 					_gameManager.loadScene(scenePath);
 				}
 				ImGui::SameLine();
@@ -432,6 +470,63 @@ namespace NLE
 				ImGui::EndPopup();
 			}
 			restoreColorScheme();
+		}
+
+		void ImguiEditorUiManager::showGameEditor(SystemServices* sServices, Size2D screenSize)
+		{
+			ImGuiWindowFlags windowFlags = 0;
+			windowFlags |= ImGuiWindowFlags_NoSavedSettings;
+			windowFlags |= ImGuiWindowFlags_ShowBorders;
+			windowFlags |= ImGuiWindowFlags_AlwaysAutoResize;
+
+			ImGui::SetNextWindowPos(ImVec2((float)screenSize.width / 2, (float)screenSize.height / 2), ImGuiSetCond_FirstUseEver);
+			ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 2.0f);
+			applyColorScheme(false);
+			ImGui::Begin("Game Editor", &_showGameEditor, windowFlags);
+
+			
+
+			ImGui::End();
+			restoreColorScheme();
+			ImGui::PopStyleVar();
+		}
+
+		void ImguiEditorUiManager::showSceneEditor(SystemServices* sServices, Size2D screenSize)
+		{
+			ImGuiWindowFlags windowFlags = 0;
+			windowFlags |= ImGuiWindowFlags_NoSavedSettings;
+			windowFlags |= ImGuiWindowFlags_ShowBorders;
+			windowFlags |= ImGuiWindowFlags_AlwaysAutoResize;
+
+			ImGui::SetNextWindowPos(ImVec2((float)screenSize.width / 2, (float)screenSize.height / 2), ImGuiSetCond_FirstUseEver);
+			ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 2.0f);
+			applyColorScheme(false);
+			ImGui::Begin("Scene Editor", &_showSceneEditor, windowFlags);
+
+
+
+			ImGui::End();
+			restoreColorScheme();
+			ImGui::PopStyleVar();
+		}
+
+		void ImguiEditorUiManager::showObjectEditor(SystemServices* sServices, Size2D screenSize)
+		{
+			ImGuiWindowFlags windowFlags = 0;
+			windowFlags |= ImGuiWindowFlags_NoSavedSettings;
+			windowFlags |= ImGuiWindowFlags_ShowBorders;
+			windowFlags |= ImGuiWindowFlags_AlwaysAutoResize;
+
+			ImGui::SetNextWindowPos(ImVec2((float)screenSize.width / 2, (float)screenSize.height / 2), ImGuiSetCond_FirstUseEver);
+			ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 2.0f);
+			applyColorScheme(false);
+			ImGui::Begin("Object Editor", &_showObjectEditor, windowFlags);
+
+
+
+			ImGui::End();
+			restoreColorScheme();
+			ImGui::PopStyleVar();
 		}
 
 		void ImguiEditorUiManager::applyColorScheme(bool root)
@@ -489,6 +584,15 @@ namespace NLE
 		void ImguiEditorUiManager::show(bool show)
 		{
 			_showEditor = show;
+		}
+
+		bool ImguiEditorUiManager::isBufferEmpty(char* buff)
+		{
+			std::string buffer(buff);
+			if (buffer.empty()) {
+				return true;
+			}
+			return false;
 		}
 	}
 }
