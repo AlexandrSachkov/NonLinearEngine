@@ -44,12 +44,20 @@ namespace NLE
 
 			void update(SystemServices* sServices, double deltaT);
 			bool hasUnsavedChanges();
+			void newGame();
+			void loadGame(std::wstring path);
+			void loadScene(std::wstring path);
+			
+			void saveGame(std::wstring name);
+			void saveScene(std::wstring name);
 			void quitGame();
 			ExecStatus getExecutionStatus();
 
 		private:
-			ExecStatus _execStatus;
+			void updateGame(Game* game);
+			void updateScene(Scene* scene);
 
+			ExecStatus _execStatus;
 			EngineServices& _eServices;
 			IWindowManager& _windowManager;
 			IO::IFileIOManager* _file;

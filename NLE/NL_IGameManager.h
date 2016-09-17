@@ -21,6 +21,11 @@ namespace NLE
 		public:
 			virtual ExecStatus getExecutionStatus() = 0;
 			virtual bool hasUnsavedChanges() = 0;
+			virtual void newGame() = 0;
+			virtual void loadGame(std::wstring path) = 0;
+			virtual void loadScene(std::wstring path) = 0;
+			virtual void saveGame(std::wstring name) = 0;
+			virtual void saveScene(std::wstring name) = 0;
 			virtual void quitGame() = 0;
 
 			virtual ~IGameManager() {}

@@ -64,6 +64,10 @@ namespace NLE
 			void drawUI(SystemServices* sServices, Size2D screenSize);
 			void showEditorSettings(SystemServices* sServices, Size2D screenSize);
 			void showConsole(SystemServices* sServices, Size2D screenSize);
+			void showSaveGameDialog(SystemServices* sServices, Size2D screenSize);
+			void showSaveSceneDialog(SystemServices* sServices, Size2D screenSize);
+			void showLoadGameDialog(SystemServices* sServices, Size2D screenSize);
+			void showLoadSceneDialog(SystemServices* sServices, Size2D screenSize);
 			void applyColorScheme(bool root);
 			void restoreColorScheme();
 
@@ -80,6 +84,12 @@ namespace NLE
 			bool _showEditor;
 			bool _showEditorSettings;
 			bool _showConsole;
+			bool _showSaveGameDialog;
+			bool _showSaveSceneDialog;
+			bool _showLoadGameDialog;
+			bool _showLoadSceneDialog;
+			char _saveDialogBuff[256];
+			char _loadDialogBuff[1024];
 
 			CircularBuffer<std::pair<CONSOLE::OUTPUT_TYPE, std::string>> _consoleLogs;
 

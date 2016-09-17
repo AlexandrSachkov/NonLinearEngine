@@ -35,6 +35,10 @@ namespace NLE
 			_showEditor(true),
 			_showEditorSettings(false),
 			_showConsole(true),
+			_showSaveGameDialog(false),
+			_showSaveSceneDialog(false),
+			_showLoadGameDialog(false),
+			_showLoadSceneDialog(false),
 
 			_consoleLogs(100),
 
@@ -46,6 +50,8 @@ namespace NLE
 			_itemActiveColor(0.0f, 0.384f, 0.620f, 0.690f),
 			_selectionColor(0.290f, 0.290f, 0.290f, 0.690f)
 		{
+			memset(_saveDialogBuff, 0, sizeof(_saveDialogBuff));
+			memset(_loadDialogBuff, 0, sizeof(_loadDialogBuff));
 		}
 
 		ImguiEditorUiManager::~ImguiEditorUiManager()
@@ -158,9 +164,34 @@ namespace NLE
 			{
 				if (ImGui::BeginMenu("File"))
 				{
-					ImGui::MenuItem("New", nullptr);
-					ImGui::MenuItem("Open", nullptr);
-					ImGui::MenuItem("Save", nullptr);
+					if (ImGui::MenuItem("New Game", nullptr))
+					{
+						_gameManager.newGame();
+					}
+					if (ImGui::MenuItem("Load Game", nullptr))
+					{
+						_showLoadGameDialog = true;
+					}
+					if (ImGui::MenuItem("Load Scene", nullptr))
+					{
+						_showLoadSceneDialog = true;
+					}
+					if(ImGui::MenuItem("Save Game", nullptr))
+					{
+						_gameManager.saveGame({});
+					}
+					if (ImGui::MenuItem("Save Game As", nullptr))
+					{
+						_showSaveGameDialog = true;
+					}
+					if (ImGui::MenuItem("Save Scene", nullptr))
+					{
+						_gameManager.saveScene({});
+					}
+					if (ImGui::MenuItem("Save Scene As", nullptr))
+					{
+						_showSaveSceneDialog = true;
+					}
 					if (ImGui::MenuItem("Exit", nullptr))
 					{
 						_gameManager.quitGame();
@@ -190,6 +221,19 @@ namespace NLE
 			
 			if (_showConsole)
 				showConsole(sServices, screenSize);
+
+			if (_showSaveGameDialog)
+				showSaveGameDialog(sServices, screenSize);
+
+			if(_showSaveSceneDialog)
+				showSaveSceneDialog(sServices, screenSize);
+
+			if (_showLoadGameDialog)
+				showLoadGameDialog(sServices, screenSize);
+
+			if (_showLoadSceneDialog)
+				showLoadSceneDialog(sServices, screenSize);
+			
 		}
 
 		void ImguiEditorUiManager::showEditorSettings(SystemServices* sServices, Size2D screenSize)
@@ -272,6 +316,122 @@ namespace NLE
 			ImGui::End();
 			restoreColorScheme();
 			ImGui::PopStyleVar();
+		}
+
+		void ImguiEditorUiManager::showSaveGameDialog(SystemServices* sServices, Size2D screenSize)
+		{
+			ImGuiWindowFlags windowFlags = 0;
+			windowFlags |= ImGuiWindowFlags_NoSavedSettings;
+			windowFlags |= ImGuiWindowFlags_ShowBorders;
+			windowFlags |= ImGuiWindowFlags_AlwaysAutoResize;
+
+			applyColorScheme(false);
+			ImGui::OpenPopup("Save Game");
+			if (ImGui::BeginPopupModal("Save Game", NULL, windowFlags))
+			{
+				ImGui::InputText("Name", _saveDialogBuff, ARRAYSIZE(_saveDialogBuff), 0, nullptr, (void*)this);
+				if (ImGui::Button("Save", ImVec2(120, 0))) {
+					ImGui::CloseCurrentPopup();
+					_showSaveGameDialog = false;
+					std::string name(_saveDialogBuff);
+					auto gameName = TLS::strConverter.local().from_bytes(name);
+					_gameManager.saveGame(gameName);
+				}
+				ImGui::SameLine();
+				if (ImGui::Button("Cancel", ImVec2(120, 0))) {
+					ImGui::CloseCurrentPopup();
+					_showSaveGameDialog = false;
+				}
+				ImGui::EndPopup();
+			}
+			restoreColorScheme();
+		}
+
+		void ImguiEditorUiManager::showSaveSceneDialog(SystemServices* sServices, Size2D screenSize)
+		{
+			ImGuiWindowFlags windowFlags = 0;
+			windowFlags |= ImGuiWindowFlags_NoSavedSettings;
+			windowFlags |= ImGuiWindowFlags_ShowBorders;
+			windowFlags |= ImGuiWindowFlags_AlwaysAutoResize;
+
+			applyColorScheme(false);
+			ImGui::OpenPopup("Save Scene");
+			if (ImGui::BeginPopupModal("Save Scene", NULL, windowFlags))
+			{
+				ImGui::InputText("Name", _saveDialogBuff, ARRAYSIZE(_saveDialogBuff), 0, nullptr, (void*)this);
+				if (ImGui::Button("Save", ImVec2(120, 0))) {
+					ImGui::CloseCurrentPopup();
+					_showSaveSceneDialog = false;
+					std::string name(_saveDialogBuff);
+					auto sceneName = TLS::strConverter.local().from_bytes(name);
+					_gameManager.saveScene(sceneName);
+				}
+				ImGui::SameLine();
+				if (ImGui::Button("Cancel", ImVec2(120, 0))) {
+					ImGui::CloseCurrentPopup();
+					_showSaveSceneDialog = false;
+				}
+				ImGui::EndPopup();
+			}
+			restoreColorScheme();
+		}
+
+		void ImguiEditorUiManager::showLoadGameDialog(SystemServices* sServices, Size2D screenSize)
+		{
+			ImGuiWindowFlags windowFlags = 0;
+			windowFlags |= ImGuiWindowFlags_NoSavedSettings;
+			windowFlags |= ImGuiWindowFlags_ShowBorders;
+			windowFlags |= ImGuiWindowFlags_AlwaysAutoResize;
+
+			applyColorScheme(false);
+			ImGui::OpenPopup("Load Game");
+			if (ImGui::BeginPopupModal("Load Game", NULL, windowFlags))
+			{
+				ImGui::InputText("Path", _loadDialogBuff, ARRAYSIZE(_loadDialogBuff), 0, nullptr, (void*)this);
+				if (ImGui::Button("Load", ImVec2(120, 0))) {
+					ImGui::CloseCurrentPopup();
+					_showLoadGameDialog = false;
+					std::string path(_loadDialogBuff);
+					auto gamePath = TLS::strConverter.local().from_bytes(path);
+					_gameManager.loadGame(gamePath);
+				}
+				ImGui::SameLine();
+				if (ImGui::Button("Cancel", ImVec2(120, 0))) {
+					ImGui::CloseCurrentPopup();
+					_showLoadGameDialog = false;
+				}
+				ImGui::EndPopup();
+			}
+			restoreColorScheme();
+		}
+
+		void ImguiEditorUiManager::showLoadSceneDialog(SystemServices* sServices, Size2D screenSize)
+		{
+			ImGuiWindowFlags windowFlags = 0;
+			windowFlags |= ImGuiWindowFlags_NoSavedSettings;
+			windowFlags |= ImGuiWindowFlags_ShowBorders;
+			windowFlags |= ImGuiWindowFlags_AlwaysAutoResize;
+
+			applyColorScheme(false);
+			ImGui::OpenPopup("Load Scene");
+			if (ImGui::BeginPopupModal("Load Scene", NULL, windowFlags))
+			{
+				ImGui::InputText("Path", _loadDialogBuff, ARRAYSIZE(_loadDialogBuff), 0, nullptr, (void*)this);
+				if (ImGui::Button("Load", ImVec2(120, 0))) {
+					ImGui::CloseCurrentPopup();
+					_showLoadSceneDialog = false;
+					std::string path(_loadDialogBuff);
+					auto scenePath = TLS::strConverter.local().from_bytes(path);
+					_gameManager.loadScene(scenePath);
+				}
+				ImGui::SameLine();
+				if (ImGui::Button("Cancel", ImVec2(120, 0))) {
+					ImGui::CloseCurrentPopup();
+					_showLoadSceneDialog = false;
+				}
+				ImGui::EndPopup();
+			}
+			restoreColorScheme();
 		}
 
 		void ImguiEditorUiManager::applyColorScheme(bool root)

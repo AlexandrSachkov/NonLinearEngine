@@ -32,94 +32,13 @@ namespace NLE
 			_scriptingEngine(scriptingEngine)
 		{
 			_execStatus = ExecStatus::CONTINUE;
-			_game = new Game();
-			_currentScene = new Scene();
-			_game->setInitialScene(_currentScene->getName());
+			newGame();
 
-			/*_commandBuffer.addFunction(COMMAND::QUIT_GAME,		[&](COMMAND::Data data) { _execStatus = TERMINATE; });
+			/*
 			_commandBuffer.addFunction(COMMAND::RESTART_GAME,	[&](COMMAND::Data data) { _execStatus = RESTART; });
 
-			_commandBuffer.addFunction(COMMAND::LOAD_GAME,		[&](COMMAND::Data data) {
-				std::wstring path = TLS::strConverter.local().from_bytes(data.name);
+			
 
-				_file->readAsync(path + L".nlegame", [=](std::vector<char>* data) {
-					Game* game = _serializer.deserialize<Game>(data);
-					delete data;
-					COMMAND::Data updateData;
-					updateData.game = game;
-					_commandBuffer.queueCommand(COMMAND::UPDATE_GAME, updateData);
-					updateData.name = (char*)game->getInitialScene().c_str();
-					_commandBuffer.queueCommand(COMMAND::LOAD_SCENE, updateData);
-
-				}, [=]() {
-					eServices.console->push(CONSOLE::ERR, L"Failed to load game " + path);
-				});
-			});
-
-			_commandBuffer.addFunction(COMMAND::UPDATE_GAME, [&](COMMAND::Data data) {
-				auto& ex = TLS::scriptExecutor.local();
-
-				ex.bindContext(&_game->getScriptingContext());
-				ex.executeContextScript(SCRIPT::ON_EXIT);
-				delete _game;
-				_game = data.game;
-
-				ex.bindContext(&_game->getScriptingContext());
-				ex.executeContextScript(SCRIPT::ON_INIT);
-			});
-
-			_commandBuffer.addFunction(COMMAND::LOAD_SCENE, [&](COMMAND::Data data) {
-				std::wstring path = TLS::strConverter.local().from_bytes(data.name);
-
-				_file->readAsync(path + L".nlescene", [=](std::vector<char>* data) {
-					Scene* scene = _serializer.deserialize<Scene>(data);
-					delete data;
-					COMMAND::Data updateData;
-					updateData.scene = scene;
-					_commandBuffer.queueCommand(COMMAND::UPDATE_SCENE, updateData);
-
-				}, [=]() {
-					eServices.console->push(CONSOLE::ERR, L"Failed to load scene " + path);
-				});
-			});
-
-			_commandBuffer.addFunction(COMMAND::UPDATE_SCENE, [&](COMMAND::Data data) {
-				auto& ex = TLS::scriptExecutor.local();
-
-				ex.bindContext(&_currentScene->getScriptingContext());
-				ex.executeContextScript(SCRIPT::ON_EXIT);
-				delete _currentScene;
-				_currentScene = data.scene;
-				
-				ex.bindContext(&_currentScene->getScriptingContext());
-				ex.executeContextScript(SCRIPT::ON_INIT);
-			});
-
-			_commandBuffer.addFunction(COMMAND::SAVE_GAME, [&](COMMAND::Data data) {
-				auto* gameData = _serializer.serialize<Game>(data.game);
-
-				_file->writeAsync(data.game->getName() + L".nlegame", gameData, [=](std::vector<char>* serializedData) {
-					delete serializedData;
-					eServices.console->push(CONSOLE::STANDARD, L"Successfully saved game " + data.game->getName());
-
-				}, [=](std::vector<char>* serializedData) {
-					delete serializedData;
-					eServices.console->push(CONSOLE::ERR, L"Failed to save game " + data.game->getName());
-				});
-			});
-
-			_commandBuffer.addFunction(COMMAND::SAVE_SCENE, [&](COMMAND::Data data) {
-				auto* sceneData = _serializer.serialize<Scene>(data.scene);
-
-				_file->writeAsync(data.scene->getName() + L".nlescene", sceneData, [=](std::vector<char>* serializedData) {
-					delete serializedData;
-					eServices.console->push(CONSOLE::STANDARD, L"Successfully saved scene " + data.scene->getName());
-
-				}, [=](std::vector<char>* serializedData) {
-					delete serializedData;
-					eServices.console->push(CONSOLE::ERR, L"Failed to save scene " + data.scene->getName());
-				});
-			});
 
 			_commandBuffer.addFunction(COMMAND::ADD_OBJECT, [&](COMMAND::Data data) {
 				_currentScene->addObject(new GameObject());
@@ -177,6 +96,112 @@ namespace NLE
 		bool GameManager::hasUnsavedChanges()
 		{
 			return true;
+		}
+
+		void GameManager::newGame()
+		{
+			_opBuffer.queueOperation([&]() {
+				_game = new Game();
+				_currentScene = new Scene();
+				_game->setInitialScene(_currentScene->getName());
+				_eServices.console->push(CONSOLE::STANDARD, L"Starting new game.");
+			});
+		}
+
+		void GameManager::loadGame(std::wstring path)
+		{
+			_opBuffer.queueOperation([&, path]() {
+				_file->readAsync(path, [=](std::vector<char>* data) {
+					Game* game = _serializer.deserialize<Game>(data);
+					delete data;
+					_eServices.console->push(CONSOLE::STANDARD, L"Successfully loaded game: " + path);
+					updateGame(game);
+				}, [=]() {
+					_eServices.console->push(CONSOLE::ERR, L"Failed to load game: " + path);
+				});
+			});
+		}
+
+		void GameManager::loadScene(std::wstring path)
+		{
+			_opBuffer.queueOperation([&, path]() {
+				_file->readAsync(path, [=](std::vector<char>* data) {
+					Scene* scene = _serializer.deserialize<Scene>(data);
+					delete data;
+					_eServices.console->push(CONSOLE::STANDARD, L"Successfully loaded scene: " + path);
+					updateScene(scene);
+				}, [=]() {
+					_eServices.console->push(CONSOLE::ERR, L"Failed to load scene: " + path);
+				});
+			});
+		}
+
+		void GameManager::updateGame(Game* game)
+		{
+			_opBuffer.queueOperation([&, game]() {
+				auto& ex = TLS::scriptExecutor.local();
+
+				ex.bindContext(&_game->getScriptingContext());
+				ex.executeContextScript(SCRIPT::ON_EXIT);
+				delete _game;
+				_game = game;
+
+				ex.bindContext(&_game->getScriptingContext());
+				ex.executeContextScript(SCRIPT::ON_INIT);
+			});
+		}
+
+		void GameManager::updateScene(Scene* scene)
+		{
+			_opBuffer.queueOperation([&, scene]() {
+				auto& ex = TLS::scriptExecutor.local();
+
+				ex.bindContext(&_currentScene->getScriptingContext());
+				ex.executeContextScript(SCRIPT::ON_EXIT);
+				delete _currentScene;
+				_currentScene = scene;
+
+				ex.bindContext(&_currentScene->getScriptingContext());
+				ex.executeContextScript(SCRIPT::ON_INIT);
+			});
+		}
+
+		void GameManager::saveGame(std::wstring name)
+		{
+			_opBuffer.queueOperation([&, name]() {
+				if (!name.empty()) {
+					_game->setName(name);
+				}
+
+				auto* gameData = _serializer.serialize<Game>(_game);
+				_file->writeAsync(_game->getName() + L".nlegame", gameData, [=](std::vector<char>* serializedData) {
+					delete serializedData;
+					_eServices.console->push(CONSOLE::STANDARD, L"Successfully saved game: " + _game->getName());
+
+				}, [=](std::vector<char>* serializedData) {
+					delete serializedData;
+					_eServices.console->push(CONSOLE::ERR, L"Failed to save game: " + _game->getName());
+				});
+			});
+		}
+
+		void GameManager::saveScene(std::wstring name)
+		{
+			_opBuffer.queueOperation([&, name]() {
+				if (!name.empty()) {
+					_currentScene->setName(name);
+				}
+
+				auto* sceneData = _serializer.serialize<Scene>(_currentScene);
+				_file->writeAsync(_currentScene->getName() + L".nlescene", sceneData, [=](std::vector<char>* serializedData) {
+					delete serializedData;
+					_eServices.console->push(CONSOLE::STANDARD, L"Successfully saved scene: " + _currentScene->getName());
+
+				}, [=](std::vector<char>* serializedData) {
+					delete serializedData;
+					_eServices.console->push(CONSOLE::ERR, L"Failed to save scene: " + _currentScene->getName());
+				});
+			});
 		}
 
 		void GameManager::quitGame()
