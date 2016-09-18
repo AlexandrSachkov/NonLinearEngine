@@ -561,14 +561,5 @@ namespace NLE
 		{
 			_showEditor = show;
 		}
-
-		bool ImguiEditorUiManager::isBufferEmpty(char* buff)
-		{
-			std::string buffer(buff);
-			if (buffer.empty()) {
-				return true;
-			}
-			return false;
-		}
 	}
 }

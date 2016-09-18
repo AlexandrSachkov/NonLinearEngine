@@ -78,8 +78,6 @@ namespace NLE
 			void applyColorScheme(bool root);
 			void restoreColorScheme();
 
-			bool isBufferEmpty(char* buff);
-
 			EngineServices& _eServices;
 			CONSOLE::IConsoleQueue& _consoleQueue;
 			IWindowManager& _windowManager;
