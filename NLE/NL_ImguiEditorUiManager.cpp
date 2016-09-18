@@ -42,9 +42,6 @@ namespace NLE
 			_showSaveSceneDialog(false),
 			_showLoadGameDialog(false),
 			_showLoadSceneDialog(false),
-			_showGameEditor(false),
-			_showSceneEditor(false),
-			_showObjectEditor(false),
 
 			_saveGameBuff(256),
 			_saveSceneBuff(256),
@@ -210,9 +207,9 @@ namespace NLE
 				if (ImGui::BeginMenu("View"))
 				{
 					ImGui::MenuItem("Editor", nullptr, &_showEditorSettings);
-					ImGui::MenuItem("Game", nullptr, &_showGameEditor);
-					ImGui::MenuItem("Scene", nullptr, &_showSceneEditor);
-					ImGui::MenuItem("Object", nullptr, &_showObjectEditor);
+					ImGui::MenuItem("Game", nullptr, &_gameEditor.getVisibility());
+					ImGui::MenuItem("Scene", nullptr, &_sceneEditor.getVisibility());
+					ImGui::MenuItem("Object", nullptr, &_objectEditor.getVisibility());
 					ImGui::MenuItem("Console", nullptr, &_showConsole);
 					ImGui::EndMenu();
 				}
@@ -243,13 +240,13 @@ namespace NLE
 			if (_showLoadSceneDialog)
 				showLoadSceneDialog(sServices, screenSize);
 
-			if (_showGameEditor)
+			if (_gameEditor.getVisibility())
 				showGameEditor(sServices, screenSize);
 
-			if (_showSceneEditor)
+			if (_sceneEditor.getVisibility())
 				showSceneEditor(sServices, screenSize);
 
-			if (_showObjectEditor)
+			if (_objectEditor.getVisibility())
 				showObjectEditor(sServices, screenSize);
 			
 		}
@@ -474,57 +471,36 @@ namespace NLE
 
 		void ImguiEditorUiManager::showGameEditor(SystemServices* sServices, Size2D screenSize)
 		{
-			ImGuiWindowFlags windowFlags = 0;
-			windowFlags |= ImGuiWindowFlags_NoSavedSettings;
-			windowFlags |= ImGuiWindowFlags_ShowBorders;
-			windowFlags |= ImGuiWindowFlags_AlwaysAutoResize;
-
-			ImGui::SetNextWindowPos(ImVec2((float)screenSize.width / 2, (float)screenSize.height / 2), ImGuiSetCond_FirstUseEver);
 			ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 2.0f);
 			applyColorScheme(false);
-			ImGui::Begin("Game Editor", &_showGameEditor, windowFlags);
+			ImGui::SetNextWindowPos(ImVec2((float)screenSize.width / 2, (float)screenSize.height / 2), ImGuiSetCond_FirstUseEver);
 
-			
+			_gameEditor.draw(_gameManager, screenSize);
 
-			ImGui::End();
 			restoreColorScheme();
 			ImGui::PopStyleVar();
 		}
 
 		void ImguiEditorUiManager::showSceneEditor(SystemServices* sServices, Size2D screenSize)
 		{
-			ImGuiWindowFlags windowFlags = 0;
-			windowFlags |= ImGuiWindowFlags_NoSavedSettings;
-			windowFlags |= ImGuiWindowFlags_ShowBorders;
-			windowFlags |= ImGuiWindowFlags_AlwaysAutoResize;
-
-			ImGui::SetNextWindowPos(ImVec2((float)screenSize.width / 2, (float)screenSize.height / 2), ImGuiSetCond_FirstUseEver);
 			ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 2.0f);
 			applyColorScheme(false);
-			ImGui::Begin("Scene Editor", &_showSceneEditor, windowFlags);
+			ImGui::SetNextWindowPos(ImVec2((float)screenSize.width / 2, (float)screenSize.height / 2), ImGuiSetCond_FirstUseEver);
 
+			_sceneEditor.draw(_gameManager, screenSize);
 
-
-			ImGui::End();
 			restoreColorScheme();
 			ImGui::PopStyleVar();
 		}
 
 		void ImguiEditorUiManager::showObjectEditor(SystemServices* sServices, Size2D screenSize)
 		{
-			ImGuiWindowFlags windowFlags = 0;
-			windowFlags |= ImGuiWindowFlags_NoSavedSettings;
-			windowFlags |= ImGuiWindowFlags_ShowBorders;
-			windowFlags |= ImGuiWindowFlags_AlwaysAutoResize;
-
-			ImGui::SetNextWindowPos(ImVec2((float)screenSize.width / 2, (float)screenSize.height / 2), ImGuiSetCond_FirstUseEver);
 			ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 2.0f);
 			applyColorScheme(false);
-			ImGui::Begin("Object Editor", &_showObjectEditor, windowFlags);
+			ImGui::SetNextWindowPos(ImVec2((float)screenSize.width / 2, (float)screenSize.height / 2), ImGuiSetCond_FirstUseEver);
 
+			_objectEditor.draw(_gameManager, screenSize);
 
-
-			ImGui::End();
 			restoreColorScheme();
 			ImGui::PopStyleVar();
 		}

@@ -58,6 +58,9 @@ SET(HEADERS
 	NL_Globals.h
 	NL_ImguiD3D11Renderer.h
 	NL_ImguiEditorUiManager.h
+	NL_ImguiGameEditor.h
+	NL_ImguiSceneEditor.h
+	NL_ImguiObjectEditor.h
 	NL_ImguiInputMap.h
 	NL_InputProcessor.h
 	NL_IInputProcessor.h	
@@ -116,6 +119,9 @@ SET(SOURCES
 	NL_Globals.cpp
 	NL_ImguiD3D11Renderer.cpp
 	NL_ImguiEditorUiManager.cpp	
+	NL_ImguiGameEditor.cpp
+	NL_ImguiSceneEditor.cpp
+	NL_ImguiObjectEditor.cpp
 	NL_ImguiInputMap.cpp
 	NL_InputProcessor.cpp
 	NL_LuaBindings.cpp

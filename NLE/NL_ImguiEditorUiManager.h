@@ -9,6 +9,9 @@
 #include "NL_CircularBuffer.h"
 #include "NL_IConsoleQueue.h"
 #include "NL_CharBuffer.h"
+#include "NL_ImguiGameEditor.h"
+#include "NL_ImguiSceneEditor.h"
+#include "NL_ImguiObjectEditor.h"
 
 #include <imgui.h>
 
@@ -98,10 +101,10 @@ namespace NLE
 			CharBuffer _saveSceneBuff;
 			CharBuffer _loadGameBuff;
 			CharBuffer _loadSceneBuff;
-			bool _showGameEditor;
-			bool _showSceneEditor;
-			bool _showObjectEditor;
 
+			ImguiGameEditor _gameEditor;
+			ImguiSceneEditor _sceneEditor;
+			ImguiObjectEditor _objectEditor;
 			CircularBuffer<std::pair<CONSOLE::OUTPUT_TYPE, std::string>> _consoleLogs;
 
 			ImVec4 _windowBgColor;
