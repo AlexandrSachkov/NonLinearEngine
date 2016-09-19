@@ -13,6 +13,7 @@ namespace NLE
 	}
 	namespace UI
 	{
+		class ImguiScriptEditor;
 		class ImguiGameEditor
 		{
 		public:
@@ -23,7 +24,8 @@ namespace NLE
 			void draw(
 				CONSOLE::IConsoleQueue& consoleQueue, 
 				GAME::IGameManager& gameManager, 
-				Size2D screenSize
+				Size2D screenSize,
+				ImguiScriptEditor& scriptEditor
 				);
 		private:
 			ImguiGameEditor& operator=(ImguiGameEditor& other) = delete;

@@ -3,6 +3,7 @@
 #include "NL_IGameManager.h"
 #include "NL_Game.h"
 #include "NL_ScriptingContext.h"
+#include "NL_ImguiScriptEditor.h"
 
 #include <imgui.h>
 
@@ -29,7 +30,8 @@ namespace NLE
 		void ImguiGameEditor::draw(
 			CONSOLE::IConsoleQueue& consoleQueue,
 			GAME::IGameManager& gameManager,
-			Size2D screenSize
+			Size2D screenSize,
+			ImguiScriptEditor& scriptEditor
 			)
 		{
 			if (!_visible)
@@ -66,8 +68,10 @@ namespace NLE
 					scriptNames[i] = TLS::strConverter.local().to_bytes(scripts[i].first);
 				}
 
-				if (ImGui::Button("Add")) {
-
+				if (ImGui::Button("New")) {
+					scriptEditor.editScript(L"Script1", L"", [&](std::wstring scriptName, std::wstring script) {
+						scriptingContext.addScript(scriptName, script);
+					});
 				}
 				ImGui::SameLine();
 				if (ImGui::Button("Delete")) {
@@ -81,15 +85,17 @@ namespace NLE
 					else
 					{
 						scriptingContext.removeScript(selectedScriptName);
+						if (_selectedScript > 0)
+							--_selectedScript;
 					}
 				}
 				ImGui::SameLine();
 				if (ImGui::Button("Edit")) {
-
+					std::wstring selectedScriptName = scripts[_selectedScript].first;
+					scriptEditor.editScript(selectedScriptName, scriptingContext.getScript(selectedScriptName), [&](std::wstring scriptName, std::wstring script) {
+						scriptingContext.addScript(scriptName, script);
+					});
 				}
-
-
-
 
 				ImGui::ListBox("", &_selectedScript, [](void* vec, int index, const char** out_text) {
 					auto& vector = *static_cast<std::vector<std::string>*>(vec);

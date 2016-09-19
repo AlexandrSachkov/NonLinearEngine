@@ -248,6 +248,9 @@ namespace NLE
 
 			if (_objectEditor.getVisibility())
 				showObjectEditor(sServices, screenSize);
+
+			if (_scriptEditor.getVisibility())
+				showScriptEditor(sServices, screenSize);
 			
 		}
 
@@ -475,7 +478,7 @@ namespace NLE
 			applyColorScheme(false);
 			ImGui::SetNextWindowPos(ImVec2((float)screenSize.width / 2, (float)screenSize.height / 2), ImGuiSetCond_FirstUseEver);
 
-			_gameEditor.draw(_consoleQueue, _gameManager, screenSize);
+			_gameEditor.draw(_consoleQueue, _gameManager, screenSize, _scriptEditor);
 
 			restoreColorScheme();
 			ImGui::PopStyleVar();
@@ -500,6 +503,18 @@ namespace NLE
 			ImGui::SetNextWindowPos(ImVec2((float)screenSize.width / 2, (float)screenSize.height / 2), ImGuiSetCond_FirstUseEver);
 
 			_objectEditor.draw(_gameManager, screenSize);
+
+			restoreColorScheme();
+			ImGui::PopStyleVar();
+		}
+
+		void ImguiEditorUiManager::showScriptEditor(SystemServices* sServices, Size2D screenSize)
+		{
+			ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 2.0f);
+			applyColorScheme(false);
+			ImGui::SetNextWindowPos(ImVec2((float)screenSize.width / 2, (float)screenSize.height / 2), ImGuiSetCond_FirstUseEver);
+
+			_scriptEditor.draw(_consoleQueue);
 
 			restoreColorScheme();
 			ImGui::PopStyleVar();

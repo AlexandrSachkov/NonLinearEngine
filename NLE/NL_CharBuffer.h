@@ -3,6 +3,7 @@
 
 #include <string>
 #include <vector>
+#include <assert.h>
 
 namespace NLE
 {
@@ -36,6 +37,7 @@ namespace NLE
 
 		void setText(std::string text)
 		{
+			assert(text.size() <= _data.size());
 			memset(&_data[0], 0, _data.size());
 			std::copy(text.begin(), text.end(), _data.begin());
 		}

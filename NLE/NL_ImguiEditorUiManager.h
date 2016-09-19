@@ -11,6 +11,7 @@
 #include "NL_ImguiGameEditor.h"
 #include "NL_ImguiSceneEditor.h"
 #include "NL_ImguiObjectEditor.h"
+#include "NL_ImguiScriptEditor.h"
 
 #include <imgui.h>
 
@@ -74,6 +75,7 @@ namespace NLE
 			void showGameEditor(SystemServices* sServices, Size2D screenSize);
 			void showSceneEditor(SystemServices* sServices, Size2D screenSize);
 			void showObjectEditor(SystemServices* sServices, Size2D screenSize);
+			void showScriptEditor(SystemServices* sServices, Size2D screenSize);
 			void applyColorScheme(bool root);
 			void restoreColorScheme();
 
@@ -102,6 +104,7 @@ namespace NLE
 			ImguiGameEditor _gameEditor;
 			ImguiSceneEditor _sceneEditor;
 			ImguiObjectEditor _objectEditor;
+			ImguiScriptEditor _scriptEditor;
 			CircularBuffer<std::pair<CONSOLE::OUTPUT_TYPE, std::string>> _consoleLogs;
 
 			ImVec4 _windowBgColor;
