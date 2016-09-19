@@ -9,6 +9,7 @@ namespace NLE
 			addScript(ON_INIT, L"");
 			addScript(ON_UPDATE, L"");
 			addScript(ON_EXIT, L"");
+			addScript(L"TestScript", L"console.log('hello world');");
 		}
 
 		ScriptingContext::~ScriptingContext()
@@ -65,6 +66,15 @@ namespace NLE
 		{
 			if (name.compare(L"") == 0) return;
 			_data.erase(name);
+		}
+
+		std::vector<std::pair<std::wstring, std::wstring>> ScriptingContext::getScripts()
+		{
+			std::vector<std::pair<std::wstring, std::wstring>> scripts;
+			for (auto kv : _scripts.getData()) {
+				scripts.push_back(kv);
+			}
+			return scripts;
 		}
 	}
 }

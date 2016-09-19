@@ -2,7 +2,6 @@
 #define NL_EDITOR_UI_MANAGER_H_
 
 #include "NL_IEditorUiManager.h"
-#include "NL_ConsoleQueue.h"
 #include "NL_CommonTypes.h"
 #include "NL_InputEvents.h"
 #include "NL_Queue.h"

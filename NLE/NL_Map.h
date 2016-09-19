@@ -55,6 +55,11 @@ namespace NLE
 			return false;
 		}
 
+		const std::unordered_map<K, V>& getData()
+		{
+			return _map;
+		}
+
 		bool erase(K key)
 		{
 			if (_map.erase(key))

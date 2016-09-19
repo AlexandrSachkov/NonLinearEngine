@@ -53,7 +53,7 @@ namespace NLE
 			_windowBgColor(0.0f, 0.0f, 0.0f, 0.392f),
 			_textColor(0.0f, 1.0f, 1.0f, 1.0f),
 			_borderColor(0.0f, 1.0f, 1.0f, 0.129f),
-			_itemColor(0.0f, 0.0f, 0.0f, 0.392f),
+			_itemColor(0.0f, 0.435f, 0.796f, 0.392f),
 			_itemHoverColor(0.0f, 0.675f, 0.820f, 0.263f),
 			_itemActiveColor(0.0f, 0.384f, 0.620f, 0.690f),
 			_selectionColor(0.290f, 0.290f, 0.290f, 0.690f)
@@ -475,7 +475,7 @@ namespace NLE
 			applyColorScheme(false);
 			ImGui::SetNextWindowPos(ImVec2((float)screenSize.width / 2, (float)screenSize.height / 2), ImGuiSetCond_FirstUseEver);
 
-			_gameEditor.draw(_gameManager, screenSize);
+			_gameEditor.draw(_consoleQueue, _gameManager, screenSize);
 
 			restoreColorScheme();
 			ImGui::PopStyleVar();

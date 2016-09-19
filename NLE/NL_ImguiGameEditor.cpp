@@ -2,6 +2,7 @@
 #include "NL_ThreadLocal.h"
 #include "NL_IGameManager.h"
 #include "NL_Game.h"
+#include "NL_ScriptingContext.h"
 
 #include <imgui.h>
 
@@ -11,7 +12,8 @@ namespace NLE
 	{
 		ImguiGameEditor::ImguiGameEditor() :
 			_visible(false),
-			_nameBuff(256)
+			_nameBuff(256),
+			_selectedScript(0)
 		{
 		}
 
@@ -24,7 +26,11 @@ namespace NLE
 			return _visible;
 		}
 
-		void ImguiGameEditor::draw(GAME::IGameManager& gameManager, Size2D screenSize)
+		void ImguiGameEditor::draw(
+			CONSOLE::IConsoleQueue& consoleQueue,
+			GAME::IGameManager& gameManager,
+			Size2D screenSize
+			)
 		{
 			if (!_visible)
 				return;
@@ -49,6 +55,51 @@ namespace NLE
 				gameManager.getGame().setName(TLS::strConverter.local().from_bytes(name));
 				return 0;
 			}, (void*)&gameManager);
+
+			if (ImGui::CollapsingHeader("Scripts"))
+			{
+				auto& scriptingContext = gameManager.getGame().getScriptingContext();
+				auto scripts = scriptingContext.getScripts();
+				std::vector<std::string> scriptNames(scripts.size());
+				for (int i = 0; i < scripts.size(); ++i)
+				{
+					scriptNames[i] = TLS::strConverter.local().to_bytes(scripts[i].first);
+				}
+
+				if (ImGui::Button("Add")) {
+
+				}
+				ImGui::SameLine();
+				if (ImGui::Button("Delete")) {
+					std::wstring selectedScriptName = scripts[_selectedScript].first;
+					if (selectedScriptName.compare(SCRIPT::ON_INIT) == 0
+						|| selectedScriptName.compare(SCRIPT::ON_UPDATE) == 0
+						|| selectedScriptName.compare(SCRIPT::ON_EXIT) == 0)
+					{
+						consoleQueue.push(CONSOLE::WARNING, selectedScriptName + L" is a system script and cannot be deleted.");
+					}
+					else
+					{
+						scriptingContext.removeScript(selectedScriptName);
+					}
+				}
+				ImGui::SameLine();
+				if (ImGui::Button("Edit")) {
+
+				}
+
+
+
+
+				ImGui::ListBox("", &_selectedScript, [](void* vec, int index, const char** out_text) {
+					auto& vector = *static_cast<std::vector<std::string>*>(vec);
+					if (index < 0 || index >= (int)vector.size())
+						return false; 
+
+					*out_text = vector[index].c_str();
+					return true;
+				}, static_cast<void*>(&scriptNames), (int)scripts.size());
+			}
 
 			ImGui::End();
 		}

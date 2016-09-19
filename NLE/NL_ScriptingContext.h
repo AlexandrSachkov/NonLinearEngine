@@ -22,7 +22,9 @@ namespace NLE
 			void removeScript(std::wstring name);
 			void addData(std::wstring name, std::wstring data);
 			std::wstring getData(std::wstring name);
-			void removeData(std::wstring name);			
+			void removeData(std::wstring name);		
+
+			std::vector<std::pair<std::wstring, std::wstring>> getScripts();
 
 		private:
 			Map<std::wstring, std::wstring, REPLACE> _scripts;
