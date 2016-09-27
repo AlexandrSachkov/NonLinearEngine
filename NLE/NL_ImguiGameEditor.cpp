@@ -69,8 +69,14 @@ namespace NLE
 				}
 
 				if (ImGui::Button("New")) {
-					scriptEditor.editScript(L"Script1", L"", [&](std::wstring scriptName, std::wstring script) {
+					scriptEditor.editScript(
+						L"Untitled",
+						L"",
+						[&](std::wstring scriptName, std::wstring script) {
 						scriptingContext.addScript(scriptName, script);
+					},
+						[&]() {
+						return gameManager.getGame().getName();
 					});
 				}
 				ImGui::SameLine();
@@ -92,15 +98,25 @@ namespace NLE
 				ImGui::SameLine();
 				if (ImGui::Button("Edit")) {
 					std::wstring selectedScriptName = scripts[_selectedScript].first;
-					scriptEditor.editScript(selectedScriptName, scriptingContext.getScript(selectedScriptName), [&](std::wstring scriptName, std::wstring script) {
+					scriptEditor.editScript(
+						selectedScriptName,
+						scriptingContext.getScript(selectedScriptName),
+						[&, selectedScriptName](std::wstring scriptName, std::wstring script) {
+						if (selectedScriptName.compare(scriptName) != 0)
+						{
+							scriptingContext.removeScript(selectedScriptName);
+						}
 						scriptingContext.addScript(scriptName, script);
+					},
+						[&]() {
+						return gameManager.getGame().getName();
 					});
 				}
 
 				ImGui::ListBox("", &_selectedScript, [](void* vec, int index, const char** out_text) {
 					auto& vector = *static_cast<std::vector<std::string>*>(vec);
 					if (index < 0 || index >= (int)vector.size())
-						return false; 
+						return false;
 
 					*out_text = vector[index].c_str();
 					return true;

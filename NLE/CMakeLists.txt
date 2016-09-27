@@ -60,6 +60,7 @@ SET(HEADERS
 	NL_ImguiEditorUiManager.h
 	NL_ImguiGameEditor.h
 	NL_ImguiSceneEditor.h
+	NL_ImguiScriptEditor.h
 	NL_ImguiObjectEditor.h
 	NL_ImguiInputMap.h
 	NL_InputProcessor.h
@@ -121,6 +122,7 @@ SET(SOURCES
 	NL_ImguiEditorUiManager.cpp	
 	NL_ImguiGameEditor.cpp
 	NL_ImguiSceneEditor.cpp
+	NL_ImguiScriptEditor.cpp
 	NL_ImguiObjectEditor.cpp
 	NL_ImguiInputMap.cpp
 	NL_InputProcessor.cpp

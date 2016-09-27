@@ -27,7 +27,8 @@ namespace NLE
 		void ImguiScriptEditor::editScript(
 			std::wstring scriptName,
 			std::wstring script,
-			std::function<void(std::wstring scriptName, std::wstring script)> onUpdate)
+			std::function<void(std::wstring scriptName, std::wstring script)> onUpdate,
+			std::function<std::wstring()> getContext)
 		{
 			/*if (_currentScriptName.compare(_originalScriptName) != 0
 				|| _currentScript.compare(_originalScript) != 0)
@@ -37,6 +38,7 @@ namespace NLE
 			_originalScriptName = scriptName;
 			_originalScript = script;
 			_onUpdate = onUpdate;
+			_getContext = getContext;
 
 			_currentScriptName.setText(TLS::strConverter.local().to_bytes(scriptName));
 			_currentScript.setText(TLS::strConverter.local().to_bytes(script));
@@ -53,8 +55,8 @@ namespace NLE
 			windowFlags |= ImGuiWindowFlags_NoSavedSettings;
 			windowFlags |= ImGuiWindowFlags_ShowBorders;
 
-			ImGui::Begin("Script Editor", &_visible, windowFlags);
-
+			std::wstring windowTitle = L"Script Editor: " + _getContext();
+			ImGui::Begin(TLS::strConverter.local().to_bytes(windowTitle).c_str(), &_visible, windowFlags);
 			ImGui::InputText("Name", &_currentScriptName[0], _currentScriptName.getSize(), 0);
 			if (ImGui::Button("Update")) {
 				std::wstring scriptName = TLS::strConverter.local().from_bytes(_currentScriptName.getText());

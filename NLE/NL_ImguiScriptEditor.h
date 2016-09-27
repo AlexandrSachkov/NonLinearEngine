@@ -23,10 +23,12 @@ namespace NLE
 			~ImguiScriptEditor();
 
 			bool& getVisibility();
+
 			void editScript(
 				std::wstring scriptName, 
 				std::wstring script, 
-				std::function<void(std::wstring scriptName, std::wstring script)> onUpdate);
+				std::function<void(std::wstring scriptName, std::wstring script)> onUpdate,
+				std::function<std::wstring()> getContext);
 
 			void draw(CONSOLE::IConsoleQueue& consoleQueue);
 		private:
@@ -34,6 +36,7 @@ namespace NLE
 			std::wstring _originalScriptName;
 			std::wstring _originalScript;
 			std::function<void(std::wstring scriptName, std::wstring script)> _onUpdate;
+			std::function<std::wstring()> _getContext;
 			CharBuffer _currentScriptName;
 			CharBuffer _currentScript;
 		};
