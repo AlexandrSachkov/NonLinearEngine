@@ -1,4 +1,6 @@
 #include "NL_LuaBindings.h"
+#include "NL_Globals.h"
+#include "NL_ConsoleQueue.h"
 
 #include "lua.hpp"
 #include <LuaIntf.h>
@@ -9,11 +11,9 @@ namespace NLE
 	{
 		void Bindings::attach(lua_State* state)
 		{
-			LuaIntf::LuaBinding(state).beginModule("nle")
-					.beginModule("script")
-						.addConstant("test", 5)
-					.endModule()
-				.endModule();
+			auto module = LuaIntf::LuaBinding(state).beginModule("nle");
+			CONSOLE::attachBindings(module);
+			module.endModule();
 		}
 	}
 }
