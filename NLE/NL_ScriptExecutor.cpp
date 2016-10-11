@@ -61,6 +61,7 @@ namespace NLE
 			else
 			{
 				_context->flagScript(name);
+				CONSOLE::GLOBAL_CONSOLE_QUEUE->push(CONSOLE::ERR, L"Script '" + name + L"' failed to execute.");
 				return false;
 			}
 		}
