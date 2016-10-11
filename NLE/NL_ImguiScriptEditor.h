@@ -28,15 +28,17 @@ namespace NLE
 				std::wstring scriptName, 
 				std::wstring script, 
 				std::function<void(std::wstring scriptName, std::wstring script)> onUpdate,
-				std::function<std::wstring()> getContext);
+				std::function<std::wstring()> getContext,
+				std::function<std::wstring()> getErrorString);
 
-			void draw(CONSOLE::IConsoleQueue& consoleQueue);
+			void draw(CONSOLE::IConsoleQueue& consoleQueue, float textOpaqueness);
 		private:
 			bool _visible;
 			std::wstring _originalScriptName;
 			std::wstring _originalScript;
 			std::function<void(std::wstring scriptName, std::wstring script)> _onUpdate;
 			std::function<std::wstring()> _getContext;
+			std::function<std::wstring()> _getErrorString;
 			CharBuffer _currentScriptName;
 			CharBuffer _currentScript;
 		};

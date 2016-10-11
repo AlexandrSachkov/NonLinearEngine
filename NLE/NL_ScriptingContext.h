@@ -18,6 +18,8 @@ namespace NLE
 		static const std::wstring ON_UPDATE = L"onUpdate";
 		static const std::wstring ON_EXIT = L"onExit";
 
+		static const std::wstring UNSPECIFIED_ERROR = L"Unspecified";
+
 		class ScriptingContext
 		{
 		public:
@@ -31,7 +33,9 @@ namespace NLE
 			std::wstring getData(std::wstring name);
 			void removeData(std::wstring name);	
 			void flagScript(std::wstring name);
+			void flagScript(std::wstring name, std::wstring error);
 			bool getScriptStatus(std::wstring name);
+			std::wstring getScriptErrorMessage(std::wstring name);
 			void unflagScript(std::wstring name);
 
 			std::vector<std::pair<std::wstring, std::wstring>> getScripts();
@@ -70,7 +74,7 @@ namespace NLE
 
 		private:
 			Map<std::wstring, std::wstring, REPLACE> _scripts;
-			Map<std::wstring, bool, REPLACE> _scriptStatus;
+			Map<std::wstring, std::pair<bool, std::wstring>, REPLACE> _scriptStatus;
 			Map<std::wstring, std::wstring, REPLACE> _data;
 		};
 	}

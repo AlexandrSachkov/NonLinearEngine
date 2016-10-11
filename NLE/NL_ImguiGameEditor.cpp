@@ -77,6 +77,9 @@ namespace NLE
 					},
 						[&]() {
 						return gameManager.getGame().getName();
+					},
+						[&]() {
+						return L"";
 					});
 				}
 				ImGui::SameLine();
@@ -110,6 +113,9 @@ namespace NLE
 					},
 						[&]() {
 						return gameManager.getGame().getName();
+					},
+						[&, selectedScriptName]() {
+						return gameManager.getGame().getScriptingContext().getScriptErrorMessage(selectedScriptName);
 					});
 				}
 

@@ -19,7 +19,7 @@ namespace NLE
 		{
 			if (name.compare(L"") == 0) return;
 			_scripts.insert(name, script);
-			_scriptStatus.insert(name, true);
+			_scriptStatus.insert(name, { true, L""});
 		}
 
 		std::wstring ScriptingContext::getScript(std::wstring name)
@@ -81,25 +81,43 @@ namespace NLE
 		void ScriptingContext::flagScript(std::wstring name)
 		{
 			if (name.compare(L"") == 0) return;
-			_scriptStatus.insert(name, false);
+			_scriptStatus.insert(name, { false, UNSPECIFIED_ERROR });
+		}
+
+		void ScriptingContext::flagScript(std::wstring name, std::wstring error)
+		{
+			if (name.compare(L"") == 0) return;
+			_scriptStatus.insert(name, { false, error });
 		}
 
 		void ScriptingContext::unflagScript(std::wstring name)
 		{
 			if (name.compare(L"") == 0) return;
-			_scriptStatus.insert(name, true);
+			_scriptStatus.insert(name, { true, L"" });
 		}
 
 		bool ScriptingContext::getScriptStatus(std::wstring name)
 		{
 			if (name.compare(L"") == 0) return false;
 
-			bool status;
+			std::pair<bool, std::wstring> status;
 			if (_scriptStatus.get(name, status))
 			{
-				return status;
+				return status.first;
 			}
 			return false;
+		}
+
+		std::wstring ScriptingContext::getScriptErrorMessage(std::wstring name)
+		{
+			if (name.compare(L"") == 0) return L"";
+
+			std::pair<bool, std::wstring> status;
+			if (_scriptStatus.get(name, status))
+			{
+				return status.second;
+			}
+			return L"";
 		}
 	}
 }

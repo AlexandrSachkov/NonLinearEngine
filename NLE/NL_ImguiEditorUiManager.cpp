@@ -514,7 +514,7 @@ namespace NLE
 			applyColorScheme(false);
 			ImGui::SetNextWindowPos(ImVec2((float)screenSize.width / 2, (float)screenSize.height / 2), ImGuiSetCond_FirstUseEver);
 
-			_scriptEditor.draw(_consoleQueue);
+			_scriptEditor.draw(_consoleQueue, _textColor.w);
 
 			restoreColorScheme();
 			ImGui::PopStyleVar();

@@ -19,12 +19,14 @@ namespace NLE
 			void registerCallback(std::wstring name, int(*callback)(lua_State* state));
 			void bindContext(ScriptingContext* context);
 			ScriptingContext* getContext();
+			std::wstring getExecutionError();
 			bool executeContextScript(std::wstring name);
 			bool executeScript(std::wstring script);
 
 		private:
 			lua_State* _state;
 			ScriptingContext* _context;
+			std::wstring _executionError;
 		};
 	}
 }
