@@ -29,7 +29,10 @@ namespace NLE
 			void removeScript(std::wstring name);
 			void addData(std::wstring name, std::wstring data);
 			std::wstring getData(std::wstring name);
-			void removeData(std::wstring name);		
+			void removeData(std::wstring name);	
+			void flagScript(std::wstring name);
+			bool getScriptStatus(std::wstring name);
+			void unflagScript(std::wstring name);
 
 			std::vector<std::pair<std::wstring, std::wstring>> getScripts();
 
@@ -67,6 +70,7 @@ namespace NLE
 
 		private:
 			Map<std::wstring, std::wstring, REPLACE> _scripts;
+			Map<std::wstring, bool, REPLACE> _scriptStatus;
 			Map<std::wstring, std::wstring, REPLACE> _data;
 		};
 	}

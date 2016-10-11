@@ -46,9 +46,23 @@ namespace NLE
 
 		bool ScriptExecutor::executeContextScript(std::wstring name)
 		{
-			if(_context)
-				return executeScript(_context->getScript(name));
-			else return false;
+			if (!_context)
+				return false;
+
+			if (!_context->getScriptStatus(name))
+			{
+				return false;
+			}
+
+			if (executeScript(_context->getScript(name)))
+			{
+				return true;
+			}
+			else
+			{
+				_context->flagScript(name);
+				return false;
+			}
 		}
 
 		bool ScriptExecutor::executeScript(std::wstring script)

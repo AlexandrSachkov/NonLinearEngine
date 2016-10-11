@@ -19,6 +19,7 @@ namespace NLE
 		{
 			if (name.compare(L"") == 0) return;
 			_scripts.insert(name, script);
+			_scriptStatus.insert(name, true);
 		}
 
 		std::wstring ScriptingContext::getScript(std::wstring name)
@@ -41,6 +42,7 @@ namespace NLE
 			else if (name.compare(ON_EXIT) == 0) return;
 
 			_scripts.erase(name);
+			_scriptStatus.erase(name);
 		}
 
 		void ScriptingContext::addData(std::wstring name, std::wstring data)
@@ -74,6 +76,30 @@ namespace NLE
 				scripts.push_back(kv);
 			}
 			return scripts;
+		}
+
+		void ScriptingContext::flagScript(std::wstring name)
+		{
+			if (name.compare(L"") == 0) return;
+			_scriptStatus.insert(name, false);
+		}
+
+		void ScriptingContext::unflagScript(std::wstring name)
+		{
+			if (name.compare(L"") == 0) return;
+			_scriptStatus.insert(name, true);
+		}
+
+		bool ScriptingContext::getScriptStatus(std::wstring name)
+		{
+			if (name.compare(L"") == 0) return false;
+
+			bool status;
+			if (_scriptStatus.get(name, status))
+			{
+				return status;
+			}
+			return false;
 		}
 	}
 }
