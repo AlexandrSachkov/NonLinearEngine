@@ -2,6 +2,8 @@
 #include "NL_ScriptingContext.h"
 #include "NL_ThreadLocal.h"
 #include "NL_LuaBindings.h"
+#include "NL_Globals.h"
+#include "NL_ConsoleQueue.h"
 
 namespace NLE
 {
@@ -57,12 +59,12 @@ namespace NLE
 			lua_settop(_state, 0);
 			if (luaL_loadstring(_state, strCnv.to_bytes(script).c_str()))
 			{
-				//CONSOLE::out(CONSOLE::ERR, lua_tostring(_state, -1));
+				CONSOLE::GLOBAL_CONSOLE_QUEUE->push(CONSOLE::ERR, lua_tostring(_state, -1));
 				return false;
 			}
 			if (lua_pcall(_state, 0, LUA_MULTRET, 0))
 			{
-				//CONSOLE::out(CONSOLE::ERR, lua_tostring(_state, -1));
+				CONSOLE::GLOBAL_CONSOLE_QUEUE->push(CONSOLE::ERR, lua_tostring(_state, -1));
 				return false;
 			}
 			return true;

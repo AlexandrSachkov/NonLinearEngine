@@ -89,6 +89,13 @@ namespace NLE
 
 			_opBuffer.replayOperations();
 
+			auto& ex = TLS::scriptExecutor.local();
+
+			ex.bindContext(&_game->getScriptingContext());
+			ex.executeContextScript(SCRIPT::ON_UPDATE);
+			ex.bindContext(&_currentScene->getScriptingContext());
+			ex.executeContextScript(SCRIPT::ON_UPDATE);
+
 			DATA::SharedData& data = _eServices.data->getData();
 			data.sysExecutionTimes.set(GAME_MANAGER, timer.deltaT());
 		}
@@ -207,6 +214,13 @@ namespace NLE
 		void GameManager::quitGame()
 		{
 			_opBuffer.queueOperation([&]() {
+				auto& ex = TLS::scriptExecutor.local();
+
+				ex.bindContext(&_currentScene->getScriptingContext());
+				ex.executeContextScript(SCRIPT::ON_EXIT);
+				ex.bindContext(&_game->getScriptingContext());
+				ex.executeContextScript(SCRIPT::ON_EXIT);
+
 				_execStatus = TERMINATE;
 			});
 		}
