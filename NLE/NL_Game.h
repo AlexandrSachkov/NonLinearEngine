@@ -27,7 +27,8 @@ namespace NLE
 				archive(
 					CEREAL_NVP(_testNum),
 					CEREAL_NVP(name),
-					CEREAL_NVP(initialScene)
+					CEREAL_NVP(initialScene),
+					CEREAL_NVP(_scriptingContext)
 					);
 			}
 
@@ -40,7 +41,8 @@ namespace NLE
 				archive(
 					CEREAL_NVP(_testNum),
 					CEREAL_NVP(name),
-					CEREAL_NVP(initialScene)
+					CEREAL_NVP(initialScene),
+					CEREAL_NVP(_scriptingContext)
 					);
 
 				_name = cnv.from_bytes(name);

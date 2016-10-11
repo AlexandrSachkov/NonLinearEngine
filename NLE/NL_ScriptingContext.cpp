@@ -9,7 +9,6 @@ namespace NLE
 			addScript(ON_INIT, L"");
 			addScript(ON_UPDATE, L"");
 			addScript(ON_EXIT, L"");
-			addScript(L"TestScript", L"console.log('hello world');");
 		}
 
 		ScriptingContext::~ScriptingContext()

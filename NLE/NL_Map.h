@@ -55,7 +55,7 @@ namespace NLE
 			return false;
 		}
 
-		const std::unordered_map<K, V>& getData()
+		const std::unordered_map<K, V>& getData() const
 		{
 			return _map;
 		}
@@ -67,8 +67,6 @@ namespace NLE
 			else
 				return false;
 		}
-
-		
 
 	private:
 		std::unordered_map<K, V> _map;
