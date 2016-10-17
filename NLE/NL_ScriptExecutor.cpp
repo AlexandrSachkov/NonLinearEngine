@@ -86,7 +86,8 @@ namespace NLE
 		void ScriptExecutor::applyContext(ScriptingContext& context)
 		{
 			auto module = LuaIntf::LuaBinding(_state).beginModule("nle");
-			context.getParent()->bind(module);
+			if(context.getParent())
+				context.getParent()->bind(module);
 			module.endModule();
 		}
 	}
