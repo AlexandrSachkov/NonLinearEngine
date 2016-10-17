@@ -10,7 +10,6 @@ namespace NLE
 	namespace SCRIPT
 	{
 		ScriptExecutor::ScriptExecutor() :
-			_context(nullptr),
 			_executionError(L"")
 		{
 			_state = luaL_newstate();
@@ -35,33 +34,20 @@ namespace NLE
 			lua_register(_state, strCnv.to_bytes(name).c_str(), callback);
 		}
 
-		void ScriptExecutor::bindContext(ScriptingContext* context)
+		bool ScriptExecutor::executeContextScript(ScriptingContext& context, std::wstring name)
 		{
-			_context = context;
-		}
-
-		ScriptingContext* ScriptExecutor::getContext()
-		{
-			return _context;
-		}
-
-		bool ScriptExecutor::executeContextScript(std::wstring name)
-		{
-			if (!_context)
-				return false;
-
-			if (!_context->getScriptStatus(name))
+			if (!context.getScriptStatus(name))
 			{
 				return false;
 			}
 
-			if (executeScript(_context->getScript(name)))
+			if (executeScript(context.getScript(name)))
 			{
 				return true;
 			}
 			else
 			{
-				_context->flagScript(name, _executionError);
+				context.flagScript(name, _executionError);
 				CONSOLE::GLOBAL_CONSOLE_QUEUE->push(CONSOLE::ERR, L"Script '" + name + L"' failed to execute.");
 				return false;
 			}

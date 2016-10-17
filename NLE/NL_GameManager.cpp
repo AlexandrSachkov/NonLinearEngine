@@ -91,10 +91,8 @@ namespace NLE
 
 			auto& ex = TLS::scriptExecutor.local();
 
-			ex.bindContext(&_game->getScriptingContext());
-			ex.executeContextScript(SCRIPT::ON_UPDATE);
-			ex.bindContext(&_currentScene->getScriptingContext());
-			ex.executeContextScript(SCRIPT::ON_UPDATE);
+			ex.executeContextScript(_game->getScriptingContext(), SCRIPT::ON_UPDATE);
+			ex.executeContextScript(_currentScene->getScriptingContext(), SCRIPT::ON_UPDATE);
 
 			DATA::SharedData& data = _eServices.data->getData();
 			data.sysExecutionTimes.set(GAME_MANAGER, timer.deltaT());
@@ -148,13 +146,11 @@ namespace NLE
 			_opBuffer.queueOperation([&, game]() {
 				auto& ex = TLS::scriptExecutor.local();
 
-				ex.bindContext(&_game->getScriptingContext());
-				ex.executeContextScript(SCRIPT::ON_EXIT);
+				ex.executeContextScript(_game->getScriptingContext(), SCRIPT::ON_EXIT);
 				delete _game;
 				_game = game;
 
-				ex.bindContext(&_game->getScriptingContext());
-				ex.executeContextScript(SCRIPT::ON_INIT);
+				ex.executeContextScript(_game->getScriptingContext(), SCRIPT::ON_INIT);
 			});
 		}
 
@@ -163,13 +159,11 @@ namespace NLE
 			_opBuffer.queueOperation([&, scene]() {
 				auto& ex = TLS::scriptExecutor.local();
 
-				ex.bindContext(&_currentScene->getScriptingContext());
-				ex.executeContextScript(SCRIPT::ON_EXIT);
+				ex.executeContextScript(_currentScene->getScriptingContext(), SCRIPT::ON_EXIT);
 				delete _currentScene;
 				_currentScene = scene;
 
-				ex.bindContext(&_currentScene->getScriptingContext());
-				ex.executeContextScript(SCRIPT::ON_INIT);
+				ex.executeContextScript(_currentScene->getScriptingContext(), SCRIPT::ON_INIT);
 			});
 		}
 
@@ -216,10 +210,8 @@ namespace NLE
 			_opBuffer.queueOperation([&]() {
 				auto& ex = TLS::scriptExecutor.local();
 
-				ex.bindContext(&_currentScene->getScriptingContext());
-				ex.executeContextScript(SCRIPT::ON_EXIT);
-				ex.bindContext(&_game->getScriptingContext());
-				ex.executeContextScript(SCRIPT::ON_EXIT);
+				ex.executeContextScript(_currentScene->getScriptingContext(), SCRIPT::ON_EXIT);
+				ex.executeContextScript(_game->getScriptingContext(), SCRIPT::ON_EXIT);
 
 				_execStatus = TERMINATE;
 			});
