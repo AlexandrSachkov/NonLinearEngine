@@ -5,6 +5,9 @@
 #include "NL_ISerializer.h"
 #include "NL_OperationBuffer.h"
 
+#include "lua.hpp"
+#include <LuaIntf.h>
+
 #include <functional>
 
 namespace NLE
@@ -55,6 +58,14 @@ namespace NLE
 
 			Game& getGame();
 			Scene& getCurrentScene();
+
+			static void attachBindings(LuaIntf::CppBindModule<LuaIntf::LuaBinding>& binding)
+			{
+				binding.beginClass<GameManager>("GameManager")
+					.addFunction("getGame", &GameManager::getGame)
+					.addFunction("getCurrentScene", &GameManager::getCurrentScene)
+					.endClass();
+			}
 
 		private:
 			void updateGame(Game* game);

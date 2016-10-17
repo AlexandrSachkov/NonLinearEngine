@@ -43,6 +43,7 @@ namespace NLE
 			std::wstring getScriptErrorMessage(std::wstring name);
 			void unflagScript(std::wstring name);
 			IScriptable* getParent();
+			void setParent(IScriptable* parent);
 
 			std::vector<std::pair<std::wstring, std::wstring>> getScripts();
 

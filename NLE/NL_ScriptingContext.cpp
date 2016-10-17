@@ -144,5 +144,10 @@ namespace NLE
 		{
 			return _parent;
 		}
+
+		void ScriptingContext::setParent(IScriptable* parent)
+		{
+			_parent = parent;
+		}
 	}
 }

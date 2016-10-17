@@ -13,10 +13,12 @@ namespace NLE
 {
 	namespace GAME
 	{
+		class GameManager;
 		class Game : virtual SCRIPT::IScriptable
 		{
 		public:
 			Game();
+			Game(GameManager* gameManager);
 			~Game();
 
 			template<class Archive>
@@ -44,9 +46,13 @@ namespace NLE
 					CEREAL_NVP(_scriptingContext)
 					);
 
+				_scriptingContext.setParent(this);
 				_name = cnv.from_bytes(name);
 				_initialScene = cnv.from_bytes(initialScene);
 			}
+
+			GameManager* getGameManager();
+			void setGameManager(GameManager& gameManager);
 
 			void setName(std::wstring name);
 			void setName(std::string name);
@@ -62,11 +68,13 @@ namespace NLE
 			{
 				binding.beginClass<Game>("Game")
 					.addProperty("name", &Game::getNameStr, static_cast<void(Game::*)(std::string)>(&Game::setName))
+					.addFunction("getGameManager", &Game::getGameManager)
 					.addFunction("getScriptingContext", &Game::getScriptingContext)
 					.endClass();
 			}
 
 		private:
+			GameManager* _gameManager;
 			std::wstring _name;
 			std::wstring _initialScene;
 			SCRIPT::ScriptingContext _scriptingContext;

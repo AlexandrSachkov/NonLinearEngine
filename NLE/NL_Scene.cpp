@@ -2,12 +2,16 @@
 #include "NL_Uuid.h"
 #include "NL_ThreadLocal.h"
 #include "NL_GameObject.h"
+#include "NL_GameManager.h"
 
 namespace NLE
 {
 	namespace GAME
 	{
-		Scene::Scene() :
+		Scene::Scene() : Scene(nullptr) {}
+
+		Scene::Scene(GameManager* gameManager) :
+			_gameManager(gameManager),
 			_uuid(UUID::generateUuid()),
 			_scriptingContext(this)
 		{
@@ -17,6 +21,16 @@ namespace NLE
 		Scene::~Scene()
 		{
 
+		}
+
+		GameManager* Scene::getGameManager()
+		{
+			return _gameManager;
+		}
+
+		void Scene::setGameManager(GameManager& gameManager)
+		{
+			_gameManager = &gameManager;
 		}
 
 		std::wstring Scene::getName()

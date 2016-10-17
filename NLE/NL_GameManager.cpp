@@ -106,8 +106,8 @@ namespace NLE
 		void GameManager::newGame()
 		{
 			_opBuffer.queueOperation([&]() {
-				_game = new Game();
-				_currentScene = new Scene();
+				_game = new Game(this);
+				_currentScene = new Scene(this);
 				_game->setInitialScene(_currentScene->getName());
 				_eServices.console->push(CONSOLE::STANDARD, L"Starting new game.");
 			});
@@ -144,8 +144,8 @@ namespace NLE
 		void GameManager::updateGame(Game* game)
 		{
 			_opBuffer.queueOperation([&, game]() {
+				game->setGameManager(*this);
 				auto& ex = TLS::scriptExecutor.local();
-
 				ex.executeContextScript(_game->getScriptingContext(), SCRIPT::ON_EXIT);
 				delete _game;
 				_game = game;
@@ -157,8 +157,8 @@ namespace NLE
 		void GameManager::updateScene(Scene* scene)
 		{
 			_opBuffer.queueOperation([&, scene]() {
+				scene->setGameManager(*this);
 				auto& ex = TLS::scriptExecutor.local();
-
 				ex.executeContextScript(_currentScene->getScriptingContext(), SCRIPT::ON_EXIT);
 				delete _currentScene;
 				_currentScene = scene;

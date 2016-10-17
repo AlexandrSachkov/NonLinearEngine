@@ -1,12 +1,18 @@
 #include "NL_Game.h"
 #include "NL_Uuid.h"
 #include "NL_ThreadLocal.h"
+#include "NL_GameManager.h"
 
 namespace NLE
 {
 	namespace GAME
 	{
-		Game::Game() :
+		Game::Game() : Game (nullptr)
+		{
+		}
+
+		Game::Game(GameManager* gameManager) :
+			_gameManager(gameManager),
 			_scriptingContext(this)
 		{
 			_name = L"Game1";
@@ -16,6 +22,16 @@ namespace NLE
 		Game::~Game()
 		{
 
+		}
+
+		GameManager* Game::getGameManager()
+		{
+			return _gameManager;
+		}
+
+		void Game::setGameManager(GameManager& gameManager)
+		{
+			_gameManager = &gameManager;
 		}
 
 		std::wstring Game::getName()

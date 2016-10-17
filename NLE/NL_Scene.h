@@ -13,10 +13,12 @@ namespace NLE
 	namespace GAME
 	{
 		class GameObject;
+		class GameManager;
 		class Scene : public SCRIPT::IScriptable
 		{
 		public:
 			Scene();
+			Scene(GameManager* _gameManager);
 			~Scene();
 
 			template<class Archive>
@@ -26,7 +28,8 @@ namespace NLE
 				auto name = cnv.to_bytes(_name);
 				archive(
 					CEREAL_NVP(name),
-					CEREAL_NVP(_uuid)
+					CEREAL_NVP(_uuid),
+					CEREAL_NVP(_scriptingContext)
 					);
 			}
 
@@ -37,11 +40,16 @@ namespace NLE
 				std::string name;
 				archive(
 					CEREAL_NVP(name),
-					CEREAL_NVP(_uuid)
+					CEREAL_NVP(_uuid),
+					CEREAL_NVP(_scriptingContext)
 					);
 
+				_scriptingContext.setParent(this);
 				_name = cnv.from_bytes(name);
 			}
+
+			GameManager* getGameManager();
+			void setGameManager(GameManager& gameManager);
 
 			std::wstring getName();
 			std::string getNameStr();
@@ -56,12 +64,13 @@ namespace NLE
 			static void attachBindings(LuaIntf::CppBindModule<LuaIntf::LuaBinding>& binding)
 			{
 				binding.beginClass<Scene>("Scene")
+					.addFunction("getGameManager", &Scene::getGameManager)
 					.addProperty("name", &Scene::getNameStr, static_cast<void(Scene::*)(std::string)>(&Scene::setName))
 					.endClass();
 			}
 
 		private:
-			int _testNum;
+			GameManager* _gameManager;
 			std::wstring _name;
 			unsigned long long _uuid;
 			Map<unsigned long long, GameObject*, REPLACE> _objects;

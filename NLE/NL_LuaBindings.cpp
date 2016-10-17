@@ -3,6 +3,7 @@
 #include "NL_ConsoleQueue.h"
 #include "NL_Game.h"
 #include "NL_Scene.h"
+#include "NL_GameManager.h"
 #include "NL_ScriptingContext.h"
 
 #include "lua.hpp"
@@ -18,6 +19,7 @@ namespace NLE
 			
 			CONSOLE::attachBindings(module);
 			GAME::Game::attachBindings(module);
+			GAME::GameManager::attachBindings(module);
 			GAME::Scene::attachBindings(module);
 			ScriptingContext::attachBindings(module);
 
