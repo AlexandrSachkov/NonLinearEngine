@@ -7,6 +7,7 @@
 #include "cereal\cereal.hpp"
 #include "cereal/types/string.hpp"
 #include "cereal/types/vector.hpp"
+#include "LuaIntf.h"
 
 #include <vector>
 
@@ -20,15 +21,19 @@ namespace NLE
 
 		static const std::wstring UNSPECIFIED_ERROR = L"Unspecified";
 
+		class IScriptable;
 		class ScriptingContext
 		{
 		public:
-			ScriptingContext();
+			ScriptingContext(IScriptable* parent);
 			~ScriptingContext();
 
 			void addScript(std::wstring name, std::wstring script);
+			void addScript(std::string name, std::string script);
 			std::wstring getScript(std::wstring name);
+			std::string getScript(std::string name);
 			void removeScript(std::wstring name);
+			void removeScript(std::string name);
 			void addData(std::wstring name, std::wstring data);
 			std::wstring getData(std::wstring name);
 			void removeData(std::wstring name);	
@@ -37,6 +42,7 @@ namespace NLE
 			bool getScriptStatus(std::wstring name);
 			std::wstring getScriptErrorMessage(std::wstring name);
 			void unflagScript(std::wstring name);
+			IScriptable* getParent();
 
 			std::vector<std::pair<std::wstring, std::wstring>> getScripts();
 
@@ -72,7 +78,18 @@ namespace NLE
 				}
 			}
 
+			static void attachBindings(LuaIntf::CppBindModule<LuaIntf::LuaBinding>& binding)
+			{
+				binding.beginClass<ScriptingContext>("ScriptingContext")
+					.addFunction("addScript", static_cast<void(ScriptingContext::*)(std::string, std::string)>(&ScriptingContext::addScript))
+					.addFunction("getScript", static_cast<std::string(ScriptingContext::*)(std::string)>(&ScriptingContext::getScript))
+					.addFunction("removeScript", static_cast<void(ScriptingContext::*)(std::string)>(&ScriptingContext::removeScript))
+					.endClass();
+			}
+
 		private:
+			IScriptable* _parent;
+
 			Map<std::wstring, std::wstring, REPLACE> _scripts;
 			Map<std::wstring, std::pair<bool, std::wstring>, REPLACE> _scriptStatus;
 			Map<std::wstring, std::wstring, REPLACE> _data;

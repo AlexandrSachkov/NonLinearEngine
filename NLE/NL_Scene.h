@@ -2,6 +2,7 @@
 #define NL_SCENE_H_
 
 #include "NL_ScriptingContext.h"
+#include "NL_IScriptable.h"
 #include "NL_Map.h"
 
 #include <string>
@@ -12,7 +13,7 @@ namespace NLE
 	namespace GAME
 	{
 		class GameObject;
-		class Scene
+		class Scene : public SCRIPT::IScriptable
 		{
 		public:
 			Scene();
@@ -43,12 +44,24 @@ namespace NLE
 			}
 
 			std::wstring getName();
+			std::string getNameStr();
 			void setName(std::wstring name);
+			void setName(std::string name);
+
 			void addObject(GameObject* object);
 			GameObject* getObject(unsigned long long uuid);
 			SCRIPT::ScriptingContext& getScriptingContext();
+			void bind(LuaIntf::CppBindModule<LuaIntf::LuaBinding>& binding);
+
+			static void attachBindings(LuaIntf::CppBindModule<LuaIntf::LuaBinding>& binding)
+			{
+				binding.beginClass<Scene>("Scene")
+					.addProperty("name", &Scene::getNameStr, static_cast<void(Scene::*)(std::string)>(&Scene::setName))
+					.endClass();
+			}
 
 		private:
+			int _testNum;
 			std::wstring _name;
 			unsigned long long _uuid;
 			Map<unsigned long long, GameObject*, REPLACE> _objects;

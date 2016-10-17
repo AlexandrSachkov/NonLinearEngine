@@ -1,10 +1,13 @@
 #include "NL_ScriptingContext.h"
+#include "NL_IScriptable.h"
+#include "NL_ThreadLocal.h"
 
 namespace NLE
 {
 	namespace SCRIPT
 	{
-		ScriptingContext::ScriptingContext()
+		ScriptingContext::ScriptingContext(IScriptable* parent) :
+			_parent(parent)
 		{
 			addScript(ON_INIT, L"");
 			addScript(ON_UPDATE, L"");
@@ -22,6 +25,12 @@ namespace NLE
 			_scriptStatus.insert(name, { true, L""});
 		}
 
+		void ScriptingContext::addScript(std::string name, std::string script)
+		{
+			auto& cnv = TLS::strConverter.local();
+			addScript(cnv.from_bytes(name), cnv.from_bytes(script));
+		}
+
 		std::wstring ScriptingContext::getScript(std::wstring name)
 		{
 			if (name.compare(L"") == 0) return L"";
@@ -34,6 +43,12 @@ namespace NLE
 			return L"";
 		}
 
+		std::string ScriptingContext::getScript(std::string name)
+		{
+			auto& cnv = TLS::strConverter.local();
+			return cnv.to_bytes(getScript(cnv.from_bytes(name)));
+		}
+
 		void ScriptingContext::removeScript(std::wstring name)
 		{
 			if (name.compare(L"") == 0) return;
@@ -43,6 +58,11 @@ namespace NLE
 
 			_scripts.erase(name);
 			_scriptStatus.erase(name);
+		}
+
+		void ScriptingContext::removeScript(std::string name)
+		{
+			removeScript(TLS::strConverter.local().from_bytes(name));
 		}
 
 		void ScriptingContext::addData(std::wstring name, std::wstring data)
@@ -118,6 +138,11 @@ namespace NLE
 				return status.second;
 			}
 			return L"";
+		}
+
+		IScriptable* ScriptingContext::getParent()
+		{
+			return _parent;
 		}
 	}
 }

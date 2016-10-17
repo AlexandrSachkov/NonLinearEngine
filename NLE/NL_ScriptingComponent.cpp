@@ -5,7 +5,8 @@ namespace NLE
 	namespace GAME
 	{
 		ScriptingComponent::ScriptingComponent(GameObject* parent) :
-			GameObjectComponent(parent)
+			GameObjectComponent(parent),
+			_scriptingContext(this)
 		{
 
 		}
@@ -18,6 +19,11 @@ namespace NLE
 		SCRIPT::ScriptingContext& ScriptingComponent::getScriptingContext()
 		{
 			return _scriptingContext;
+		}
+
+		void ScriptingComponent::bind(LuaIntf::CppBindModule<LuaIntf::LuaBinding>& binding)
+		{
+			binding.addVariableRef<ScriptingComponent>("this", this);
 		}
 	}
 }

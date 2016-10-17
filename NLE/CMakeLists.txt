@@ -80,6 +80,7 @@ SET(HEADERS
 	NL_ResourceManager.h
 	NL_IResourceManager.h
 	NL_Scene.h		
+	NL_IScriptable.h
 	NL_ScriptExecutor.h
 	NL_ScriptingComponent.h
 	NL_ScriptingContext.h

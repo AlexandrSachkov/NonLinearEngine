@@ -8,7 +8,8 @@ namespace NLE
 	namespace GAME
 	{
 		Scene::Scene() :
-			_uuid(UUID::generateUuid())
+			_uuid(UUID::generateUuid()),
+			_scriptingContext(this)
 		{
 			_name = L"Scene " + std::to_wstring(_uuid);
 		}
@@ -23,9 +24,19 @@ namespace NLE
 			return _name;
 		}
 
+		std::string Scene::getNameStr()
+		{
+			return TLS::strConverter.local().to_bytes(_name);
+		}
+
 		void Scene::setName(std::wstring name)
 		{
 			_name = name;
+		}
+
+		void Scene::setName(std::string name)
+		{
+			_name = TLS::strConverter.local().from_bytes(name);
 		}
 
 		void Scene::addObject(GameObject* object)
@@ -43,6 +54,11 @@ namespace NLE
 		SCRIPT::ScriptingContext& Scene::getScriptingContext()
 		{
 			return _scriptingContext;
+		}
+
+		void Scene::bind(LuaIntf::CppBindModule<LuaIntf::LuaBinding>& binding)
+		{
+			binding.addVariableRef<Scene>("this", this);
 		}
 	}
 }

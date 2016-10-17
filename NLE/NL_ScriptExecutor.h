@@ -22,6 +22,7 @@ namespace NLE
 			bool executeScript(std::wstring script);
 
 		private:
+			void applyContext(ScriptingContext& context);
 			lua_State* _state;
 			std::wstring _executionError;
 		};

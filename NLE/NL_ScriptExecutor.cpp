@@ -4,6 +4,7 @@
 #include "NL_LuaBindings.h"
 #include "NL_Globals.h"
 #include "NL_ConsoleQueue.h"
+#include "NL_IScriptable.h"
 
 namespace NLE
 {
@@ -41,6 +42,7 @@ namespace NLE
 				return false;
 			}
 
+			applyContext(context);
 			if (executeScript(context.getScript(name)))
 			{
 				return true;
@@ -80,5 +82,13 @@ namespace NLE
 		{
 			return _executionError;
 		}
+
+		void ScriptExecutor::applyContext(ScriptingContext& context)
+		{
+			auto module = LuaIntf::LuaBinding(_state).beginModule("nle");
+			context.getParent()->bind(module);
+			module.endModule();
+		}
 	}
+
 }

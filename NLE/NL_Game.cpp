@@ -6,11 +6,11 @@ namespace NLE
 {
 	namespace GAME
 	{
-		Game::Game()
+		Game::Game() :
+			_scriptingContext(this)
 		{
 			_name = L"Game1";
 			_initialScene = L"";
-			_testNum = UUID::generateUuid();
 		}
 
 		Game::~Game()
@@ -23,9 +23,19 @@ namespace NLE
 			return _name;
 		}
 
+		std::string Game::getNameStr()
+		{
+			return TLS::strConverter.local().to_bytes(_name);
+		}
+
 		void Game::setName(std::wstring name)
 		{
 			_name = name;
+		}
+
+		void Game::setName(std::string name)
+		{
+			_name = TLS::strConverter.local().from_bytes(name);
 		}
 
 		void Game::setInitialScene(std::wstring sceneName)
@@ -41,6 +51,11 @@ namespace NLE
 		SCRIPT::ScriptingContext& Game::getScriptingContext()
 		{
 			return _scriptingContext;
+		}
+
+		void Game::bind(LuaIntf::CppBindModule<LuaIntf::LuaBinding>& binding)
+		{
+			binding.addVariableRef<Game>("this", this);
 		}
 	}
 }
