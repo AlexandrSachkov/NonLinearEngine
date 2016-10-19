@@ -4,6 +4,7 @@
 #include "NL_ScriptingContext.h"
 #include "NL_IScriptable.h"
 #include "NL_Map.h"
+#include "NL_LuaCustomTypes.h"
 
 #include <string>
 #include "NL_ThreadLocal.h"
@@ -52,9 +53,7 @@ namespace NLE
 			void setGameManager(GameManager& gameManager);
 
 			std::wstring getName();
-			std::string getNameStr();
 			void setName(std::wstring name);
-			void setName(std::string name);
 
 			void addObject(GameObject* object);
 			GameObject* getObject(unsigned long long uuid);
@@ -65,7 +64,7 @@ namespace NLE
 			{
 				binding.beginClass<Scene>("Scene")
 					.addFunction("getGameManager", &Scene::getGameManager)
-					.addProperty("name", &Scene::getNameStr, static_cast<void(Scene::*)(std::string)>(&Scene::setName))
+					.addProperty("name", &Scene::getName, &Scene::setName)
 					.endClass();
 			}
 

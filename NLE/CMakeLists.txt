@@ -67,6 +67,7 @@ SET(HEADERS
 	NL_IInputProcessor.h	
 	NL_InputEvents.h
 	NL_LuaBindings.h
+	NL_LuaCustomTypes.h
 	NL_Map.h
 	NL_MemoryManager.h
 	NL_MemoryPool.h

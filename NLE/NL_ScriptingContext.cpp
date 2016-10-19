@@ -25,12 +25,6 @@ namespace NLE
 			_scriptStatus.insert(name, { true, L""});
 		}
 
-		void ScriptingContext::addScript(std::string name, std::string script)
-		{
-			auto& cnv = TLS::strConverter.local();
-			addScript(cnv.from_bytes(name), cnv.from_bytes(script));
-		}
-
 		std::wstring ScriptingContext::getScript(std::wstring name)
 		{
 			if (name.compare(L"") == 0) return L"";
@@ -41,12 +35,6 @@ namespace NLE
 				return script;
 			}
 			return L"";
-		}
-
-		std::string ScriptingContext::getScript(std::string name)
-		{
-			auto& cnv = TLS::strConverter.local();
-			return cnv.to_bytes(getScript(cnv.from_bytes(name)));
 		}
 
 		void ScriptingContext::removeScript(std::wstring name)
@@ -60,12 +48,7 @@ namespace NLE
 			_scriptStatus.erase(name);
 		}
 
-		void ScriptingContext::removeScript(std::string name)
-		{
-			removeScript(TLS::strConverter.local().from_bytes(name));
-		}
-
-		void ScriptingContext::addData(std::wstring name, std::wstring data)
+		/*void ScriptingContext::addData(std::wstring name, std::wstring data)
 		{
 			if (name.compare(L"") == 0) return;
 			_data.insert(name, data);
@@ -87,6 +70,54 @@ namespace NLE
 		{
 			if (name.compare(L"") == 0) return;
 			_data.erase(name);
+		}*/
+
+		void ScriptingContext::store(std::string name, int data)
+		{
+			_data.insert(name, new int(data));
+		}
+
+		void ScriptingContext::store(std::string name, double data)
+		{
+			_data.insert(name, new double(data));
+		}
+
+		void ScriptingContext::store(std::string name, void* data)
+		{
+			_data.insert(name, data);
+		}
+
+		void ScriptingContext::store(std::string name, std::string data)
+		{
+			_data.insert(name, new std::string(data));
+		}
+
+		int ScriptingContext::retrieveInt(std::string name)
+		{
+			void* val;
+			_data.get(name, val);
+			return *static_cast<int*>(val);
+		}
+
+		double ScriptingContext::retrieveDouble(std::string name)
+		{
+			void* val;
+			_data.get(name, val);
+			return *static_cast<double*>(val);
+		}
+
+		void* ScriptingContext::retrieveUserdata(std::string name)
+		{
+			void* val;
+			_data.get(name, val);
+			return val;
+		}
+
+		std::string ScriptingContext::retrieveString(std::string name)
+		{
+			void* val;
+			_data.get(name, val);
+			return *static_cast<std::string*>(val);
 		}
 
 		std::vector<std::pair<std::wstring, std::wstring>> ScriptingContext::getScripts()

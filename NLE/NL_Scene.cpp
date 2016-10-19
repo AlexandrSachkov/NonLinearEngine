@@ -38,19 +38,9 @@ namespace NLE
 			return _name;
 		}
 
-		std::string Scene::getNameStr()
-		{
-			return TLS::strConverter.local().to_bytes(_name);
-		}
-
 		void Scene::setName(std::wstring name)
 		{
 			_name = name;
-		}
-
-		void Scene::setName(std::string name)
-		{
-			_name = TLS::strConverter.local().from_bytes(name);
 		}
 
 		void Scene::addObject(GameObject* object)

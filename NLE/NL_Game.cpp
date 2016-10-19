@@ -39,19 +39,9 @@ namespace NLE
 			return _name;
 		}
 
-		std::string Game::getNameStr()
-		{
-			return TLS::strConverter.local().to_bytes(_name);
-		}
-
 		void Game::setName(std::wstring name)
 		{
 			_name = name;
-		}
-
-		void Game::setName(std::string name)
-		{
-			_name = TLS::strConverter.local().from_bytes(name);
 		}
 
 		void Game::setInitialScene(std::wstring sceneName)

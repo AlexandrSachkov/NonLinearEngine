@@ -4,6 +4,7 @@
 #include "NL_ScriptingContext.h"
 #include "NL_ThreadLocal.h"
 #include "NL_IScriptable.h"
+#include "NL_LuaCustomTypes.h"
 
 #include <string>
 #include "cereal\cereal.hpp"
@@ -55,9 +56,7 @@ namespace NLE
 			void setGameManager(GameManager& gameManager);
 
 			void setName(std::wstring name);
-			void setName(std::string name);
 			std::wstring getName();
-			std::string getNameStr();
 
 			void setInitialScene(std::wstring sceneName);
 			std::wstring getInitialScene();
@@ -67,7 +66,7 @@ namespace NLE
 			static void attachBindings(LuaIntf::CppBindModule<LuaIntf::LuaBinding>& binding)
 			{
 				binding.beginClass<Game>("Game")
-					.addProperty("name", &Game::getNameStr, static_cast<void(Game::*)(std::string)>(&Game::setName))
+					.addProperty("name", &Game::getName, &Game::setName)
 					.addFunction("getGameManager", &Game::getGameManager)
 					.addFunction("getScriptingContext", &Game::getScriptingContext)
 					.endClass();

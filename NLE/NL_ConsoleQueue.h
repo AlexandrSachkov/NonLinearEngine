@@ -4,6 +4,7 @@
 #include "NL_ThreadLocal.h"
 #include "NL_IConsoleQueue.h"
 #include "NL_Globals.h"
+#include "NL_LuaCustomTypes.h"
 
 #include "tbb\concurrent_queue.h"
 #include <LuaIntf.h>
@@ -33,7 +34,7 @@ namespace NLE
 		static void attachBindings(LuaIntf::CppBindModule<LuaIntf::LuaBinding>& binding)
 		{
 			binding.beginModule("console")
-				.addFunction("print", [](std::string data) {
+				.addFunction("print", [](std::wstring data) {
 					CONSOLE::GLOBAL_CONSOLE_QUEUE->push(CONSOLE::STANDARD, data);
 				})
 			.endModule();
