@@ -72,52 +72,70 @@ namespace NLE
 			_data.erase(name);
 		}*/
 
-		void ScriptingContext::store(std::string name, int data)
-		{
-			_data.insert(name, new int(data));
-		}
-
-		void ScriptingContext::store(std::string name, double data)
+		void ScriptingContext::store(std::wstring name, double data)
 		{
 			_data.insert(name, new double(data));
 		}
 
-		void ScriptingContext::store(std::string name, void* data)
+		void ScriptingContext::store(std::wstring name, std::wstring data)
 		{
-			_data.insert(name, data);
+			_data.insert(name, new std::wstring(data));
 		}
 
-		void ScriptingContext::store(std::string name, std::string data)
+		void ScriptingContext::store(std::wstring name, LuaIntf::LuaRef data)
 		{
-			_data.insert(name, new std::string(data));
+			_data.insert(name, new LuaIntf::LuaRef(data));
 		}
 
-		int ScriptingContext::retrieveInt(std::string name)
-		{
-			void* val;
-			_data.get(name, val);
-			return *static_cast<int*>(val);
-		}
-
-		double ScriptingContext::retrieveDouble(std::string name)
+		double ScriptingContext::loadNum(std::wstring name)
 		{
 			void* val;
 			_data.get(name, val);
 			return *static_cast<double*>(val);
 		}
 
-		void* ScriptingContext::retrieveUserdata(std::string name)
+		std::wstring ScriptingContext::loadStr(std::wstring name)
 		{
 			void* val;
 			_data.get(name, val);
-			return val;
+			return *static_cast<std::wstring*>(val);
 		}
 
-		std::string ScriptingContext::retrieveString(std::string name)
+		LuaIntf::LuaRef ScriptingContext::loadObj(std::wstring name)
 		{
 			void* val;
 			_data.get(name, val);
-			return *static_cast<std::string*>(val);
+			return *static_cast<LuaIntf::LuaRef*>(val);
+		}
+
+		void ScriptingContext::deleteNum(std::wstring name)
+		{
+			void* data;
+			if (_data.get(name, data))
+			{
+				delete (double*)data;
+				_data.erase(name);
+			}
+		}
+
+		void ScriptingContext::deleteStr(std::wstring name)
+		{
+			void* data;
+			if (_data.get(name, data))
+			{
+				delete (std::wstring*)data;
+				_data.erase(name);
+			}
+		}
+
+		void ScriptingContext::deleteObj(std::wstring name)
+		{
+			void* data;
+			if (_data.get(name, data))
+			{
+				delete (LuaIntf::LuaRef*)data;
+				_data.erase(name);
+			}
 		}
 
 		std::vector<std::pair<std::wstring, std::wstring>> ScriptingContext::getScripts()
