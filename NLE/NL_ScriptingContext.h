@@ -37,20 +37,13 @@ namespace NLE
 			void store(std::wstring name, std::wstring data);
 			void store(std::wstring name, LuaIntf::LuaRef data);
 
-			double loadNum(std::wstring name);
-			std::wstring loadStr(std::wstring name);
-			LuaIntf::LuaRef loadObj(std::wstring name);
+			bool load(std::wstring name, double& data);
+			bool load(std::wstring name, std::wstring& data);
+			bool load(std::wstring name, LuaIntf::LuaRef& data);
 			
 			void deleteNum(std::wstring name);	
 			void deleteStr(std::wstring name);
 			void deleteObj(std::wstring name);
-			/*
-			void store(std::string name, bool data);
-			void store(std::string name, LuaIntf::LuaRef data);
-			void store(std::string name, const std::vector<std::string>& data);
-			void store(std::string name, std::map<std::string, int>& data);*/
-
-			
 
 			void flagScript(std::wstring name);
 			void flagScript(std::wstring name, std::wstring error);
@@ -103,9 +96,18 @@ namespace NLE
 					.addFunction("storeNum", static_cast<void(ScriptingContext::*)(std::wstring name, double data)>(&ScriptingContext::store))
 					.addFunction("storeStr", static_cast<void(ScriptingContext::*)(std::wstring name, std::wstring data)>(&ScriptingContext::store))
 					.addFunction("storeObj", static_cast<void(ScriptingContext::*)(std::wstring name, LuaIntf::LuaRef data)>(&ScriptingContext::store))
-					.addFunction("loadNum", &ScriptingContext::loadNum)
-					.addFunction("loadStr", &ScriptingContext::loadStr)
-					.addFunction("loadObj", &ScriptingContext::loadObj)
+					.addFunction(
+						"loadNum", 
+						static_cast<bool(ScriptingContext::*)(std::wstring name, double& data)>(&ScriptingContext::load), 
+						LUA_ARGS(std::wstring, LuaIntf::_out<double&>))
+					.addFunction(
+						"loadStr", 
+						static_cast<bool(ScriptingContext::*)(std::wstring name, std::wstring& data)>(&ScriptingContext::load), 
+						LUA_ARGS(std::wstring, LuaIntf::_out<std::wstring&>))
+					.addFunction(
+						"loadObj", 
+						static_cast<bool(ScriptingContext::*)(std::wstring name, LuaIntf::LuaRef& data)>(&ScriptingContext::load), 
+						LUA_ARGS(std::wstring, LuaIntf::_out<LuaIntf::LuaRef&>))
 					.addFunction("deleteNum", &ScriptingContext::deleteNum)
 					.addFunction("deleteStr", &ScriptingContext::deleteStr)
 					.addFunction("deleteObj", &ScriptingContext::deleteObj)
@@ -117,7 +119,9 @@ namespace NLE
 
 			Map<std::wstring, std::wstring, REPLACE> _scripts;
 			Map<std::wstring, std::pair<bool, std::wstring>, REPLACE> _scriptStatus;
-			Map<std::wstring, void*, REPLACE> _data;
+			Map<std::wstring, double, REPLACE> _numericData;
+			Map<std::wstring, std::wstring, REPLACE> _stringData;
+			Map<std::wstring, LuaIntf::LuaRef, REPLACE> _objectData;
 		};
 	}
 }
