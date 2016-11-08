@@ -58,76 +58,12 @@ namespace NLE
 				return 0;
 			}, (void*)&gameManager);
 
-			if (ImGui::CollapsingHeader("Scripts"))
-			{
-				auto& scriptingContext = gameManager.getGame().getScriptingContext();
-				auto scripts = scriptingContext.getScripts();
-				std::vector<std::string> scriptNames(scripts.size());
-				for (int i = 0; i < scripts.size(); ++i)
-				{
-					scriptNames[i] = TLS::strConverter.local().to_bytes(scripts[i].first);
-				}
-
-				if (ImGui::Button("New")) {
-					scriptEditor.editScript(
-						L"Untitled",
-						L"",
-						[&](std::wstring scriptName, std::wstring script) {
-						scriptingContext.addScript(scriptName, script);
-					},
-						[&]() {
-						return gameManager.getGame().getName();
-					},
-						[&]() {
-						return L"";
-					});
-				}
-				ImGui::SameLine();
-				if (ImGui::Button("Delete")) {
-					std::wstring selectedScriptName = scripts[_selectedScript].first;
-					if (selectedScriptName.compare(SCRIPT::ON_INIT) == 0
-						|| selectedScriptName.compare(SCRIPT::ON_UPDATE) == 0
-						|| selectedScriptName.compare(SCRIPT::ON_EXIT) == 0)
-					{
-						consoleQueue.push(CONSOLE::WARNING, selectedScriptName + L" is a system script and cannot be deleted.");
-					}
-					else
-					{
-						scriptingContext.removeScript(selectedScriptName);
-						if (_selectedScript > 0)
-							--_selectedScript;
-					}
-				}
-				ImGui::SameLine();
-				if (ImGui::Button("Edit")) {
-					std::wstring selectedScriptName = scripts[_selectedScript].first;
-					scriptEditor.editScript(
-						selectedScriptName,
-						scriptingContext.getScript(selectedScriptName),
-						[&, selectedScriptName](std::wstring scriptName, std::wstring script) {
-						if (selectedScriptName.compare(scriptName) != 0)
-						{
-							scriptingContext.removeScript(selectedScriptName);
-						}
-						scriptingContext.addScript(scriptName, script);
-					},
-						[&]() {
-						return gameManager.getGame().getName();
-					},
-						[&, selectedScriptName]() {
-						return gameManager.getGame().getScriptingContext().getScriptErrorMessage(selectedScriptName);
-					});
-				}
-
-				ImGui::ListBox("", &_selectedScript, [](void* vec, int index, const char** out_text) {
-					auto& vector = *static_cast<std::vector<std::string>*>(vec);
-					if (index < 0 || index >= (int)vector.size())
-						return false;
-
-					*out_text = vector[index].c_str();
-					return true;
-				}, static_cast<void*>(&scriptNames), (int)scripts.size());
-			}
+			_scriptViewer.draw(
+				consoleQueue, 
+				scriptEditor, 
+				[&]() ->SCRIPT::ScriptingContext& { return gameManager.getGame().getScriptingContext(); },
+				[&]() { return gameManager.getGame().getName(); 
+			});
 
 			ImGui::End();
 		}

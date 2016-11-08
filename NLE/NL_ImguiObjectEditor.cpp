@@ -36,6 +36,13 @@ namespace NLE
 
 			ImGui::Begin("Object Editor", &_visible, windowFlags);
 
+			ImGui::InputText("Name", &_nameBuff[0], _nameBuff.getSize(), windowFlags, [](ImGuiTextEditCallbackData* data) {
+				std::string name(data->Buf);
+				auto& gameManager = *static_cast<NLE::GAME::IGameManager*>(data->UserData);
+				//gameManager.getCurrentScene().setName(TLS::strConverter.local().from_bytes(name));
+				return 0;
+			}, (void*)&gameManager);
+
 			ImGui::End();
 		}
 	}

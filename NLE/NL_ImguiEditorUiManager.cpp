@@ -490,7 +490,7 @@ namespace NLE
 			applyColorScheme(false);
 			ImGui::SetNextWindowPos(ImVec2((float)screenSize.width / 2, (float)screenSize.height / 2), ImGuiSetCond_FirstUseEver);
 
-			_sceneEditor.draw(_gameManager, screenSize);
+			_sceneEditor.draw(_consoleQueue, _gameManager, screenSize, _scriptEditor);
 
 			restoreColorScheme();
 			ImGui::PopStyleVar();

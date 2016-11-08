@@ -4,6 +4,7 @@
 #include "NL_CommonTypes.h"
 #include "NL_CharBuffer.h"
 #include "NL_IConsoleQueue.h"
+#include "NL_ImguiScriptViewer.h"
 
 namespace NLE
 {
@@ -33,6 +34,7 @@ namespace NLE
 			bool _visible;
 			CharBuffer _nameBuff;
 			int _selectedScript;
+			ImguiScriptViewer _scriptViewer;
 		};
 	}
 }

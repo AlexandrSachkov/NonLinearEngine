@@ -31,6 +31,11 @@ namespace NLE
 			return _name;
 		}
 
+		void GameObject::setName(std::wstring name)
+		{
+			_name = name;
+		}
+
 		void GameObject::setRenderingComponent(RenderingComponent* component)
 		{
 			_renderingComponent = component;

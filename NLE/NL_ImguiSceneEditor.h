@@ -3,6 +3,8 @@
 
 #include "NL_CommonTypes.h"
 #include "NL_CharBuffer.h"
+#include "NL_IConsoleQueue.h"
+#include "NL_ImguiScriptViewer.h"
 
 namespace NLE
 {
@@ -19,12 +21,18 @@ namespace NLE
 			~ImguiSceneEditor();
 
 			bool& getVisibility();
-			void draw(GAME::IGameManager& gameManager, Size2D screenSize);
+			void draw(
+				CONSOLE::IConsoleQueue& consoleQueue, 
+				GAME::IGameManager& gameManager, 
+				Size2D screenSize,
+				ImguiScriptEditor& scriptEditor
+				);
 		private:
 			ImguiSceneEditor& operator=(ImguiSceneEditor& other) = delete;
 
 			bool _visible;
 			CharBuffer _nameBuff;
+			ImguiScriptViewer _scriptViewer;
 		};
 	}
 }

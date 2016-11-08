@@ -41,6 +41,7 @@ namespace NLE
 			}
 
 			unsigned long long getUuid();
+			void setName(std::wstring name);
 			std::wstring getName();
 			void setRenderingComponent(RenderingComponent* component);
 			void setScriptingComponent(ScriptingComponent* component);

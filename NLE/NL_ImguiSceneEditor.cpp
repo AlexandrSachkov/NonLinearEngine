@@ -2,6 +2,8 @@
 #include "NL_ThreadLocal.h"
 #include "NL_IGameManager.h"
 #include "NL_Scene.h"
+#include "NL_ScriptingContext.h"
+#include "NL_ImguiScriptEditor.h"
 
 #include <imgui.h>
 
@@ -24,7 +26,12 @@ namespace NLE
 			return _visible;
 		}
 
-		void ImguiSceneEditor::draw(GAME::IGameManager& gameManager, Size2D screenSize)
+		void ImguiSceneEditor::draw(
+			CONSOLE::IConsoleQueue& consoleQueue,
+			GAME::IGameManager& gameManager,
+			Size2D screenSize,
+			ImguiScriptEditor& scriptEditor
+			)
 		{
 			if (!_visible)
 				return;
@@ -49,6 +56,13 @@ namespace NLE
 				gameManager.getCurrentScene().setName(TLS::strConverter.local().from_bytes(name));
 				return 0;
 			}, (void*)&gameManager);
+
+			_scriptViewer.draw(
+				consoleQueue,
+				scriptEditor,
+				[&]() ->SCRIPT::ScriptingContext& { return gameManager.getCurrentScene().getScriptingContext(); },
+				[&]() { return gameManager.getCurrentScene().getName();
+			});
 
 			ImGui::End();
 		}
