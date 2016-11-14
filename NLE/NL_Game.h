@@ -5,6 +5,8 @@
 #include "NL_ThreadLocal.h"
 #include "NL_IScriptable.h"
 #include "NL_LuaCustomTypes.h"
+#include "NL_Map.h"
+#include "NL_IConsoleQueue.h"
 
 #include <string>
 #include "cereal\cereal.hpp"
@@ -19,7 +21,7 @@ namespace NLE
 		{
 		public:
 			Game();
-			Game(GameManager* gameManager);
+			Game(GameManager* gameManager, CONSOLE::IConsoleQueue_EService* console);
 			~Game();
 
 			template<class Archive>
@@ -33,6 +35,13 @@ namespace NLE
 					CEREAL_NVP(initialScene),
 					CEREAL_NVP(_scriptingContext)
 					);
+
+				Map<std::string, std::string, REPLACE> scenes;
+				for (auto kv : _scenes.getData())
+				{
+					scenes.insert(cnv.to_bytes(kv.first), cnv.to_bytes(kv.second));
+				}
+				archive(CEREAL_NVP(scenes));
 			}
 
 			template<class Archive>
@@ -50,16 +59,28 @@ namespace NLE
 				_scriptingContext.setParent(this);
 				_name = cnv.from_bytes(name);
 				_initialScene = cnv.from_bytes(initialScene);
+
+				Map<std::string, std::string, REPLACE> scenes;
+				archive(CEREAL_NVP(scenes));
+				for (auto kv : scenes.getData())
+				{
+					_scenes.insert(cnv.from_bytes(kv.first), cnv.from_bytes(kv.second));
+				}
 			}
 
 			GameManager* getGameManager();
 			void setGameManager(GameManager& gameManager);
+			void attachConsole(CONSOLE::IConsoleQueue_EService* console);
 
 			void setName(std::wstring name);
 			std::wstring getName();
 
 			void setInitialScene(std::wstring sceneName);
 			std::wstring getInitialScene();
+			void addScene(std::wstring name, std::wstring path);
+			void removeScene(std::wstring name);
+			bool getScenePath(std::wstring name, std::wstring& path);
+			std::vector<std::pair<std::wstring, std::wstring>> getScenes();
 			SCRIPT::ScriptingContext& getScriptingContext();
 			void bind(LuaIntf::CppBindModule<LuaIntf::LuaBinding>& binding);
 
@@ -73,10 +94,12 @@ namespace NLE
 			}
 
 		private:
+			CONSOLE::IConsoleQueue_EService* _console;
 			GameManager* _gameManager;
 			std::wstring _name;
 			std::wstring _initialScene;
 			SCRIPT::ScriptingContext _scriptingContext;
+			Map<std::wstring, std::wstring, REPLACE> _scenes;
 		};
 	}
 }

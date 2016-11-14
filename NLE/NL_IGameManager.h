@@ -25,6 +25,10 @@ namespace NLE
 			virtual void newGame() = 0;
 			virtual void loadGame(std::wstring path) = 0;
 			virtual void loadScene(std::wstring path) = 0;
+			virtual void loadSceneByName(std::wstring name) = 0;
+			virtual void addScene(std::wstring name, std::wstring path) = 0;
+			virtual void removeScene(std::wstring name) = 0;
+			virtual void setInitialScene(std::wstring name) = 0;
 			virtual void saveGame(std::wstring name) = 0;
 			virtual void saveScene(std::wstring name) = 0;
 			virtual void quitGame() = 0;

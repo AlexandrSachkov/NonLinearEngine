@@ -106,9 +106,8 @@ namespace NLE
 		void GameManager::newGame()
 		{
 			_opBuffer.queueOperation([&]() {
-				_game = new Game(this);
+				_game = new Game(this, _eServices.console);
 				_currentScene = new Scene(this);
-				_game->setInitialScene(_currentScene->getName());
 				_eServices.console->push(CONSOLE::STANDARD, L"Starting new game.");
 			});
 		}
@@ -141,10 +140,26 @@ namespace NLE
 			});
 		}
 
+		void GameManager::loadSceneByName(std::wstring name)
+		{
+			_opBuffer.queueOperation([&, name]() {
+				std::wstring scenePath;
+				if (_game->getScenePath(name, scenePath))
+				{
+					loadScene(scenePath);
+				}
+				else
+				{
+					_eServices.console->push(CONSOLE::ERR, L"Failed to find scene by name: " + name);
+				}	
+			});
+		}
+
 		void GameManager::updateGame(Game* game)
 		{
 			_opBuffer.queueOperation([&, game]() {
 				game->setGameManager(*this);
+				game->attachConsole(_eServices.console);
 				auto& ex = TLS::scriptExecutor.local();
 				ex.executeContextScript(_game->getScriptingContext(), SCRIPT::ON_EXIT);
 				delete _game;
@@ -214,6 +229,27 @@ namespace NLE
 				ex.executeContextScript(_game->getScriptingContext(), SCRIPT::ON_EXIT);
 
 				_execStatus = TERMINATE;
+			});
+		}
+
+		void GameManager::addScene(std::wstring name, std::wstring path)
+		{
+			_opBuffer.queueOperation([&, name, path]() {
+				_game->addScene(name, path);
+			});
+		}
+
+		void GameManager::removeScene(std::wstring name)
+		{
+			_opBuffer.queueOperation([&, name]() {
+				_game->removeScene(name);
+			});
+		}
+
+		void GameManager::setInitialScene(std::wstring name)
+		{
+			_opBuffer.queueOperation([&, name]() {
+				_game->setInitialScene(name);
 			});
 		}
 

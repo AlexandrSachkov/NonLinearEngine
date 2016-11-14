@@ -5,6 +5,7 @@
 #include "NL_CharBuffer.h"
 #include "NL_IConsoleQueue.h"
 #include "NL_ImguiScriptViewer.h"
+#include "NL_ImguiSceneViewer.h"
 
 namespace NLE
 {
@@ -35,6 +36,7 @@ namespace NLE
 			CharBuffer _nameBuff;
 			int _selectedScript;
 			ImguiScriptViewer _scriptViewer;
+			ImguiSceneViewer _sceneViewer;
 		};
 	}
 }

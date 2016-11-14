@@ -50,6 +50,10 @@ namespace NLE
 			void newGame();
 			void loadGame(std::wstring path);
 			void loadScene(std::wstring path);
+			void loadSceneByName(std::wstring name);
+			void addScene(std::wstring name, std::wstring path);
+			void removeScene(std::wstring name);
+			void setInitialScene(std::wstring name);
 			
 			void saveGame(std::wstring name);
 			void saveScene(std::wstring name);

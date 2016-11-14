@@ -65,6 +65,8 @@ namespace NLE
 				[&]() { return gameManager.getGame().getName(); 
 			});
 
+			_sceneViewer.draw(gameManager);
+
 			ImGui::End();
 		}
 	}
