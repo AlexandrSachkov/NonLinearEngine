@@ -58,32 +58,25 @@ namespace NLE
 			template<class Archive>
 			void save(Archive& archive) const
 			{
+				Map<std::string, std::string, REPLACE> scripts;
 				auto& cnv = TLS::strConverter.local();
-				std::vector<std::string> scriptNames;
-				std::string scriptName;
-				std::string script;
 				for (auto kv : _scripts.getData())
 				{
-					scriptName = cnv.to_bytes(kv.first);
-					script = cnv.to_bytes(kv.second);
-					scriptNames.push_back(scriptName);
-					archive(cereal::make_nvp(scriptName, script));
+					scripts.insert(cnv.to_bytes(kv.first), cnv.to_bytes(kv.second));
 				}				
-				archive(CEREAL_NVP(scriptNames));
+				archive(CEREAL_NVP(scripts));
 			}
 
 			template<class Archive>
 			void load(Archive& archive)
 			{
-				auto& cnv = TLS::strConverter.local();
-				std::vector<std::string> scriptNames;
-				archive(CEREAL_NVP(scriptNames));
+				Map<std::string, std::string, REPLACE> scripts;
+				archive(CEREAL_NVP(scripts));
 
-				std::string script;
-				for (auto scriptName : scriptNames)
+				auto& cnv = TLS::strConverter.local();
+				for (auto kv : scripts.getData())
 				{
-					archive(cereal::make_nvp(scriptName, script));
-					_scripts.insert(cnv.from_bytes(scriptName), cnv.from_bytes(script));
+					_scripts.insert(cnv.from_bytes(kv.first), cnv.from_bytes(kv.second));
 				}
 			}
 

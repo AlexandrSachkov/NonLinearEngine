@@ -1,6 +1,9 @@
 #ifndef NL_MAP_
 #define NL_MAP_
 
+#include "cereal\cereal.hpp"
+#include "cereal/types/unordered_map.hpp"
+
 #include <unordered_map>
 
 namespace NLE
@@ -66,6 +69,18 @@ namespace NLE
 				return true;
 			else
 				return false;
+		}
+
+		template<class Archive>
+		void save(Archive& archive) const
+		{
+			archive(CEREAL_NVP(_map));
+		}
+
+		template<class Archive>
+		void load(Archive& archive)
+		{
+			archive(CEREAL_NVP(_map));
 		}
 
 	private:
