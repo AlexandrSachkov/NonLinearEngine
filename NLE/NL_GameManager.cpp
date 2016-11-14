@@ -166,6 +166,12 @@ namespace NLE
 				_game = game;
 
 				ex.executeContextScript(_game->getScriptingContext(), SCRIPT::ON_INIT);
+
+				std::wstring initialSceneName = game->getInitialScene();
+				if (initialSceneName.compare(L"") != 0)
+				{
+					loadSceneByName(initialSceneName);
+				}
 			});
 		}
 

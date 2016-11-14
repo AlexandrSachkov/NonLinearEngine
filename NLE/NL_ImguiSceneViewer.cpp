@@ -64,6 +64,13 @@ namespace NLE
 					}
 				}
 
+				std::wstring initialSceneName = gameManager.getGame().getInitialScene();
+				if (initialSceneName.compare(L"") != 0)
+				{
+					std::string initialSceneMsg = "Initial Scene: " + TLS::strConverter.local().to_bytes(initialSceneName);
+					ImGui::Text(initialSceneMsg.c_str());
+				}
+
 				ImGui::PushID(2);
 				ImGui::ListBox("", &_selectedScene, [](void* vec, int index, const char** out_text) {
 					auto& vector = *static_cast<std::vector<std::string>*>(vec);
