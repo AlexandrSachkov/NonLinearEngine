@@ -51,52 +51,30 @@ namespace NLE
 
 		void GameObject::addChild(GameObject* obj)
 		{
-			GameObject* child = nullptr;
-			if (_childMap.get(obj->getName(), child))
-				return;
-
-			_childMap.insert(obj->getName(), obj);
-			_children.push_back(obj);
-			_dependencies.push_back(obj->getName());
-		}
-
-		void GameObject::removeChild(std::wstring name)
-		{
-			if (!_childMap.erase(name))
-				return;
-
 			for (auto it = _children.begin(); it != _children.end(); ++it)
 			{
-				if ((*it)->getName().compare(name) == 0)
+				if ((*it) == obj)
+				{
+					return;
+				}
+			}
+			_children.push_back(obj);
+		}
+
+		void GameObject::removeChild(GameObject* obj)
+		{
+			for (auto it = _children.begin(); it != _children.end(); ++it)
+			{
+				if ((*it) == obj)
 				{
 					_children.erase(it);
 				}
 			}
-
-			for (auto it = _dependencies.begin(); it != _dependencies.end(); ++it)
-			{
-				if ((*it).compare(name) == 0)
-				{
-					_dependencies.erase(it);
-				}
-			}
-		}
-
-		GameObject* GameObject::getChild(std::wstring name)
-		{
-			GameObject* child = nullptr;
-			_childMap.get(name, child);
-			return child;
 		}
 
 		const std::vector<GameObject*>& GameObject::getChildren()
 		{
 			return _children;
-		}
-
-		const std::vector<std::wstring>& GameObject::getDependencies()
-		{
-			return _dependencies;
 		}
 
 		RenderingComponent& GameObject::getRenderingComponent()

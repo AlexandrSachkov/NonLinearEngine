@@ -52,7 +52,6 @@ namespace NLE
 					.addProperty("name", &GameObject::getName, &GameObject::setName)
 					.addFunction("getScene", &GameObject::getScene)
 					.addFunction("getParent", &GameObject::getParent)
-					.addFunction("getChild", &GameObject::getChild)
 					.addFunction("getChildren", &GameObject::getChildren)
 					.addFunction("getScriptingContext", &GameObject::getScriptingContext)
 					.endClass();
@@ -66,10 +65,8 @@ namespace NLE
 			void setParent(GameObject* obj);
 			GameObject* getParent();
 			void addChild(GameObject* obj);
-			void removeChild(std::wstring name);
-			GameObject* getChild(std::wstring name);
+			void removeChild(GameObject* obj);
 			const std::vector<GameObject*>& getChildren();
-			const std::vector<std::wstring>& getDependencies();
 
 			RenderingComponent& getRenderingComponent();
 			ScriptingComponent& getScriptingComponent();
@@ -83,8 +80,6 @@ namespace NLE
 			std::wstring _name;
 			GameObject* _parent;
 			std::vector<GameObject*> _children;
-			std::vector<std::wstring> _dependencies;
-			Map<std::wstring, GameObject*, REPLACE> _childMap;
 		};
 	}
 }
