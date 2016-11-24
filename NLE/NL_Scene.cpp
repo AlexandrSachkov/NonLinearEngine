@@ -44,14 +44,27 @@ namespace NLE
 
 		void Scene::addObject(GameObject* object)
 		{
-			_objects.insert(object->getName(), object);
+			_sceneGraph.addObject(object);
+		}
+
+		void Scene::addObject(GameObject* parent, GameObject* object)
+		{
+			_sceneGraph.addObject(parent, object);
+		}
+
+		void Scene::removeObject(std::wstring name)
+		{
+			_sceneGraph.removeObject(name);
+		}
+
+		void Scene::removeObject(GameObject* object)
+		{
+			_sceneGraph.removeObject(object);
 		}
 
 		GameObject* Scene::getObject(std::wstring name)
 		{
-			GameObject* object = nullptr;
-			_objects.get(name, object);
-			return object;
+			return _sceneGraph.getObject(name);
 		}
 
 		SCRIPT::ScriptingContext& Scene::getScriptingContext()

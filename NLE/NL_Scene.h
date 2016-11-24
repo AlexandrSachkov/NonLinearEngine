@@ -5,6 +5,7 @@
 #include "NL_IScriptable.h"
 #include "NL_Map.h"
 #include "NL_LuaCustomTypes.h"
+#include "NL_SceneGraph.h"
 
 #include <string>
 #include "NL_ThreadLocal.h"
@@ -29,6 +30,7 @@ namespace NLE
 				auto name = cnv.to_bytes(_name);
 				archive(
 					CEREAL_NVP(name),
+					CEREAL_NVP(_sceneGraph),
 					CEREAL_NVP(_scriptingContext)
 					);
 			}
@@ -40,6 +42,7 @@ namespace NLE
 				std::string name;
 				archive(
 					CEREAL_NVP(name),
+					CEREAL_NVP(_sceneGraph),
 					CEREAL_NVP(_scriptingContext)
 					);
 
@@ -54,6 +57,9 @@ namespace NLE
 			void setName(std::wstring name);
 
 			void addObject(GameObject* object);
+			void addObject(GameObject* parent, GameObject* object);
+			void removeObject(std::wstring name);
+			void removeObject(GameObject* object);
 			GameObject* getObject(std::wstring name);
 
 			SCRIPT::ScriptingContext& getScriptingContext();
@@ -63,14 +69,15 @@ namespace NLE
 			{
 				binding.beginClass<Scene>("Scene")
 					.addFunction("getGameManager", &Scene::getGameManager)
-					.addProperty("name", &Scene::getName, &Scene::setName)
+					.addFunction("getName", &Scene::getName)
+					.addFunction("getObject", &Scene::getObject)
 					.endClass();
 			}
 
 		private:
 			GameManager* _gameManager;
 			std::wstring _name;
-			Map<std::wstring, GameObject*, REPLACE> _objects;
+			SceneGraph _sceneGraph;
 			SCRIPT::ScriptingContext _scriptingContext;
 		};
 	}

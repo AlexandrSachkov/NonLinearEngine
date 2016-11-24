@@ -83,6 +83,7 @@ SET(HEADERS
 	NL_ResourceManager.h
 	NL_IResourceManager.h
 	NL_Scene.h		
+	NL_SceneGraph.h
 	NL_IScriptable.h
 	NL_ScriptExecutor.h
 	NL_ScriptingComponent.h
@@ -139,6 +140,7 @@ SET(SOURCES
 	NL_RenderingComponent.cpp
 	NL_RenderingEngine.cpp
 	NL_Scene.cpp	
+	NL_SceneGraph.cpp
 	NL_ScriptExecutor.cpp
 	NL_ScriptingComponent.cpp
 	NL_ScriptingContext.cpp
