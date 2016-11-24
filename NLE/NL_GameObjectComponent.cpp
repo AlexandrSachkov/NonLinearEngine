@@ -6,7 +6,8 @@ namespace NLE
 	namespace GAME
 	{
 		GameObjectComponent::GameObjectComponent(GameObject* parent) :
-			_parent(parent)
+			_parent(parent),
+			_enabled(false)
 		{
 		}
 
@@ -17,6 +18,16 @@ namespace NLE
 		GameObject* GameObjectComponent::getParent()
 		{
 			return _parent;
+		}
+
+		void GameObjectComponent::setEnabled(bool enabled)
+		{
+			_enabled = enabled;
+		}
+
+		bool GameObjectComponent::getEnabled()
+		{
+			return _enabled;
 		}
 	}
 }

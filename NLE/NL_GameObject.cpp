@@ -1,19 +1,17 @@
 #include "NL_GameObject.h"
-#include "NL_RenderingComponent.h"
-#include "NL_ScriptingComponent.h"
 #include "NL_Uuid.h"
+#include "NL_Scene.h"
 
 namespace NLE
 {
 	namespace GAME
 	{
 		GameObject::GameObject() :
-			_uuid(UUID::generateUuid())
+			_name(L"Object " + std::to_wstring(UUID::generateUuid())),
+			_parent(nullptr),
+			_renderingComponent(this),
+			_scriptingComponent(this)
 		{
-			_renderingComponent = nullptr;
-			_scriptingComponent = nullptr;
-
-			_name = L"Object " + std::to_wstring(_uuid);
 		}
 
 		GameObject::~GameObject()
@@ -21,9 +19,14 @@ namespace NLE
 
 		}
 
-		unsigned long long GameObject::getUuid()
+		void GameObject::setScene(Scene* scene)
 		{
-			return _uuid;
+			_scene = scene;
+		}
+
+		Scene* GameObject::getScene()
+		{
+			return _scene;
 		}
 
 		std::wstring GameObject::getName()
@@ -36,24 +39,79 @@ namespace NLE
 			_name = name;
 		}
 
-		void GameObject::setRenderingComponent(RenderingComponent* component)
+		void GameObject::setParent(GameObject* obj)
 		{
-			_renderingComponent = component;
+			_parent = obj;
 		}
 
-		void GameObject::setScriptingComponent(ScriptingComponent* component)
+		GameObject* GameObject::getParent()
 		{
-			_scriptingComponent = component;
+			return _parent;
 		}
 
-		RenderingComponent* GameObject::getRenderingComponent()
+		void GameObject::addChild(GameObject* obj)
+		{
+			GameObject* child = nullptr;
+			if (_childMap.get(obj->getName(), child))
+				return;
+
+			_childMap.insert(obj->getName(), obj);
+			_children.push_back(obj);
+			_dependencies.push_back(obj->getName());
+		}
+
+		void GameObject::removeChild(std::wstring name)
+		{
+			if (!_childMap.erase(name))
+				return;
+
+			for (auto it = _children.begin(); it != _children.end(); ++it)
+			{
+				if ((*it)->getName().compare(name) == 0)
+				{
+					_children.erase(it);
+				}
+			}
+
+			for (auto it = _dependencies.begin(); it != _dependencies.end(); ++it)
+			{
+				if ((*it).compare(name) == 0)
+				{
+					_dependencies.erase(it);
+				}
+			}
+		}
+
+		GameObject* GameObject::getChild(std::wstring name)
+		{
+			GameObject* child = nullptr;
+			_childMap.get(name, child);
+			return child;
+		}
+
+		const std::vector<GameObject*>& GameObject::getChildren()
+		{
+			return _children;
+		}
+
+		const std::vector<std::wstring>& GameObject::getDependencies()
+		{
+			return _dependencies;
+		}
+
+		RenderingComponent& GameObject::getRenderingComponent()
 		{
 			return _renderingComponent;
 		}
 
-		ScriptingComponent* GameObject::getScriptingComponent()
+		ScriptingComponent& GameObject::getScriptingComponent()
 		{
 			return _scriptingComponent;
+		}
+
+		SCRIPT::ScriptingContext& GameObject::getScriptingContext()
+		{
+			return _scriptingComponent.getScriptingContext();
 		}
 	}
 }

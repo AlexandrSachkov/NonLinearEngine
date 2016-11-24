@@ -5,6 +5,7 @@
 #include "NL_Scene.h"
 #include "NL_GameManager.h"
 #include "NL_ScriptingContext.h"
+#include "NL_GameObject.h"
 
 #include "lua.hpp"
 #include <LuaIntf.h>
@@ -18,10 +19,11 @@ namespace NLE
 			auto module = LuaIntf::LuaBinding(state).beginModule("nle");
 			
 			CONSOLE::attachBindings(module);
-			GAME::Game::attachBindings(module);
 			GAME::GameManager::attachBindings(module);
+			GAME::Game::attachBindings(module);
 			GAME::Scene::attachBindings(module);
-			ScriptingContext::attachBindings(module);
+			GAME::GameObject::attachBindings(module);
+			ScriptingContext::attachBindings(module);			
 
 			module.endModule();
 		}

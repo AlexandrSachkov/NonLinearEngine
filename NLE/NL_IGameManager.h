@@ -23,6 +23,7 @@ namespace NLE
 			virtual ExecStatus getExecutionStatus() = 0;
 			virtual bool hasUnsavedChanges() = 0;
 			virtual void newGame() = 0;
+			virtual void newScene() = 0;
 			virtual void loadGame(std::wstring path) = 0;
 			virtual void loadScene(std::wstring path) = 0;
 			virtual void loadSceneByName(std::wstring name) = 0;

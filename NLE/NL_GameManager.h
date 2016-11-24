@@ -48,6 +48,7 @@ namespace NLE
 			void update(SystemServices* sServices, double deltaT);
 			bool hasUnsavedChanges();
 			void newGame();
+			void newScene();
 			void loadGame(std::wstring path);
 			void loadScene(std::wstring path);
 			void loadSceneByName(std::wstring name);

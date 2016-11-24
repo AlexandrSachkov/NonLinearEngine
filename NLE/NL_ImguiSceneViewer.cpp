@@ -33,6 +33,10 @@ namespace NLE
 					sceneNames[i] = TLS::strConverter.local().to_bytes(scenes[i].first);
 				}
 
+				if (ImGui::Button("New")) {
+					gameManager.newScene();
+				}
+				ImGui::SameLine();
 				if (ImGui::Button("Add")) {
 					_showAddSceneDialog = true;
 				}

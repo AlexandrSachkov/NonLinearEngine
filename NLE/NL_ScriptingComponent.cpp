@@ -23,7 +23,7 @@ namespace NLE
 
 		void ScriptingComponent::bind(LuaIntf::CppBindModule<LuaIntf::LuaBinding>& binding)
 		{
-			binding.addVariableRef<ScriptingComponent>("this", this);
+			binding.addVariableRef<GameObject>("this", getParent());
 		}
 	}
 }

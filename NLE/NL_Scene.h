@@ -29,7 +29,6 @@ namespace NLE
 				auto name = cnv.to_bytes(_name);
 				archive(
 					CEREAL_NVP(name),
-					CEREAL_NVP(_uuid),
 					CEREAL_NVP(_scriptingContext)
 					);
 			}
@@ -41,7 +40,6 @@ namespace NLE
 				std::string name;
 				archive(
 					CEREAL_NVP(name),
-					CEREAL_NVP(_uuid),
 					CEREAL_NVP(_scriptingContext)
 					);
 
@@ -56,7 +54,8 @@ namespace NLE
 			void setName(std::wstring name);
 
 			void addObject(GameObject* object);
-			GameObject* getObject(unsigned long long uuid);
+			GameObject* getObject(std::wstring name);
+
 			SCRIPT::ScriptingContext& getScriptingContext();
 			void bind(LuaIntf::CppBindModule<LuaIntf::LuaBinding>& binding);
 
@@ -71,8 +70,7 @@ namespace NLE
 		private:
 			GameManager* _gameManager;
 			std::wstring _name;
-			unsigned long long _uuid;
-			Map<unsigned long long, GameObject*, REPLACE> _objects;
+			Map<std::wstring, GameObject*, REPLACE> _objects;
 			SCRIPT::ScriptingContext _scriptingContext;
 		};
 	}

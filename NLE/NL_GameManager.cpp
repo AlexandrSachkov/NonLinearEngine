@@ -112,6 +112,16 @@ namespace NLE
 			});
 		}
 
+		void GameManager::newScene()
+		{
+			_opBuffer.queueOperation([&]() {
+				if (_currentScene)
+					delete _currentScene;
+				_currentScene = new Scene(this);
+				_eServices.console->push(CONSOLE::STANDARD, L"Starting new scene.");
+			});
+		}
+
 		void GameManager::loadGame(std::wstring path)
 		{
 			_opBuffer.queueOperation([&, path]() {

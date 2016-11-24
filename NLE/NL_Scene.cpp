@@ -12,10 +12,9 @@ namespace NLE
 
 		Scene::Scene(GameManager* gameManager) :
 			_gameManager(gameManager),
-			_uuid(UUID::generateUuid()),
 			_scriptingContext(this)
 		{
-			_name = L"Scene " + std::to_wstring(_uuid);
+			_name = L"Scene " + std::to_wstring(UUID::generateUuid());
 		}
 
 		Scene::~Scene()
@@ -45,13 +44,13 @@ namespace NLE
 
 		void Scene::addObject(GameObject* object)
 		{
-			_objects.insert(object->getUuid(), object);
+			_objects.insert(object->getName(), object);
 		}
 
-		GameObject* Scene::getObject(unsigned long long uuid)
+		GameObject* Scene::getObject(std::wstring name)
 		{
 			GameObject* object = nullptr;
-			_objects.get(uuid, object);
+			_objects.get(name, object);
 			return object;
 		}
 
