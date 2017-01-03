@@ -9,6 +9,7 @@
 
 #include <string>
 #include "NL_ThreadLocal.h"
+#include <memory>
 
 namespace NLE
 {
@@ -80,6 +81,8 @@ namespace NLE
 			SceneGraph _sceneGraph;
 			SCRIPT::ScriptingContext _scriptingContext;
 		};
+
+		typedef std::unique_ptr<Scene> SceneUP;
 	}
 }
 #endif

@@ -12,6 +12,7 @@
 #include <string>
 #include "cereal\cereal.hpp"
 #include "cereal/types/string.hpp"
+#include <memory>
 
 namespace NLE
 {
@@ -22,7 +23,7 @@ namespace NLE
 		{
 		public:
 			Game();
-			Game(IGameManagerSP gameManager, CONSOLE::IConsoleQueue_EServiceSP console);
+			Game(CONSOLE::IConsoleQueue_EServiceSP console);
 			~Game();
 
 			template<class Archive>
@@ -69,8 +70,8 @@ namespace NLE
 				}
 			}
 
-			IGameManagerSP getGameManager();
-			void setGameManager(IGameManagerSP gameManager);
+			IGameManager* getGameManager();
+			void setGameManager(IGameManager* gameManager);
 			void attachConsole(CONSOLE::IConsoleQueue_EServiceSP console);
 
 			void setName(std::wstring name);
@@ -109,12 +110,14 @@ namespace NLE
 
 		private:
 			CONSOLE::IConsoleQueue_EServiceSP _console;
-			IGameManagerSP _gameManager;
+			IGameManager* _gameManager;
 			std::wstring _name;
 			std::wstring _initialScene;
 			SCRIPT::ScriptingContext _scriptingContext;
 			Map<std::wstring, std::wstring, REPLACE> _scenes;
 		};
+
+		typedef std::unique_ptr<Game> GameUP;
 	}
 }
 

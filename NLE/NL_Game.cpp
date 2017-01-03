@@ -9,12 +9,11 @@ namespace NLE
 {
 	namespace GAME
 	{
-		Game::Game() : Game (nullptr, nullptr)
+		Game::Game() : Game (nullptr)
 		{
 		}
 
-		Game::Game(IGameManagerSP gameManager, CONSOLE::IConsoleQueue_EServiceSP console) :
-			_gameManager(gameManager),
+		Game::Game(CONSOLE::IConsoleQueue_EServiceSP console) :
 			_scriptingContext(this),
 			_console(console)
 		{
@@ -27,12 +26,12 @@ namespace NLE
 
 		}
 
-		IGameManagerSP Game::getGameManager()
+		IGameManager* Game::getGameManager()
 		{
 			return _gameManager;
 		}
 
-		void Game::setGameManager(IGameManagerSP gameManager)
+		void Game::setGameManager(IGameManager* gameManager)
 		{
 			_gameManager = gameManager;
 		}
@@ -116,8 +115,7 @@ namespace NLE
 
 		std::unordered_map<std::wstring, std::wstring> Game::getScenes()
 		{
-			std::unordered_map<std::wstring, std::wstring> myMap(_scenes.getData());
-			return myMap;
+			return _scenes.getData();
 		}
 
 		SCRIPT::ScriptingContext& Game::getScriptingContext()

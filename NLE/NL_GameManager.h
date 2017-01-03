@@ -11,6 +11,8 @@
 #include "NL_EngineServices.h"
 #include "NL_ScriptExecutor.h"
 #include "NL_LuaBindings.h"
+#include "NL_Game.h"
+#include "NL_Scene.h"
 
 #include "NL_LuaCustomTypes.h"
 #include "lua.hpp"
@@ -26,7 +28,7 @@ namespace NLE
 		class Scene;
 		class GameObject;
 		
-		class GameManager : public IGameManager, public std::enable_shared_from_this<GameManager>
+		class GameManager : public IGameManager
 		{
 		public:
 			GameManager(
@@ -98,8 +100,8 @@ namespace NLE
 
 			OperationBuffer _opBuffer;
 
-			Game* _game;
-			Scene* _currentScene;
+			GameUP _game;
+			SceneUP _currentScene;
 		};
 	}
 

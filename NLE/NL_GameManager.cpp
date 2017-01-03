@@ -2,8 +2,6 @@
 
 #include "NL_RenderingEngine.h"
 #include "NL_ScriptingEngine.h"
-#include "NL_Game.h"
-#include "NL_Scene.h"
 #include "NL_ThreadLocal.h"
 #include "NL_GameObject.h"
 #include "NL_EngineServices.h"
@@ -120,8 +118,9 @@ namespace NLE
 		void GameManager::newGame()
 		{
 			_opBuffer.queueOperation([&]() {
-				_game = new Game(shared_from_this(), _eServices.console);
-				_currentScene = new Scene(this);
+				_game = std::make_unique<Game>(_eServices.console);
+				_game->setGameManager(this);
+				newScene();
 				_eServices.console->push(CONSOLE::STANDARD, L"Starting new game.");
 			});
 		}
@@ -129,9 +128,7 @@ namespace NLE
 		void GameManager::newScene()
 		{
 			_opBuffer.queueOperation([&]() {
-				if (_currentScene)
-					delete _currentScene;
-				_currentScene = new Scene(this);
+				_currentScene = std::make_unique<Scene>(this);
 				_eServices.console->push(CONSOLE::STANDARD, L"Starting new scene.");
 			});
 		}
@@ -182,12 +179,11 @@ namespace NLE
 		void GameManager::updateGame(Game* game)
 		{
 			_opBuffer.queueOperation([&, game]() {
-				game->setGameManager(shared_from_this());
+				game->setGameManager(this);
 				game->attachConsole(_eServices.console);
 				auto& ex = TLS::scriptExecutor.local();
 				ex.executeContextScript(_game->getScriptingContext(), SCRIPT::ON_EXIT);
-				delete _game;
-				_game = game;
+				_game = std::unique_ptr<Game>(game);
 
 				ex.executeContextScript(_game->getScriptingContext(), SCRIPT::ON_INIT);
 
@@ -205,8 +201,7 @@ namespace NLE
 				scene->setGameManager(*this);
 				auto& ex = TLS::scriptExecutor.local();
 				ex.executeContextScript(_currentScene->getScriptingContext(), SCRIPT::ON_EXIT);
-				delete _currentScene;
-				_currentScene = scene;
+				_currentScene = std::unique_ptr<Scene>(scene);
 
 				ex.executeContextScript(_currentScene->getScriptingContext(), SCRIPT::ON_INIT);
 			});
@@ -219,7 +214,7 @@ namespace NLE
 					_game->setName(name);
 				}
 
-				auto* gameData = _serializer->serialize<Game>(_game);
+				auto* gameData = _serializer->serialize<Game>(_game.get());
 				_file->writeAsync(_game->getName() + L".nlegame", gameData, [=](std::vector<char>* serializedData) {
 					delete serializedData;
 					_eServices.console->push(CONSOLE::STANDARD, L"Successfully saved game: " + _game->getName());
@@ -238,7 +233,7 @@ namespace NLE
 					_currentScene->setName(name);
 				}
 
-				auto* sceneData = _serializer->serialize<Scene>(_currentScene);
+				auto* sceneData = _serializer->serialize<Scene>(_currentScene.get());
 				_file->writeAsync(_currentScene->getName() + L".nlescene", sceneData, [=](std::vector<char>* serializedData) {
 					delete serializedData;
 					_eServices.console->push(CONSOLE::STANDARD, L"Successfully saved scene: " + _currentScene->getName());
