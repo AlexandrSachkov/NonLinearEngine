@@ -2,18 +2,20 @@
 #define NL_GLOBALS_H_
 
 #include "NL_Queue.h"
+#include "NL_IConsoleQueue.h"
+#include <memory>
 
 namespace NLE
 {
 	namespace INPUT
 	{
 		struct Event;
-		extern NLE::Queue<Event>* const GLOBAL_EVENT_QUEUE;
+		extern std::shared_ptr<NLE::Queue<Event>> GLOBAL_EVENT_QUEUE;
 	}	
 	namespace CONSOLE
 	{
 		class IConsoleQueue;
-		extern NLE::CONSOLE::IConsoleQueue* const GLOBAL_CONSOLE_QUEUE;
+		extern IConsoleQueueSP GLOBAL_CONSOLE_QUEUE;
 	}
 }
 

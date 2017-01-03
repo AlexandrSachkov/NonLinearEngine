@@ -19,14 +19,14 @@ namespace NLE
 			~InputProcessor();
 			bool initialize();
 
-			void update(SystemServices* sServices, double deltaT);
+			void update(SystemServices& sServices, double deltaT);
 
 			void queueEvent(INPUT::Event& event);
 			void enableInputProcessing(bool enable);
 			void attachKeyAndCharCallback(std::function<void(INPUT::Event)> callback);
 
 		private:
-			void onKeyEvent(SystemServices* sServices, Event& event);
+			void onKeyEvent(SystemServices& sServices, Event& event);
 			void onMouseButtonEvent(Event& event);
 			void onCursorPositionChange(Event& event);
 			void onScrollEvent(Event& event);

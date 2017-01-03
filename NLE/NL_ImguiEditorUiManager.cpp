@@ -19,13 +19,13 @@ namespace NLE
 	namespace UI
 	{
 		ImguiEditorUiManager::ImguiEditorUiManager(
-			EngineServices& eServices,
-			CONSOLE::IConsoleQueue& consoleQueue,
-			IWindowManager& windowManager,
-			GAME::IGameManager& gameManager,
-			INPUT::IInputProcessor& inputProcessor,
-			GRAPHICS::IRenderingEngine& renderingEngine,
-			SCRIPT::IScriptingEngine& scriptingEngine)
+			EngineServices eServices,
+			CONSOLE::IConsoleQueueSP consoleQueue,
+			IWindowManagerSP windowManager,
+			GAME::IGameManagerSP gameManager,
+			INPUT::IInputProcessorSP inputProcessor,
+			GRAPHICS::IRenderingEngineSP renderingEngine,
+			SCRIPT::IScriptingEngineSP scriptingEngine)
 			:
 			_eServices(eServices),
 			_consoleQueue(consoleQueue),
@@ -94,7 +94,7 @@ namespace NLE
 			_keyAndCharEvents.push(event);
 		}
 
-		void ImguiEditorUiManager::update(SystemServices* sServices, double deltaT, Size2D screenSize)
+		void ImguiEditorUiManager::update(SystemServices& sServices, double deltaT, Size2D screenSize)
 		{
 			NLE::TLS::PerformanceTimer::reference timer = NLE::TLS::performanceTimer.local();
 			timer.deltaT();
@@ -108,15 +108,15 @@ namespace NLE
 			// Hide OS mouse cursor if ImGui is drawing it
 			//SetCursor(io.MouseDrawCursor ? NULL : LoadCursor(NULL, IDC_ARROW));
 
-			captureInput(sServices, deltaT, screenSize);
+			captureInput(deltaT, screenSize);
 			ImGui::NewFrame();
-			drawUI(sServices, screenSize);
+			drawUI(screenSize);
 			ImGui::Render();
 
 			data.sysExecutionTimes.set(UI_MANAGER, timer.deltaT());
 		}
 
-		void ImguiEditorUiManager::captureInput(SystemServices* sServices, double deltaT, Size2D screenSize)
+		void ImguiEditorUiManager::captureInput(double deltaT, Size2D screenSize)
 		{
 			DATA::SharedData& data = _eServices.data->getData();
 			ImGuiIO& io = ImGui::GetIO();
@@ -148,7 +148,7 @@ namespace NLE
 			io.KeySuper = data.keyModsPressed.get()[INPUT::KEY_MOD_SUPER];
 		}
 
-		void ImguiEditorUiManager::drawUI(SystemServices* sServices, Size2D screenSize)
+		void ImguiEditorUiManager::drawUI(Size2D screenSize)
 		{
 			ImGuiWindowFlags windowFlags = 0;
 			windowFlags |= ImGuiWindowFlags_NoTitleBar;
@@ -172,7 +172,7 @@ namespace NLE
 				{
 					if (ImGui::MenuItem("New Game", nullptr))
 					{
-						_gameManager.newGame();
+						_gameManager->newGame();
 					}
 					if (ImGui::MenuItem("Load Game", nullptr))
 					{
@@ -184,7 +184,7 @@ namespace NLE
 					}
 					if(ImGui::MenuItem("Save Game", nullptr))
 					{
-						_gameManager.saveGame({});
+						_gameManager->saveGame({});
 					}
 					if (ImGui::MenuItem("Save Game As", nullptr))
 					{
@@ -192,7 +192,7 @@ namespace NLE
 					}
 					if (ImGui::MenuItem("Save Scene", nullptr))
 					{
-						_gameManager.saveScene({});
+						_gameManager->saveScene({});
 					}
 					if (ImGui::MenuItem("Save Scene As", nullptr))
 					{
@@ -200,7 +200,7 @@ namespace NLE
 					}
 					if (ImGui::MenuItem("Exit", nullptr))
 					{
-						_gameManager.quitGame();
+						_gameManager->quitGame();
 					}
 					ImGui::EndMenu();
 				}
@@ -223,38 +223,38 @@ namespace NLE
 			ImGui::PopStyleVar();
 			
 			if(_showEditorSettings)
-				showEditorSettings(sServices, screenSize);
+				showEditorSettings(screenSize);
 			
 			if (_showConsole)
-				showConsole(sServices, screenSize);
+				showConsole(screenSize);
 
 			if (_showSaveGameDialog)
-				showSaveGameDialog(sServices, screenSize);
+				showSaveGameDialog(screenSize);
 
 			if(_showSaveSceneDialog)
-				showSaveSceneDialog(sServices, screenSize);
+				showSaveSceneDialog(screenSize);
 
 			if (_showLoadGameDialog)
-				showLoadGameDialog(sServices, screenSize);
+				showLoadGameDialog(screenSize);
 
 			if (_showLoadSceneDialog)
-				showLoadSceneDialog(sServices, screenSize);
+				showLoadSceneDialog(screenSize);
 
 			if (_gameEditor.getVisibility())
-				showGameEditor(sServices, screenSize);
+				showGameEditor(screenSize);
 
 			if (_sceneEditor.getVisibility())
-				showSceneEditor(sServices, screenSize);
+				showSceneEditor(screenSize);
 
 			if (_objectEditor.getVisibility())
-				showObjectEditor(sServices, screenSize);
+				showObjectEditor(screenSize);
 
 			if (_scriptEditor.getVisibility())
-				showScriptEditor(sServices, screenSize);
+				showScriptEditor(screenSize);
 			
 		}
 
-		void ImguiEditorUiManager::showEditorSettings(SystemServices* sServices, Size2D screenSize)
+		void ImguiEditorUiManager::showEditorSettings(Size2D screenSize)
 		{
 			ImGuiWindowFlags windowFlags = 0;
 			windowFlags |= ImGuiWindowFlags_NoSavedSettings;
@@ -282,10 +282,10 @@ namespace NLE
 			ImGui::PopStyleVar();
 		}
 
-		void ImguiEditorUiManager::showConsole(SystemServices* sServices, Size2D screenSize)
+		void ImguiEditorUiManager::showConsole(Size2D screenSize)
 		{
 			std::pair<CONSOLE::OUTPUT_TYPE, std::wstring> consoleEntry;
-			while (_consoleQueue.pop(consoleEntry))
+			while (_consoleQueue->pop(consoleEntry))
 			{
 				auto& cnv = TLS::strConverter.local();
 				auto entry = cnv.to_bytes(consoleEntry.second);
@@ -336,7 +336,7 @@ namespace NLE
 			ImGui::PopStyleVar();
 		}
 
-		void ImguiEditorUiManager::showSaveGameDialog(SystemServices* sServices, Size2D screenSize)
+		void ImguiEditorUiManager::showSaveGameDialog(Size2D screenSize)
 		{
 			ImGuiWindowFlags windowFlags = 0;
 			windowFlags |= ImGuiWindowFlags_NoSavedSettings;
@@ -349,7 +349,7 @@ namespace NLE
 			{
 				if (_saveGameBuff.isEmpty())
 				{
-					auto gameName = TLS::strConverter.local().to_bytes(_gameManager.getGame().getName());
+					auto gameName = TLS::strConverter.local().to_bytes(_gameManager->getGame().getName());
 					_saveGameBuff.setText(gameName);
 				}
 				ImGui::InputText("Name", &_saveGameBuff[0], _saveGameBuff.getSize(), 0, nullptr, (void*)this);
@@ -357,13 +357,13 @@ namespace NLE
 					ImGui::CloseCurrentPopup();
 					_showSaveGameDialog = false;
 					auto gameName = TLS::strConverter.local().from_bytes(_saveGameBuff.getText());
-					_gameManager.saveGame(gameName);
+					_gameManager->saveGame(gameName);
 				}
 				ImGui::SameLine();
 				if (ImGui::Button("Cancel", ImVec2(120, 0))) {
 					ImGui::CloseCurrentPopup();
 					_showSaveGameDialog = false;
-					auto gameName = TLS::strConverter.local().to_bytes(_gameManager.getGame().getName());
+					auto gameName = TLS::strConverter.local().to_bytes(_gameManager->getGame().getName());
 					_saveGameBuff.setText(gameName);
 				}
 				ImGui::EndPopup();
@@ -371,7 +371,7 @@ namespace NLE
 			restoreColorScheme();
 		}
 
-		void ImguiEditorUiManager::showSaveSceneDialog(SystemServices* sServices, Size2D screenSize)
+		void ImguiEditorUiManager::showSaveSceneDialog(Size2D screenSize)
 		{
 			ImGuiWindowFlags windowFlags = 0;
 			windowFlags |= ImGuiWindowFlags_NoSavedSettings;
@@ -384,7 +384,7 @@ namespace NLE
 			{
 				if (_saveSceneBuff.isEmpty())
 				{
-					auto sceneName = TLS::strConverter.local().to_bytes(_gameManager.getCurrentScene().getName());
+					auto sceneName = TLS::strConverter.local().to_bytes(_gameManager->getCurrentScene().getName());
 					_saveSceneBuff.setText(sceneName);
 				}
 				ImGui::InputText("Name", &_saveSceneBuff[0], _saveSceneBuff.getSize(), 0, nullptr, (void*)this);
@@ -392,13 +392,13 @@ namespace NLE
 					ImGui::CloseCurrentPopup();
 					_showSaveSceneDialog = false;
 					auto sceneName = TLS::strConverter.local().from_bytes(_saveSceneBuff.getText());
-					_gameManager.saveScene(sceneName);
+					_gameManager->saveScene(sceneName);
 				}
 				ImGui::SameLine();
 				if (ImGui::Button("Cancel", ImVec2(120, 0))) {
 					ImGui::CloseCurrentPopup();
 					_showSaveSceneDialog = false;
-					auto sceneName = TLS::strConverter.local().to_bytes(_gameManager.getCurrentScene().getName());
+					auto sceneName = TLS::strConverter.local().to_bytes(_gameManager->getCurrentScene().getName());
 					_saveSceneBuff.setText(sceneName);
 				}
 				ImGui::EndPopup();
@@ -406,7 +406,7 @@ namespace NLE
 			restoreColorScheme();
 		}
 
-		void ImguiEditorUiManager::showLoadGameDialog(SystemServices* sServices, Size2D screenSize)
+		void ImguiEditorUiManager::showLoadGameDialog(Size2D screenSize)
 		{
 			ImGuiWindowFlags windowFlags = 0;
 			windowFlags |= ImGuiWindowFlags_NoSavedSettings;
@@ -427,7 +427,7 @@ namespace NLE
 					ImGui::CloseCurrentPopup();
 					_showLoadGameDialog = false;
 					auto gamePath = TLS::strConverter.local().from_bytes(_loadGameBuff.getText());
-					_gameManager.loadGame(gamePath);
+					_gameManager->loadGame(gamePath);
 				}
 				ImGui::SameLine();
 				if (ImGui::Button("Cancel", ImVec2(120, 0))) {
@@ -439,7 +439,7 @@ namespace NLE
 			restoreColorScheme();
 		}
 
-		void ImguiEditorUiManager::showLoadSceneDialog(SystemServices* sServices, Size2D screenSize)
+		void ImguiEditorUiManager::showLoadSceneDialog(Size2D screenSize)
 		{
 			ImGuiWindowFlags windowFlags = 0;
 			windowFlags |= ImGuiWindowFlags_NoSavedSettings;
@@ -460,7 +460,7 @@ namespace NLE
 					ImGui::CloseCurrentPopup();
 					_showLoadSceneDialog = false;
 					auto scenePath = TLS::strConverter.local().from_bytes(_loadSceneBuff.getText());
-					_gameManager.loadScene(scenePath);
+					_gameManager->loadScene(scenePath);
 				}
 				ImGui::SameLine();
 				if (ImGui::Button("Cancel", ImVec2(120, 0))) {
@@ -472,7 +472,7 @@ namespace NLE
 			restoreColorScheme();
 		}
 
-		void ImguiEditorUiManager::showGameEditor(SystemServices* sServices, Size2D screenSize)
+		void ImguiEditorUiManager::showGameEditor(Size2D screenSize)
 		{
 			ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 2.0f);
 			applyColorScheme(false);
@@ -484,7 +484,7 @@ namespace NLE
 			ImGui::PopStyleVar();
 		}
 
-		void ImguiEditorUiManager::showSceneEditor(SystemServices* sServices, Size2D screenSize)
+		void ImguiEditorUiManager::showSceneEditor(Size2D screenSize)
 		{
 			ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 2.0f);
 			applyColorScheme(false);
@@ -496,7 +496,7 @@ namespace NLE
 			ImGui::PopStyleVar();
 		}
 
-		void ImguiEditorUiManager::showObjectEditor(SystemServices* sServices, Size2D screenSize)
+		void ImguiEditorUiManager::showObjectEditor(Size2D screenSize)
 		{
 			ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 2.0f);
 			applyColorScheme(false);
@@ -508,7 +508,7 @@ namespace NLE
 			ImGui::PopStyleVar();
 		}
 
-		void ImguiEditorUiManager::showScriptEditor(SystemServices* sServices, Size2D screenSize)
+		void ImguiEditorUiManager::showScriptEditor(Size2D screenSize)
 		{
 			ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 2.0f);
 			applyColorScheme(false);

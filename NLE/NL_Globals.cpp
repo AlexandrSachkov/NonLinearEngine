@@ -6,10 +6,10 @@ namespace NLE
 {
 	namespace INPUT
 	{
-		NLE::Queue<Event>* const GLOBAL_EVENT_QUEUE = new NLE::Queue<Event>();
+		std::shared_ptr<NLE::Queue<Event>> GLOBAL_EVENT_QUEUE = std::make_shared<Queue<Event>>();
 	}	
 	namespace CONSOLE
 	{
-		NLE::CONSOLE::IConsoleQueue* const GLOBAL_CONSOLE_QUEUE = new NLE::CONSOLE::ConsoleQueue();
+		IConsoleQueueSP GLOBAL_CONSOLE_QUEUE = std::make_shared<CONSOLE::ConsoleQueue>();
 	}
 }

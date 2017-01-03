@@ -13,7 +13,7 @@ namespace NLE
 		{
 		}
 
-		Game::Game(GameManager* gameManager, CONSOLE::IConsoleQueue_EService* console) :
+		Game::Game(IGameManagerSP gameManager, CONSOLE::IConsoleQueue_EServiceSP console) :
 			_gameManager(gameManager),
 			_scriptingContext(this),
 			_console(console)
@@ -27,17 +27,17 @@ namespace NLE
 
 		}
 
-		GameManager* Game::getGameManager()
+		IGameManagerSP Game::getGameManager()
 		{
 			return _gameManager;
 		}
 
-		void Game::setGameManager(GameManager& gameManager)
+		void Game::setGameManager(IGameManagerSP gameManager)
 		{
-			_gameManager = &gameManager;
+			_gameManager = gameManager;
 		}
 
-		void Game::attachConsole(CONSOLE::IConsoleQueue_EService* console)
+		void Game::attachConsole(CONSOLE::IConsoleQueue_EServiceSP console)
 		{
 			_console = console;
 		}

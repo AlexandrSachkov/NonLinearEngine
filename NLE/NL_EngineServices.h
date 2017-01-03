@@ -12,9 +12,9 @@ namespace NLE
 	{
 	public:
 		EngineServices(
-			CONSOLE::IConsoleQueue_EService* console, 
-			TASK::ITaskScheduler_EService* task,
-			DATA::IDataManager* data
+			CONSOLE::IConsoleQueue_EServiceSP console, 
+			TASK::ITaskScheduler_EServiceSP task,
+			DATA::IDataManagerSP data
 			) :
 			console(console),
 			task(task),
@@ -26,9 +26,9 @@ namespace NLE
 		{
 		}
 
-		CONSOLE::IConsoleQueue_EService* const console;
-		TASK::ITaskScheduler_EService* const task;
-		DATA::IDataManager* const data;
+		CONSOLE::IConsoleQueue_EServiceSP console;
+		TASK::ITaskScheduler_EServiceSP task;
+		DATA::IDataManagerSP data;
 	};
 }
 

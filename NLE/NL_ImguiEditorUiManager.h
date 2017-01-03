@@ -12,32 +12,19 @@
 #include "NL_ImguiSceneEditor.h"
 #include "NL_ImguiObjectEditor.h"
 #include "NL_ImguiScriptEditor.h"
+#include "NL_EngineServices.h"
+#include "NL_IWindowManager.h"
+#include "NL_IInputProcessor.h"
+#include "NL_IRenderingEngine.h"
+#include "NL_IScriptingEngine.h"
+#include "NL_IGameManager.h"
 
 #include <imgui.h>
 
 struct ImDrawData;
 namespace NLE
 {
-	class EngineServices;
-	class IWindowManager;
 	class SystemServices;
-	namespace GAME
-	{
-		class IGameManager;
-	}
-	namespace INPUT
-	{
-		class IInputProcessor;
-	}
-	namespace GRAPHICS
-	{
-		class IRenderingEngine;
-	}
-	namespace SCRIPT
-	{
-		class IScriptingEngine;
-	}
-
 
 	namespace UI
 	{
@@ -45,47 +32,47 @@ namespace NLE
 		{
 		public:
 			ImguiEditorUiManager(
-				EngineServices& eServices,
-				CONSOLE::IConsoleQueue& consoleQueue,
-				IWindowManager& windowManager,
-				GAME::IGameManager& gameManager,
-				INPUT::IInputProcessor& inputProcessor,
-				GRAPHICS::IRenderingEngine& renderingEngine,
-				SCRIPT::IScriptingEngine& scriptingEngine
+				EngineServices eServices,
+				CONSOLE::IConsoleQueueSP consoleQueue,
+				IWindowManagerSP windowManager,
+				GAME::IGameManagerSP gameManager,
+				INPUT::IInputProcessorSP inputProcessor,
+				GRAPHICS::IRenderingEngineSP renderingEngine,
+				SCRIPT::IScriptingEngineSP scriptingEngine
 				);
 			~ImguiEditorUiManager();
 
 			bool initialize();
 
-			void update(SystemServices* sServices, double deltaT, Size2D screenSize);
+			void update(SystemServices& sServices, double deltaT, Size2D screenSize);
 			void queueKeyAndCharEvent(INPUT::Event event);
 			void show(bool show);
 			ImDrawData* getDrawData();
 
 		private:
 			int getScancodeForKeyEvent(INPUT::Event event);
-			void captureInput(SystemServices* sServices, double deltaT, Size2D screenSize);
-			void drawUI(SystemServices* sServices, Size2D screenSize);
-			void showEditorSettings(SystemServices* sServices, Size2D screenSize);
-			void showConsole(SystemServices* sServices, Size2D screenSize);
-			void showSaveGameDialog(SystemServices* sServices, Size2D screenSize);
-			void showSaveSceneDialog(SystemServices* sServices, Size2D screenSize);
-			void showLoadGameDialog(SystemServices* sServices, Size2D screenSize);
-			void showLoadSceneDialog(SystemServices* sServices, Size2D screenSize);
-			void showGameEditor(SystemServices* sServices, Size2D screenSize);
-			void showSceneEditor(SystemServices* sServices, Size2D screenSize);
-			void showObjectEditor(SystemServices* sServices, Size2D screenSize);
-			void showScriptEditor(SystemServices* sServices, Size2D screenSize);
+			void captureInput(double deltaT, Size2D screenSize);
+			void drawUI(Size2D screenSize);
+			void showEditorSettings(Size2D screenSize);
+			void showConsole(Size2D screenSize);
+			void showSaveGameDialog(Size2D screenSize);
+			void showSaveSceneDialog(Size2D screenSize);
+			void showLoadGameDialog(Size2D screenSize);
+			void showLoadSceneDialog(Size2D screenSize);
+			void showGameEditor(Size2D screenSize);
+			void showSceneEditor(Size2D screenSize);
+			void showObjectEditor(Size2D screenSize);
+			void showScriptEditor(Size2D screenSize);
 			void applyColorScheme(bool root);
 			void restoreColorScheme();
 
-			EngineServices& _eServices;
-			CONSOLE::IConsoleQueue& _consoleQueue;
-			IWindowManager& _windowManager;
-			GAME::IGameManager& _gameManager;
-			INPUT::IInputProcessor& _inputProcessor;
-			GRAPHICS::IRenderingEngine& _renderingEngine;
-			SCRIPT::IScriptingEngine& _scriptingEngine;
+			EngineServices _eServices;
+			CONSOLE::IConsoleQueueSP _consoleQueue;
+			IWindowManagerSP _windowManager;
+			GAME::IGameManagerSP _gameManager;
+			INPUT::IInputProcessorSP _inputProcessor;
+			GRAPHICS::IRenderingEngineSP _renderingEngine;
+			SCRIPT::IScriptingEngineSP _scriptingEngine;
 
 			Queue<INPUT::Event> _keyAndCharEvents;
 

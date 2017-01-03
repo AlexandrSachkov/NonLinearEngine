@@ -22,11 +22,11 @@ namespace NLE
 		{
 		}
 
-		void ImguiSceneViewer::draw(GAME::IGameManager& gameManager)
+		void ImguiSceneViewer::draw(const GAME::IGameManagerSP& gameManager)
 		{
 			if (ImGui::CollapsingHeader("Scenes"))
 			{
-				auto scenes = gameManager.getGame().getScenes();
+				auto scenes = gameManager->getGame().getScenes();
 				std::vector<std::string> sceneNames(scenes.size());
 				for (int i = 0; i < scenes.size(); ++i)
 				{
@@ -34,7 +34,7 @@ namespace NLE
 				}
 
 				if (ImGui::Button("New")) {
-					gameManager.newScene();
+					gameManager->newScene();
 				}
 				ImGui::SameLine();
 				if (ImGui::Button("Add")) {
@@ -45,7 +45,7 @@ namespace NLE
 					if (scenes.size() > 0)
 					{
 						std::wstring selectedSceneName = scenes[_selectedScene].first;
-						gameManager.removeScene(selectedSceneName);
+						gameManager->removeScene(selectedSceneName);
 						if (_selectedScene > 0)
 							--_selectedScene;
 					}
@@ -55,7 +55,7 @@ namespace NLE
 					if (scenes.size() > 0)
 					{
 						std::wstring selectedSceneName = scenes[_selectedScene].first;
-						gameManager.loadSceneByName(selectedSceneName);
+						gameManager->loadSceneByName(selectedSceneName);
 					}
 				}
 
@@ -64,11 +64,11 @@ namespace NLE
 					if (scenes.size() > 0)
 					{
 						std::wstring selectedSceneName = scenes[_selectedScene].first;
-						gameManager.setInitialScene(selectedSceneName);
+						gameManager->setInitialScene(selectedSceneName);
 					}
 				}
 
-				std::wstring initialSceneName = gameManager.getGame().getInitialScene();
+				std::wstring initialSceneName = gameManager->getGame().getInitialScene();
 				if (initialSceneName.compare(L"") != 0)
 				{
 					std::string initialSceneMsg = "Initial Scene: " + TLS::strConverter.local().to_bytes(initialSceneName);
@@ -105,7 +105,7 @@ namespace NLE
 						_showAddSceneDialog = false;
 						auto sceneName = TLS::strConverter.local().from_bytes(_sceneNameBuff.getText());
 						auto scenePath = TLS::strConverter.local().from_bytes(_scenePathBuff.getText());
-						gameManager.addScene(sceneName, scenePath);
+						gameManager->addScene(sceneName, scenePath);
 					}
 					ImGui::SameLine();
 					if (ImGui::Button("Cancel", ImVec2(120, 0))) {

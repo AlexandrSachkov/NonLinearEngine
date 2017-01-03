@@ -1,6 +1,5 @@
 #include "NL_ImguiObjectEditor.h"
 #include "NL_ThreadLocal.h"
-#include "NL_IGameManager.h"
 #include "NL_GameObject.h"
 
 #include <imgui.h>
@@ -24,7 +23,7 @@ namespace NLE
 			return _visible;
 		}
 
-		void ImguiObjectEditor::draw(GAME::IGameManager& gameManager, Size2D screenSize)
+		void ImguiObjectEditor::draw(const GAME::IGameManagerSP& gameManager, Size2D screenSize)
 		{
 			if (!_visible)
 				return;

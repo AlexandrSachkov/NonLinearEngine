@@ -34,7 +34,7 @@ namespace NLE
 
 		}
 
-		void RenderingEngine::update(SystemServices* sServices, double deltaT)
+		void RenderingEngine::update(SystemServices& sServices, double deltaT)
 		{
 			NLE::TLS::PerformanceTimer::reference timer = NLE::TLS::performanceTimer.local();
 			timer.deltaT();

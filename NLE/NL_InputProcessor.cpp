@@ -31,7 +31,7 @@ namespace NLE
 			return true;
 		}
 
-		void InputProcessor::update(SystemServices* sServices, double deltaT)
+		void InputProcessor::update(SystemServices& sServices, double deltaT)
 		{
 			DATA::SharedData& data = _eServices.data->getData();
 
@@ -94,7 +94,7 @@ namespace NLE
 
 				case EVENT_TYPE::EVENT_WINDOW_CLOSE:
 				{
-					sServices->game->quitGame();
+					sServices.game->quitGame();
 				}
 				break;
 				default:
@@ -130,7 +130,7 @@ namespace NLE
 			_enableInputProcessing.fetch_and_store(enable);
 		}
 
-		void InputProcessor::onKeyEvent(SystemServices* sServices, Event& event)
+		void InputProcessor::onKeyEvent(SystemServices& sServices, Event& event)
 		{
 			
 		}

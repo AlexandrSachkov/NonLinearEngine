@@ -30,7 +30,7 @@ namespace NLE
 			~D3D11RenderingEngine();
 
 			bool initialize(IWindowManager& windowManager);
-			void update(SystemServices* sServices, double deltaT);
+			void update(SystemServices& sServices, double deltaT);
 			void attachGetUIRenderingData(std::function<void*()> func);
 
 		private:

@@ -41,7 +41,7 @@ THE SOFTWARE.
 
 namespace NLE
 {
-	GlfwWindowManager::GlfwWindowManager(CONSOLE::IConsoleQueue_EService* console) :
+	GlfwWindowManager::GlfwWindowManager(CONSOLE::IConsoleQueue_EServiceSP console) :
 		_console(console)
 	{
 		_window = nullptr;

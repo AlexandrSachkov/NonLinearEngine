@@ -4,6 +4,7 @@
 #include <string>
 #include <vector>
 #include <functional>
+#include <memory>
 
 namespace NLE
 {
@@ -29,6 +30,8 @@ namespace NLE
 			virtual bool write(std::wstring path, std::vector<char>* srcData) = 0;
 			virtual ~IFileIOManager() {};
 		};
+
+		typedef std::shared_ptr<IFileIOManager> IFileIOManagerSP;
 	}
 }
 

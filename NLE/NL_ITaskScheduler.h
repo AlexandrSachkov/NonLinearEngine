@@ -3,6 +3,7 @@
 
 #include "tbb/task.h"
 #include <functional>
+#include <memory>
 
 namespace NLE
 {
@@ -29,6 +30,9 @@ namespace NLE
 			virtual void notifyOfCompletion() = 0;
 			virtual void waitOnTasks() = 0;
 		};
+
+		typedef std::shared_ptr<ITaskScheduler> ITaskSchedulerSP;
+		typedef std::shared_ptr<ITaskScheduler_EService> ITaskScheduler_EServiceSP;
 	}
 }
 

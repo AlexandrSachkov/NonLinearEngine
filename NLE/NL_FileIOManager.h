@@ -31,7 +31,7 @@ namespace NLE
 		class FileIOManager : public IFileIOManager
 		{
 		public:
-			FileIOManager(NLE::CONSOLE::IConsoleQueue* const console, NLE::TASK::ITaskScheduler* const taskScheduler);
+			FileIOManager(CONSOLE::IConsoleQueueSP console, TASK::ITaskSchedulerSP taskScheduler);
 			~FileIOManager();
 			
 			void readAsync(
@@ -56,8 +56,8 @@ namespace NLE
 
 			std::wstring getFileExtension(std::wstring path);
 
-			NLE::CONSOLE::IConsoleQueue* const _console;
-			NLE::TASK::ITaskScheduler* const _task;
+			CONSOLE::IConsoleQueueSP _console;
+			TASK::ITaskSchedulerSP _task;
 			Core::Thread _loadingThread;
 			tbb::concurrent_queue<FileIOOperationDesc> _fileOps;
 

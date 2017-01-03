@@ -2,6 +2,7 @@
 #define NL_I_SCRIPTING_ENGINE_H_
 
 #include "NL_ISystem.h"
+#include <memory>
 
 namespace NLE
 {
@@ -15,8 +16,11 @@ namespace NLE
 		class IScriptingEngine : public ISystem, public IScriptingEngine_SysService
 		{
 		public:
-			virtual bool initialize() = 0;
+			
 		};
+
+		typedef std::shared_ptr<IScriptingEngine> IScriptingEngineSP;
+		typedef std::shared_ptr<IScriptingEngine_SysService> IScriptingEngine_SysServiceSP;
 	}
 }
 

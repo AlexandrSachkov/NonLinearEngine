@@ -5,13 +5,10 @@
 #include "NL_CharBuffer.h"
 #include "NL_IConsoleQueue.h"
 #include "NL_ImguiScriptViewer.h"
+#include "NL_IGameManager.h"
 
 namespace NLE
 {
-	namespace GAME
-	{
-		class IGameManager;
-	}
 	namespace UI
 	{
 		class ImguiSceneEditor
@@ -22,8 +19,8 @@ namespace NLE
 
 			bool& getVisibility();
 			void draw(
-				CONSOLE::IConsoleQueue& consoleQueue, 
-				GAME::IGameManager& gameManager, 
+				const CONSOLE::IConsoleQueueSP& consoleQueue, 
+				const GAME::IGameManagerSP& gameManager, 
 				Size2D screenSize,
 				ImguiScriptEditor& scriptEditor
 				);

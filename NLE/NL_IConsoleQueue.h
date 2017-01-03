@@ -2,6 +2,7 @@
 #define NL_I_CONSOLE_QUEUE_H_
 
 #include <string>
+#include <memory>
 
 namespace NLE
 {
@@ -40,6 +41,9 @@ namespace NLE
 			virtual bool pop(std::pair<OUTPUT_TYPE, std::wstring>& data) = 0;
 			virtual void clear() = 0;
 		};
+
+		typedef std::shared_ptr<IConsoleQueue> IConsoleQueueSP;
+		typedef std::shared_ptr<IConsoleQueue_EService> IConsoleQueue_EServiceSP;
 	}
 
 }

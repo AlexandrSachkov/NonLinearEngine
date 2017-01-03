@@ -23,7 +23,7 @@ namespace NLE
 			return true;
 		}
 
-		void ScriptingEngine::update(SystemServices* sServices, double deltaT)
+		void ScriptingEngine::update(SystemServices& sServices, double deltaT)
 		{
 			NLE::TLS::PerformanceTimer::reference timer = NLE::TLS::performanceTimer.local();
 			timer.deltaT();

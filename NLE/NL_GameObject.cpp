@@ -19,16 +19,6 @@ namespace NLE
 
 		}
 
-		void GameObject::setScene(Scene* scene)
-		{
-			_scene = scene;
-		}
-
-		Scene* GameObject::getScene()
-		{
-			return _scene;
-		}
-
 		std::wstring GameObject::getName()
 		{
 			return _name;

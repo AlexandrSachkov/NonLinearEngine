@@ -9,7 +9,7 @@ namespace NLE
 {
 	namespace IO
 	{
-		FileIOManager::FileIOManager(NLE::CONSOLE::IConsoleQueue* const console, NLE::TASK::ITaskScheduler* const taskScheduler) :
+		FileIOManager::FileIOManager(CONSOLE::IConsoleQueueSP console, TASK::ITaskSchedulerSP taskScheduler) :
 			_loadingThread(100000L),
 			_console(console),
 			_task(taskScheduler)

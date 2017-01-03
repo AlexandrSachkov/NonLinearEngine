@@ -4,6 +4,11 @@
 #include "NL_IGameManager.h"
 #include "NL_ISerializer.h"
 #include "NL_OperationBuffer.h"
+#include "NL_IWindowManager.h"
+#include "NL_IRenderingEngine.h"
+#include "NL_IScriptingEngine.h"
+#include "NL_IFileIOManager.h"
+#include "NL_EngineServices.h"
 
 #include "lua.hpp"
 #include <LuaIntf.h>
@@ -11,41 +16,26 @@
 #include <functional>
 
 namespace NLE
-{
-	class IWindowManager;
-	class EngineServices;
-	namespace GRAPHICS
-	{
-		class IRenderingEngine;
-	}
-	namespace SCRIPT
-	{
-		class IScriptingEngine;
-	}
-	namespace IO
-	{
-		class IFileIOManager;
-	}
-	
+{	
 	namespace GAME
 	{
 		class Game;
 		class Scene;
 		class GameObject;
 		
-		class GameManager : public IGameManager
+		class GameManager : public IGameManager, public std::enable_shared_from_this<GameManager>
 		{
 		public:
 			GameManager(
-				EngineServices& eServices,
-				IWindowManager& windowManager,
-				IO::IFileIOManager* file,
-				SERIALIZATION::ISerializer& serializer,
-				GRAPHICS::IRenderingEngine* const renderingEngine,
-				SCRIPT::IScriptingEngine* const scriptingEngine);
+				EngineServices eServices,
+				IWindowManagerSP windowManager,
+				IO::IFileIOManagerSP file,
+				SERIALIZATION::ISerializerSP serializer,
+				GRAPHICS::IRenderingEngineSP renderingEngine,
+				SCRIPT::IScriptingEngineSP scriptingEngine);
 			~GameManager();
 
-			void update(SystemServices* sServices, double deltaT);
+			void update(SystemServices& sServices, double deltaT);
 			bool hasUnsavedChanges();
 			void newGame();
 			void newScene();
@@ -77,12 +67,12 @@ namespace NLE
 			void updateScene(Scene* scene);
 
 			ExecStatus _execStatus;
-			EngineServices& _eServices;
-			IWindowManager& _windowManager;
-			IO::IFileIOManager* _file;
-			SERIALIZATION::ISerializer& _serializer;
-			GRAPHICS::IRenderingEngine* const _renderingEngine;
-			SCRIPT::IScriptingEngine* const _scriptingEngine;
+			EngineServices _eServices;
+			IWindowManagerSP _windowManager;
+			IO::IFileIOManagerSP _file;
+			SERIALIZATION::ISerializerSP _serializer;
+			GRAPHICS::IRenderingEngineSP _renderingEngine;
+			SCRIPT::IScriptingEngineSP _scriptingEngine;
 
 			OperationBuffer _opBuffer;
 

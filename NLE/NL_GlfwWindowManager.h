@@ -44,7 +44,7 @@ namespace NLE
 	class GlfwWindowManager : public IWindowManager
 	{
 	public:
-		GlfwWindowManager(CONSOLE::IConsoleQueue_EService* console);
+		GlfwWindowManager(CONSOLE::IConsoleQueue_EServiceSP console);
 		~GlfwWindowManager();
 
 		bool initialize(
@@ -100,7 +100,7 @@ namespace NLE
 
 		static void processEvent(INPUT::Event& event);
 
-		CONSOLE::IConsoleQueue_EService* _console;
+		CONSOLE::IConsoleQueue_EServiceSP _console;
 		GLFWwindow* _window;
 		std::wstring _title;
 		bool _fullScreen;

@@ -2,6 +2,7 @@
 #define NL_IMGUI_SCENE_VIEWER_H_
 
 #include "NL_CharBuffer.h"
+#include "NL_IGameManager.h"
 
 namespace NLE
 {
@@ -17,7 +18,7 @@ namespace NLE
 			ImguiSceneViewer();
 			~ImguiSceneViewer();
 
-			void draw(GAME::IGameManager& gameManager);
+			void draw(const GAME::IGameManagerSP& gameManager);
 		private:
 			CharBuffer _sceneNameBuff;
 			CharBuffer _scenePathBuff;

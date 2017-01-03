@@ -31,7 +31,7 @@ namespace NLE
 				std::function<std::wstring()> getContext,
 				std::function<std::wstring()> getErrorString);
 
-			void draw(CONSOLE::IConsoleQueue& consoleQueue, float textOpaqueness);
+			void draw(const CONSOLE::IConsoleQueueSP& consoleQueue, float textOpaqueness);
 		private:
 			bool _visible;
 			std::wstring _originalScriptName;

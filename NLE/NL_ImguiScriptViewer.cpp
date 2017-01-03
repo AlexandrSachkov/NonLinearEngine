@@ -18,7 +18,7 @@ namespace NLE
 		}
 
 		void ImguiScriptViewer::draw(
-			CONSOLE::IConsoleQueue& consoleQueue,
+			const CONSOLE::IConsoleQueueSP& consoleQueue,
 			ImguiScriptEditor& scriptEditor,
 			std::function<SCRIPT::ScriptingContext&()> getScriptingContext,
 			std::function<std::wstring()> getContext
@@ -52,7 +52,7 @@ namespace NLE
 						|| selectedScriptName.compare(SCRIPT::ON_UPDATE) == 0
 						|| selectedScriptName.compare(SCRIPT::ON_EXIT) == 0)
 					{
-						consoleQueue.push(CONSOLE::WARNING, selectedScriptName + L" is a system script and cannot be deleted.");
+						consoleQueue->push(CONSOLE::WARNING, selectedScriptName + L" is a system script and cannot be deleted.");
 					}
 					else
 					{

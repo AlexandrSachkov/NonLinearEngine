@@ -21,7 +21,7 @@ namespace NLE
 			~ImguiScriptViewer();
 
 			void draw(
-				CONSOLE::IConsoleQueue& consoleQueue,
+				const CONSOLE::IConsoleQueueSP& consoleQueue,
 				ImguiScriptEditor& scriptEditor,
 				std::function<SCRIPT::ScriptingContext&()> getScriptingContext,
 				std::function<std::wstring()> getContext

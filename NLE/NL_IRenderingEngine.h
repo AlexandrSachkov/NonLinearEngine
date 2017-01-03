@@ -6,6 +6,7 @@
 #include <cstdint>
 #include <string>
 #include <functional>
+#include <memory>
 
 namespace NLE
 {
@@ -20,6 +21,9 @@ namespace NLE
 		public:
 			void attachGetUIRenderingData(std::function<void*()>);
 		};
+
+		typedef std::shared_ptr<IRenderingEngine> IRenderingEngineSP;
+		typedef std::shared_ptr<IRenderingEngine_SysService> IRenderingEngine_SysServiceSP;
 	}
 }
 

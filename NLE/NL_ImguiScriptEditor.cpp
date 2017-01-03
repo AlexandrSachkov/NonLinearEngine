@@ -48,7 +48,7 @@ namespace NLE
 			_visible = true;
 		}
 
-		void ImguiScriptEditor::draw(CONSOLE::IConsoleQueue& consoleQueue, float textOpaqueness)
+		void ImguiScriptEditor::draw(const CONSOLE::IConsoleQueueSP& consoleQueue, float textOpaqueness)
 		{
 			if (!_visible)
 				return;

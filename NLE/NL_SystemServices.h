@@ -12,10 +12,10 @@ namespace NLE
 	{
 	public:
 		SystemServices(
-			GAME::IGameManager* game,
-			INPUT::IInputProcessor* input,
-			GRAPHICS::IRenderingEngine* graphics,
-			SCRIPT::IScriptingEngine* script
+			GAME::IGameManagerSP game,
+			INPUT::IInputProcessorSP input,
+			GRAPHICS::IRenderingEngineSP graphics,
+			SCRIPT::IScriptingEngineSP script
 			) :
 			game(game),
 			input(input),
@@ -28,10 +28,10 @@ namespace NLE
 		{
 		}
 
-		GAME::IGameManager* const game;
-		INPUT::IInputProcessor* const input;
-		GRAPHICS::IRenderingEngine* const graphics;
-		SCRIPT::IScriptingEngine* const script;
+		GAME::IGameManagerSP game;
+		INPUT::IInputProcessorSP input;
+		GRAPHICS::IRenderingEngineSP graphics;
+		SCRIPT::IScriptingEngineSP script;
 	};
 }
 

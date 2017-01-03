@@ -26,7 +26,7 @@ namespace NLE
 			~RenderingEngine();
 
 			bool initialize();
-			void update(SystemServices* sServices, double deltaT);
+			void update(SystemServices& sServices, double deltaT);
 			void attachGetUIRenderingData(std::function<void*()>);
 
 		private:	

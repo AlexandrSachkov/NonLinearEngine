@@ -15,7 +15,7 @@ namespace NLE
 			~ScriptingEngine();
 
 			bool initialize();
-			void update(SystemServices* sServices, double deltaT);
+			void update(SystemServices& sServices, double deltaT);
 
 		private:
 			EngineServices& _eServices;

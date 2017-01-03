@@ -1,6 +1,5 @@
 #include "NL_ImguiSceneEditor.h"
 #include "NL_ThreadLocal.h"
-#include "NL_IGameManager.h"
 #include "NL_Scene.h"
 #include "NL_ScriptingContext.h"
 #include "NL_ImguiScriptEditor.h"
@@ -27,8 +26,8 @@ namespace NLE
 		}
 
 		void ImguiSceneEditor::draw(
-			CONSOLE::IConsoleQueue& consoleQueue,
-			GAME::IGameManager& gameManager,
+			const CONSOLE::IConsoleQueueSP& consoleQueue,
+			const GAME::IGameManagerSP& gameManager,
 			Size2D screenSize,
 			ImguiScriptEditor& scriptEditor
 			)
@@ -43,7 +42,7 @@ namespace NLE
 
 			ImGui::Begin("Scene Editor", &_visible, windowFlags);
 
-			auto sceneName = TLS::strConverter.local().to_bytes(gameManager.getCurrentScene().getName());
+			auto sceneName = TLS::strConverter.local().to_bytes(gameManager->getCurrentScene().getName());
 			_nameBuff.setText(sceneName);
 
 			ImGuiInputTextFlags flags = 0;
@@ -60,8 +59,8 @@ namespace NLE
 			_scriptViewer.draw(
 				consoleQueue,
 				scriptEditor,
-				[&]() ->SCRIPT::ScriptingContext& { return gameManager.getCurrentScene().getScriptingContext(); },
-				[&]() { return gameManager.getCurrentScene().getName();
+				[&]() ->SCRIPT::ScriptingContext& { return gameManager->getCurrentScene().getScriptingContext(); },
+				[&]() { return gameManager->getCurrentScene().getName();
 			});
 
 			ImGui::End();

@@ -3,13 +3,10 @@
 
 #include "NL_CommonTypes.h"
 #include "NL_CharBuffer.h"
+#include "NL_IGameManager.h"
 
 namespace NLE
 {
-	namespace GAME
-	{
-		class IGameManager;
-	}
 	namespace UI
 	{
 		class ImguiObjectEditor
@@ -19,7 +16,7 @@ namespace NLE
 			~ImguiObjectEditor();
 
 			bool& getVisibility();
-			void draw(GAME::IGameManager& gameManager, Size2D screenSize);
+			void draw(const GAME::IGameManagerSP& gameManager, Size2D screenSize);
 		private:
 			ImguiObjectEditor& operator=(ImguiObjectEditor& other) = delete;
 

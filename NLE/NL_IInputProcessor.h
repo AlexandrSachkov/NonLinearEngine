@@ -4,6 +4,7 @@
 #include "NL_ISystem.h"
 #include "NL_InputEvents.h"
 #include <functional>
+#include <memory>
 
 namespace NLE
 {
@@ -21,6 +22,9 @@ namespace NLE
 		{
 		public:
 		};
+
+		typedef std::shared_ptr<IInputProcessor> IInputProcessorSP;
+		typedef std::shared_ptr<IInputProcessor_SysService> IInputProcessor_SysServiceSP;
 	}
 }
 

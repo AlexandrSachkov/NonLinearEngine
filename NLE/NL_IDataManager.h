@@ -1,6 +1,8 @@
 #ifndef NL_I_DATA_MANAGER_H_
 #define NL_I_DATA_MANAGER_H_
 
+#include <memory>
+
 namespace NLE
 {
 	namespace DATA
@@ -24,6 +26,9 @@ namespace NLE
 		public:
 			virtual void syncData(unsigned int numThreads) = 0;
 		};
+
+		typedef std::shared_ptr<IDataManager> IDataManagerSP;
+		typedef std::shared_ptr<IDataManager_EService> IDataManager_EServiceSP;
 	}
 }
 

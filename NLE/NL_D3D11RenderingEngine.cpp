@@ -125,7 +125,7 @@ namespace NLE
 			_getUIRenderingData = func;
 		}
 
-		void D3D11RenderingEngine::update(SystemServices* sServices, double deltaT)
+		void D3D11RenderingEngine::update(SystemServices& sServices, double deltaT)
 		{
 			NLE::TLS::PerformanceTimer::reference timer = NLE::TLS::performanceTimer.local();
 			timer.deltaT();

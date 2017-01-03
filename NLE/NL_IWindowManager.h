@@ -4,6 +4,7 @@
 #include "NL_CommonTypes.h"
 
 #include <string>
+#include <memory>
 
 namespace NLE
 {
@@ -40,6 +41,8 @@ namespace NLE
 		virtual void swapBuffers() = 0;
 		virtual void pollEvents() = 0;
 	};
+
+	typedef std::shared_ptr<IWindowManager> IWindowManagerSP;
 }
 
 #endif

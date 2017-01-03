@@ -3,6 +3,7 @@
 
 #include "NL_ISystem.h"
 #include <string>
+#include <memory>
 
 namespace NLE
 {
@@ -39,6 +40,8 @@ namespace NLE
 
 			virtual ~IGameManager() {}
 		};
+
+		typedef std::shared_ptr<IGameManager> IGameManagerSP;
 	}
 }
 

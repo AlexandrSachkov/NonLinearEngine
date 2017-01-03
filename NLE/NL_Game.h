@@ -7,6 +7,7 @@
 #include "NL_LuaCustomTypes.h"
 #include "NL_Map.h"
 #include "NL_IConsoleQueue.h"
+#include "NL_IGameManager.h"
 
 #include <string>
 #include "cereal\cereal.hpp"
@@ -21,7 +22,7 @@ namespace NLE
 		{
 		public:
 			Game();
-			Game(GameManager* gameManager, CONSOLE::IConsoleQueue_EService* console);
+			Game(IGameManagerSP gameManager, CONSOLE::IConsoleQueue_EServiceSP console);
 			~Game();
 
 			template<class Archive>
@@ -68,9 +69,9 @@ namespace NLE
 				}
 			}
 
-			GameManager* getGameManager();
-			void setGameManager(GameManager& gameManager);
-			void attachConsole(CONSOLE::IConsoleQueue_EService* console);
+			IGameManagerSP getGameManager();
+			void setGameManager(IGameManagerSP gameManager);
+			void attachConsole(CONSOLE::IConsoleQueue_EServiceSP console);
 
 			void setName(std::wstring name);
 			std::wstring getName();
@@ -94,8 +95,8 @@ namespace NLE
 			}
 
 		private:
-			CONSOLE::IConsoleQueue_EService* _console;
-			GameManager* _gameManager;
+			CONSOLE::IConsoleQueue_EServiceSP _console;
+			IGameManagerSP _gameManager;
 			std::wstring _name;
 			std::wstring _initialScene;
 			SCRIPT::ScriptingContext _scriptingContext;

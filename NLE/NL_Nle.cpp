@@ -1,3 +1,12 @@
+#include "NL_TBBTaskScheduler.h"
+#include "NL_ConsoleQueue.h"
+#include "NL_DataManager.h"
+#include "NL_Globals.h"
+#include "NL_FileIOManager.h"
+#include "NL_ISerializer.h"
+#include "NL_EngineServices.h"
+#include "NL_CommonTypes.h"
+#include "NL_GlfwWindowManager.h"
 #include "NL_GameManager.h"
 #include "NL_InputProcessor.h"
 
@@ -7,23 +16,15 @@
 	#include "NL_RenderingEngine.h"
 #endif
 
-#include "NL_ImguiEditorUiManager.h"
 #include "NL_ScriptingEngine.h"
-
-#include "NL_TBBTaskScheduler.h"
-#include "NL_ConsoleQueue.h"
-#include "NL_DataManager.h"
+#include "NL_ImguiEditorUiManager.h"
 #include "NL_SystemServices.h"
-#include "NL_EngineServices.h"
 #include "NL_Timer.h"
-#include "NL_Globals.h"
-#include "NL_FileIOManager.h"
 #include "NL_ResourceManager.h"
-#include "NL_ISerializer.h"
-#include "NL_GlfwWindowManager.h"
 
 #include <vector>
 #include <iostream>
+#include <memory>
 #include "tbb/tbb.h"
 
 namespace NLE
@@ -34,44 +35,43 @@ namespace NLE
 
 		do
 		{
-			TASK::ITaskScheduler* taskScheduler = new TASK::TBBTaskScheduler();
-			CONSOLE::IConsoleQueue* consoleQueue = CONSOLE::GLOBAL_CONSOLE_QUEUE;
-			IO::IFileIOManager* fileIOManager = new IO::FileIOManager(consoleQueue, taskScheduler);
-			SERIALIZATION::ISerializer* serializer = new SERIALIZATION::CerealSerializer(SERIALIZATION::JSON);
+			auto taskScheduler = std::make_shared<TASK::TBBTaskScheduler>();
+			auto fileIOManager = std::make_shared<IO::FileIOManager>(CONSOLE::GLOBAL_CONSOLE_QUEUE, taskScheduler);
+			auto serializer = std::make_shared<SERIALIZATION::CerealSerializer>(SERIALIZATION::JSON);
 			//RESOURCE::ResourceManager* resourceManager = new RESOURCE::ResourceManager(*fileIOManager);
-			DATA::IDataManager* dataManager = new DATA::DataManager();
-			EngineServices engineServices(consoleQueue, taskScheduler, dataManager);
+			auto dataManager = std::make_shared<DATA::DataManager>();
+			EngineServices engineServices(CONSOLE::GLOBAL_CONSOLE_QUEUE, taskScheduler, dataManager);
 
 			Size2D windowSize(1920, 1080);
 			bool fullscreen = false;
 
-			GlfwWindowManager* windowManager = new GlfwWindowManager(engineServices.console);
+			auto windowManager = std::make_shared<GlfwWindowManager>(engineServices.console);
 			if (!windowManager->initialize(windowSize, fullscreen, true, L"NonLinear Engine"))
 				break;
 
-			INPUT::InputProcessor* inputProcessor = new INPUT::InputProcessor(engineServices);
+			auto inputProcessor = std::make_shared<INPUT::InputProcessor>(engineServices);
 			if (!inputProcessor->initialize())
 				break;
 
 #if defined (RENDERING_API_D3D11)
-			GRAPHICS::D3D11RenderingEngine* renderingEngine = new GRAPHICS::D3D11RenderingEngine(engineServices);
+			auto renderingEngine = std::make_shared<GRAPHICS::D3D11RenderingEngine>(engineServices);
 			if (!renderingEngine->initialize(*windowManager))
 				break;
 #else
-			GRAPHICS::RenderingEngine* renderingEngine = new GRAPHICS::RenderingEngine(engineServices);
+			auto renderingEngine = std::make_shared<GRAPHICS::RenderingEngine>(engineServices);
 			if (!renderingEngine->initialize())
 				break;
 #endif
 
-			SCRIPT::IScriptingEngine* scriptingEngine = new SCRIPT::ScriptingEngine(engineServices);	
+			auto scriptingEngine = std::make_shared<SCRIPT::ScriptingEngine>(engineServices);
 			if (!scriptingEngine->initialize())
 				break;
 
-			GAME::IGameManager* gameManager = new GAME::GameManager(
-				engineServices, *windowManager, fileIOManager, *serializer, renderingEngine, scriptingEngine);
+			auto gameManager = std::make_shared<GAME::GameManager>
+				(engineServices, windowManager, fileIOManager, serializer, renderingEngine, scriptingEngine);
 
-			UI::ImguiEditorUiManager* editorUiManager = new UI::ImguiEditorUiManager(
-				engineServices, *consoleQueue, *windowManager, *gameManager, *inputProcessor, *renderingEngine, *scriptingEngine);
+			auto editorUiManager = std::make_shared<UI::ImguiEditorUiManager>(
+				engineServices, CONSOLE::GLOBAL_CONSOLE_QUEUE, windowManager, gameManager, inputProcessor, renderingEngine, scriptingEngine);
 			if (!editorUiManager->initialize())
 				break;
 
@@ -82,10 +82,9 @@ namespace NLE
 				return (void*)editorUiManager->getDrawData();
 			});
 
-			SystemServices* systemServices = new SystemServices(
-				gameManager, inputProcessor, renderingEngine, scriptingEngine);
+			SystemServices systemServices(gameManager, inputProcessor, renderingEngine, scriptingEngine);
 
-			std::vector<ISystem*> parallelSystems;
+			std::vector<ISystemSP> parallelSystems;
 			parallelSystems.push_back(renderingEngine);
 			parallelSystems.push_back(scriptingEngine);
 							
@@ -124,18 +123,7 @@ namespace NLE
 
 			taskScheduler->waitOnTasks();
 			
-			delete systemServices;			
-			delete gameManager;
-			delete scriptingEngine;
-			delete editorUiManager;
-			delete renderingEngine;
-			delete inputProcessor;
-			
-			delete dataManager;
 			//delete resourceManager;
-			delete serializer;
-			delete fileIOManager;
-			delete taskScheduler;
 
 			INPUT::GLOBAL_EVENT_QUEUE->clear();
 			CONSOLE::GLOBAL_CONSOLE_QUEUE->clear();

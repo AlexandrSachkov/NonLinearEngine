@@ -50,15 +50,12 @@ namespace NLE
 			{
 				binding.beginClass<GameObject>("GameObject")
 					.addProperty("name", &GameObject::getName, &GameObject::setName)
-					.addFunction("getScene", &GameObject::getScene)
 					.addFunction("getParent", &GameObject::getParent)
 					.addFunction("getChildren", &GameObject::getChildren)
 					.addFunction("getScriptingContext", &GameObject::getScriptingContext)
 					.endClass();
 			}
 
-			void setScene(Scene* scene);
-			Scene* getScene();
 			void setName(std::wstring name);
 			std::wstring getName();
 
@@ -73,7 +70,6 @@ namespace NLE
 			SCRIPT::ScriptingContext& getScriptingContext();
 
 		private:
-			Scene* _scene;
 			ScriptingComponent _scriptingComponent;
 			RenderingComponent _renderingComponent;			
 

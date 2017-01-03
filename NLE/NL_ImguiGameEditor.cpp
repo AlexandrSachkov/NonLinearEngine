@@ -28,8 +28,8 @@ namespace NLE
 		}
 
 		void ImguiGameEditor::draw(
-			CONSOLE::IConsoleQueue& consoleQueue,
-			GAME::IGameManager& gameManager,
+			const CONSOLE::IConsoleQueueSP& consoleQueue,
+			const GAME::IGameManagerSP& gameManager,
 			Size2D screenSize,
 			ImguiScriptEditor& scriptEditor
 			)
@@ -44,7 +44,7 @@ namespace NLE
 
 			ImGui::Begin("Game Editor", &_visible, windowFlags);
 
-			auto gameName = TLS::strConverter.local().to_bytes(gameManager.getGame().getName());
+			auto gameName = TLS::strConverter.local().to_bytes(gameManager->getGame().getName());
 			_nameBuff.setText(gameName);
 
 			ImGuiInputTextFlags flags = 0;
@@ -61,8 +61,8 @@ namespace NLE
 			_scriptViewer.draw(
 				consoleQueue, 
 				scriptEditor, 
-				[&]() ->SCRIPT::ScriptingContext& { return gameManager.getGame().getScriptingContext(); },
-				[&]() { return gameManager.getGame().getName(); 
+				[&]() ->SCRIPT::ScriptingContext& { return gameManager->getGame().getScriptingContext(); },
+				[&]() { return gameManager->getGame().getName(); 
 			});
 
 			_sceneViewer.draw(gameManager);
