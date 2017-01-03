@@ -56,7 +56,9 @@ namespace NLE
 			_itemColor(0.0f, 0.435f, 0.796f, 0.392f),
 			_itemHoverColor(0.0f, 0.675f, 0.820f, 0.263f),
 			_itemActiveColor(0.0f, 0.384f, 0.620f, 0.690f),
-			_selectionColor(0.290f, 0.290f, 0.290f, 0.690f)
+			_selectionColor(0.290f, 0.290f, 0.290f, 0.690f),
+
+			_commandBuffer(1024)
 		{
 		}
 
@@ -150,7 +152,7 @@ namespace NLE
 
 		void ImguiEditorUiManager::drawUI(Size2D screenSize)
 		{
-			ImGuiWindowFlags windowFlags = 0;
+			/*ImGuiWindowFlags windowFlags = 0;
 			windowFlags |= ImGuiWindowFlags_NoTitleBar;
 			windowFlags |= ImGuiWindowFlags_NoResize;
 			windowFlags |= ImGuiWindowFlags_NoMove;
@@ -250,8 +252,8 @@ namespace NLE
 				showObjectEditor(screenSize);
 
 			if (_scriptEditor.getVisibility())
-				showScriptEditor(screenSize);
-			
+				showScriptEditor(screenSize);*/
+			showCommandPrompt();
 		}
 
 		void ImguiEditorUiManager::showEditorSettings(Size2D screenSize)
@@ -575,6 +577,67 @@ namespace NLE
 		void ImguiEditorUiManager::show(bool show)
 		{
 			_showEditor = show;
+		}
+
+		void ImguiEditorUiManager::showCommandPrompt()
+		{
+			std::pair<CONSOLE::OUTPUT_TYPE, std::wstring> consoleEntry;
+			while (_consoleQueue->pop(consoleEntry))
+			{
+				auto& cnv = TLS::strConverter.local();
+				auto entry = cnv.to_bytes(consoleEntry.second);
+				_consoleLogs.push({ consoleEntry.first, entry });
+			}
+
+			ImGuiWindowFlags windowFlags = 0;
+			//windowFlags |= ImGuiWindowFlags_NoSavedSettings;
+			windowFlags |= ImGuiWindowFlags_ShowBorders;
+
+			ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 2.0f);
+			applyColorScheme(false);
+			ImGui::Begin("Command Prompt", &_showConsole, windowFlags);
+
+			ImGui::BeginChild("ScrollingRegion", ImVec2(0, -ImGui::GetItemsLineHeightWithSpacing()), false, ImGuiWindowFlags_HorizontalScrollbar);
+			ImGuiListClipper clipper((int)_consoleLogs.size());
+			while (clipper.Step())
+			{
+				for (int i = clipper.DisplayStart; i < clipper.DisplayEnd; ++i)
+				{
+					auto entry = _consoleLogs[i];
+					switch (entry.first)
+					{
+					case CONSOLE::STANDARD:
+					case CONSOLE::DEBUG:
+						ImGui::PushStyleColor(ImGuiCol_Text, _textColor);
+						break;
+					case CONSOLE::WARNING:
+						ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(1.0f, 1.0f, 0.0f, _textColor.w));
+						break;
+					case CONSOLE::ERR:
+						ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(1.0f, 0.0f, 0.0f, _textColor.w));
+						break;
+					default:
+						ImGui::PushStyleColor(ImGuiCol_Text, _textColor);
+						break;
+					}
+					ImGui::TextUnformatted(entry.second.c_str());
+					ImGui::PopStyleColor();
+				}
+			}
+
+			ImGui::EndChild();
+
+			ImGui::PushItemWidth(ImGui::GetWindowWidth() - 80);
+			ImGui::InputText("", &_commandBuffer[0], _commandBuffer.getSize(), 0);
+			ImGui::SameLine();
+			if (ImGui::Button("Run", ImVec2(50, 0))) {
+				auto& cnv = TLS::strConverter.local();
+				auto entry = cnv.from_bytes(_commandBuffer.getText());
+				_gameManager->executeScript(entry);
+			}
+			ImGui::End();
+			restoreColorScheme();
+			ImGui::PopStyleVar();
 		}
 	}
 }

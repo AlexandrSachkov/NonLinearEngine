@@ -10,6 +10,7 @@ namespace NLE
 		{
 		public:
 			static void attach(lua_State* state);
+			static void attachMaster(lua_State* state);
 		};		
 	}
 }

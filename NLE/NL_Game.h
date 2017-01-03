@@ -80,17 +80,30 @@ namespace NLE
 			std::wstring getInitialScene();
 			void addScene(std::wstring name, std::wstring path);
 			void removeScene(std::wstring name);
-			bool getScenePath(std::wstring name, std::wstring& path);
-			std::vector<std::pair<std::wstring, std::wstring>> getScenes();
+			std::wstring getScenePath(std::wstring name);
+			std::unordered_map<std::wstring, std::wstring> getScenes();
 			SCRIPT::ScriptingContext& getScriptingContext();
 			void bind(LuaIntf::CppBindModule<LuaIntf::LuaBinding>& binding);
 
 			static void attachBindings(LuaIntf::CppBindModule<LuaIntf::LuaBinding>& binding)
 			{
 				binding.beginClass<Game>("Game")
-					.addProperty("name", &Game::getName, &Game::setName)
+					.addFunction("getName", &Game::getName)
 					.addFunction("getGameManager", &Game::getGameManager)
 					.addFunction("getScriptingContext", &Game::getScriptingContext)
+					.endClass();
+			}
+
+			static void attachMasterBindings(LuaIntf::CppBindModule<LuaIntf::LuaBinding>& binding)
+			{
+				binding.beginClass<Game>("Game")
+					.addFunction("setName", &Game::setName)
+					.addFunction("setInitialScene", &Game::setInitialScene)
+					.addFunction("getInitialScene", &Game::getInitialScene)
+					.addFunction("addScene", &Game::addScene)
+					.addFunction("removeScene", &Game::removeScene)
+					.addFunction("getScenes", &Game::getScenes)
+					.addFunction("getScenePath", &Game::getScenePath)
 					.endClass();
 			}
 

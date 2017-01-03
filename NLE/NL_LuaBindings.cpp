@@ -27,5 +27,12 @@ namespace NLE
 
 			module.endModule();
 		}
+		void Bindings::attachMaster(lua_State* state)
+		{
+			auto module = LuaIntf::LuaBinding(state).beginModule("nle");			
+			GAME::GameManager::attachMasterBindings(module);
+			GAME::Game::attachMasterBindings(module);
+			module.endModule();
+		}
 	}
 }

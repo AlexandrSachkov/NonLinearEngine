@@ -22,6 +22,17 @@ namespace NLE
 		{
 		}
 
+		Map(const Map& other)
+		{
+			_map = other._map;
+		}
+
+		Map& operator=(const Map& other)
+		{
+			_map = other._map;
+			return *this;
+		}
+
 		~Map()
 		{
 		}

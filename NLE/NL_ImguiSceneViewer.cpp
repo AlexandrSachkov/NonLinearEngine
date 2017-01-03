@@ -24,7 +24,7 @@ namespace NLE
 
 		void ImguiSceneViewer::draw(const GAME::IGameManagerSP& gameManager)
 		{
-			if (ImGui::CollapsingHeader("Scenes"))
+			/*if (ImGui::CollapsingHeader("Scenes"))
 			{
 				auto scenes = gameManager->getGame().getScenes();
 				std::vector<std::string> sceneNames(scenes.size());
@@ -114,7 +114,7 @@ namespace NLE
 					}
 					ImGui::EndPopup();
 				}
-			}
+			}*/
 		}
 	}
 }

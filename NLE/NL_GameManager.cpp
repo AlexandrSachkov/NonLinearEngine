@@ -32,7 +32,14 @@ namespace NLE
 			_scriptingEngine(scriptingEngine)
 		{
 			_execStatus = ExecStatus::CONTINUE;
+
+			SCRIPT::Bindings::attachMaster(_masterExecutor.getState());
+			auto module = LuaIntf::LuaBinding(_masterExecutor.getState()).beginModule("nle");
+			module.addVariableRef<GameManager>("this", this);
+			module.endModule();
+
 			newGame();
+
 
 			/*
 			_commandBuffer.addFunction(COMMAND::RESTART_GAME,	[&](COMMAND::Data data) { _execStatus = RESTART; });
@@ -98,6 +105,13 @@ namespace NLE
 			data.sysExecutionTimes.set(GAME_MANAGER, timer.deltaT());
 		}
 
+		void GameManager::executeScript(std::wstring script)
+		{
+			_opBuffer.queueOperation([&, script]() {
+				_masterExecutor.executeScript(script);
+			});
+		}
+
 		bool GameManager::hasUnsavedChanges()
 		{
 			return true;
@@ -153,8 +167,8 @@ namespace NLE
 		void GameManager::loadSceneByName(std::wstring name)
 		{
 			_opBuffer.queueOperation([&, name]() {
-				std::wstring scenePath;
-				if (_game->getScenePath(name, scenePath))
+				std::wstring scenePath = _game->getScenePath(name);
+				if (scenePath.compare(L"") != 0)
 				{
 					loadScene(scenePath);
 				}

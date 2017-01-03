@@ -86,27 +86,38 @@ namespace NLE
 
 		void Game::removeScene(std::wstring name)
 		{
-			_scenes.erase(name);
-			if (_initialScene.compare(name) == 0)
+			if (_scenes.erase(name))
 			{
-				_initialScene = L"";
+				if (_initialScene.compare(name) == 0)
+				{
+					_initialScene = L"";
+				}
+				_console->push(CONSOLE::STANDARD, L"Removed scene " + name);
+			}
+			else
+			{
+				_console->push(CONSOLE::ERR, L"Cannot remove scene " + name + L". The scene could not be found.");
 			}
 		}
 
-		bool Game::getScenePath(std::wstring name, std::wstring& path)
+		std::wstring Game::getScenePath(std::wstring name)
 		{
-			if (_scenes.get(name, path))
-				return true;
-			return false;
+			std::wstring scene;
+			if (_scenes.get(name, scene))
+			{
+				return scene;
+			}
+			else
+			{
+				_console->push(CONSOLE::ERR, L"The path for " + name + L" could not be found. No such scene.");
+				return L"";
+			}			
 		}
 
-		std::vector<std::pair<std::wstring, std::wstring>> Game::getScenes()
+		std::unordered_map<std::wstring, std::wstring> Game::getScenes()
 		{
-			std::vector<std::pair<std::wstring, std::wstring>> scenes;
-			for (auto kv : _scenes.getData()) {
-				scenes.push_back(kv);
-			}
-			return scenes;
+			std::unordered_map<std::wstring, std::wstring> myMap(_scenes.getData());
+			return myMap;
 		}
 
 		SCRIPT::ScriptingContext& Game::getScriptingContext()

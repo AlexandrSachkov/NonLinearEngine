@@ -9,7 +9,10 @@
 #include "NL_IScriptingEngine.h"
 #include "NL_IFileIOManager.h"
 #include "NL_EngineServices.h"
+#include "NL_ScriptExecutor.h"
+#include "NL_LuaBindings.h"
 
+#include "NL_LuaCustomTypes.h"
 #include "lua.hpp"
 #include <LuaIntf.h>
 
@@ -36,6 +39,7 @@ namespace NLE
 			~GameManager();
 
 			void update(SystemServices& sServices, double deltaT);
+			void executeScript(std::wstring script);
 			bool hasUnsavedChanges();
 			void newGame();
 			void newScene();
@@ -57,6 +61,23 @@ namespace NLE
 			static void attachBindings(LuaIntf::CppBindModule<LuaIntf::LuaBinding>& binding)
 			{
 				binding.beginClass<GameManager>("GameManager")
+					
+					.endClass();
+			}
+			static void attachMasterBindings(LuaIntf::CppBindModule<LuaIntf::LuaBinding>& binding)
+			{
+				binding.beginClass<GameManager>("GameManager")
+					.addFunction("newGame", &GameManager::newGame)
+					.addFunction("newScene", &GameManager::newScene)
+					.addFunction("loadGame", &GameManager::loadGame)
+					.addFunction("loadScene", &GameManager::loadScene)
+					.addFunction("loadSceneByName", &GameManager::loadSceneByName)
+					.addFunction("addScene", &GameManager::addScene)
+					.addFunction("removeScene", &GameManager::removeScene)
+					.addFunction("setInitialScene", &GameManager::setInitialScene)
+					.addFunction("saveGame", &GameManager::saveGame)
+					.addFunction("saveScene", &GameManager::saveScene)
+					.addFunction("quitGame", &GameManager::quitGame)
 					.addFunction("getGame", &GameManager::getGame)
 					.addFunction("getCurrentScene", &GameManager::getCurrentScene)
 					.endClass();
@@ -67,6 +88,7 @@ namespace NLE
 			void updateScene(Scene* scene);
 
 			ExecStatus _execStatus;
+			SCRIPT::ScriptExecutor _masterExecutor;
 			EngineServices _eServices;
 			IWindowManagerSP _windowManager;
 			IO::IFileIOManagerSP _file;

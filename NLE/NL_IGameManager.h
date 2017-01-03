@@ -22,6 +22,7 @@ namespace NLE
 		{
 		public:
 			virtual ExecStatus getExecutionStatus() = 0;
+			virtual void executeScript(std::wstring script) = 0;
 			virtual bool hasUnsavedChanges() = 0;
 			virtual void newGame() = 0;
 			virtual void newScene() = 0;

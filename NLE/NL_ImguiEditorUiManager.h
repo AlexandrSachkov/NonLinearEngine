@@ -65,6 +65,7 @@ namespace NLE
 			void showScriptEditor(Size2D screenSize);
 			void applyColorScheme(bool root);
 			void restoreColorScheme();
+			void showCommandPrompt();
 
 			EngineServices _eServices;
 			CONSOLE::IConsoleQueueSP _consoleQueue;
@@ -101,6 +102,8 @@ namespace NLE
 			ImVec4 _itemHoverColor;
 			ImVec4 _itemActiveColor;
 			ImVec4 _selectionColor;
+
+			CharBuffer _commandBuffer;
 
 		};
 	}
