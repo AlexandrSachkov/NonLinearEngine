@@ -1,5 +1,4 @@
-#ifndef NL_THREAD_LOCAL_H_
-#define NL_THREAD_LOCAL_H_
+#pragma once
 
 #include "NL_ScriptExecutor.h"
 #include "NL_Timer.h"
@@ -19,4 +18,3 @@ namespace NLE
 	}
 }
 
-#endif

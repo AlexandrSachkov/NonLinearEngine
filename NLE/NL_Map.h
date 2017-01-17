@@ -1,5 +1,4 @@
-#ifndef NL_MAP_
-#define NL_MAP_
+#pragma once
 
 #include "cereal\cereal.hpp"
 #include "cereal/types/unordered_map.hpp"
@@ -98,5 +97,3 @@ namespace NLE
 		std::unordered_map<K, V> _map;
 	};
 }
-
-#endif

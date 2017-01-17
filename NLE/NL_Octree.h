@@ -1,5 +1,4 @@
-#ifndef NL_OCTREE_H_
-#define NL_OCTREE_H_
+#pragma once
 
 #include "glm/glm.hpp"
 #include "tbb/concurrent_vector.h"
@@ -23,5 +22,3 @@ namespace NLE
 		static const uint_fast32_t MAX_LEVEL = 8;
 	};
 }
-
-#endif

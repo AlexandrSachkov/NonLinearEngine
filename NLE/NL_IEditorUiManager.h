@@ -1,5 +1,4 @@
-#ifndef NL_I_EDITOR_UI_MANAGER_H_
-#define NL_I_EDITOR_UI_MANAGER_H_
+#pragma once
 
 namespace NLE
 {
@@ -13,4 +12,3 @@ namespace NLE
 	}
 }
 
-#endif

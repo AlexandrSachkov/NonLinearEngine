@@ -1,5 +1,4 @@
-#ifndef NL_CEREAL_SERIALIZER_H_
-#define NL_CEREAL_SERIALIZER_H_
+#pragma once
 
 #include "NL_Serializer.h"
 #include "NL_FileIOManager.h"
@@ -111,5 +110,3 @@ namespace NLE
 		};
 	}
 }
-
-#endif

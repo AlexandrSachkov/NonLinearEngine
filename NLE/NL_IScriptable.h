@@ -1,5 +1,4 @@
-#ifndef NL_I_SCRIPTABLE_H_
-#define NL_I_SCRIPTABLE_H_
+#pragma once
 
 #include <cereal/types/polymorphic.hpp>
 #include <LuaIntf.h>
@@ -16,6 +15,3 @@ namespace NLE
 		};
 	}
 }
-
-
-#endif

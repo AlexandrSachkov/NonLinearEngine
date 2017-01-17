@@ -1,5 +1,4 @@
-#ifndef NL_OPERATION_BUFFER_H_
-#define NL_OPERATION_BUFFER_H_
+#pragma once
 
 #include "NL_Queue.h"
 
@@ -38,5 +37,3 @@ namespace NLE
 		Queue<std::function<void()>> _operations;
 	};
 }
-
-#endif

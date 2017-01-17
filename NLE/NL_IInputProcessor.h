@@ -1,5 +1,4 @@
-#ifndef NL_I_INPUT_PROCESSOR_H_
-#define NL_I_INPUT_PROCESSOR_H_
+#pragma once
 
 #include "NL_ISystem.h"
 #include "NL_InputEvents.h"
@@ -27,5 +26,3 @@ namespace NLE
 		typedef std::shared_ptr<IInputProcessor_SysService> IInputProcessor_SysServiceSP;
 	}
 }
-
-#endif

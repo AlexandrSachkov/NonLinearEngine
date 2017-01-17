@@ -1,5 +1,4 @@
-#ifndef NL_I_SERIALIZER_H_
-#define NL_I_SERIALIZER_H_
+#pragma once
 
 #include "NL_CerealSerializer.h"
 #include <memory>
@@ -12,5 +11,3 @@ namespace NLE
 		typedef std::shared_ptr<ISerializer> ISerializerSP;
 	}
 }
-
-#endif

@@ -1,5 +1,4 @@
-#ifndef NL_SCRIPT_EXECUTOR_H_
-#define NL_SCRIPT_EXECUTOR_H_
+#pragma once
 
 #include "lua.hpp"
 #include <string>
@@ -28,5 +27,3 @@ namespace NLE
 		};
 	}
 }
-
-#endif

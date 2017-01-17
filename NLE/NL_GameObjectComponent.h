@@ -1,5 +1,4 @@
-#ifndef NL_GAME_OBJECT_COMPONENT_H_
-#define NL_GAME_OBJECT_COMPONENT_H_
+#pragma once
 
 #include "cereal\cereal.hpp"
 
@@ -36,5 +35,3 @@ namespace NLE
 		};
 	}
 }
-
-#endif

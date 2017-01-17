@@ -1,5 +1,4 @@
-#ifndef NL_MEMORY_MANAGER_H_
-#define NL_MEMORY_MANAGER_H_
+#pragma once
 
 #include <cstdint>
 
@@ -78,6 +77,3 @@ namespace NLE
 	}
 	
 }
-
-
-#endif

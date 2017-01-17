@@ -1,5 +1,4 @@
-#ifndef NL_TASK_SCHEDULER_H_
-#define NL_TASK_SCHEDULER_H_
+#pragma once
 
 #include "NL_Task.h"
 #include "NL_ITaskScheduler.h"
@@ -37,4 +36,3 @@ namespace NLE
 
 }
 
-#endif

@@ -10,7 +10,7 @@ namespace NLE
 {
 	namespace LOADER
 	{
-		bool TextureLoader::loadTexture(std::wstring path, void* texture)
+		bool TextureLoader::loadTexture(std::string path, void* texture)
 		{
 			/*TLS::StringConverter::reference converter = TLS::strConverter.local();
 

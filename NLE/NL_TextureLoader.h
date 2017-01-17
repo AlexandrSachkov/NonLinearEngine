@@ -1,5 +1,4 @@
-#ifndef NL_TEXTURE_LOADER_H_
-#define NL_TEXTURE_LOADER_H_
+#pragma once
 
 
 #include <string>
@@ -12,9 +11,7 @@ namespace NLE
 		class TextureLoader
 		{
 		public:
-			static bool TextureLoader::loadTexture(std::wstring path, void* texture);
+			static bool TextureLoader::loadTexture(std::string path, void* texture);
 		};		
 	}
 }
-
-#endif

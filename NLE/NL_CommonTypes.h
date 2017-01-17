@@ -1,5 +1,4 @@
-#ifndef NL_COMMON_TYPES_H_
-#define NL_COMMON_TYPES_H_
+#pragma once
 
 #include <cstdint>
 #include "NL_LuaCustomTypes.h"
@@ -123,5 +122,3 @@ namespace NLE
 		}
 	};
 }
-
-#endif

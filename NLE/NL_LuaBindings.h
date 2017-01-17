@@ -1,5 +1,4 @@
-#ifndef NL_LUA_BINDINGS_H_
-#define NL_LUA_BINDINGS_H_
+#pragma once
 
 struct lua_State;
 namespace NLE
@@ -14,5 +13,3 @@ namespace NLE
 		};		
 	}
 }
-
-#endif

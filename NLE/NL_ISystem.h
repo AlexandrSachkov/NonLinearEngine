@@ -1,5 +1,4 @@
-#ifndef NL_I_SYSTEM_H_
-#define NL_I_SYSTEM_H_
+#pragma once
 
 #include <memory>
 
@@ -15,6 +14,3 @@ namespace NLE
 
 	typedef std::shared_ptr<ISystem> ISystemSP;
 }
-
-
-#endif

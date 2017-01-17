@@ -1,5 +1,4 @@
-#ifndef NL_RESOURCE_H_
-#define NL_RESOURCE_H_
+#pragma once
 
 #include <string>
 
@@ -21,9 +20,8 @@ namespace NLE
 			}
 
 		private:
-			std::wstring _name;
+			std::string _name;
 		};
 	}
 }
 
-#endif

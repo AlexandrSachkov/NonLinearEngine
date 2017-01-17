@@ -1,5 +1,4 @@
-#ifndef NL_EDITOR_UI_MANAGER_H_
-#define NL_EDITOR_UI_MANAGER_H_
+#pragma once
 
 #include "NL_IEditorUiManager.h"
 #include "NL_CommonTypes.h"
@@ -111,4 +110,3 @@ namespace NLE
 	}
 }
 
-#endif

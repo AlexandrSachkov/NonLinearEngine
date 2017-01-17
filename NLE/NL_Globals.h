@@ -1,5 +1,4 @@
-#ifndef NL_GLOBALS_H_
-#define NL_GLOBALS_H_
+#pragma once
 
 #include "NL_Queue.h"
 #include "NL_IConsoleQueue.h"
@@ -18,5 +17,3 @@ namespace NLE
 		extern IConsoleQueueSP GLOBAL_CONSOLE_QUEUE;
 	}
 }
-
-#endif

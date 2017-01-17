@@ -1,5 +1,4 @@
-#ifndef NL_ATOMIC_H_
-#define NL_ATOMIC_H_
+#pragma once
 
 #include "tbb\spin_mutex.h"
 
@@ -46,5 +45,3 @@ namespace NLE
 		tbb::spin_mutex _lock;
 	};
 }
-
-#endif

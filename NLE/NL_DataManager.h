@@ -1,5 +1,4 @@
-#ifndef NL_DATA_MANAGER_H_
-#define NL_DATA_MANAGER_H_
+#pragma once
 
 #include "NL_IDataManager.h"
 #include "NL_SharedData.h"
@@ -25,5 +24,3 @@ namespace NLE
 		};
 	}
 }
-
-#endif

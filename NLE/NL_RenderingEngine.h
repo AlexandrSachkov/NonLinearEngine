@@ -1,5 +1,4 @@
-#ifndef NL_RENDERING_ENGINE_H_
-#define NL_RENDERING_ENGINE_H_
+#pragma once
 
 #include "NL_IRenderingEngine.h"
 #include "NL_CommonTypes.h"
@@ -34,5 +33,3 @@ namespace NLE
 		};
 	}
 }
-
-#endif

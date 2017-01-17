@@ -1,5 +1,4 @@
-#ifndef NL_SHARED_ENTRY_H_
-#define NL_SHARED_ENTRY_H_
+#pragma once
 
 #include "NL_ISharedEntity.h"
 #include "NL_IDataManager.h"
@@ -64,5 +63,3 @@ namespace NLE
 		};
 	}
 }
-
-#endif

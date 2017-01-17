@@ -1,5 +1,4 @@
-#ifndef NL_IMGUI_INPUT_MAP_H_
-#define NL_IMGUI_INPUT_MAP_H_
+#pragma once
 
 #include "NL_InputEvents.h"
 
@@ -10,5 +9,3 @@ namespace NLE
 		int		NLEtoImguiKey(KEY key);
 	}
 }
-
-#endif

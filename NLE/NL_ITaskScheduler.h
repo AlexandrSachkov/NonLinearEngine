@@ -1,5 +1,4 @@
-#ifndef NL_I_TASK_SCHEDULER_H_
-#define NL_I_TASK_SCHEDULER_H_
+#pragma once
 
 #include "tbb/task.h"
 #include <functional>
@@ -35,5 +34,3 @@ namespace NLE
 		typedef std::shared_ptr<ITaskScheduler_EService> ITaskScheduler_EServiceSP;
 	}
 }
-
-#endif

@@ -1,5 +1,4 @@
-#ifndef NL_CIRCULAR_BUFFER_H_
-#define NL_CIRCULAR_BUFFER_H_
+#pragma once
 
 #include <vector>
 
@@ -49,6 +48,3 @@ namespace NLE
 		std::vector<T> _buffer;
 	};
 }
-
-
-#endif

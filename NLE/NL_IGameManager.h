@@ -1,5 +1,4 @@
-#ifndef NL_IGAME_MANAGER_H_
-#define NL_IGAME_MANAGER_H_
+#pragma once
 
 #include "NL_ISystem.h"
 #include <string>
@@ -41,5 +40,3 @@ namespace NLE
 		typedef std::shared_ptr<IGameManager> IGameManagerSP;
 	}
 }
-
-#endif

@@ -1,5 +1,4 @@
-#ifndef NL_GAME_H_
-#define NL_GAME_H_
+#pragma once
 
 #include "NL_ScriptingContext.h"
 #include "NL_ThreadLocal.h"
@@ -106,5 +105,3 @@ namespace NLE
 		typedef std::unique_ptr<Game> GameUP;
 	}
 }
-
-#endif

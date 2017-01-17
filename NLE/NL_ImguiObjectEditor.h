@@ -1,5 +1,4 @@
-#ifndef NL_IMGUI_OBJECT_EDITOR_H_
-#define NL_IMGUI_OBJECT_EDITOR_H_
+#pragma once
 
 #include "NL_CommonTypes.h"
 #include "NL_CharBuffer.h"
@@ -25,5 +24,3 @@ namespace NLE
 		};
 	}
 }
-
-#endif

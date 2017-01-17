@@ -1,5 +1,4 @@
-#ifndef NL_IMGUI_SCENE_VIEWER_H_
-#define NL_IMGUI_SCENE_VIEWER_H_
+#pragma once
 
 #include "NL_CharBuffer.h"
 #include "NL_IGameManager.h"
@@ -27,5 +26,3 @@ namespace NLE
 		};
 	}
 }
-
-#endif

@@ -1,5 +1,4 @@
-#ifndef NL_SCRIPTING_CONTEXT_H_
-#define NL_SCRIPTING_CONTEXT_H_
+#pragma once
 
 #include "NL_ThreadLocal.h"
 #include "NL_Map.h"
@@ -116,5 +115,3 @@ namespace NLE
 		};
 	}
 }
-
-#endif

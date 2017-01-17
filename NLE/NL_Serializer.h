@@ -1,5 +1,4 @@
-#ifndef NL_SERIALIZER_H_
-#define NL_SERIALIZER_H_
+#pragma once
 
 #include <vector>
 
@@ -27,5 +26,3 @@ namespace NLE
 		};
 	}
 }
-
-#endif

@@ -1,5 +1,4 @@
-#ifndef NL_QUEUE_H_
-#define NL_QUEUE_H_
+#pragma once
 
 #include "tbb/concurrent_queue.h"
 
@@ -36,5 +35,3 @@ namespace NLE
 		tbb::concurrent_queue<T> _events;
 	};
 }
-
-#endif

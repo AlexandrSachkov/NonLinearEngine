@@ -1,5 +1,4 @@
-#ifndef NL_SCRIPTING_COMPONENT_H_
-#define NL_SCRIPTING_COMPONENT_H_
+#pragma once
 
 #include "NL_GameObjectComponent.h"
 #include "NL_ScriptingContext.h"
@@ -44,5 +43,3 @@ namespace NLE
 		};
 	}
 }
-
-#endif

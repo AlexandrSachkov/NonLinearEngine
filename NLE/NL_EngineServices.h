@@ -1,5 +1,4 @@
-#ifndef NL_ENGINE_SERVICES_H_
-#define NL_ENGINE_SERVICES_H_
+#pragma once
 
 #include "NL_IConsoleQueue.h"
 #include "NL_ITaskScheduler.h"
@@ -39,5 +38,3 @@ namespace NLE
 		SERIALIZATION::ISerializerSP serializer;
 	};
 }
-
-#endif

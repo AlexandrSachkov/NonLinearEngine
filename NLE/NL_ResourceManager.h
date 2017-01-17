@@ -1,5 +1,4 @@
-#ifndef NL_RESOURCE_MANAGER_H_
-#define NL_RESOURCE_MANAGER_H_
+#pragma once
 
 #include "NL_IResourceManager.h"
 #include "NL_Game.h"
@@ -34,5 +33,3 @@ namespace NLE
 		};
 	}
 }
-
-#endif

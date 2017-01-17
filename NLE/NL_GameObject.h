@@ -1,5 +1,4 @@
-#ifndef NL_GAME_OBJECT_H_
-#define NL_GAME_OBJECT_H_
+#pragma once
 
 #include "NL_ThreadLocal.h"
 #include "NL_IScriptable.h"
@@ -86,4 +85,3 @@ namespace NLE
 	}
 }
 
-#endif

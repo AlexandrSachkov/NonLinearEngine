@@ -1,5 +1,4 @@
-#ifndef NL_CONSOLE_QUEUE_H_
-#define NL_CONSOLE_QUEUE_H_
+#pragma once
 
 #include "NL_ThreadLocal.h"
 #include "NL_IConsoleQueue.h"
@@ -42,4 +41,3 @@ namespace NLE
 
 }
 
-#endif

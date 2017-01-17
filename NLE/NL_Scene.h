@@ -1,5 +1,4 @@
-#ifndef NL_SCENE_H_
-#define NL_SCENE_H_
+#pragma once
 
 #include "NL_ScriptingContext.h"
 #include "NL_IScriptable.h"
@@ -82,4 +81,3 @@ namespace NLE
 		typedef std::unique_ptr<Scene> SceneUP;
 	}
 }
-#endif

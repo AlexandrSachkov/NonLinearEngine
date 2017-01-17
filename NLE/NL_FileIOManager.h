@@ -1,5 +1,4 @@
-#ifndef NL_FILE_IO_MANAGER_H_
-#define NL_FILE_IO_MANAGER_H_
+#pragma once
 
 #include "NL_IFileIOManager.h"
 #include "NL_Thread.h"
@@ -31,5 +30,3 @@ namespace NLE
 	}
 	
 }
-
-#endif

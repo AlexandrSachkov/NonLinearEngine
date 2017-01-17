@@ -1,5 +1,4 @@
-#ifndef NL_SCENE_GRAPH_H_
-#define NL_SCENE_GRAPH_H_
+#pragma once
 
 #include "NL_Map.h"
 #include <string>
@@ -46,5 +45,3 @@ namespace NLE
 		};
 	}
 }
-
-#endif

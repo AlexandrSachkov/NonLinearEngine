@@ -1,5 +1,4 @@
-#ifndef NL_I_WINDOW_MANAGER_H_
-#define NL_I_WINDOW_MANAGER_H_
+#pragma once
 
 #include "NL_CommonTypes.h"
 
@@ -63,5 +62,3 @@ namespace NLE
 
 	typedef std::shared_ptr<IWindowManager> IWindowManagerSP;
 }
-
-#endif

@@ -1,5 +1,4 @@
-#ifndef NL_UUID_H_
-#define NL_UUID_H_
+#pragma once
 
 #include <chrono>
 
@@ -14,5 +13,3 @@ namespace NLE
 		}
 	}	
 }
-
-#endif

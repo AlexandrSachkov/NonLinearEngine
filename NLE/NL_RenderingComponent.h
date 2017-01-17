@@ -1,5 +1,4 @@
-#ifndef NL_RENDERING_COMPONENT_H_
-#define NL_RENDERING_COMPONENT_H_
+#pragma once
 
 #include "NL_GameObjectComponent.h"
 
@@ -34,5 +33,3 @@ namespace NLE
 		};
 	}
 }
-
-#endif

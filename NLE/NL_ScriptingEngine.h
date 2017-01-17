@@ -1,5 +1,4 @@
-#ifndef NL_SCRIPTING_ENGINE_H_
-#define NL_SCRIPTING_ENGINE_H_
+#pragma once
 
 #include "NL_IScriptingEngine.h"
 
@@ -22,5 +21,3 @@ namespace NLE
 		};
 	}
 }
-
-#endif

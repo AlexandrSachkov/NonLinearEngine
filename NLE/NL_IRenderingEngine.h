@@ -1,5 +1,4 @@
-#ifndef NL_I_RENDERING_ENGINE_H_
-#define NL_I_RENDERING_ENGINE_H_
+#pragma once
 
 #include "NL_ISystem.h"
 #include "NL_CommonTypes.h"
@@ -26,5 +25,3 @@ namespace NLE
 		typedef std::shared_ptr<IRenderingEngine_SysService> IRenderingEngine_SysServiceSP;
 	}
 }
-
-#endif

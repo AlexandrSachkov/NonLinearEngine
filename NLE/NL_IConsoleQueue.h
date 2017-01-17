@@ -1,5 +1,4 @@
-#ifndef NL_I_CONSOLE_QUEUE_H_
-#define NL_I_CONSOLE_QUEUE_H_
+#pragma once
 
 #include <string>
 #include <memory>
@@ -46,5 +45,3 @@ namespace NLE
 	}
 
 }
-
-#endif

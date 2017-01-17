@@ -1,5 +1,4 @@
-#ifndef NL_MEMORY_POOL_H_
-#define NL_MEMORY_POOL_H_
+#pragma once
 
 #define TBB_PREVIEW_MEMORY_POOL 1
 #include "tbb/memory_pool.h"
@@ -46,5 +45,3 @@ namespace NLE
 	}
 
 }
-
-#endif

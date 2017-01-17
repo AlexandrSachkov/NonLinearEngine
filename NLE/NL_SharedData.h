@@ -1,5 +1,4 @@
-#ifndef NL_SHARED_DATA_H_
-#define NL_SHARED_DATA_H_
+#pragma once
 
 #include "NL_SharedEntry.h"
 #include "NL_SharedArray.h"
@@ -42,5 +41,3 @@ namespace NLE
 		};
 	}
 }
-
-#endif

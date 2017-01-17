@@ -1,5 +1,4 @@
-#ifndef NL_CHAR_BUFFER_H_
-#define NL_CHAR_BUFFER_H_
+#pragma once
 
 #include <string>
 #include <vector>
@@ -57,5 +56,3 @@ namespace NLE
 		std::vector<char> _data;
 	};
 }
-
-#endif

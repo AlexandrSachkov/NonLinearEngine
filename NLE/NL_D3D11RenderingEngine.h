@@ -1,5 +1,4 @@
-#ifndef NL_D3D11_RenderingEngine_
-#define NL_D3D11_RenderingEngine_
+#pragma once
 
 #include "NL_IRenderingEngine.h"
 
@@ -54,6 +53,3 @@ namespace NLE
 		};
 	}
 }
-
-
-#endif

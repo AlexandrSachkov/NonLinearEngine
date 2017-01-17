@@ -1,5 +1,4 @@
-#ifndef NL_GAME_MANAGER_H_
-#define NL_GAME_MANAGER_H_
+#pragma once
 
 #include "NL_IGameManager.h"
 #include "NL_ISerializer.h"
@@ -96,6 +95,3 @@ namespace NLE
 	}
 
 }
-
-
-#endif

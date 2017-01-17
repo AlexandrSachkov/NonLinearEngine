@@ -1,5 +1,4 @@
-#ifndef NL_UI_COMPONENT_H_
-#define NL_UI_COMPONENT_H_
+#pragma once
 
 namespace NLE
 {
@@ -13,5 +12,3 @@ namespace NLE
 		};
 	}
 }
-
-#endif

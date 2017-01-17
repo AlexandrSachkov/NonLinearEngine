@@ -1,5 +1,4 @@
-#ifndef NL_THREAD_H_
-#define NL_THREAD_H_
+#pragma once
 
 #include "tbb\atomic.h"
 #include <thread>
@@ -33,5 +32,3 @@ namespace NLE
 		};
 	}
 }
-
-#endif

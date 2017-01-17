@@ -1,5 +1,4 @@
-#ifndef NL_IMGUI_D3D11_RENDERER_H_
-#define NL_IMGUI_D3D11_RENDERER_H_
+#pragma once
 
 struct ImDrawData;
 struct ID3D11Device;
@@ -50,5 +49,3 @@ namespace NLE
 		};
 	}
 }
-
-#endif

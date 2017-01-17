@@ -1,5 +1,4 @@
-#ifndef NL_IMGUI_SCRIPT_VIEWER_H_
-#define NL_IMGUI_SCRIPT_VIEWER_H_
+#pragma once
 
 #include "NL_IConsoleQueue.h"
 
@@ -32,5 +31,3 @@ namespace NLE
 		};
 	}
 }
-
-#endif

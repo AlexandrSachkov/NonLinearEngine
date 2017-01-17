@@ -1,5 +1,4 @@
-#ifndef NL_I_FILE_IO_MANAGER_H_
-#define NL_I_FILE_IO_MANAGER_H_
+#pragma once
 
 #include <string>
 #include <vector>
@@ -38,5 +37,3 @@ namespace NLE
 		typedef std::shared_ptr<IFileIOManager_EService> IFileIOManager_EServiceSP;
 	}
 }
-
-#endif

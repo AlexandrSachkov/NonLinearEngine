@@ -1,5 +1,4 @@
-#ifndef NL_TASK_H_
-#define NL_TASK_H_
+#pragma once
 
 #include "tbb\task.h"
 #include <functional>
@@ -23,6 +22,3 @@ namespace NLE
 		};
 	}
 }
-
-
-#endif

@@ -1,5 +1,4 @@
-#ifndef NL_I_SCRIPTING_ENGINE_H_
-#define NL_I_SCRIPTING_ENGINE_H_
+#pragma once
 
 #include "NL_ISystem.h"
 #include <memory>
@@ -23,5 +22,3 @@ namespace NLE
 		typedef std::shared_ptr<IScriptingEngine_SysService> IScriptingEngine_SysServiceSP;
 	}
 }
-
-#endif

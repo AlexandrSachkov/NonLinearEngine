@@ -1,5 +1,4 @@
-#ifndef NL_INPUT_PROCESSOR_H_
-#define NL_INPUT_PROCESSOR_H_
+#pragma once
 
 #include "NL_IInputProcessor.h"
 
@@ -38,5 +37,3 @@ namespace NLE
 		};
 	}
 }
-
-#endif

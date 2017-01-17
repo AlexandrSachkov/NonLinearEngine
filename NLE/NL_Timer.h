@@ -1,5 +1,4 @@
-#ifndef NL_TIMER_H_
-#define NL_TIMER_H_
+#pragma once
 
 #include <chrono>
 #include <assert.h>
@@ -30,5 +29,3 @@ namespace NLE
 		std::chrono::time_point<std::chrono::high_resolution_clock, std::chrono::nanoseconds> _previousTime;
 	};
 }
-
-#endif

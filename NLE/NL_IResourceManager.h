@@ -1,5 +1,4 @@
-#ifndef NL_I_RESOURCE_MANAGER_H_
-#define NL_I_RESOURCE_MANAGER_H_
+#pragma once
 
 #include "NL_LuaCustomTypes.h"
 #include <LuaIntf.h>
@@ -41,5 +40,3 @@ namespace NLE
 		};
 	}
 }
-
-#endif
