@@ -12,55 +12,21 @@ namespace NLE
 {
 	namespace IO
 	{
-		enum OperationType
-		{
-			READ,
-			WRITE
-		};
-
-		struct FileIOOperationDesc
-		{
-			OperationType type;
-			std::wstring path;
-			std::vector<char>* inputData;
-			std::function<void(std::vector<char>* data)> onSuccess;
-			std::function<void(std::vector<char>* data)> onFailure;
-		};
-		
 
 		class FileIOManager : public IFileIOManager
 		{
 		public:
-			FileIOManager(CONSOLE::IConsoleQueueSP console, TASK::ITaskSchedulerSP taskScheduler);
+			FileIOManager(CONSOLE::IConsoleQueueSP console);
 			~FileIOManager();
 			
-			void readAsync(
-				std::wstring path, 
-				std::function<void(std::vector<char>* data)> onSuccess, 
-				std::function<void()> onFailure
-				);
-
-			void writeAsync(
-				std::wstring path, 
-				std::vector<char>* inputData, 
-				std::function<void(std::vector<char>* data)> onSuccess,
-				std::function<void(std::vector<char>* data)> onFailure
-				);
-
-			bool read(std::wstring path, std::vector<char>*& dataOut);
+			std::vector<char>* read(std::wstring path);
 			bool write(std::wstring path, std::vector<char>* srcData);
 
 		private:			
 			FileIOManager(FileIOManager const&) = delete;
 			void operator=(FileIOManager const&) = delete;
 
-			std::wstring getFileExtension(std::wstring path);
-
 			CONSOLE::IConsoleQueueSP _console;
-			TASK::ITaskSchedulerSP _task;
-			Core::Thread _loadingThread;
-			tbb::concurrent_queue<FileIOOperationDesc> _fileOps;
-
 		};
 	}
 	

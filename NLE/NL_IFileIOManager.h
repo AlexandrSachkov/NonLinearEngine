@@ -6,32 +6,36 @@
 #include <functional>
 #include <memory>
 
+#include "NL_LuaCustomTypes.h"
+#include "LuaIntf.h"
+
 namespace NLE
 {
 	namespace IO
 	{
-		class IFileIOManager
+		class IFileIOManager_EService
 		{
 		public:
-			virtual void readAsync(
-				std::wstring path,
-				std::function<void(std::vector<char>* data)> onSuccess,
-				std::function<void()> onFailure
-				) = 0;
-
-			virtual void writeAsync(
-				std::wstring path,
-				std::vector<char>* inputData,
-				std::function<void(std::vector<char>* data)> onSuccess,
-				std::function<void(std::vector<char>* data)> onFailure
-				) = 0;
-
-			virtual bool read(std::wstring path, std::vector<char>*& dataOut) = 0;
+			virtual std::vector<char>* read(std::wstring path) = 0;
 			virtual bool write(std::wstring path, std::vector<char>* srcData) = 0;
+
+			static void attachMasterBindings(LuaIntf::CppBindModule<LuaIntf::LuaBinding>& binding)
+			{
+				binding.beginClass<IFileIOManager_EService>("FileIOManager")
+					.addFunction("read", &IFileIOManager_EService::read)
+					.addFunction("write", &IFileIOManager_EService::write)
+					.endClass();
+			}
+		};
+
+		class IFileIOManager : public IFileIOManager_EService
+		{
+		public:			
 			virtual ~IFileIOManager() {};
 		};
 
 		typedef std::shared_ptr<IFileIOManager> IFileIOManagerSP;
+		typedef std::shared_ptr<IFileIOManager_EService> IFileIOManager_EServiceSP;
 	}
 }
 

@@ -41,16 +41,12 @@ namespace NLE
 			~GameManager();
 
 			void update(SystemServices& sServices, double deltaT);
-			void executeScript(std::wstring script);
 			bool hasUnsavedChanges();
 			void newGame();
 			void newScene();
 			void loadGame(std::wstring path);
 			void loadScene(std::wstring path);
 			void loadSceneByName(std::wstring name);
-			void addScene(std::wstring name, std::wstring path);
-			void removeScene(std::wstring name);
-			void setInitialScene(std::wstring name);
 			
 			void saveGame(std::wstring name);
 			void saveScene(std::wstring name);
@@ -74,9 +70,6 @@ namespace NLE
 					.addFunction("loadGame", &GameManager::loadGame)
 					.addFunction("loadScene", &GameManager::loadScene)
 					.addFunction("loadSceneByName", &GameManager::loadSceneByName)
-					.addFunction("addScene", &GameManager::addScene)
-					.addFunction("removeScene", &GameManager::removeScene)
-					.addFunction("setInitialScene", &GameManager::setInitialScene)
 					.addFunction("saveGame", &GameManager::saveGame)
 					.addFunction("saveScene", &GameManager::saveScene)
 					.addFunction("quitGame", &GameManager::quitGame)
@@ -90,15 +83,12 @@ namespace NLE
 			void updateScene(Scene* scene);
 
 			ExecStatus _execStatus;
-			SCRIPT::ScriptExecutor _masterExecutor;
 			EngineServices _eServices;
 			IWindowManagerSP _windowManager;
 			IO::IFileIOManagerSP _file;
 			SERIALIZATION::ISerializerSP _serializer;
 			GRAPHICS::IRenderingEngineSP _renderingEngine;
 			SCRIPT::IScriptingEngineSP _scriptingEngine;
-
-			OperationBuffer _opBuffer;
 
 			GameUP _game;
 			SceneUP _currentScene;

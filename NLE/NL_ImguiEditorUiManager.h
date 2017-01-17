@@ -18,6 +18,7 @@
 #include "NL_IRenderingEngine.h"
 #include "NL_IScriptingEngine.h"
 #include "NL_IGameManager.h"
+#include "NL_ScriptExecutor.h"
 
 #include <imgui.h>
 
@@ -38,7 +39,8 @@ namespace NLE
 				GAME::IGameManagerSP gameManager,
 				INPUT::IInputProcessorSP inputProcessor,
 				GRAPHICS::IRenderingEngineSP renderingEngine,
-				SCRIPT::IScriptingEngineSP scriptingEngine
+				SCRIPT::IScriptingEngineSP scriptingEngine,
+				SCRIPT::ScriptExecutor& masterExecutor
 				);
 			~ImguiEditorUiManager();
 
@@ -104,7 +106,7 @@ namespace NLE
 			ImVec4 _selectionColor;
 
 			CharBuffer _commandBuffer;
-
+			SCRIPT::ScriptExecutor& _masterExecutor;
 		};
 	}
 }

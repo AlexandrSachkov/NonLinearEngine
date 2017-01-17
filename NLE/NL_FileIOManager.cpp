@@ -9,94 +9,22 @@ namespace NLE
 {
 	namespace IO
 	{
-		FileIOManager::FileIOManager(CONSOLE::IConsoleQueueSP console, TASK::ITaskSchedulerSP taskScheduler) :
-			_loadingThread(100000L),
-			_console(console),
-			_task(taskScheduler)
+		FileIOManager::FileIOManager(CONSOLE::IConsoleQueueSP console) :
+			_console(console)
 		{
-			_loadingThread.setProcedure([&]() {
-				FileIOOperationDesc opDesc;
-				while (_fileOps.try_pop(opDesc))
-				{
-					if (opDesc.type == IO::WRITE)
-					{
-						if (write(opDesc.path, opDesc.inputData))
-						{
-							_task->queueProcedure([opDesc]() {
-								opDesc.onSuccess(opDesc.inputData);
-							}, TASK::STANDARD);
-						}
-						else
-						{
-							_task->queueProcedure([opDesc]() {
-								opDesc.onFailure(opDesc.inputData);
-							}, TASK::STANDARD);
-						}
-					}
-					else
-					{
-						std::vector<char>* data = nullptr;
-						if (read(opDesc.path, data))
-						{
-							_task->queueProcedure([opDesc, data]() {
-								opDesc.onSuccess(data);
-							}, TASK::STANDARD);
-						}
-						else
-						{
-							_task->queueProcedure([opDesc, data]() {
-								opDesc.onFailure(data);
-							}, TASK::STANDARD);
-						}
-					}
-				}
-				_loadingThread.stop();
-			}, []() {});
 		}
 
 		FileIOManager::~FileIOManager()
 		{
 		}
 
-		void FileIOManager::readAsync(
-			std::wstring path,
-			std::function<void(std::vector<char>* data)> onSuccess,
-			std::function<void()> onFailure)
-		{
-			FileIOOperationDesc desc;
-			desc.type = READ;
-			desc.path = path;
-			desc.onSuccess = onSuccess;
-			desc.onFailure = [onFailure](std::vector<char>* data) { onFailure(); };
-
-			_fileOps.push(desc);
-			_loadingThread.start();
-		}
-
-		void FileIOManager::writeAsync(
-			std::wstring path,
-			std::vector<char>* inputData,
-			std::function<void(std::vector<char>* data)> onSuccess,
-			std::function<void(std::vector<char>* data)> onFailure)
-		{
-			FileIOOperationDesc desc;
-			desc.type = WRITE;
-			desc.path = path;
-			desc.inputData = inputData;
-			desc.onSuccess = onSuccess;
-			desc.onFailure = onFailure;
-
-			_fileOps.push(desc);
-			_loadingThread.start();
-		}
-
-		bool FileIOManager::read(std::wstring path, std::vector<char>*& data)
+		std::vector<char>* FileIOManager::read(std::wstring path)
 		{
 			std::ifstream file(path, std::ios::binary | std::ios::ate);
 			if (!file.is_open())
 			{
 				_console->push(CONSOLE::ERR, L"Could not open file: " + path);
-				return false;
+				return nullptr;
 			}
 
 			std::vector<char>* fileData = new std::vector<char>(file.tellg());
@@ -107,12 +35,11 @@ namespace NLE
 				file.close();
 				delete fileData;
 				_console->push(CONSOLE::ERR, L"Could not read file: " + path);
-				return false;
+				return nullptr;
 			}
 
 			file.close();
-			data = fileData;
-			return true;
+			return fileData;
 		}
 
 
@@ -134,11 +61,6 @@ namespace NLE
 
 			file.close();
 			return true;
-		}
-
-		std::wstring FileIOManager::getFileExtension(std::wstring path)
-		{
-			return path.substr(path.find_last_of('.') + 1);
 		}
 	}
 

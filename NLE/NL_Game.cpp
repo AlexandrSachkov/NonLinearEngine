@@ -26,16 +26,6 @@ namespace NLE
 
 		}
 
-		IGameManager* Game::getGameManager()
-		{
-			return _gameManager;
-		}
-
-		void Game::setGameManager(IGameManager* gameManager)
-		{
-			_gameManager = gameManager;
-		}
-
 		void Game::attachConsole(CONSOLE::IConsoleQueue_EServiceSP console)
 		{
 			_console = console;

@@ -5,6 +5,8 @@
 #include "NL_ITaskScheduler.h"
 #include "NL_IResourceManager.h"
 #include "NL_IDataManager.h"
+#include "NL_IFileIOManager.h"
+#include "NL_ISerializer.h"
 
 namespace NLE
 {
@@ -14,11 +16,15 @@ namespace NLE
 		EngineServices(
 			CONSOLE::IConsoleQueue_EServiceSP console, 
 			TASK::ITaskScheduler_EServiceSP task,
-			DATA::IDataManagerSP data
+			DATA::IDataManager_EServiceSP data,
+			IO::IFileIOManager_EServiceSP file,
+			SERIALIZATION::ISerializerSP serializer
 			) :
 			console(console),
 			task(task),
-			data(data)
+			data(data),
+			file(file),
+			serializer(serializer)
 		{
 		}
 
@@ -28,7 +34,9 @@ namespace NLE
 
 		CONSOLE::IConsoleQueue_EServiceSP console;
 		TASK::ITaskScheduler_EServiceSP task;
-		DATA::IDataManagerSP data;
+		DATA::IDataManager_EServiceSP data;
+		IO::IFileIOManager_EServiceSP file;
+		SERIALIZATION::ISerializerSP serializer;
 	};
 }
 

@@ -6,6 +6,9 @@
 #include "NL_RenderingComponent.h"
 #include "NL_ScriptingComponent.h"
 #include <string>
+#include "NL_LuaBindings.h"
+#include "LuaIntf.h"
+#include <memory>
 
 namespace NLE
 {
@@ -49,10 +52,17 @@ namespace NLE
 			static void attachBindings(LuaIntf::CppBindModule<LuaIntf::LuaBinding>& binding)
 			{
 				binding.beginClass<GameObject>("GameObject")
-					.addProperty("name", &GameObject::getName, &GameObject::setName)
+					.addFunction("getName", &GameObject::getName)
 					.addFunction("getParent", &GameObject::getParent)
 					.addFunction("getChildren", &GameObject::getChildren)
 					.addFunction("getScriptingContext", &GameObject::getScriptingContext)
+					.endClass();
+			}
+
+			static void attachMasterBindings(LuaIntf::CppBindModule<LuaIntf::LuaBinding>& binding)
+			{
+				binding.beginClass<GameObject>("GameObject")
+					.addFunction("setName", &GameObject::setName)
 					.endClass();
 			}
 
@@ -77,6 +87,8 @@ namespace NLE
 			GameObject* _parent;
 			std::vector<GameObject*> _children;
 		};
+
+		typedef std::unique_ptr<GameObject> GameObjectUP;
 	}
 }
 

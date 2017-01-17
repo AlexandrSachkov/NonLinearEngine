@@ -8,10 +8,7 @@ namespace NLE
 {
 	namespace GAME
 	{
-		Scene::Scene() : Scene(nullptr) {}
-
-		Scene::Scene(GameManager* gameManager) :
-			_gameManager(gameManager),
+		Scene::Scene() :
 			_scriptingContext(this)
 		{
 			_name = L"Scene " + std::to_wstring(UUID::generateUuid());
@@ -20,16 +17,6 @@ namespace NLE
 		Scene::~Scene()
 		{
 
-		}
-
-		GameManager* Scene::getGameManager()
-		{
-			return _gameManager;
-		}
-
-		void Scene::setGameManager(GameManager& gameManager)
-		{
-			_gameManager = &gameManager;
 		}
 
 		std::wstring Scene::getName()

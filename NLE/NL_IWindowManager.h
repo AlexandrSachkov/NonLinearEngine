@@ -5,6 +5,8 @@
 
 #include <string>
 #include <memory>
+#include "NL_LuaCustomTypes.h"
+#include "LuaIntf.h"
 
 namespace NLE
 {
@@ -40,6 +42,23 @@ namespace NLE
 		virtual void enableVSync(bool enable) = 0;
 		virtual void swapBuffers() = 0;
 		virtual void pollEvents() = 0;
+
+		static void attachMasterBindings(LuaIntf::CppBindModule<LuaIntf::LuaBinding>& binding)
+		{
+			binding.beginClass<IWindowManager>("WindowManager")
+				.addFunction("getClientSize", &IWindowManager::getClientSize)
+				.addFunction("getWindowPosition", &IWindowManager::getWindowPosition)
+				.addFunction("getFullScreen", &IWindowManager::getFullScreen)
+				.addFunction("setTitle", &IWindowManager::setTitle)
+				.addFunction("setWindowPosition", &IWindowManager::setWindowPosition)
+				.addFunction("iconify", &IWindowManager::iconify)
+				.addFunction("restore", &IWindowManager::restore)
+				.addFunction("show", &IWindowManager::show)
+				.addFunction("hide", &IWindowManager::hide)
+				.addFunction("closeWindow", &IWindowManager::closeWindow)
+				.addFunction("enableCursor", &IWindowManager::enableCursor)
+				.endClass();
+		}
 	};
 
 	typedef std::shared_ptr<IWindowManager> IWindowManagerSP;

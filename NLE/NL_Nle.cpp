@@ -26,6 +26,7 @@
 #include <iostream>
 #include <memory>
 #include "tbb/tbb.h"
+#include <LuaIntf.h>
 
 namespace NLE
 {
@@ -35,12 +36,20 @@ namespace NLE
 
 		do
 		{
+			SCRIPT::ScriptExecutor masterExecutor;
+			SCRIPT::Bindings::attachMaster(masterExecutor.getState());
+			auto scriptModule = LuaIntf::LuaBinding(masterExecutor.getState()).beginModule("nle");
+
 			auto taskScheduler = std::make_shared<TASK::TBBTaskScheduler>();
-			auto fileIOManager = std::make_shared<IO::FileIOManager>(CONSOLE::GLOBAL_CONSOLE_QUEUE, taskScheduler);
+			auto fileIOManager = std::make_shared<IO::FileIOManager>(CONSOLE::GLOBAL_CONSOLE_QUEUE);
+			scriptModule.addVariableRef<IO::IFileIOManager_EService>("file", fileIOManager.get());
+
 			auto serializer = std::make_shared<SERIALIZATION::CerealSerializer>(SERIALIZATION::JSON);
-			//RESOURCE::ResourceManager* resourceManager = new RESOURCE::ResourceManager(*fileIOManager);
 			auto dataManager = std::make_shared<DATA::DataManager>();
-			EngineServices engineServices(CONSOLE::GLOBAL_CONSOLE_QUEUE, taskScheduler, dataManager);
+			EngineServices engineServices(CONSOLE::GLOBAL_CONSOLE_QUEUE, taskScheduler, dataManager, fileIOManager, serializer);
+
+			auto resourceManager = std::make_shared<RESOURCE::ResourceManager>(engineServices);
+			scriptModule.addVariableRef<RESOURCE::IResourceManager>("resource", resourceManager.get());
 
 			Size2D windowSize(1920, 1080);
 			bool fullscreen = false;
@@ -48,6 +57,7 @@ namespace NLE
 			auto windowManager = std::make_shared<GlfwWindowManager>(engineServices.console);
 			if (!windowManager->initialize(windowSize, fullscreen, true, L"NonLinear Engine"))
 				break;
+			scriptModule.addVariableRef<IWindowManager>("windowManager", windowManager.get());
 
 			auto inputProcessor = std::make_shared<INPUT::InputProcessor>(engineServices);
 			if (!inputProcessor->initialize())
@@ -68,10 +78,11 @@ namespace NLE
 				break;
 
 			auto gameManager = std::make_shared<GAME::GameManager>
-				(engineServices, windowManager, fileIOManager, serializer, renderingEngine, scriptingEngine);
+				(engineServices, windowManager, fileIOManager, serializer, renderingEngine, scriptingEngine);			
+			scriptModule.addVariableRef<GAME::GameManager>("gameManager", gameManager.get());
 
 			auto editorUiManager = std::make_shared<UI::ImguiEditorUiManager>(
-				engineServices, CONSOLE::GLOBAL_CONSOLE_QUEUE, windowManager, gameManager, inputProcessor, renderingEngine, scriptingEngine);
+				engineServices, CONSOLE::GLOBAL_CONSOLE_QUEUE, windowManager, gameManager, inputProcessor, renderingEngine, scriptingEngine, masterExecutor);
 			if (!editorUiManager->initialize())
 				break;
 
@@ -81,6 +92,8 @@ namespace NLE
 			renderingEngine->attachGetUIRenderingData([&]() {
 				return (void*)editorUiManager->getDrawData();
 			});
+
+			scriptModule.endModule();
 
 			SystemServices systemServices(gameManager, inputProcessor, renderingEngine, scriptingEngine);
 

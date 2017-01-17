@@ -25,7 +25,8 @@ namespace NLE
 			GAME::IGameManagerSP gameManager,
 			INPUT::IInputProcessorSP inputProcessor,
 			GRAPHICS::IRenderingEngineSP renderingEngine,
-			SCRIPT::IScriptingEngineSP scriptingEngine)
+			SCRIPT::IScriptingEngineSP scriptingEngine,
+			SCRIPT::ScriptExecutor& masterExecutor)
 			:
 			_eServices(eServices),
 			_consoleQueue(consoleQueue),
@@ -58,7 +59,8 @@ namespace NLE
 			_itemActiveColor(0.0f, 0.384f, 0.620f, 0.690f),
 			_selectionColor(0.290f, 0.290f, 0.290f, 0.690f),
 
-			_commandBuffer(1024)
+			_commandBuffer(1024),
+			_masterExecutor(masterExecutor)
 		{
 		}
 
@@ -633,7 +635,7 @@ namespace NLE
 			if (ImGui::Button("Run", ImVec2(50, 0))) {
 				auto& cnv = TLS::strConverter.local();
 				auto entry = cnv.from_bytes(_commandBuffer.getText());
-				_gameManager->executeScript(entry);
+				_masterExecutor.executeScript(entry);
 			}
 			ImGui::End();
 			restoreColorScheme();

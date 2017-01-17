@@ -21,7 +21,6 @@ namespace NLE
 		{
 		public:
 			Scene();
-			Scene(GameManager* _gameManager);
 			~Scene();
 
 			template<class Archive>
@@ -51,9 +50,6 @@ namespace NLE
 				_name = cnv.from_bytes(name);
 			}
 
-			GameManager* getGameManager();
-			void setGameManager(GameManager& gameManager);
-
 			std::wstring getName();
 			void setName(std::wstring name);
 
@@ -69,14 +65,20 @@ namespace NLE
 			static void attachBindings(LuaIntf::CppBindModule<LuaIntf::LuaBinding>& binding)
 			{
 				binding.beginClass<Scene>("Scene")
-					.addFunction("getGameManager", &Scene::getGameManager)
 					.addFunction("getName", &Scene::getName)
 					.addFunction("getObject", &Scene::getObject)
 					.endClass();
 			}
+			static void attachMasterBindings(LuaIntf::CppBindModule<LuaIntf::LuaBinding>& binding)
+			{
+				binding.beginClass<Scene>("Scene")
+					.addFunction("setName", &Scene::setName)
+					//.addFunction("addObject", static_cast<void(Scene::*)(std::wstring name, double data)>(&Scene::addObject))
+					//.addFunction("addObject", &Scene::setName)
+					.endClass();
+			}
 
 		private:
-			GameManager* _gameManager;
 			std::wstring _name;
 			SceneGraph _sceneGraph;
 			SCRIPT::ScriptingContext _scriptingContext;

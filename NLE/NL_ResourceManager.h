@@ -2,15 +2,14 @@
 #define NL_RESOURCE_MANAGER_H_
 
 #include "NL_IResourceManager.h"
-#include "NL_FileIOManager.h"
-
-#include "tbb/atomic.h"
-#include "tbb/concurrent_unordered_map.h"
-#include "tbb/concurrent_queue.h"
+#include "NL_Game.h"
+#include "NL_Scene.h"
+#include "NL_GameObject.h"
+#include "NL_EngineServices.h"
 
 #include <string>
-#include <vector>
-
+#include "NL_LuaCustomTypes.h"
+#include "LuaIntf.h"
 
 namespace NLE
 {
@@ -19,18 +18,19 @@ namespace NLE
 		class ResourceManager : public IResourceManager
 		{
 		public:
-			ResourceManager(NLE::IO::FileIOManager& fileIO);
+			ResourceManager(EngineServices eServices);
 			~ResourceManager();
 
-			void load(std::wstring& path, std::function<void(std::vector<char>* data)> onSuccess);
-			std::vector<char>* get(std::wstring path);
-			void release(std::wstring& path);
+			GAME::Game* createGame();
+			GAME::Scene* createScene();
+			GAME::GameObject* createGameObject();
+
+			GAME::Game* createGameFromFile(std::wstring path);
+			GAME::Scene* createSceneFromFile(std::wstring path);
+			GAME::GameObject* createGameObjectFromFile(std::wstring path);
 
 		private:
-			void addResource(std::wstring path, std::vector<char>* buffer);
-
-			NLE::IO::FileIOManager& _file;
-			tbb::concurrent_unordered_map<std::wstring, std::vector<char>*> _resources;
+			EngineServices _eServices;
 		};
 	}
 }

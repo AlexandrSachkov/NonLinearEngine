@@ -70,8 +70,6 @@ namespace NLE
 				}
 			}
 
-			IGameManager* getGameManager();
-			void setGameManager(IGameManager* gameManager);
 			void attachConsole(CONSOLE::IConsoleQueue_EServiceSP console);
 
 			void setName(std::wstring name);
@@ -90,7 +88,6 @@ namespace NLE
 			{
 				binding.beginClass<Game>("Game")
 					.addFunction("getName", &Game::getName)
-					.addFunction("getGameManager", &Game::getGameManager)
 					.addFunction("getScriptingContext", &Game::getScriptingContext)
 					.endClass();
 			}
@@ -110,7 +107,6 @@ namespace NLE
 
 		private:
 			CONSOLE::IConsoleQueue_EServiceSP _console;
-			IGameManager* _gameManager;
 			std::wstring _name;
 			std::wstring _initialScene;
 			SCRIPT::ScriptingContext _scriptingContext;
