@@ -26,10 +26,8 @@ namespace NLE
 			template<class Archive>
 			void save(Archive& archive) const
 			{
-				auto& cnv = TLS::strConverter.local();
-				auto name = cnv.to_bytes(_name);
 				archive(
-					CEREAL_NVP(name),
+					CEREAL_NVP(_name),
 					CEREAL_NVP(_scriptingComponent),
 					CEREAL_NVP(_renderingComponent)
 					);
@@ -38,15 +36,11 @@ namespace NLE
 			template<class Archive>
 			void load(Archive& archive)
 			{
-				auto& cnv = TLS::strConverter.local();
-				std::string name;
 				archive(
-					CEREAL_NVP(name),
+					CEREAL_NVP(_name),
 					CEREAL_NVP(_scriptingComponent),
 					CEREAL_NVP(_renderingComponent)
 					);
-
-				_name = cnv.from_bytes(name);
 			}
 
 			static void attachBindings(LuaIntf::CppBindModule<LuaIntf::LuaBinding>& binding)
@@ -66,8 +60,8 @@ namespace NLE
 					.endClass();
 			}
 
-			void setName(std::wstring name);
-			std::wstring getName();
+			void setName(std::string name);
+			std::string getName();
 
 			void setParent(GameObject* obj);
 			GameObject* getParent();
@@ -83,7 +77,7 @@ namespace NLE
 			ScriptingComponent _scriptingComponent;
 			RenderingComponent _renderingComponent;			
 
-			std::wstring _name;
+			std::string _name;
 			GameObject* _parent;
 			std::vector<GameObject*> _children;
 		};

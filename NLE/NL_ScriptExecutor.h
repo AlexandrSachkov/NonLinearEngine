@@ -16,15 +16,15 @@ namespace NLE
 			~ScriptExecutor();
 
 			lua_State* getState();
-			void registerCallback(std::wstring name, int(*callback)(lua_State* state));
-			std::wstring getExecutionError();
-			bool executeContextScript(ScriptingContext& context, std::wstring name);
-			bool executeScript(std::wstring script);
+			void registerCallback(std::string name, int(*callback)(lua_State* state));
+			std::string getExecutionError();
+			bool executeContextScript(ScriptingContext& context, std::string name);
+			bool executeScript(std::string script);
 
 		private:
 			void applyContext(ScriptingContext& context);
 			lua_State* _state;
-			std::wstring _executionError;
+			std::string _executionError;
 		};
 	}
 }

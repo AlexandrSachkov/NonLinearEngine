@@ -38,7 +38,7 @@ namespace NLE
 			}
 		}
 
-		void SceneGraph::removeObject(std::wstring name)
+		void SceneGraph::removeObject(std::string name)
 		{
 			GameObject* obj = nullptr;
 			if (_objects.get(name, obj))
@@ -56,7 +56,7 @@ namespace NLE
 			_objects.erase(object->getName());
 		}
 
-		GameObject* SceneGraph::getObject(std::wstring name)
+		GameObject* SceneGraph::getObject(std::string name)
 		{
 			GameObject* obj = nullptr;
 			_objects.get(name, obj);

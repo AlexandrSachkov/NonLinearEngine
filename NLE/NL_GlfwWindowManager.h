@@ -51,7 +51,7 @@ namespace NLE
 			Size2D screenSize,
 			bool fullscreen,
 			bool decorated,
-			std::wstring title
+			std::string title
 			);
 
 		Size2D getClientSize();
@@ -59,7 +59,7 @@ namespace NLE
 		void* getWindowHandle();
 		bool getFullScreen();
 
-		void setTitle(std::wstring title);
+		void setTitle(std::string title);
 		void setWindowPosition(Position2D position);
 
 		void iconify();
@@ -69,8 +69,8 @@ namespace NLE
 		void closeWindow();
 		void enableCursor(bool enable);
 
-		void copyText(std::wstring text);
-		std::wstring pasteText();
+		void copyText(std::string text);
+		std::string pasteText();
 
 		void makeContextCurrent(bool makeCurrent);
 		void enableVSync(bool enable);
@@ -102,7 +102,7 @@ namespace NLE
 
 		CONSOLE::IConsoleQueue_EServiceSP _console;
 		GLFWwindow* _window;
-		std::wstring _title;
+		std::string _title;
 		bool _fullScreen;
 	};
 }

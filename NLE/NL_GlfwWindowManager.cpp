@@ -59,7 +59,7 @@ namespace NLE
 		Size2D screenSize,
 		bool fullscreen,
 		bool decorated,
-		std::wstring title
+		std::string title
 		)
 	{
 		_fullScreen = fullscreen;
@@ -74,15 +74,14 @@ namespace NLE
 		setResizableHint(false);
 		setDecoratedHint(decorated);
 
-		TLS::StringConverter::reference converter = TLS::strConverter.local();
 		if (fullscreen)
 		{
 			const GLFWvidmode* mode = glfwGetVideoMode(glfwGetPrimaryMonitor());
-			_window = glfwCreateWindow(mode->width, mode->height, converter.to_bytes(title).c_str(), glfwGetPrimaryMonitor(), NULL);
+			_window = glfwCreateWindow(mode->width, mode->height, title.c_str(), glfwGetPrimaryMonitor(), NULL);
 		}
 		else
 		{
-			_window = glfwCreateWindow(screenSize.width, screenSize.height, converter.to_bytes(title).c_str(), NULL, NULL);
+			_window = glfwCreateWindow(screenSize.width, screenSize.height, title.c_str(), NULL, NULL);
 		}
 			
 
@@ -147,10 +146,9 @@ namespace NLE
 		glfwWindowHint(GLFW_DECORATED, option);
 	}
 
-	void GlfwWindowManager::setTitle(std::wstring title)
+	void GlfwWindowManager::setTitle(std::string title)
 	{
-		TLS::StringConverter::reference converter = TLS::strConverter.local();
-		glfwSetWindowTitle(_window, converter.to_bytes(title).c_str());
+		glfwSetWindowTitle(_window, title.c_str());
 	}
 
 	void GlfwWindowManager::setWindowPosition(Position2D position)
@@ -190,17 +188,16 @@ namespace NLE
 		glfwSetWindowShouldClose(_window, true);
 	}
 
-	void GlfwWindowManager::copyText(std::wstring text)
+	void GlfwWindowManager::copyText(std::string text)
 	{
 		std::string textOut(text.begin(), text.end());
 		glfwSetClipboardString(_window, textOut.c_str());
 	}
 
-	std::wstring GlfwWindowManager::pasteText()
+	std::string GlfwWindowManager::pasteText()
 	{
 		std::string text(glfwGetClipboardString(_window));
-		std::wstring textOut(text.begin(), text.end());
-		return textOut;
+		return text;
 	}
 
 	void GlfwWindowManager::glfwErrorCallback(int error, const char* description)

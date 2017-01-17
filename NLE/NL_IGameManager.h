@@ -25,11 +25,11 @@ namespace NLE
 			virtual bool hasUnsavedChanges() = 0;
 			virtual void newGame() = 0;
 			virtual void newScene() = 0;
-			virtual void loadGame(std::wstring path) = 0;
-			virtual void loadScene(std::wstring path) = 0;
-			virtual void loadSceneByName(std::wstring name) = 0;
-			virtual void saveGame(std::wstring name) = 0;
-			virtual void saveScene(std::wstring name) = 0;
+			virtual void loadGame(std::string path) = 0;
+			virtual void loadScene(std::string path) = 0;
+			virtual void loadSceneByName(std::string name) = 0;
+			virtual void saveGame(std::string name) = 0;
+			virtual void saveScene(std::string name) = 0;
 			virtual void quitGame() = 0;
 
 			virtual Game& getGame() = 0;

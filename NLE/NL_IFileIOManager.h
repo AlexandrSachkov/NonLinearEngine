@@ -16,8 +16,8 @@ namespace NLE
 		class IFileIOManager_EService
 		{
 		public:
-			virtual std::vector<char>* read(std::wstring path) = 0;
-			virtual bool write(std::wstring path, std::vector<char>* srcData) = 0;
+			virtual std::vector<char>* read(std::string path) = 0;
+			virtual bool write(std::string path, std::vector<char>* srcData) = 0;
 
 			static void attachMasterBindings(LuaIntf::CppBindModule<LuaIntf::LuaBinding>& binding)
 			{

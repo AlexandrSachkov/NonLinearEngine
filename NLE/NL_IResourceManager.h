@@ -23,9 +23,9 @@ namespace NLE
 			virtual GAME::Scene* createScene() = 0;
 			virtual GAME::GameObject* createGameObject() = 0;
 
-			virtual GAME::Game* createGameFromFile(std::wstring path) = 0;
-			virtual GAME::Scene* createSceneFromFile(std::wstring path) = 0;
-			virtual GAME::GameObject* createGameObjectFromFile(std::wstring path) = 0;
+			virtual GAME::Game* createGameFromFile(std::string path) = 0;
+			virtual GAME::Scene* createSceneFromFile(std::string path) = 0;
+			virtual GAME::GameObject* createGameObjectFromFile(std::string path) = 0;
 
 			static void attachMasterBindings(LuaIntf::CppBindModule<LuaIntf::LuaBinding>& binding)
 			{

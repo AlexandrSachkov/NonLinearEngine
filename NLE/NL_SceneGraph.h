@@ -36,12 +36,12 @@ namespace NLE
 
 			void addObject(GameObject* object);
 			void addObject(GameObject* parent, GameObject* object);
-			void removeObject(std::wstring name);
+			void removeObject(std::string name);
 			void removeObject(GameObject* object);
-			GameObject* getObject(std::wstring name);
+			GameObject* getObject(std::string name);
 
 		private:
-			Map<std::wstring, GameObject*, KEEP_EXISTING> _objects;
+			Map<std::string, GameObject*, KEEP_EXISTING> _objects;
 			std::vector<GameObject*> _root;
 		};
 	}

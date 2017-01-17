@@ -29,19 +29,16 @@ namespace NLE
 			template<class Archive>
 			void save(Archive& archive) const
 			{
-				auto& cnv = TLS::strConverter.local();
-				auto name = cnv.to_bytes(_name);
-				auto initialScene = cnv.to_bytes(_initialScene);
 				archive(
-					CEREAL_NVP(name),
-					CEREAL_NVP(initialScene),
+					CEREAL_NVP(_name),
+					CEREAL_NVP(_initialScene),
 					CEREAL_NVP(_scriptingContext)
 					);
 
 				Map<std::string, std::string, REPLACE> scenes;
 				for (auto kv : _scenes.getData())
 				{
-					scenes.insert(cnv.to_bytes(kv.first), cnv.to_bytes(kv.second));
+					scenes.insert(kv.first, kv.second);
 				}
 				archive(CEREAL_NVP(scenes));
 			}
@@ -49,38 +46,31 @@ namespace NLE
 			template<class Archive>
 			void load(Archive& archive)
 			{
-				auto& cnv = TLS::strConverter.local();
-				std::string name;
-				std::string initialScene;
 				archive(
-					CEREAL_NVP(name),
-					CEREAL_NVP(initialScene),
+					CEREAL_NVP(_name),
+					CEREAL_NVP(_initialScene),
 					CEREAL_NVP(_scriptingContext)
 					);
-
-				_scriptingContext.setParent(this);
-				_name = cnv.from_bytes(name);
-				_initialScene = cnv.from_bytes(initialScene);
 
 				Map<std::string, std::string, REPLACE> scenes;
 				archive(CEREAL_NVP(scenes));
 				for (auto kv : scenes.getData())
 				{
-					_scenes.insert(cnv.from_bytes(kv.first), cnv.from_bytes(kv.second));
+					_scenes.insert(kv.first, kv.second);
 				}
 			}
 
 			void attachConsole(CONSOLE::IConsoleQueue_EServiceSP console);
 
-			void setName(std::wstring name);
-			std::wstring getName();
+			void setName(std::string name);
+			std::string getName();
 
-			void setInitialScene(std::wstring sceneName);
-			std::wstring getInitialScene();
-			void addScene(std::wstring name, std::wstring path);
-			void removeScene(std::wstring name);
-			std::wstring getScenePath(std::wstring name);
-			std::unordered_map<std::wstring, std::wstring> getScenes();
+			void setInitialScene(std::string sceneName);
+			std::string getInitialScene();
+			void addScene(std::string name, std::string path);
+			void removeScene(std::string name);
+			std::string getScenePath(std::string name);
+			std::unordered_map<std::string, std::string> getScenes();
 			SCRIPT::ScriptingContext& getScriptingContext();
 			void bind(LuaIntf::CppBindModule<LuaIntf::LuaBinding>& binding);
 
@@ -107,10 +97,10 @@ namespace NLE
 
 		private:
 			CONSOLE::IConsoleQueue_EServiceSP _console;
-			std::wstring _name;
-			std::wstring _initialScene;
+			std::string _name;
+			std::string _initialScene;
 			SCRIPT::ScriptingContext _scriptingContext;
-			Map<std::wstring, std::wstring, REPLACE> _scenes;
+			Map<std::string, std::string, REPLACE> _scenes;
 		};
 
 		typedef std::unique_ptr<Game> GameUP;

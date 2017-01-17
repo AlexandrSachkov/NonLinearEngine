@@ -21,20 +21,19 @@ namespace NLE
 			ConsoleQueue();
 			~ConsoleQueue();
 
-			void push(OUTPUT_TYPE outType, const std::wstring& data);
 			void push(OUTPUT_TYPE outType, const std::string& data);
 			void push(OUTPUT_TYPE outType, const char* data);
 
-			bool pop(std::pair<OUTPUT_TYPE, std::wstring>& data);
+			bool pop(std::pair<OUTPUT_TYPE, std::string>& data);
 			void clear();
 		private:
-			tbb::concurrent_queue <std::pair<OUTPUT_TYPE, std::wstring>> _data;
+			tbb::concurrent_queue <std::pair<OUTPUT_TYPE, std::string>> _data;
 		};
 
 		static void attachBindings(LuaIntf::CppBindModule<LuaIntf::LuaBinding>& binding)
 		{
 			binding.beginModule("console")
-				.addFunction("print", [](std::wstring data) {
+				.addFunction("print", [](std::string data) {
 					CONSOLE::GLOBAL_CONSOLE_QUEUE->push(CONSOLE::STANDARD, data);
 				})
 			.endModule();

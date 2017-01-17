@@ -11,7 +11,7 @@ namespace NLE
 	namespace SCRIPT
 	{
 		ScriptExecutor::ScriptExecutor() :
-			_executionError(L"")
+			_executionError("")
 		{
 			_state = luaL_newstate();
 			luaL_openlibs(_state);
@@ -29,13 +29,12 @@ namespace NLE
 			return _state;
 		}
 
-		void ScriptExecutor::registerCallback(std::wstring name, int(*callback)(lua_State* state))
+		void ScriptExecutor::registerCallback(std::string name, int(*callback)(lua_State* state))
 		{
-			auto& strCnv = TLS::strConverter.local();
-			lua_register(_state, strCnv.to_bytes(name).c_str(), callback);
+			lua_register(_state, name.c_str(), callback);
 		}
 
-		bool ScriptExecutor::executeContextScript(ScriptingContext& context, std::wstring name)
+		bool ScriptExecutor::executeContextScript(ScriptingContext& context, std::string name)
 		{
 			if (!context.getScriptStatus(name))
 			{
@@ -50,35 +49,34 @@ namespace NLE
 			else
 			{
 				context.flagScript(name, _executionError);
-				CONSOLE::GLOBAL_CONSOLE_QUEUE->push(CONSOLE::ERR, L"Script '" + name + L"' failed to execute.");
+				CONSOLE::GLOBAL_CONSOLE_QUEUE->push(CONSOLE::ERR, "Script '" + name + "' failed to execute.");
 				return false;
 			}
 		}
 
-		bool ScriptExecutor::executeScript(std::wstring script)
+		bool ScriptExecutor::executeScript(std::string script)
 		{
-			_executionError = L"";
+			_executionError = "";
 
-			if (script.compare(L"") == 0) return true;
+			if (script.compare("") == 0) return true;
 
-			auto& strCnv = TLS::strConverter.local();
 			lua_settop(_state, 0);
-			if (luaL_loadstring(_state, strCnv.to_bytes(script).c_str()))
+			if (luaL_loadstring(_state, script.c_str()))
 			{
-				_executionError = TLS::strConverter.local().from_bytes(lua_tostring(_state, -1));
+				_executionError = lua_tostring(_state, -1);
 				CONSOLE::GLOBAL_CONSOLE_QUEUE->push(CONSOLE::ERR, _executionError);
 				return false;
 			}
 			if (lua_pcall(_state, 0, LUA_MULTRET, 0))
 			{
-				_executionError = TLS::strConverter.local().from_bytes(lua_tostring(_state, -1));
+				_executionError = lua_tostring(_state, -1);
 				CONSOLE::GLOBAL_CONSOLE_QUEUE->push(CONSOLE::ERR, _executionError);
 				return false;
 			}
 			return true;
 		}
 
-		std::wstring ScriptExecutor::getExecutionError()
+		std::string ScriptExecutor::getExecutionError()
 		{
 			return _executionError;
 		}

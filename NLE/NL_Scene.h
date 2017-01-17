@@ -26,10 +26,8 @@ namespace NLE
 			template<class Archive>
 			void save(Archive& archive) const
 			{
-				auto& cnv = TLS::strConverter.local();
-				auto name = cnv.to_bytes(_name);
 				archive(
-					CEREAL_NVP(name),
+					CEREAL_NVP(_name),
 					CEREAL_NVP(_sceneGraph),
 					CEREAL_NVP(_scriptingContext)
 					);
@@ -38,26 +36,23 @@ namespace NLE
 			template<class Archive>
 			void load(Archive& archive)
 			{
-				auto& cnv = TLS::strConverter.local();
-				std::string name;
 				archive(
-					CEREAL_NVP(name),
+					CEREAL_NVP(_name),
 					CEREAL_NVP(_sceneGraph),
 					CEREAL_NVP(_scriptingContext)
 					);
 
 				_scriptingContext.setParent(this);
-				_name = cnv.from_bytes(name);
 			}
 
-			std::wstring getName();
-			void setName(std::wstring name);
+			std::string getName();
+			void setName(std::string name);
 
 			void addObject(GameObject* object);
 			void addObject(GameObject* parent, GameObject* object);
-			void removeObject(std::wstring name);
+			void removeObject(std::string name);
 			void removeObject(GameObject* object);
-			GameObject* getObject(std::wstring name);
+			GameObject* getObject(std::string name);
 
 			SCRIPT::ScriptingContext& getScriptingContext();
 			void bind(LuaIntf::CppBindModule<LuaIntf::LuaBinding>& binding);
@@ -79,7 +74,7 @@ namespace NLE
 			}
 
 		private:
-			std::wstring _name;
+			std::string _name;
 			SceneGraph _sceneGraph;
 			SCRIPT::ScriptingContext _scriptingContext;
 		};

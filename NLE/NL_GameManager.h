@@ -44,12 +44,12 @@ namespace NLE
 			bool hasUnsavedChanges();
 			void newGame();
 			void newScene();
-			void loadGame(std::wstring path);
-			void loadScene(std::wstring path);
-			void loadSceneByName(std::wstring name);
+			void loadGame(std::string path);
+			void loadScene(std::string path);
+			void loadSceneByName(std::string name);
 			
-			void saveGame(std::wstring name);
-			void saveScene(std::wstring name);
+			void saveGame(std::string name);
+			void saveScene(std::string name);
 			void quitGame();
 			ExecStatus getExecutionStatus();
 

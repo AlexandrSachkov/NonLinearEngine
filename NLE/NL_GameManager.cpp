@@ -104,57 +104,57 @@ namespace NLE
 		{
 			_game = std::make_unique<Game>(_eServices.console);
 			newScene();
-			_eServices.console->push(CONSOLE::STANDARD, L"Starting new game.");
+			_eServices.console->push(CONSOLE::STANDARD, "Starting new game.");
 		}
 
 		void GameManager::newScene()
 		{
 			_currentScene = std::make_unique<Scene>();
-			_eServices.console->push(CONSOLE::STANDARD, L"Starting new scene.");
+			_eServices.console->push(CONSOLE::STANDARD, "Starting new scene.");
 		}
 
-		void GameManager::loadGame(std::wstring path)
+		void GameManager::loadGame(std::string path)
 		{
 			std::vector<char>* data = _file->read(path);
 			if (data)
 			{
 				Game* game = _serializer->deserialize<Game>(data);
 				delete data;
-				_eServices.console->push(CONSOLE::STANDARD, L"Successfully loaded game: " + path);
+				_eServices.console->push(CONSOLE::STANDARD, "Successfully loaded game: " + path);
 				updateGame(game);
 			}
 			else
 			{
-				_eServices.console->push(CONSOLE::ERR, L"Failed to load game: " + path);
+				_eServices.console->push(CONSOLE::ERR, "Failed to load game: " + path);
 			}
 		}
 
-		void GameManager::loadScene(std::wstring path)
+		void GameManager::loadScene(std::string path)
 		{
 			std::vector<char>* data = _file->read(path);
 			if (data)
 			{
 				Scene* scene = _serializer->deserialize<Scene>(data);
 				delete data;
-				_eServices.console->push(CONSOLE::STANDARD, L"Successfully loaded scene: " + path);
+				_eServices.console->push(CONSOLE::STANDARD, "Successfully loaded scene: " + path);
 				updateScene(scene);
 			}
 			else
 			{
-				_eServices.console->push(CONSOLE::ERR, L"Failed to load scene: " + path);
+				_eServices.console->push(CONSOLE::ERR, "Failed to load scene: " + path);
 			}
 		}
 
-		void GameManager::loadSceneByName(std::wstring name)
+		void GameManager::loadSceneByName(std::string name)
 		{
-			std::wstring scenePath = _game->getScenePath(name);
-			if (scenePath.compare(L"") != 0)
+			auto scenePath = _game->getScenePath(name);
+			if (scenePath.compare("") != 0)
 			{
 				loadScene(scenePath);
 			}
 			else
 			{
-				_eServices.console->push(CONSOLE::ERR, L"Failed to find scene by name: " + name);
+				_eServices.console->push(CONSOLE::ERR, "Failed to find scene by name: " + name);
 			}
 		}
 
@@ -167,8 +167,8 @@ namespace NLE
 
 				ex.executeContextScript(_game->getScriptingContext(), SCRIPT::ON_INIT);
 
-				std::wstring initialSceneName = game->getInitialScene();
-				if (initialSceneName.compare(L"") != 0)
+				std::string initialSceneName = game->getInitialScene();
+				if (initialSceneName.compare("") != 0)
 				{
 					loadSceneByName(initialSceneName);
 				}		
@@ -183,7 +183,7 @@ namespace NLE
 				ex.executeContextScript(_currentScene->getScriptingContext(), SCRIPT::ON_INIT);
 		}
 		
-		void GameManager::saveGame(std::wstring name)
+		void GameManager::saveGame(std::string name)
 		{
 			if (!name.empty()) {
 				_game->setName(name);
@@ -191,34 +191,34 @@ namespace NLE
 
 			auto* gameData = _serializer->serialize<Game>(_game.get());
 
-			if (_file->write(_game->getName() + L".nlegame", gameData))
+			if (_file->write(_game->getName() + ".nlegame", gameData))
 			{
 				delete gameData;
-				_eServices.console->push(CONSOLE::STANDARD, L"Successfully saved game: " + _game->getName());
+				_eServices.console->push(CONSOLE::STANDARD, "Successfully saved game: " + _game->getName());
 			}
 			else
 			{
 				delete gameData;
-				_eServices.console->push(CONSOLE::ERR, L"Failed to save game: " + _game->getName());
+				_eServices.console->push(CONSOLE::ERR, "Failed to save game: " + _game->getName());
 			}
 		}
 
-		void GameManager::saveScene(std::wstring name)
+		void GameManager::saveScene(std::string name)
 		{
 			if (!name.empty()) {
 				_currentScene->setName(name);
 			}
 
 			auto* sceneData = _serializer->serialize<Scene>(_currentScene.get());
-			if (_file->write(_currentScene->getName() + L".nlescene", sceneData))
+			if (_file->write(_currentScene->getName() + ".nlescene", sceneData))
 			{
 				delete sceneData;
-				_eServices.console->push(CONSOLE::STANDARD, L"Successfully saved scene: " + _currentScene->getName());
+				_eServices.console->push(CONSOLE::STANDARD, "Successfully saved scene: " + _currentScene->getName());
 			}
 			else
 			{
 				delete sceneData;
-				_eServices.console->push(CONSOLE::ERR, L"Failed to save scene: " + _currentScene->getName());
+				_eServices.console->push(CONSOLE::ERR, "Failed to save scene: " + _currentScene->getName());
 			}
 		}
 

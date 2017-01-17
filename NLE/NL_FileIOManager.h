@@ -19,8 +19,8 @@ namespace NLE
 			FileIOManager(CONSOLE::IConsoleQueueSP console);
 			~FileIOManager();
 			
-			std::vector<char>* read(std::wstring path);
-			bool write(std::wstring path, std::vector<char>* srcData);
+			std::vector<char>* read(std::string path);
+			bool write(std::string path, std::vector<char>* srcData);
 
 		private:			
 			FileIOManager(FileIOManager const&) = delete;

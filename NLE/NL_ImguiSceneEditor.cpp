@@ -42,8 +42,7 @@ namespace NLE
 
 			ImGui::Begin("Scene Editor", &_visible, windowFlags);
 
-			auto sceneName = TLS::strConverter.local().to_bytes(gameManager->getCurrentScene().getName());
-			_nameBuff.setText(sceneName);
+			_nameBuff.setText(gameManager->getCurrentScene().getName());
 
 			ImGuiInputTextFlags flags = 0;
 			flags |= ImGuiInputTextFlags_CallbackCompletion;
@@ -52,7 +51,7 @@ namespace NLE
 			ImGui::InputText("Name", &_nameBuff[0], _nameBuff.getSize(), flags, [](ImGuiTextEditCallbackData* data) {
 				std::string name(data->Buf);
 				auto& gameManager = *static_cast<NLE::GAME::IGameManager*>(data->UserData);
-				gameManager.getCurrentScene().setName(TLS::strConverter.local().from_bytes(name));
+				gameManager.getCurrentScene().setName(name);
 				return 0;
 			}, (void*)&gameManager);
 

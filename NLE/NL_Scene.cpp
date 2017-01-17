@@ -11,7 +11,7 @@ namespace NLE
 		Scene::Scene() :
 			_scriptingContext(this)
 		{
-			_name = L"Scene " + std::to_wstring(UUID::generateUuid());
+			_name = "Scene " + std::to_string(UUID::generateUuid());
 		}
 
 		Scene::~Scene()
@@ -19,12 +19,12 @@ namespace NLE
 
 		}
 
-		std::wstring Scene::getName()
+		std::string Scene::getName()
 		{
 			return _name;
 		}
 
-		void Scene::setName(std::wstring name)
+		void Scene::setName(std::string name)
 		{
 			_name = name;
 		}
@@ -39,7 +39,7 @@ namespace NLE
 			_sceneGraph.addObject(parent, object);
 		}
 
-		void Scene::removeObject(std::wstring name)
+		void Scene::removeObject(std::string name)
 		{
 			_sceneGraph.removeObject(name);
 		}
@@ -49,7 +49,7 @@ namespace NLE
 			_sceneGraph.removeObject(object);
 		}
 
-		GameObject* Scene::getObject(std::wstring name)
+		GameObject* Scene::getObject(std::string name)
 		{
 			return _sceneGraph.getObject(name);
 		}

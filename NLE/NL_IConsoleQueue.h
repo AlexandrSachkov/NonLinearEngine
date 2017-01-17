@@ -30,7 +30,6 @@ namespace NLE
 		class IConsoleQueue_EService
 		{
 		public:
-			virtual void push(OUTPUT_TYPE outType, const std::wstring& data) = 0;
 			virtual void push(OUTPUT_TYPE outType, const std::string& data) = 0;
 			virtual void push(OUTPUT_TYPE outType, const char* data) = 0;
 		};
@@ -38,7 +37,7 @@ namespace NLE
 		class IConsoleQueue : public IConsoleQueue_EService
 		{
 		public:
-			virtual bool pop(std::pair<OUTPUT_TYPE, std::wstring>& data) = 0;
+			virtual bool pop(std::pair<OUTPUT_TYPE, std::string>& data) = 0;
 			virtual void clear() = 0;
 		};
 

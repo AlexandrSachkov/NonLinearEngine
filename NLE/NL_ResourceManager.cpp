@@ -30,41 +30,41 @@ namespace NLE
 			return new GAME::GameObject();
 		}
 
-		GAME::Game* ResourceManager::createGameFromFile(std::wstring path)
+		GAME::Game* ResourceManager::createGameFromFile(std::string path)
 		{
 			std::vector<char>* data = _eServices.file->read(path);
 			if (data)
 			{
 				GAME::Game* game = _eServices.serializer->deserialize<GAME::Game>(data);
 				delete data;
-				_eServices.console->push(CONSOLE::STANDARD, L"Successfully loaded game: " + path);
+				_eServices.console->push(CONSOLE::STANDARD, "Successfully loaded game: " + path);
 				return game;
 			}
 			else
 			{
-				_eServices.console->push(CONSOLE::ERR, L"Failed to load game: " + path);
+				_eServices.console->push(CONSOLE::ERR, "Failed to load game: " + path);
 				return createGame();
 			}
 		}
 
-		GAME::Scene* ResourceManager::createSceneFromFile(std::wstring path)
+		GAME::Scene* ResourceManager::createSceneFromFile(std::string path)
 		{
 			std::vector<char>* data = _eServices.file->read(path);
 			if (data)
 			{
 				GAME::Scene* scene = _eServices.serializer->deserialize<GAME::Scene>(data);
 				delete data;
-				_eServices.console->push(CONSOLE::STANDARD, L"Successfully loaded scene: " + path);
+				_eServices.console->push(CONSOLE::STANDARD, "Successfully loaded scene: " + path);
 				return scene;
 			}
 			else
 			{
-				_eServices.console->push(CONSOLE::ERR, L"Failed to load scene: " + path);
+				_eServices.console->push(CONSOLE::ERR, "Failed to load scene: " + path);
 				return createScene();
 			}
 		}
 
-		GAME::GameObject* ResourceManager::createGameObjectFromFile(std::wstring path)
+		GAME::GameObject* ResourceManager::createGameObjectFromFile(std::string path)
 		{
 			return nullptr;
 		}

@@ -1,5 +1,4 @@
 #include "NL_FileIOManager.h"
-#include "NL_ThreadLocal.h"
 
 #include <fstream>
 #include <iostream>
@@ -18,12 +17,12 @@ namespace NLE
 		{
 		}
 
-		std::vector<char>* FileIOManager::read(std::wstring path)
+		std::vector<char>* FileIOManager::read(std::string path)
 		{
 			std::ifstream file(path, std::ios::binary | std::ios::ate);
 			if (!file.is_open())
 			{
-				_console->push(CONSOLE::ERR, L"Could not open file: " + path);
+				_console->push(CONSOLE::ERR, "Could not open file: " + path);
 				return nullptr;
 			}
 
@@ -34,7 +33,7 @@ namespace NLE
 			{
 				file.close();
 				delete fileData;
-				_console->push(CONSOLE::ERR, L"Could not read file: " + path);
+				_console->push(CONSOLE::ERR, "Could not read file: " + path);
 				return nullptr;
 			}
 
@@ -43,18 +42,18 @@ namespace NLE
 		}
 
 
-		bool FileIOManager::write(std::wstring path, std::vector<char>* data)
+		bool FileIOManager::write(std::string path, std::vector<char>* data)
 		{
 			std::ofstream file(path, std::ios::binary);
 			if (!file.is_open())
 			{
-				_console->push(CONSOLE::ERR, L"Could not open file: " + path);
+				_console->push(CONSOLE::ERR, "Could not open file: " + path);
 				return false;
 			}
 
 			if (!file.write(&(*data)[0], data->size()))
 			{
-				_console->push(CONSOLE::ERR, L"Could not write to file: " + path);
+				_console->push(CONSOLE::ERR, "Could not write to file: " + path);
 				file.close();
 				return false;
 			}

@@ -21,7 +21,7 @@ namespace NLE
 			const CONSOLE::IConsoleQueueSP& consoleQueue,
 			ImguiScriptEditor& scriptEditor,
 			std::function<SCRIPT::ScriptingContext&()> getScriptingContext,
-			std::function<std::wstring()> getContext
+			std::function<std::string()> getContext
 			)
 		{
 			if (ImGui::CollapsingHeader("Scripts"))
@@ -30,29 +30,29 @@ namespace NLE
 				std::vector<std::string> scriptNames(scripts.size());
 				for (int i = 0; i < scripts.size(); ++i)
 				{
-					scriptNames[i] = TLS::strConverter.local().to_bytes(scripts[i].first);
+					scriptNames[i] = scripts[i].first;
 				}
 
 				if (ImGui::Button("New")) {
 					scriptEditor.editScript(
-						L"Untitled",
-						L"",
-						[&, getScriptingContext](std::wstring scriptName, std::wstring script) {
+						"Untitled",
+						"",
+						[&, getScriptingContext](std::string scriptName, std::string script) {
 						getScriptingContext().addScript(scriptName, script);
 					}, 
 					getContext,
 						[&]() {
-						return L"";
+						return "";
 					});
 				}
 				ImGui::SameLine();
 				if (ImGui::Button("Delete")) {
-					std::wstring selectedScriptName = scripts[_selectedScript].first;
+					std::string selectedScriptName = scripts[_selectedScript].first;
 					if (selectedScriptName.compare(SCRIPT::ON_INIT) == 0
 						|| selectedScriptName.compare(SCRIPT::ON_UPDATE) == 0
 						|| selectedScriptName.compare(SCRIPT::ON_EXIT) == 0)
 					{
-						consoleQueue->push(CONSOLE::WARNING, selectedScriptName + L" is a system script and cannot be deleted.");
+						consoleQueue->push(CONSOLE::WARNING, selectedScriptName + " is a system script and cannot be deleted.");
 					}
 					else
 					{
@@ -63,11 +63,11 @@ namespace NLE
 				}
 				ImGui::SameLine();
 				if (ImGui::Button("Edit")) {
-					std::wstring selectedScriptName = scripts[_selectedScript].first;
+					std::string selectedScriptName = scripts[_selectedScript].first;
 					scriptEditor.editScript(
 						selectedScriptName,
 						getScriptingContext().getScript(selectedScriptName),
-						[&, selectedScriptName, getScriptingContext](std::wstring scriptName, std::wstring script) {
+						[&, selectedScriptName, getScriptingContext](std::string scriptName, std::string script) {
 						if (selectedScriptName.compare(scriptName) != 0)
 						{
 							getScriptingContext().removeScript(selectedScriptName);

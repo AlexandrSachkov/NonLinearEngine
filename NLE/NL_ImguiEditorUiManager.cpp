@@ -288,12 +288,10 @@ namespace NLE
 
 		void ImguiEditorUiManager::showConsole(Size2D screenSize)
 		{
-			std::pair<CONSOLE::OUTPUT_TYPE, std::wstring> consoleEntry;
+			std::pair<CONSOLE::OUTPUT_TYPE, std::string> consoleEntry;
 			while (_consoleQueue->pop(consoleEntry))
 			{
-				auto& cnv = TLS::strConverter.local();
-				auto entry = cnv.to_bytes(consoleEntry.second);
-				_consoleLogs.push({ consoleEntry.first, entry });
+				_consoleLogs.push({ consoleEntry.first, consoleEntry.second });
 			}
 
 			ImGuiWindowFlags windowFlags = 0;
@@ -353,21 +351,21 @@ namespace NLE
 			{
 				if (_saveGameBuff.isEmpty())
 				{
-					auto gameName = TLS::strConverter.local().to_bytes(_gameManager->getGame().getName());
+					auto gameName = _gameManager->getGame().getName();
 					_saveGameBuff.setText(gameName);
 				}
 				ImGui::InputText("Name", &_saveGameBuff[0], _saveGameBuff.getSize(), 0, nullptr, (void*)this);
 				if (ImGui::Button("Save", ImVec2(120, 0))) {
 					ImGui::CloseCurrentPopup();
 					_showSaveGameDialog = false;
-					auto gameName = TLS::strConverter.local().from_bytes(_saveGameBuff.getText());
+					auto gameName = _saveGameBuff.getText();
 					_gameManager->saveGame(gameName);
 				}
 				ImGui::SameLine();
 				if (ImGui::Button("Cancel", ImVec2(120, 0))) {
 					ImGui::CloseCurrentPopup();
 					_showSaveGameDialog = false;
-					auto gameName = TLS::strConverter.local().to_bytes(_gameManager->getGame().getName());
+					auto gameName = _gameManager->getGame().getName();
 					_saveGameBuff.setText(gameName);
 				}
 				ImGui::EndPopup();
@@ -388,21 +386,21 @@ namespace NLE
 			{
 				if (_saveSceneBuff.isEmpty())
 				{
-					auto sceneName = TLS::strConverter.local().to_bytes(_gameManager->getCurrentScene().getName());
+					auto sceneName = _gameManager->getCurrentScene().getName();
 					_saveSceneBuff.setText(sceneName);
 				}
 				ImGui::InputText("Name", &_saveSceneBuff[0], _saveSceneBuff.getSize(), 0, nullptr, (void*)this);
 				if (ImGui::Button("Save", ImVec2(120, 0))) {
 					ImGui::CloseCurrentPopup();
 					_showSaveSceneDialog = false;
-					auto sceneName = TLS::strConverter.local().from_bytes(_saveSceneBuff.getText());
+					auto sceneName = _saveSceneBuff.getText();
 					_gameManager->saveScene(sceneName);
 				}
 				ImGui::SameLine();
 				if (ImGui::Button("Cancel", ImVec2(120, 0))) {
 					ImGui::CloseCurrentPopup();
 					_showSaveSceneDialog = false;
-					auto sceneName = TLS::strConverter.local().to_bytes(_gameManager->getCurrentScene().getName());
+					auto sceneName = _gameManager->getCurrentScene().getName();
 					_saveSceneBuff.setText(sceneName);
 				}
 				ImGui::EndPopup();
@@ -430,7 +428,7 @@ namespace NLE
 				if (ImGui::Button("Load", ImVec2(120, 0))) {
 					ImGui::CloseCurrentPopup();
 					_showLoadGameDialog = false;
-					auto gamePath = TLS::strConverter.local().from_bytes(_loadGameBuff.getText());
+					auto gamePath = _loadGameBuff.getText();
 					_gameManager->loadGame(gamePath);
 				}
 				ImGui::SameLine();
@@ -463,7 +461,7 @@ namespace NLE
 				if (ImGui::Button("Load", ImVec2(120, 0))) {
 					ImGui::CloseCurrentPopup();
 					_showLoadSceneDialog = false;
-					auto scenePath = TLS::strConverter.local().from_bytes(_loadSceneBuff.getText());
+					auto scenePath = _loadSceneBuff.getText();
 					_gameManager->loadScene(scenePath);
 				}
 				ImGui::SameLine();
@@ -583,12 +581,10 @@ namespace NLE
 
 		void ImguiEditorUiManager::showCommandPrompt()
 		{
-			std::pair<CONSOLE::OUTPUT_TYPE, std::wstring> consoleEntry;
+			std::pair<CONSOLE::OUTPUT_TYPE, std::string> consoleEntry;
 			while (_consoleQueue->pop(consoleEntry))
 			{
-				auto& cnv = TLS::strConverter.local();
-				auto entry = cnv.to_bytes(consoleEntry.second);
-				_consoleLogs.push({ consoleEntry.first, entry });
+				_consoleLogs.push({ consoleEntry.first, consoleEntry.second });
 			}
 
 			ImGuiWindowFlags windowFlags = 0;
@@ -633,9 +629,7 @@ namespace NLE
 			ImGui::InputText("", &_commandBuffer[0], _commandBuffer.getSize(), 0);
 			ImGui::SameLine();
 			if (ImGui::Button("Run", ImVec2(50, 0))) {
-				auto& cnv = TLS::strConverter.local();
-				auto entry = cnv.from_bytes(_commandBuffer.getText());
-				_masterExecutor.executeScript(entry);
+				_masterExecutor.executeScript(_commandBuffer.getText());
 			}
 			ImGui::End();
 			restoreColorScheme();

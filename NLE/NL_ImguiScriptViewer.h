@@ -24,7 +24,7 @@ namespace NLE
 				const CONSOLE::IConsoleQueueSP& consoleQueue,
 				ImguiScriptEditor& scriptEditor,
 				std::function<SCRIPT::ScriptingContext&()> getScriptingContext,
-				std::function<std::wstring()> getContext
+				std::function<std::string()> getContext
 				);
 
 		private:

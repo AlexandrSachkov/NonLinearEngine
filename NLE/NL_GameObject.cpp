@@ -7,7 +7,7 @@ namespace NLE
 	namespace GAME
 	{
 		GameObject::GameObject() :
-			_name(L"Object " + std::to_wstring(UUID::generateUuid())),
+			_name("Object " + std::to_string(UUID::generateUuid())),
 			_parent(nullptr),
 			_renderingComponent(this),
 			_scriptingComponent(this)
@@ -19,12 +19,12 @@ namespace NLE
 
 		}
 
-		std::wstring GameObject::getName()
+		std::string GameObject::getName()
 		{
 			return _name;
 		}
 
-		void GameObject::setName(std::wstring name)
+		void GameObject::setName(std::string name)
 		{
 			_name = name;
 		}

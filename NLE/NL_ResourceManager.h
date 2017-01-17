@@ -25,9 +25,9 @@ namespace NLE
 			GAME::Scene* createScene();
 			GAME::GameObject* createGameObject();
 
-			GAME::Game* createGameFromFile(std::wstring path);
-			GAME::Scene* createSceneFromFile(std::wstring path);
-			GAME::GameObject* createGameObjectFromFile(std::wstring path);
+			GAME::Game* createGameFromFile(std::string path);
+			GAME::Scene* createSceneFromFile(std::string path);
+			GAME::GameObject* createGameObjectFromFile(std::string path);
 
 		private:
 			EngineServices _eServices;

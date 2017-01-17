@@ -55,7 +55,7 @@ namespace NLE
 			bool fullscreen = false;
 
 			auto windowManager = std::make_shared<GlfwWindowManager>(engineServices.console);
-			if (!windowManager->initialize(windowSize, fullscreen, true, L"NonLinear Engine"))
+			if (!windowManager->initialize(windowSize, fullscreen, true, "NonLinear Engine"))
 				break;
 			scriptModule.addVariableRef<IWindowManager>("windowManager", windowManager.get());
 

@@ -12,24 +12,17 @@ namespace NLE
 		{
 		}
 
-		void ConsoleQueue::push(OUTPUT_TYPE outType, const std::wstring& data)
+		void ConsoleQueue::push(OUTPUT_TYPE outType, const std::string& data)
 		{
 			_data.push({ outType, data });
 		}
 
-		void ConsoleQueue::push(OUTPUT_TYPE outType, const std::string& data)
-		{
-			TLS::StringConverter::reference converter = TLS::strConverter.local();
-			_data.push({ outType, converter.from_bytes(data) });
-		}
-
 		void ConsoleQueue::push(OUTPUT_TYPE outType, const char* data)
 		{
-			TLS::StringConverter::reference converter = TLS::strConverter.local();
-			_data.push({ outType, converter.from_bytes(data) });
+			_data.push({ outType, data });
 		}
 
-		bool ConsoleQueue::pop(std::pair<OUTPUT_TYPE, std::wstring>& data)
+		bool ConsoleQueue::pop(std::pair<OUTPUT_TYPE, std::string>& data)
 		{
 			if (_data.empty())
 				return false;

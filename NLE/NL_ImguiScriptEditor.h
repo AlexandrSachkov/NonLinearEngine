@@ -25,20 +25,20 @@ namespace NLE
 			bool& getVisibility();
 
 			void editScript(
-				std::wstring scriptName, 
-				std::wstring script, 
-				std::function<void(std::wstring scriptName, std::wstring script)> onUpdate,
-				std::function<std::wstring()> getContext,
-				std::function<std::wstring()> getErrorString);
+				std::string scriptName, 
+				std::string script, 
+				std::function<void(std::string scriptName, std::string script)> onUpdate,
+				std::function<std::string()> getContext,
+				std::function<std::string()> getErrorString);
 
 			void draw(const CONSOLE::IConsoleQueueSP& consoleQueue, float textOpaqueness);
 		private:
 			bool _visible;
-			std::wstring _originalScriptName;
-			std::wstring _originalScript;
-			std::function<void(std::wstring scriptName, std::wstring script)> _onUpdate;
-			std::function<std::wstring()> _getContext;
-			std::function<std::wstring()> _getErrorString;
+			std::string _originalScriptName;
+			std::string _originalScript;
+			std::function<void(std::string scriptName, std::string script)> _onUpdate;
+			std::function<std::string()> _getContext;
+			std::function<std::string()> _getErrorString;
 			CharBuffer _currentScriptName;
 			CharBuffer _currentScript;
 		};
