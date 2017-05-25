@@ -1,9 +1,6 @@
 #pragma once
 
 #include "NL_IResourceManager.h"
-#include "NL_Game.h"
-#include "NL_Scene.h"
-#include "NL_GameObject.h"
 #include "NL_EngineServices.h"
 
 #include <string>
@@ -20,12 +17,14 @@ namespace NLE
 			ResourceManager(EngineServices eServices);
 			~ResourceManager();
 
-			GAME::Game* createGame();
-			GAME::Scene* createScene();
+			GAME::Game* createGame(const GAME::GameDesc&);
+			GAME::Scene* createScene(const GAME::SceneDesc&);
 			GAME::GameObject* createGameObject();
 
-			GAME::Game* createGameFromFile(std::string path);
-			GAME::Scene* createSceneFromFile(std::string path);
+			std::tuple<bool, GAME::GameDesc> loadGameDesc(std::string path);
+			bool saveGameDesc(std::string path, const GAME::GameDesc&);
+			std::tuple<bool, GAME::SceneDesc> loadSceneDesc(std::string path);
+			bool saveSceneDesc(std::string path, const GAME::SceneDesc&);
 			GAME::GameObject* createGameObjectFromFile(std::string path);
 
 		private:

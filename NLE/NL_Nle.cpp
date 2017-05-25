@@ -26,6 +26,8 @@
 #include <iostream>
 #include <memory>
 #include "tbb/tbb.h"
+
+#include "NL_LuaCustomTypes.h"
 #include <LuaIntf.h>
 
 namespace NLE
@@ -135,8 +137,6 @@ namespace NLE
 			} while (execStatus == GAME::CONTINUE);
 
 			taskScheduler->waitOnTasks();
-			
-			//delete resourceManager;
 
 			INPUT::GLOBAL_EVENT_QUEUE->clear();
 			CONSOLE::GLOBAL_CONSOLE_QUEUE->clear();

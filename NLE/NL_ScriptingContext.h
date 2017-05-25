@@ -1,12 +1,13 @@
 #pragma once
 
 #include "NL_ThreadLocal.h"
-#include "NL_Map.h"
 #include "NL_LuaCustomTypes.h"
+#include "NL_Pointer.h"
 
 #include "cereal\cereal.hpp"
 #include "cereal/types/string.hpp"
 #include "cereal/types/vector.hpp"
+#include "cereal/types/unordered_map.hpp"
 #include "LuaIntf.h"
 
 #include <vector>
@@ -15,6 +16,39 @@ namespace NLE
 {
 	namespace SCRIPT
 	{
+		struct ScriptingContextDesc {
+			std::unordered_map<std::string, std::string> scripts;
+			std::unordered_map<std::string, double> numericData;
+			std::unordered_map<std::string, std::string> stringData;
+
+			template<class Archive>
+			void save(Archive& archive) const
+			{
+				archive(
+					CEREAL_NVP(scripts),
+					CEREAL_NVP(numericData),
+					CEREAL_NVP(stringData)
+					);
+			}
+
+			template<class Archive>
+			void load(Archive& archive)
+			{
+				archive(
+					CEREAL_NVP(scripts),
+					CEREAL_NVP(numericData),
+					CEREAL_NVP(stringData)
+					);
+			};
+
+			static void attachMasterBindings(LuaIntf::CppBindModule<LuaIntf::LuaBinding>& binding)
+			{
+				binding.beginClass<ScriptingContextDesc>("ScriptingContextDesc")
+					.addConstructor(LUA_ARGS())
+					.endClass();
+			}
+		};
+
 		static const std::string ON_INIT = "onInit";
 		static const std::string ON_UPDATE = "onUpdate";
 		static const std::string ON_EXIT = "onExit";
@@ -25,67 +59,39 @@ namespace NLE
 		class ScriptingContext
 		{
 		public:
-			ScriptingContext(IScriptable* parent);
+			ScriptingContext(const ScriptingContextDesc&);
+			ScriptingContext(const ScriptingContext&);
+			ScriptingContext& operator=(const ScriptingContext&);
 			~ScriptingContext();
 
-			void addScript(std::string name, std::string script);
-			std::string getScript(std::string name);
+			ScriptingContextDesc getDesc();
+
+			bool addScript(std::string name, std::string script);
+			bool getScript(std::string name, std::string& script);
 			void removeScript(std::string name);
 
-			void store(std::string name, double data);
-			void store(std::string name, std::string data);
-			void store(std::string name, LuaIntf::LuaRef data);
+			bool store(std::string name, double data);
+			bool store(std::string name, std::string data);
 
 			bool load(std::string name, double& data);
 			bool load(std::string name, std::string& data);
-			bool load(std::string name, LuaIntf::LuaRef& data);
 			
 			void deleteNum(std::string name);	
 			void deleteStr(std::string name);
-			void deleteObj(std::string name);
 
-			void flagScript(std::string name);
-			void flagScript(std::string name, std::string error);
-			bool getScriptStatus(std::string name);
-			std::string getScriptErrorMessage(std::string name);
-			void unflagScript(std::string name);
-			IScriptable* getParent();
-			void setParent(IScriptable* parent);
-
-			std::vector<std::pair<std::string, std::string>> getScripts();
-
-			template<class Archive>
-			void save(Archive& archive) const
-			{
-				Map<std::string, std::string, REPLACE> scripts;
-				for (auto kv : _scripts.getData())
-				{
-					scripts.insert(kv.first, kv.second);
-				}				
-				archive(CEREAL_NVP(scripts));
-			}
-
-			template<class Archive>
-			void load(Archive& archive)
-			{
-				Map<std::string, std::string, REPLACE> scripts;
-				archive(CEREAL_NVP(scripts));
-
-				for (auto kv : scripts.getData())
-				{
-					_scripts.insert(kv.first, kv.second);
-				}
-			}
+			bool flagScript(std::string name);
+			bool flagScript(std::string name, std::string error);
+			bool getScriptStatus(std::string name, bool& status, std::string& error);
+			bool unflagScript(std::string name);
 
 			static void attachBindings(LuaIntf::CppBindModule<LuaIntf::LuaBinding>& binding)
 			{
 				binding.beginClass<ScriptingContext>("ScriptingContext")
 					.addFunction("addScript", &ScriptingContext::addScript)
-					.addFunction("getScript", &ScriptingContext::getScript)
+					.addFunction("getScript", &ScriptingContext::getScript, LUA_ARGS(std::string, LuaIntf::_out<std::string&>))
 					.addFunction("removeScript", &ScriptingContext::removeScript)
-					.addFunction("storeNum", static_cast<void(ScriptingContext::*)(std::string name, double data)>(&ScriptingContext::store))
-					.addFunction("storeStr", static_cast<void(ScriptingContext::*)(std::string name, std::string data)>(&ScriptingContext::store))
-					.addFunction("storeObj", static_cast<void(ScriptingContext::*)(std::string name, LuaIntf::LuaRef data)>(&ScriptingContext::store))
+					.addFunction("storeNum", static_cast<bool(ScriptingContext::*)(std::string name, double data)>(&ScriptingContext::store))
+					.addFunction("storeStr", static_cast<bool(ScriptingContext::*)(std::string name, std::string data)>(&ScriptingContext::store))
 					.addFunction(
 						"loadNum", 
 						static_cast<bool(ScriptingContext::*)(std::string name, double& data)>(&ScriptingContext::load), 
@@ -94,24 +100,27 @@ namespace NLE
 						"loadStr", 
 						static_cast<bool(ScriptingContext::*)(std::string name, std::string& data)>(&ScriptingContext::load), 
 						LUA_ARGS(std::string, LuaIntf::_out<std::string&>))
-					.addFunction(
-						"loadObj", 
-						static_cast<bool(ScriptingContext::*)(std::string name, LuaIntf::LuaRef& data)>(&ScriptingContext::load), 
-						LUA_ARGS(std::string, LuaIntf::_out<LuaIntf::LuaRef&>))
 					.addFunction("deleteNum", &ScriptingContext::deleteNum)
 					.addFunction("deleteStr", &ScriptingContext::deleteStr)
-					.addFunction("deleteObj", &ScriptingContext::deleteObj)
+					.endClass();
+			}
+
+			static void attachMasterBindings(LuaIntf::CppBindModule<LuaIntf::LuaBinding>& binding)
+			{
+				binding.beginClass<ScriptingContextDesc>("ScriptingContextDesc")
+					.addConstructor(LUA_ARGS())
+					.endClass();
+
+				binding.beginClass<ScriptingContext>("ScriptingContext")
+					.addConstructor(LUA_ARGS(const ScriptingContextDesc&))
 					.endClass();
 			}
 
 		private:
-			IScriptable* _parent;
-
-			Map<std::string, std::string, REPLACE> _scripts;
-			Map<std::string, std::pair<bool, std::string>, REPLACE> _scriptStatus;
-			Map<std::string, double, REPLACE> _numericData;
-			Map<std::string, std::string, REPLACE> _stringData;
-			Map<std::string, LuaIntf::LuaRef, REPLACE> _objectData;
+			std::unordered_map<std::string, std::string> _scripts;
+			std::unordered_map<std::string, std::pair<bool, std::string>> _scriptStatus;
+			std::unordered_map<std::string, double> _numericData;
+			std::unordered_map<std::string, std::string> _stringData;
 		};
 	}
 }

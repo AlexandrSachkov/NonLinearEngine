@@ -1,5 +1,8 @@
 #pragma once
 
+#include "NL_Game.h"
+#include "NL_Scene.h"
+
 #include "NL_LuaCustomTypes.h"
 #include <LuaIntf.h>
 #include <string>
@@ -9,7 +12,6 @@ namespace NLE
 {
 	namespace GAME
 	{
-		class Game;
 		class Scene;
 		class GameObject;
 	}
@@ -18,12 +20,15 @@ namespace NLE
 		class IResourceManager
 		{
 		public:
-			virtual GAME::Game* createGame() = 0;
-			virtual GAME::Scene* createScene() = 0;
+			virtual GAME::Game* createGame(const GAME::GameDesc&) = 0;
+			virtual GAME::Scene* createScene(const GAME::SceneDesc&) = 0;
 			virtual GAME::GameObject* createGameObject() = 0;
 
-			virtual GAME::Game* createGameFromFile(std::string path) = 0;
-			virtual GAME::Scene* createSceneFromFile(std::string path) = 0;
+			virtual std::tuple<bool, GAME::GameDesc> loadGameDesc(std::string path) = 0;
+			virtual bool saveGameDesc(std::string path, const GAME::GameDesc&) = 0;
+			virtual std::tuple<bool, GAME::SceneDesc> loadSceneDesc(std::string path) = 0;
+			virtual bool saveSceneDesc(std::string path, const GAME::SceneDesc&) = 0;
+
 			virtual GAME::GameObject* createGameObjectFromFile(std::string path) = 0;
 
 			static void attachMasterBindings(LuaIntf::CppBindModule<LuaIntf::LuaBinding>& binding)
@@ -32,8 +37,10 @@ namespace NLE
 					.addFunction("createGame", &IResourceManager::createGame)
 					.addFunction("createScene", &IResourceManager::createScene)
 					.addFunction("createGameObject", &IResourceManager::createGameObject)
-					.addFunction("createGameFromFile", &IResourceManager::createGameFromFile)
-					.addFunction("createSceneFromFile", &IResourceManager::createSceneFromFile)
+					.addFunction("loadGameDesc", &IResourceManager::loadGameDesc)
+					.addFunction("saveGameDesc", &IResourceManager::saveGameDesc)
+					.addFunction("loadSceneDesc", &IResourceManager::loadSceneDesc)
+					.addFunction("saveSceneDesc", &IResourceManager::saveSceneDesc)
 					.addFunction("createGameObjectFromFile", &IResourceManager::createGameObjectFromFile)
 					.endClass();
 			}

@@ -2,7 +2,6 @@
 
 #include "NL_ScriptingContext.h"
 #include "NL_IScriptable.h"
-#include "NL_Map.h"
 #include "NL_LuaCustomTypes.h"
 #include "NL_SceneGraph.h"
 
@@ -14,21 +13,16 @@ namespace NLE
 {
 	namespace GAME
 	{
-		class GameObject;
-		class GameManager;
-		class Scene : public SCRIPT::IScriptable
-		{
-		public:
-			Scene();
-			~Scene();
+		struct SceneDesc {
+			std::string name;
+			SCRIPT::ScriptingContextDesc scriptingContextDesc;
 
 			template<class Archive>
 			void save(Archive& archive) const
 			{
 				archive(
-					CEREAL_NVP(_name),
-					CEREAL_NVP(_sceneGraph),
-					CEREAL_NVP(_scriptingContext)
+					CEREAL_NVP(name),
+					CEREAL_NVP(scriptingContextDesc)
 					);
 			}
 
@@ -36,13 +30,41 @@ namespace NLE
 			void load(Archive& archive)
 			{
 				archive(
-					CEREAL_NVP(_name),
-					CEREAL_NVP(_sceneGraph),
-					CEREAL_NVP(_scriptingContext)
+					CEREAL_NVP(name),
+					CEREAL_NVP(scriptingContextDesc)
 					);
+			};
 
-				_scriptingContext.setParent(this);
+			void setName(std::string nameVal)
+			{
+				name = nameVal;
 			}
+
+			std::string getName()
+			{
+				return name;
+			}
+
+			static void attachMasterBindings(LuaIntf::CppBindModule<LuaIntf::LuaBinding>& binding)
+			{
+				binding.beginClass<SceneDesc>("SceneDesc")
+					.addConstructor(LUA_ARGS())
+					.addProperty("name", &SceneDesc::getName, &SceneDesc::setName)
+					.endClass();
+			}
+		};
+
+		class GameObject;
+		class GameManager;
+		class Scene : public SCRIPT::IScriptable
+		{
+		public:
+			Scene(const SceneDesc&);
+			Scene(const Scene&);
+			Scene& operator=(const Scene&);
+			~Scene();
+
+			SceneDesc getDesc();
 
 			std::string getName();
 			void setName(std::string name);

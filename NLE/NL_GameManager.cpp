@@ -102,20 +102,20 @@ namespace NLE
 
 		void GameManager::newGame()
 		{
-			_game = std::make_unique<Game>(_eServices.console);
+			/*_game = std::make_unique<Game>(_eServices.console);
 			newScene();
-			_eServices.console->push(CONSOLE::STANDARD, "Starting new game.");
+			_eServices.console->push(CONSOLE::STANDARD, "Starting new game.");*/
 		}
 
 		void GameManager::newScene()
 		{
-			_currentScene = std::make_unique<Scene>();
-			_eServices.console->push(CONSOLE::STANDARD, "Starting new scene.");
+			/*_currentScene = std::make_unique<Scene>();
+			_eServices.console->push(CONSOLE::STANDARD, "Starting new scene.");*/
 		}
 
 		void GameManager::loadGame(std::string path)
 		{
-			std::vector<char>* data = _file->read(path);
+			/*std::vector<char>* data = _file->read(path);
 			if (data)
 			{
 				Game* game = _serializer->deserialize<Game>(data);
@@ -126,12 +126,12 @@ namespace NLE
 			else
 			{
 				_eServices.console->push(CONSOLE::ERR, "Failed to load game: " + path);
-			}
+			}*/
 		}
 
 		void GameManager::loadScene(std::string path)
 		{
-			std::vector<char>* data = _file->read(path);
+			/*std::vector<char>* data = _file->read(path);
 			if (data)
 			{
 				Scene* scene = _serializer->deserialize<Scene>(data);
@@ -142,12 +142,12 @@ namespace NLE
 			else
 			{
 				_eServices.console->push(CONSOLE::ERR, "Failed to load scene: " + path);
-			}
+			}*/
 		}
 
 		void GameManager::loadSceneByName(std::string name)
 		{
-			auto scenePath = _game->getScenePath(name);
+			/*auto scenePath = _game->getScenePath(name);
 			if (scenePath.compare("") != 0)
 			{
 				loadScene(scenePath);
@@ -155,12 +155,12 @@ namespace NLE
 			else
 			{
 				_eServices.console->push(CONSOLE::ERR, "Failed to find scene by name: " + name);
-			}
+			}*/
 		}
 
 		void GameManager::updateGame(Game* game)
 		{
-				game->attachConsole(_eServices.console);
+				/*game->attachConsole(_eServices.console);
 				auto& ex = TLS::scriptExecutor.local();
 				ex.executeContextScript(_game->getScriptingContext(), SCRIPT::ON_EXIT);
 				_game = std::unique_ptr<Game>(game);
@@ -171,7 +171,7 @@ namespace NLE
 				if (initialSceneName.compare("") != 0)
 				{
 					loadSceneByName(initialSceneName);
-				}		
+				}	*/	
 		}
 
 		void GameManager::updateScene(Scene* scene)
@@ -185,7 +185,7 @@ namespace NLE
 		
 		void GameManager::saveGame(std::string name)
 		{
-			if (!name.empty()) {
+			/*if (!name.empty()) {
 				_game->setName(name);
 			}
 
@@ -200,12 +200,12 @@ namespace NLE
 			{
 				delete gameData;
 				_eServices.console->push(CONSOLE::ERR, "Failed to save game: " + _game->getName());
-			}
+			}*/
 		}
 
 		void GameManager::saveScene(std::string name)
 		{
-			if (!name.empty()) {
+			/*if (!name.empty()) {
 				_currentScene->setName(name);
 			}
 
@@ -219,7 +219,7 @@ namespace NLE
 			{
 				delete sceneData;
 				_eServices.console->push(CONSOLE::ERR, "Failed to save scene: " + _currentScene->getName());
-			}
+			}*/
 		}
 
 		void GameManager::quitGame()

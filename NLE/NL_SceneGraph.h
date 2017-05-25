@@ -1,13 +1,18 @@
 #pragma once
 
-#include "NL_Map.h"
 #include <string>
 #include <vector>
+#include <unordered_map>
 
 namespace NLE
 {
 	namespace GAME
 	{
+		struct SceneGraphDesc
+		{
+
+		};
+
 		class GameObject;
 		class SceneGraph
 		{
@@ -40,7 +45,7 @@ namespace NLE
 			GameObject* getObject(std::string name);
 
 		private:
-			Map<std::string, GameObject*, KEEP_EXISTING> _objects;
+			std::unordered_map<std::string, GameObject*> _objects;
 			std::vector<GameObject*> _root;
 		};
 	}

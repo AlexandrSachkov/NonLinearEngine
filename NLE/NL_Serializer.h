@@ -13,15 +13,15 @@ namespace NLE
 			Serializer() {}
 
 			template <class OT>
-			std::vector<char>* serialize(OT* obj)
+			std::vector<char>* serialize(const OT& obj)
 			{
 				return static_cast<T*>(this)->serialize<OT>(obj);
 			}
 
 			template <class OT>
-			OT* deserialize(std::vector<char>* data)
+			void deserialize(std::vector<char>* data, OT& obj)
 			{
-				return static_cast<T*>(this)->deserialize<OT>(data);
+				static_cast<T*>(this)->deserialize<OT>(data, obj);
 			}
 		};
 	}

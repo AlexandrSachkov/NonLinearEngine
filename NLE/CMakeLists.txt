@@ -70,7 +70,6 @@ SET(HEADERS
 	NL_InputEvents.h
 	NL_LuaBindings.h
 	NL_LuaCustomTypes.h
-	NL_Map.h
 	NL_MemoryManager.h
 	NL_MemoryPool.h
 	NL_Octree.h
@@ -80,11 +79,12 @@ SET(HEADERS
 	NL_IRenderingEngine.h
 	NL_RenderingComponent.h
 	NL_Resource.h
+	NL_ResourceCache.h
+	NL_IResourceCache.h
 	NL_ResourceManager.h
 	NL_IResourceManager.h
 	NL_Scene.h		
 	NL_SceneGraph.h
-	NL_IScriptable.h
 	NL_ScriptExecutor.h
 	NL_ScriptingComponent.h
 	NL_ScriptingContext.h
@@ -139,6 +139,7 @@ SET(SOURCES
 	NL_Octree.cpp
 	NL_RenderingComponent.cpp
 	NL_RenderingEngine.cpp
+	NL_ResourceCache.cpp
 	NL_Scene.cpp	
 	NL_SceneGraph.cpp
 	NL_ScriptExecutor.cpp

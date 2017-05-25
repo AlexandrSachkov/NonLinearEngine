@@ -6,158 +6,210 @@ namespace NLE
 {
 	namespace SCRIPT
 	{
-		ScriptingContext::ScriptingContext(IScriptable* parent) :
-			_parent(parent)
+		ScriptingContext::ScriptingContext(const ScriptingContextDesc& desc)
 		{
 			addScript(ON_INIT, "");
 			addScript(ON_UPDATE, "");
 			addScript(ON_EXIT, "");
+
+			for (auto kv : desc.scripts)
+			{
+				addScript(kv.first, kv.second);
+			}
+			for (auto kv : desc.numericData)
+			{
+				store(kv.first, kv.second);
+			}
+			for (auto kv : desc.stringData)
+			{
+				store(kv.first, kv.second);
+			}
+		}
+
+		ScriptingContext::ScriptingContext(const ScriptingContext& other) :
+			_scripts(other._scripts),
+			_numericData(other._numericData),
+			_stringData(other._stringData)
+		{
+		}
+
+		ScriptingContext& ScriptingContext::operator=(const ScriptingContext& other)
+		{
+			_scripts = other._scripts;
+			_numericData = other._numericData;
+			_stringData = other._stringData;
+			return *this;
 		}
 
 		ScriptingContext::~ScriptingContext()
 		{
 		}
 
-		void ScriptingContext::addScript(std::string name, std::string script)
+		ScriptingContextDesc ScriptingContext::getDesc()
 		{
-			if (name.compare("") == 0) return;
-			_scripts.insert(name, script);
-			_scriptStatus.insert(name, { true, ""});
+			ScriptingContextDesc desc;
+			desc.scripts = _scripts;
+			desc.numericData = _numericData;
+			desc.stringData = _stringData;
+			return desc;
 		}
 
-		std::string ScriptingContext::getScript(std::string name)
+		bool ScriptingContext::addScript(std::string name, std::string script)
 		{
-			if (name.compare("") == 0) return "";
+			if (name.empty()) 
+				return false;
 
-			std::string script;
-			if (_scripts.get(name, script))
+			auto it = _scripts.find(name);
+			if (it != _scripts.end()) //already exists
 			{
-				return script;
+				_scripts.erase(it);
+				_scriptStatus.erase(name);
 			}
-			return "";
+			_scripts.insert({ name, script });
+			_scriptStatus.insert({ name, { true, ""} });
+			return true;
+		}
+
+		bool ScriptingContext::getScript(std::string name, std::string& script)
+		{
+			if (name.empty()) 
+				return false;
+
+			auto it = _scripts.find(name);
+			if (it != _scripts.end())
+			{
+				script = it->second;
+				return true;
+			}
+			return false;
 		}
 
 		void ScriptingContext::removeScript(std::string name)
 		{
-			if (name.compare("") == 0) return;
-			else if (name.compare(ON_INIT) == 0) return;
-			else if (name.compare(ON_UPDATE) == 0) return;
-			else if (name.compare(ON_EXIT) == 0) return;
+			if (name.empty()
+				|| name.compare(ON_INIT) == 0
+				|| name.compare(ON_UPDATE) == 0
+				||name.compare(ON_EXIT) == 0) 
+				return;
 
 			_scripts.erase(name);
 			_scriptStatus.erase(name);
 		}
 
-		void ScriptingContext::store(std::string name, double data)
+		bool ScriptingContext::store(std::string name, double data)
 		{
-			_numericData.insert(name, data);
+			if (name.empty())
+				return false;
+
+			auto it = _numericData.find(name);
+			if (it != _numericData.end()) //already exists
+			{
+				_numericData.erase(it);
+			}
+			_numericData.insert({ name, data });
+			return true;
 		}
 
-		void ScriptingContext::store(std::string name, std::string data)
+		bool ScriptingContext::store(std::string name, std::string data)
 		{
-			_stringData.insert(name, data);
-		}
+			if (name.empty())
+				return false;
 
-		void ScriptingContext::store(std::string name, LuaIntf::LuaRef data)
-		{
-			_objectData.insert(name, data);
+			auto it = _stringData.find(name);
+			if (it != _stringData.end()) //already exists
+			{
+				_stringData.erase(it);
+			}
+
+			_stringData.insert({ name, data });
+			return true;
 		}
 
 		bool ScriptingContext::load(std::string name, double& data)
 		{
-			if (_numericData.get(name, data))
+			if (name.empty())
+				return false;
+
+			auto it = _numericData.find(name);
+			if (it != _numericData.end())
+			{
+				data = it->second;
 				return true;
+			}
 			return false;
 		}
 
 		bool ScriptingContext::load(std::string name, std::string& data)
 		{
-			if (_stringData.get(name, data))
-				return true;
-			return false;
-		}
+			if (name.empty())
+				return false;
 
-		bool ScriptingContext::load(std::string name, LuaIntf::LuaRef& data)
-		{
-			if (_objectData.get(name, data))
+			auto it = _stringData.find(name);
+			if (it != _stringData.end())
+			{
+				data = it->second;
 				return true;
+			}
 			return false;
 		}
 
 		void ScriptingContext::deleteNum(std::string name)
 		{
+			if (name.empty())
+				return;
+
 			_numericData.erase(name);
 		}
 
 		void ScriptingContext::deleteStr(std::string name)
 		{
+			if (name.empty())
+				return;
+
 			_stringData.erase(name);
 		}
 
-		void ScriptingContext::deleteObj(std::string name)
+		bool ScriptingContext::flagScript(std::string name)
 		{
-			_objectData.erase(name);
+			if (name.empty())
+				return false;
+
+			_scriptStatus.insert({ name, { false, UNSPECIFIED_ERROR } });
+			return true;
 		}
 
-		std::vector<std::pair<std::string, std::string>> ScriptingContext::getScripts()
+		bool ScriptingContext::flagScript(std::string name, std::string error)
 		{
-			std::vector<std::pair<std::string, std::string>> scripts;
-			for (auto kv : _scripts.getData()) {
-				scripts.push_back(kv);
-			}
-			return scripts;
+			if (name.empty())
+				return false;
+
+			_scriptStatus.insert({ name, { false, error } });
+			return true;
 		}
 
-		void ScriptingContext::flagScript(std::string name)
+		bool ScriptingContext::unflagScript(std::string name)
 		{
-			if (name.compare("") == 0) return;
-			_scriptStatus.insert(name, { false, UNSPECIFIED_ERROR });
+			if (name.empty())
+				return false;
+
+			_scriptStatus.insert({ name, { true, "" } });
+			return true;
 		}
 
-		void ScriptingContext::flagScript(std::string name, std::string error)
+		bool ScriptingContext::getScriptStatus(std::string name, bool& status, std::string& err)
 		{
-			if (name.compare("") == 0) return;
-			_scriptStatus.insert(name, { false, error });
-		}
+			if (name.empty())
+				return false;
 
-		void ScriptingContext::unflagScript(std::string name)
-		{
-			if (name.compare("") == 0) return;
-			_scriptStatus.insert(name, { true, "" });
-		}
-
-		bool ScriptingContext::getScriptStatus(std::string name)
-		{
-			if (name.compare("") == 0) return false;
-
-			std::pair<bool, std::string> status;
-			if (_scriptStatus.get(name, status))
+			auto it = _scriptStatus.find(name);
+			if (it != _scriptStatus.end())
 			{
-				return status.first;
+				auto statusErr = it->second;
+				status = statusErr.first;
+				err = statusErr.second;
+				return true;
 			}
 			return false;
-		}
-
-		std::string ScriptingContext::getScriptErrorMessage(std::string name)
-		{
-			if (name.compare("") == 0) return "";
-
-			std::pair<bool, std::string> status;
-			if (_scriptStatus.get(name, status))
-			{
-				return status.second;
-			}
-			return "";
-		}
-
-		IScriptable* ScriptingContext::getParent()
-		{
-			return _parent;
-		}
-
-		void ScriptingContext::setParent(IScriptable* parent)
-		{
-			_parent = parent;
 		}
 	}
 }

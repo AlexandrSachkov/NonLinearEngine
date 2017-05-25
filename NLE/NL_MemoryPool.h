@@ -27,7 +27,6 @@ namespace NLE
 			void* allocate()
 			{
 				tbb::scalable_allocator<Page<S>> allocator;
-				allocator.
 				return _pool.malloc(1);
 			}
 			void free(void* ptr)

@@ -9,6 +9,7 @@
 #include "NL_CommonTypes.h"
 #include "NL_IWindowManager.h"
 #include "NL_FileIOManager.h"
+#include "NL_ResourceManager.h"
 
 #include "lua.hpp"
 #include <LuaIntf.h>
@@ -37,11 +38,15 @@ namespace NLE
 		{
 			auto module = LuaIntf::LuaBinding(state).beginModule("nle");			
 			GAME::GameManager::attachMasterBindings(module);
+			GAME::GameDesc::attachMasterBindings(module);
 			GAME::Game::attachMasterBindings(module);
+			GAME::SceneDesc::attachMasterBindings(module);
 			GAME::Scene::attachMasterBindings(module);
 			GAME::GameObject::attachMasterBindings(module);
+			SCRIPT::ScriptingContextDesc::attachMasterBindings(module);
 			IWindowManager::attachMasterBindings(module);
-			IO::FileIOManager::attachMasterBindings(module);
+			IO::IFileIOManager::attachMasterBindings(module);
+			RESOURCE::IResourceManager::attachMasterBindings(module);
 			module.endModule();
 		}
 	}

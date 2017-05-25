@@ -36,7 +36,7 @@ namespace NLE
 
 		bool ScriptExecutor::executeContextScript(ScriptingContext& context, std::string name)
 		{
-			if (!context.getScriptStatus(name))
+			/*if (!context.getScriptStatus(name))
 			{
 				return false;
 			}
@@ -51,7 +51,8 @@ namespace NLE
 				context.flagScript(name, _executionError);
 				CONSOLE::GLOBAL_CONSOLE_QUEUE->push(CONSOLE::ERR, "Script '" + name + "' failed to execute.");
 				return false;
-			}
+			}*/
+			return false;
 		}
 
 		bool ScriptExecutor::executeScript(std::string script)
@@ -83,10 +84,10 @@ namespace NLE
 
 		void ScriptExecutor::applyContext(ScriptingContext& context)
 		{
-			auto module = LuaIntf::LuaBinding(_state).beginModule("nle");
+			/*auto module = LuaIntf::LuaBinding(_state).beginModule("nle");
 			if(context.getParent())
 				context.getParent()->bind(module);
-			module.endModule();
+			module.endModule();*/
 		}
 	}
 

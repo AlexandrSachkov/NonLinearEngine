@@ -17,12 +17,12 @@ namespace NLE
 
 		void SceneGraph::addObject(GameObject* object)
 		{
-			addObject(nullptr, object);
+			//addObject(nullptr, object);
 		}
 
 		void SceneGraph::addObject(GameObject* parent, GameObject* object)
 		{
-			_objects.insert(object->getName(), object);
+			/*_objects.insert({ object->getName(), object });
 
 			if (!parent)
 			{
@@ -35,32 +35,34 @@ namespace NLE
 					object->getParent()->removeChild(object);
 				}
 				parent->addChild(object);
-			}
+			}*/
 		}
 
 		void SceneGraph::removeObject(std::string name)
 		{
-			GameObject* obj = nullptr;
+			/*GameObject* obj = nullptr;
+			_objects.
 			if (_objects.get(name, obj))
 			{
 				removeObject(obj);
-			}
+			}*/
 		}
 
 		void SceneGraph::removeObject(GameObject* object)
 		{
-			if (object->getParent())
+			/*if (object->getParent())
 			{
 				object->getParent()->removeChild(object);
 			}
-			_objects.erase(object->getName());
+			_objects.erase(object->getName());*/
 		}
 
 		GameObject* SceneGraph::getObject(std::string name)
 		{
-			GameObject* obj = nullptr;
+			/*GameObject* obj = nullptr;
 			_objects.get(name, obj);
-			return obj;
+			return obj;*/
+			return nullptr;
 		}
 	}
 }

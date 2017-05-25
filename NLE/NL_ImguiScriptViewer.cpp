@@ -24,7 +24,7 @@ namespace NLE
 			std::function<std::string()> getContext
 			)
 		{
-			if (ImGui::CollapsingHeader("Scripts"))
+			/*if (ImGui::CollapsingHeader("Scripts"))
 			{
 				auto scripts = getScriptingContext().getScripts();
 				std::vector<std::string> scriptNames(scripts.size());
@@ -88,7 +88,7 @@ namespace NLE
 					*out_text = vector[index].c_str();
 					return true;
 				}, static_cast<void*>(&scriptNames), (int)scripts.size());
-			}
+			}*/
 		}
 	}
 }

@@ -8,15 +8,36 @@ namespace NLE
 {
 	namespace GAME
 	{
-		Scene::Scene() :
-			_scriptingContext(this)
+		Scene::Scene(const SceneDesc& desc) :
+			_name(desc.name),
+			_scriptingContext(desc.scriptingContextDesc)
 		{
-			_name = "Scene " + std::to_string(UUID::generateUuid());
+
+		}
+
+		Scene::Scene(const Scene& other) :
+			_name(other._name),
+			_scriptingContext(other._scriptingContext)
+		{
+		}
+
+		Scene& Scene::operator=(const Scene& other)
+		{
+			_name = other._name;
+			_scriptingContext = other._scriptingContext;
+			return *this;
 		}
 
 		Scene::~Scene()
 		{
+		}
 
+		SceneDesc Scene::getDesc()
+		{
+			SceneDesc desc;
+			desc.name = _name;
+			desc.scriptingContextDesc = _scriptingContext.getDesc();
+			return desc;
 		}
 
 		std::string Scene::getName()

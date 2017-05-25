@@ -6,7 +6,7 @@ namespace NLE
 	{
 		ScriptingComponent::ScriptingComponent(GameObject* parent) :
 			GameObjectComponent(parent),
-			_scriptingContext(this)
+			_scriptingContext(SCRIPT::ScriptingContextDesc())
 		{
 
 		}
