@@ -33,146 +33,17 @@ ENDIF(NLE_RENDERING_API STREQUAL "")
 # =====================================================================================
 
 SET(HEADERS 
-	NL_Allocator.h
-	NL_AssetImporter.h
-	NL_Atomic.h
-	NL_CerealSerializer.h
-	NL_CharBuffer.h
-	NL_CircularBuffer.h
-	NL_CommonTypes.h
-	NL_ConsoleQueue.h
-	NL_IConsoleQueue.h
-	NL_DataManager.h
-	NL_IDataManager.h
-	NL_IEditorUiManager.h
-	NL_EngineServices.h
-	NL_FileIOManager.h
-	NL_IFileIOManager.h
-	NL_Game.h
-	NL_GameManager.h
-	NL_IGameManager.h
-	NL_GameObject.h
-	NL_GameObjectComponent.h
-	NL_GlfwInputMap.h
-	NL_GlfwWindowManager.h
-	NL_Globals.h
-	NL_ImguiD3D11Renderer.h
-	NL_ImguiEditorUiManager.h
-	NL_ImguiGameEditor.h
-	NL_ImguiSceneEditor.h
-	NL_ImguiSceneViewer.h
-	NL_ImguiScriptEditor.h
-	NL_ImguiScriptViewer.h
-	NL_ImguiObjectEditor.h
-	NL_ImguiInputMap.h
-	NL_InputProcessor.h
-	NL_IInputProcessor.h	
-	NL_InputEvents.h
-	NL_LuaBindings.h
-	NL_LuaCustomTypes.h
-	NL_MemoryManager.h
-	NL_MemoryPool.h
-	NL_Octree.h
-	NL_OperationBuffer.h
-	NL_Queue.h
-	NL_RenderingEngine.h
-	NL_IRenderingEngine.h
-	NL_RenderingComponent.h
-	NL_Resource.h
-	NL_ResourceCache.h
-	NL_IResourceCache.h
-	NL_ResourceManager.h
-	NL_IResourceManager.h
-	NL_Scene.h		
-	NL_SceneGraph.h
-	NL_ScriptExecutor.h
-	NL_ScriptingComponent.h
-	NL_ScriptingContext.h
-	NL_ScriptingEngine.h
-	NL_IScriptingEngine.h	
-	NL_Serializer.h
-	NL_ISerializer.h
-	NL_SharedArray.h
-	NL_SharedData.h
-	NL_SharedEntry.h
-	NL_ISharedEntity.h
-	NL_ISystem.h
-	NL_SystemServices.h
-	NL_Task.h
-	NL_TBBTaskScheduler.h
-	NL_ITaskScheduler.h
-	NL_TextureLoader.h
-	NL_Timer.h	
-	NL_ThreadLocal.h
-	NL_UiComponent.h
-	NL_Uuid.h
-	NL_ResourceManager.cpp
-	NL_Thread.h
-	NL_IWindowManager.h
+	
 	)
 
 SET(SOURCES 
-	NL_AssetImporter.cpp
-	NL_ConsoleQueue.cpp
-	NL_DataManager.cpp
-	NL_FileIOManager.cpp
-	NL_Game.cpp
-	NL_GameManager.cpp
-	NL_GameObject.cpp
-	NL_GameObjectComponent.cpp
-	NL_GlfwInputMap.cpp
-	NL_GlfwWindowManager.cpp
-	NL_Globals.cpp
-	NL_ImguiD3D11Renderer.cpp
-	NL_ImguiEditorUiManager.cpp	
-	NL_ImguiGameEditor.cpp
-	NL_ImguiSceneEditor.cpp
-	NL_ImguiSceneViewer.cpp
-	NL_ImguiScriptEditor.cpp
-	NL_ImguiScriptViewer.cpp
-	NL_ImguiObjectEditor.cpp
-	NL_ImguiInputMap.cpp
-	NL_InputProcessor.cpp
-	NL_LuaBindings.cpp
-	NL_MemoryManager.cpp
 	NL_Nle.cpp
-	NL_Octree.cpp
-	NL_RenderingComponent.cpp
-	NL_RenderingEngine.cpp
-	NL_ResourceCache.cpp
-	NL_Scene.cpp	
-	NL_SceneGraph.cpp
-	NL_ScriptExecutor.cpp
-	NL_ScriptingComponent.cpp
-	NL_ScriptingContext.cpp
-	NL_ScriptingEngine.cpp
-	NL_SharedData.cpp
-	NL_Task.cpp
-	NL_TextureLoader.cpp
-	NL_TBBTaskScheduler.cpp
-	NL_UiComponent.cpp
-	NL_Thread.cpp
 	)
 
 SET (SHADERS
 )
 
 if(NLE_RENDERING_API STREQUAL "D3D11")
-	SET(HEADERS
-		${HEADERS}
-		NL_D3D11RenderingEngine.h
-		NL_D3D11RenderingResources.h
-		NL_D3D11Utility.h
-		NL_D3D11Utility.inl
-	)
-
-	SET(SOURCES 
-		${SOURCES}
-		NL_D3D11RenderingEngine.cpp
-		NL_D3D11RenderingResources.cpp
-		NL_D3D11Utility.cpp
-	)
-
 	SET (SHADERS
 		D3D11Shaders/Forward_VS.hlsl
 		D3D11Shaders/Forward_PS.hlsl

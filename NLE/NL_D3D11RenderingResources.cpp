@@ -1,1 +1,0 @@
-#include "NL_D3D11RenderingResources.h"
