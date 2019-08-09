@@ -22,14 +22,7 @@ This engine if far from completion and is currently in an active state of develo
 </p>
 <hr width="100%">
 
-<!--=====================================================================================-->
-<h3>Contact</h3>
-<p>
-If you are interested in this project and would like to contribute, feel free to contact me at: <br/>
-ale<b>k</b>sach<b>x</b>ov@hotmail.com <br/>
-(Anti-bot, flip the bold characters)
-</p>
-<hr width="100%">
+<p><img src="images/engine_test.png" alt="Sponza sample"></p>
 
 <!--=====================================================================================-->
 <p>
